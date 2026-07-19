@@ -65,9 +65,9 @@ export default function About() {
           <div className="mb-10 overflow-hidden rounded-[2.5rem]" data-testid="about-hero-placeholder">
             <div className="aspect-[16/7] overflow-hidden">
               <img
-                src={REAL.ahofGroup}
-                alt="AHOF group"
-                className="h-full w-full object-cover object-top"
+                src={REAL.duo}
+                alt="JL & Han"
+                className="h-full w-full object-cover object-[50%_28%]"
               />
             </div>
           </div>

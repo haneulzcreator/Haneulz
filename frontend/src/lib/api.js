@@ -50,6 +50,7 @@ export const REAL = {
   jl: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/f87g19iu_IMG_9137.webp",
   han: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/ajv8uahi_IMG_9135.webp",
   ahofGroup: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/g5npnzc2_IMG_9136.jpeg",
+  duo: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/81w3jx7b_IMG_9244.jpeg",
 };
 
 export const SOURCES = {
