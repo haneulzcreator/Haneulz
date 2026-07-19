@@ -159,7 +159,7 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-6 py-24">
         <div className="mb-12 flex items-end justify-between">
           <Reveal>
-            <h2 className="font-serif-display text-5xl font-medium md:text-6xl">Latest AUs</h2>
+            <h2 className="font-serif-display text-5xl font-medium md:text-6xl">Creator's AU Picks</h2>
           </Reveal>
           <Link to="/aus" data-testid="home-view-all-aus" className="link-underline text-sm uppercase tracking-widest">
             View all
