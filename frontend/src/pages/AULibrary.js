@@ -26,7 +26,11 @@ export default function AULibrary() {
     api.get("/aus").then((r) => setAus(r.data)).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const allTags = Array.from(new Set(aus.flatMap((a) => a.tags || []))).sort();
+  const hiddenTags = new Set(["coffee shop", "fated", "headcanon", "music", "soft", "soulmate"]);
+  const derivedTags = Array.from(new Set(aus.flatMap((a) => a.tags || []))).filter(
+    (t) => !hiddenTags.has(t.toLowerCase())
+  );
+  const allTags = Array.from(new Set([...derivedTags, "18+"])).sort();
   const byTag = tag === "all" ? aus : aus.filter((a) => (a.tags || []).includes(tag));
   const bySaved = savedOnly ? byTag.filter((a) => isSaved(a.id)) : byTag;
   const visibleSources = source === "all" ? SOURCE_ORDER : [source];
