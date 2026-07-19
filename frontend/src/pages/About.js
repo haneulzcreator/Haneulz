@@ -18,7 +18,7 @@ const members = [
     fandom: "FOHA",
     instagram: "https://instagram.com/gasparjl",
     img: REAL.jl,
-    accent: "var(--pink-deep)",
+    accent: "#d24f8c",
     chip: "var(--pink)",
     facts: [
       { icon: Globe, label: "Nationality", value: "Filipino 🇵🇭" },
@@ -38,7 +38,7 @@ const members = [
     fandom: "박하단 · Park Ha-dan",
     instagram: "https://instagram.com/qkrhan",
     img: REAL.han,
-    accent: "var(--blue-deep)",
+    accent: "#2f7aa8",
     chip: "var(--blue)",
     facts: [
       { icon: Globe, label: "Nationality", value: "Korean 🇰🇷" },
@@ -188,8 +188,8 @@ export default function About() {
           >
             <div className="aspect-video overflow-hidden">
               <img
-                src={IMAGES.manifesto1}
-                alt="The Little Prince stage placeholder"
+                src="https://img.youtube.com/vi/S5PG6lUSMHs/maxresdefault.jpg"
+                alt="The Little Prince stage"
                 className="au-card-img h-full w-full object-cover"
               />
             </div>
