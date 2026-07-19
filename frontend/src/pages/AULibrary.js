@@ -37,7 +37,10 @@ export default function AULibrary() {
   const byTag = tag === "all" ? aus : aus.filter((a) => (a.tags || []).includes(tag));
   const bySaved = savedOnly ? byTag.filter((a) => isSaved(a.id)) : byTag;
   const visibleSources = source === "all" ? SOURCE_ORDER : [source];
-  const grouped = visibleSources
+const visibleSources = source === "all" ? SOURCE_ORDER : [source];
+console.log("SOURCE_ORDER:", SOURCE_ORDER);
+console.log("SOURCES:", SOURCES);
+const grouped = visibleSources
     .map((s) => ({ key: s, items: bySaved.filter((a) => (a.source || "other") === s) }))
     .filter((g) => g.items.length > 0);
 
@@ -135,8 +138,8 @@ export default function AULibrary() {
             <div key={group.key} data-testid={`section-${group.key}`}>
               <Reveal>
                 <div className="mb-8 flex items-baseline gap-4">
-                  <h2 className="font-serif-display text-4xl font-medium md:text-5xl">
-  {SOURCES[group.key]?.full || group.key}
+                 <h2 className="font-serif-display text-4xl font-medium md:text-5xl">
+  {group.key}
 </h2>
                   <span className="font-accent text-2xl italic text-[color:var(--pink-deep)]">
                     {group.items.length}
