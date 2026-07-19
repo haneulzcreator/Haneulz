@@ -18,6 +18,8 @@ const members = [
     stageName: "JL",
     fandom: "ParPPIES",
     ul: "#1 Overall",
+    soloSong: "ALON",
+    soloSpotify: "https://open.spotify.com/search/ALON%20JL%20Gaspar",
     instagram: "https://instagram.com/gasparjl",
     img: REAL.jl,
     accent: "#d24f8c",
@@ -164,6 +166,18 @@ export default function About() {
                     >
                       <Instagram size={14} /> Instagram
                     </a>
+                    {m.soloSong && (
+                      <a
+                        href={m.soloSpotify}
+                        target="_blank"
+                        rel="noreferrer"
+                        data-testid={`${m.testid}-solo-spotify`}
+                        className="pill-btn flex items-center gap-2 rounded-full px-4 py-2 text-xs uppercase tracking-widest text-white"
+                        style={{ background: "#1DB954" }}
+                      >
+                        <Music2 size={14} /> Solo · “{m.soloSong}”
+                      </a>
+                    )}
                   </div>
                 </div>
               </article>
