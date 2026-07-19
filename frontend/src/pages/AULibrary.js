@@ -23,8 +23,13 @@ export default function AULibrary() {
   const { isSaved, count: savedCount } = useBookmarks();
 
   useEffect(() => {
-   api.get("/aus").then((r) => setAus(r.data)).catch((err) => => console.error("AU loading error:", err))
-  .finally(() => setLoading(false));
+   useEffect(() => {
+  api
+    .get("/aus")
+    .then((r) => setAus(r.data))
+    .catch((err) => console.error("AU loading error:", err))
+    .finally(() => setLoading(false));
+}, []);
   const hiddenTags = new Set(["coffee shop", "fated", "headcanon", "music", "soft", "soulmate"]);
   const derivedTags = Array.from(new Set(aus.flatMap((a) => a.tags || []))).filter(
     (t) => !hiddenTags.has(t.toLowerCase())
