@@ -82,6 +82,7 @@ class AUCreate(BaseModel):
     cover_image_url: Optional[str] = None
     tags: List[str] = []
     au_type: str = "story"
+    source: str = "other"
 
 
 class AU(BaseModel):
@@ -93,6 +94,7 @@ class AU(BaseModel):
     cover_image_url: Optional[str] = None
     tags: List[str] = []
     au_type: str = "story"
+    source: str = "other"
     status: str = "pending"
     likes: int = 0
     created_at: str = Field(default_factory=now_iso)
@@ -154,10 +156,12 @@ async def submit_au(input: AUCreate):
 
 
 @api_router.get("/aus", response_model=List[AU])
-async def list_aus(au_type: Optional[str] = None):
+async def list_aus(au_type: Optional[str] = None, source: Optional[str] = None):
     query = {"status": "approved"}
     if au_type:
         query["au_type"] = au_type
+    if source:
+        query["source"] = source
     docs = await db.aus.find(query, {"_id": 0}).sort("created_at", -1).to_list(500)
     return docs
 
@@ -309,6 +313,7 @@ async def seed():
                 "full_story": "The bell above the door chimed the way it always did at 8:03 in the morning. JL didn't even look up anymore \u2014 he already reached for the iced vanilla latte, extra shot, oat milk.\n\n\"Morning,\" Han said, sliding onto his usual stool by the window where the light did something unfair to his eyes.\n\n\"You're predictable,\" JL smiled, sliding the cup across the counter.\n\n\"Only about coffee,\" Han said. And for the first time in three months, he left a napkin behind with eleven digits and a little drawn star.",
                 "tags": ["fluff", "coffee shop", "slow burn"],
                 "au_type": "story",
+                "source": "x",
                 "status": "approved",
                 "likes": 42,
             },
@@ -319,6 +324,7 @@ async def seed():
                 "full_story": "The studio was dark except for the glow of the console. Han's voice cracked on the bridge for the fourth time.\n\n\"Again,\" JL said softly into the talkback. \"But this time, sing it like you mean it for one person.\"\n\nHan looked through the glass. \"Which person?\"\n\nJL didn't answer. He just pressed record.",
                 "tags": ["angst", "music", "pining"],
                 "au_type": "story",
+                "source": "ao3",
                 "status": "approved",
                 "likes": 58,
             },
@@ -329,6 +335,7 @@ async def seed():
                 "full_story": "The numbers on JL's wrist had counted down his whole life. He never told anyone how fast they were dropping that January.\n\nWhen the final nine stood on stage together, his timer blinked 00:00:00.\n\nHan turned to him first. \"Hi,\" he whispered. \"I think I've been waiting for you.\"",
                 "tags": ["soulmate", "fated", "fluff"],
                 "au_type": "story",
+                "source": "tiktok",
                 "status": "approved",
                 "likes": 71,
             },
@@ -339,6 +346,7 @@ async def seed():
                 "full_story": "Headcanon that JL and Han keep one shared playlist neither of them named. JL adds sleepy R&B for 3am van rides. Han sneaks in cheesy love songs and pretends they were 'for practice.' Neither deletes a single one.",
                 "tags": ["headcanon", "soft"],
                 "au_type": "headcanon",
+                "source": "x",
                 "status": "approved",
                 "likes": 33,
             },

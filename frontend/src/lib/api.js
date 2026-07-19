@@ -45,3 +45,11 @@ export const IMAGES = {
 };
 
 export const DEFAULT_COVERS = [IMAGES.auCover1, IMAGES.auCover2, IMAGES.portrait, IMAGES.cloudsPink];
+
+export const SOURCES = {
+  x: { label: "X", full: "AUs from X" },
+  tiktok: { label: "TikTok", full: "AUs from TikTok" },
+  ao3: { label: "AO3", full: "AUs from AO3" },
+  other: { label: "Other", full: "Other AUs" },
+};
+export const SOURCE_ORDER = ["x", "tiktok", "ao3", "other"];

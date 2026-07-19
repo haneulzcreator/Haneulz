@@ -13,6 +13,7 @@ const empty = {
   cover_image_url: "",
   tags: "",
   au_type: "story",
+  source: "x",
 };
 
 export default function Submit() {
@@ -81,6 +82,29 @@ export default function Submit() {
                     data-testid={`type-${o.v}`}
                     className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
                       form.au_type === o.v ? "bg-[color:var(--ink)] text-white" : "border border-[color:var(--line)]"
+                    }`}
+                  >
+                    {o.l}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">Where is this AU from?</label>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { v: "x", l: "X" },
+                  { v: "tiktok", l: "TikTok" },
+                  { v: "ao3", l: "AO3" },
+                  { v: "other", l: "Other" },
+                ].map((o) => (
+                  <button
+                    type="button"
+                    key={o.v}
+                    onClick={() => setForm({ ...form, source: o.v })}
+                    data-testid={`source-${o.v}`}
+                    className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
+                      form.source === o.v ? "bg-[color:var(--blue-deep)] text-white" : "border border-[color:var(--line)]"
                     }`}
                   >
                     {o.l}

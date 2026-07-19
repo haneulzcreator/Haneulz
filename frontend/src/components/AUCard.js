@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
-import { DEFAULT_COVERS } from "../lib/api";
+import { DEFAULT_COVERS, SOURCES } from "../lib/api";
 
 export default function AUCard({ au, index = 0 }) {
   const cover = au.cover_image_url || DEFAULT_COVERS[index % DEFAULT_COVERS.length];
+  const source = SOURCES[au.source] || SOURCES.other;
   return (
     <Link
       to={`/aus/${au.id}`}
@@ -11,7 +12,10 @@ export default function AUCard({ au, index = 0 }) {
       className="group block"
     >
       <article className="glass overflow-hidden rounded-[2rem] p-3 transition-shadow duration-500 hover:shadow-[0_28px_60px_-24px_rgba(243,174,203,0.6)]">
-        <div className="overflow-hidden rounded-[1.6rem]">
+        <div className="relative overflow-hidden rounded-[1.6rem]">
+          <span className="absolute left-3 top-3 z-10 rounded-full bg-white/85 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-widest backdrop-blur">
+            {source.label}
+          </span>
           <div className="aspect-[4/5] overflow-hidden">
             <img
               src={cover}
