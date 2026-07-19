@@ -62,11 +62,28 @@ export default function About() {
     <div className="pt-32">
       <section className="mx-auto max-w-6xl px-6">
         <Reveal>
-          <div className="mb-10 flex justify-center overflow-hidden rounded-[2.5rem] bg-white/40" data-testid="about-hero-placeholder">
+          <div
+            className="relative mb-10 flex justify-center overflow-hidden rounded-[2.5rem] ring-1 ring-inset ring-[color:var(--pink-deep)]/25"
+            data-testid="about-hero-placeholder"
+            style={{ background: "linear-gradient(135deg,var(--pink),var(--blue))" }}
+          >
             <img
               src={REAL.duo}
               alt="JL & Han"
-              className="h-auto max-h-[75vh] w-auto max-w-full object-contain"
+              className="relative z-0 h-auto max-h-[75vh] w-auto max-w-full object-contain"
+              style={{ filter: "saturate(1.05) contrast(1.02)" }}
+            />
+            <div
+              className="pointer-events-none absolute inset-0 z-10"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(248,216,232,0.45), rgba(181,216,235,0.45))",
+                mixBlendMode: "soft-light",
+              }}
+            />
+            <div
+              className="pointer-events-none absolute inset-0 z-10"
+              style={{ background: "linear-gradient(180deg, transparent 70%, rgba(253,251,247,0.6))" }}
             />
           </div>
           <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
