@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 import { api, formatApiError } from "../lib/api";
 import { Reveal } from "../components/Reveal";
@@ -43,7 +43,6 @@ export default function Submit() {
 
   return (
     <div className="pt-32">
-      <Toaster position="top-center" richColors />
       <section className="mx-auto max-w-2xl px-6">
         <Reveal>
           <p className="flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">

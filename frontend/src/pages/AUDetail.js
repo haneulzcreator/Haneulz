@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Heart, ArrowLeft, Send } from "lucide-react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { api, formatApiError, DEFAULT_COVERS } from "../lib/api";
 import { Reveal } from "../components/Reveal";
+import BookmarkButton from "../components/BookmarkButton";
 import Footer from "../components/Footer";
 
 export default function AUDetail() {
@@ -50,7 +51,6 @@ export default function AUDetail() {
 
   return (
     <div className="pt-28">
-      <Toaster position="top-center" richColors />
       <article className="mx-auto max-w-3xl px-6">
         <Link to="/aus" className="link-underline inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
           <ArrowLeft size={14} /> Back to library
@@ -92,14 +92,17 @@ export default function AUDetail() {
           ))}
         </div>
 
-        <button
-          onClick={like}
-          data-testid="au-like-btn"
-          className="pill-btn mt-10 flex items-center gap-2 rounded-full bg-[color:var(--pink)] px-6 py-3 text-sm uppercase tracking-widest"
-        >
-          <Heart size={16} fill={liked ? "var(--pink-deep)" : "none"} className="text-[color:var(--pink-deep)]" />
-          {au.likes} loves
-        </button>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <button
+            onClick={like}
+            data-testid="au-like-btn"
+            className="pill-btn flex items-center gap-2 rounded-full bg-[color:var(--pink)] px-6 py-3 text-sm uppercase tracking-widest"
+          >
+            <Heart size={16} fill={liked ? "var(--pink-deep)" : "none"} className="text-[color:var(--pink-deep)]" />
+            {au.likes} loves
+          </button>
+          <BookmarkButton id={au.id} title={au.title} variant="pill" />
+        </div>
 
         {/* Comments */}
         <section className="mt-16 border-t border-[color:var(--line)] pt-12" data-testid="comments-section">

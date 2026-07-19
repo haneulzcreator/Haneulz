@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
 import { DEFAULT_COVERS, SOURCES } from "../lib/api";
+import BookmarkButton from "./BookmarkButton";
 
 export default function AUCard({ au, index = 0 }) {
   const cover = au.cover_image_url || DEFAULT_COVERS[index % DEFAULT_COVERS.length];
@@ -16,6 +17,9 @@ export default function AUCard({ au, index = 0 }) {
           <span className="absolute left-3 top-3 z-10 rounded-full bg-white/85 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-widest backdrop-blur">
             {source.label}
           </span>
+          <div className="absolute right-3 top-3 z-10">
+            <BookmarkButton id={au.id} title={au.title} />
+          </div>
           <div className="aspect-[4/5] overflow-hidden">
             <img
               src={cover}

@@ -1,6 +1,7 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ReactLenis } from "lenis/react";
+import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import Nav from "./components/Nav";
@@ -45,6 +46,7 @@ function Shell() {
 function App() {
   return (
     <div className="App grain">
+      <Toaster position="top-center" richColors />
       <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
         <AuthProvider>
           <BrowserRouter>

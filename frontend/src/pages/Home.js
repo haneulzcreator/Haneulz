@@ -72,7 +72,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.8, ease }}
-              className="flex gap-3"
+              className="flex flex-wrap gap-3"
             >
               <Link
                 to="/aus"

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Bookmark } from "lucide-react";
 import { api, SOURCES, SOURCE_ORDER } from "../lib/api";
+import { useBookmarks } from "../lib/bookmarks";
 import { Reveal } from "../components/Reveal";
 import AUCard from "../components/AUCard";
 import Footer from "../components/Footer";
@@ -22,16 +24,19 @@ export default function AULibrary() {
   const [aus, setAus] = useState([]);
   const [type, setType] = useState("all");
   const [source, setSource] = useState("all");
+  const [savedOnly, setSavedOnly] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { isSaved, count: savedCount } = useBookmarks();
 
   useEffect(() => {
     api.get("/aus").then((r) => setAus(r.data)).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
   const byType = type === "all" ? aus : aus.filter((a) => a.au_type === type);
+  const bySaved = savedOnly ? byType.filter((a) => isSaved(a.id)) : byType;
   const visibleSources = source === "all" ? SOURCE_ORDER : [source];
   const grouped = visibleSources
-    .map((s) => ({ key: s, items: byType.filter((a) => (a.source || "other") === s) }))
+    .map((s) => ({ key: s, items: bySaved.filter((a) => (a.source || "other") === s) }))
     .filter((g) => g.items.length > 0);
 
   return (
@@ -64,6 +69,18 @@ export default function AULibrary() {
               {f.label}
             </button>
           ))}
+          <button
+            data-testid="filter-saved"
+            onClick={() => setSavedOnly((v) => !v)}
+            className={`pill-btn flex items-center gap-2 rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
+              savedOnly
+                ? "bg-[color:var(--ink)] text-white"
+                : "border border-[color:var(--line)] text-[color:var(--ink-soft)]"
+            }`}
+          >
+            <Bookmark size={13} fill={savedOnly ? "currentColor" : "none"} />
+            Saved{savedCount > 0 ? ` (${savedCount})` : ""}
+          </button>
         </div>
 
         {/* Type filters */}
@@ -95,7 +112,11 @@ export default function AULibrary() {
         <div className="mt-14 space-y-20 pb-10" data-testid="au-grid">
           {loading && <p className="text-[color:var(--ink-soft)]">Loading dreams…</p>}
           {!loading && grouped.length === 0 && (
-            <p className="text-[color:var(--ink-soft)]">No AUs here yet — be the first to submit one!</p>
+            <p className="text-[color:var(--ink-soft)]" data-testid="au-empty">
+              {savedOnly
+                ? "No bookmarks yet — tap the 🔖 on any AU to save it here."
+                : "No AUs here yet — be the first to submit one!"}
+            </p>
           )}
           {grouped.map((group) => (
             <div key={group.key} data-testid={`section-${group.key}`}>

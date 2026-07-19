@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Check, X, Trash2, LogOut } from "lucide-react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 
@@ -62,7 +62,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen px-6 pt-28 pb-20">
-      <Toaster position="top-center" richColors />
       <div className="mx-auto max-w-5xl">
         <div className="flex items-center justify-between">
           <div>
