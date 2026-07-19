@@ -1,0 +1,15 @@
+{
+  "summary": "Verified Reveal-timing bug fix + About page additions + regressions. All Reveal-wrapped content becomes fully visible (opacity ~1) after scrolling on all 5 routes (/, /aus, /about, /variety, /submit) at desktop (1280) and mobile (390). No sections stuck invisible.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": ["/app/test_reports/iteration_3.json"],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (skipped)", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Reveal component uses viewport {once:true, amount:0.15}, duration 0.6. Verified by scrolling incrementally (12 steps + smooth-scroll to bottom) and scanning every DOM element (div/article/section/p/h1-3) for computed opacity <0.9 while having width/height >20px. Hidden count = 0 on all pages/viewports. About: HANEULZ+HANSUM+handsome copy present; JL card has 🦌 emoji + green Spotify 'Solo · ALON' (bg rgb(29,185,84)) via member-jl-solo-spotify; Han card 🐈‍⬛ has NO solo button (confirmed absent); both have Instagram + Stage name chip. Little Prince: little-prince-play click swaps to little-prince-iframe with YouTube embed src S5PG6lUSMHs, URL stays /about. Regressions OK: AU Library groups X/TikTok/AO3 render, bookmark buttons (4) + filter-saved present, mobile hamburger toggles open/close correctly at 390, footer About us + DISCLAIMER render.",
+  "rca of the issue": "Fix confirmed: switching Reveal viewport from margin '-80px' to amount:0.15 with once:true triggers reveals reliably when ~15% of element enters viewport under Lenis smooth-scroll."
+}

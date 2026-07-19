@@ -105,7 +105,10 @@ export default function About() {
             they became <span className="font-semibold text-[color:var(--ink)]">HANEULZ</span>, the
             ship at the heart of this little corner of the internet. The fanbase who keeps their
             daydreams alive is lovingly called{" "}
-            <span className="font-semibold text-[color:var(--ink)]">HANSUM</span>.
+            <span className="font-semibold text-[color:var(--ink)]">HANSUM</span> — a playful blend
+            of <span className="italic">Han</span> and the word{" "}
+            <span className="italic">handsome</span>, a wink to the two visuals who stole the
+            fandom's hearts.
           </p>
         </Reveal>
 
