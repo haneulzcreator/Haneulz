@@ -25,7 +25,7 @@ const members = [
       { icon: Globe, label: "Nationality", value: "Filipino 🇵🇭" },
       { icon: Calendar, label: "Born", value: "April 21, 2004" },
       { icon: Star, label: "Position", value: "Main Vocalist · Visual · Center" },
-      { icon: Mic, label: "Universe League", value: "Ranked #1 overall" },
+      { icon: Sparkles, label: "Fandom", value: "ParPPIES" },
     ],
     blurb:
       "The center who topped Universe League from start to finish. Warm, playful, and impossible to look away from — JL brings the light to every HANEULZ moment.",
@@ -46,7 +46,7 @@ const members = [
       { icon: Globe, label: "Nationality", value: "Korean 🇰🇷" },
       { icon: Calendar, label: "Born", value: "September 25, 2003" },
       { icon: Star, label: "Position", value: "Main Vocalist" },
-      { icon: Mic, label: "Universe League", value: "MVP of Team Groove" },
+      { icon: Sparkles, label: "Fandom", value: "박하단 · Park Ha-dan" },
     ],
     blurb:
       "The steady, soulful voice of the pair. Han's tone carries the emotion — the calm to JL's sparkle, the harmony that made HANEULZ believe.",
