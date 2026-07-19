@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
+import About from "./pages/About";
 import AULibrary from "./pages/AULibrary";
 import AUDetail from "./pages/AUDetail";
 import Variety from "./pages/Variety";
@@ -29,6 +30,7 @@ function Shell() {
       <ScrollTop />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/aus" element={<AULibrary />} />
         <Route path="/aus/:id" element={<AUDetail />} />
         <Route path="/variety" element={<Variety />} />

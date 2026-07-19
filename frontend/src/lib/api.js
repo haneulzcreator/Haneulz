@@ -28,6 +28,10 @@ export const IMAGES = {
     "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/ab92e1a8e9c953d7750906de4c2de631d1ba2aee7e3a83b2a07a4eb88c7043db.png",
   portrait:
     "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/2d406a95e877c3f708b10b2bd51d78f972b82437abdac2f1f1edc7b7124a94a5.png",
+  jlPortrait:
+    "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/3ff56ce646a4c895a185495631fd76274661b8448209ccbd8d14a635d9c32748.png",
+  hanPortrait:
+    "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/d6ecced95446519da8d40e624d2a37f9d2d6fb4eceed3ee908a28848b3e04824.png",
   cloudsPink:
     "https://images.unsplash.com/photo-1619922800069-098b291b8f17?crop=entropy&cs=srgb&fm=jpg&q=85&w=1600",
   cloudsSoft:

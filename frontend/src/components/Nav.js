@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 
 const links = [
   { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
   { to: "/aus", label: "AU Library" },
   { to: "/variety", label: "Variety Corner" },
   { to: "/submit", label: "Submit" },
