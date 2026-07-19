@@ -23,9 +23,8 @@ export default function AULibrary() {
   const { isSaved, count: savedCount } = useBookmarks();
 
   useEffect(() => {
-    api.get("/aus").then((r) => setAus(r.data)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
-
+   api.get("/aus").then((r) => setAus(r.data)).catch((err) => => console.error("AU loading error:", err))
+  .finally(() => setLoading(false));
   const hiddenTags = new Set(["coffee shop", "fated", "headcanon", "music", "soft", "soulmate"]);
   const derivedTags = Array.from(new Set(aus.flatMap((a) => a.tags || []))).filter(
     (t) => !hiddenTags.has(t.toLowerCase())
@@ -133,7 +132,7 @@ export default function AULibrary() {
               <Reveal>
                 <div className="mb-8 flex items-baseline gap-4">
                   <h2 className="font-serif-display text-4xl font-medium md:text-5xl">
-                    {SOURCES[group.key].full}
+                    {{SOURCES[group.key]?.full || group.key}}
                   </h2>
                   <span className="font-accent text-2xl italic text-[color:var(--pink-deep)]">
                     {group.items.length}
