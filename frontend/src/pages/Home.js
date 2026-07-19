@@ -16,8 +16,8 @@ const chapters = [
   },
   {
     n: "02",
-    title: "HANEZ, acknowledged",
-    body: "At a fansign the boys recognised the name themselves. HANEULZ became the fandom that carries the moments, softly and with care.",
+    title: "Haneulz, acknowledged",
+    body: "During the debut, fans coined the name by blending the Korean names of JL and Han — first \u201cHaneul,\u201d then HANEULZ. Fitting, since \u201chaneul\u201d means sky, and both of them have the most heavenly vocals.",
   },
   {
     n: "03",
