@@ -1,14 +1,21 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Star, Mic, Music, Globe, Calendar, Users } from "lucide-react";
+import { Star, Mic, Music, Globe, Calendar, Users, Instagram, Play, Music2, Sparkles } from "lucide-react";
 import { IMAGES } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
+
+const AHOF_SPOTIFY = "https://open.spotify.com/search/AHOF";
+const AHOF_INSTAGRAM = "https://www.instagram.com/ahof_official/";
+const LITTLE_PRINCE_YT = "https://www.youtube.com/results?search_query=AHOF+JL+Han+Little+Prince+Universe+League";
 
 const members = [
   {
     name: "JL Gaspar",
     full: "Jay Lawrence Gaspar",
+    emoji: "🦌",
+    stageName: "JL",
+    instagram: "https://www.instagram.com/ahof_official/",
     img: IMAGES.jlPortrait,
     accent: "var(--pink-deep)",
     chip: "var(--pink)",
@@ -25,6 +32,9 @@ const members = [
   {
     name: "Park Han",
     full: "Park Han · 박한",
+    emoji: "🐈‍⬛",
+    stageName: "Han",
+    instagram: "https://www.instagram.com/ahof_official/",
     img: IMAGES.hanPortrait,
     accent: "var(--blue-deep)",
     chip: "var(--blue)",
@@ -94,7 +104,12 @@ export default function About() {
                     <span className="text-[0.7rem] uppercase tracking-widest" style={{ color: m.accent }}>
                       {m.full}
                     </span>
-                    <h2 className="font-serif-display text-4xl font-medium leading-none">{m.name}</h2>
+                    <h2 className="flex items-center gap-3 font-serif-display text-4xl font-medium leading-none">
+                      {m.name}
+                      <span className="text-3xl" aria-hidden="true" data-testid={`${m.testid}-emoji`}>
+                        {m.emoji}
+                      </span>
+                    </h2>
                   </div>
                 </div>
                 <div className="p-7">
@@ -112,11 +127,67 @@ export default function About() {
                       </div>
                     ))}
                   </div>
+
+                  {/* SNS + stage name */}
+                  <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-[color:var(--line)] pt-6">
+                    <div className="rounded-full px-4 py-2" style={{ background: m.chip }}>
+                      <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Stage name</span>
+                      <span className="ml-2 text-sm font-semibold">{m.stageName}</span>
+                    </div>
+                    <a
+                      href={m.instagram}
+                      target="_blank"
+                      rel="noreferrer"
+                      data-testid={`${m.testid}-instagram`}
+                      className="pill-btn flex items-center gap-2 rounded-full border border-[color:var(--ink)] px-4 py-2 text-xs uppercase tracking-widest"
+                    >
+                      <Instagram size={14} /> Instagram
+                    </a>
+                  </div>
                 </div>
               </article>
             </Reveal>
           ))}
         </div>
+      </section>
+
+      {/* Performance / Universe League stage */}
+      <section className="mx-auto mt-28 max-w-6xl px-6" data-testid="performance-section">
+        <Reveal>
+          <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
+            The stage that started HANEULZ
+          </p>
+          <h2 className="mt-4 font-serif-display text-4xl font-medium leading-tight md:text-6xl">
+            “The Little Prince” · Universe League
+          </h2>
+        </Reveal>
+        <Reveal delay={0.1}>
+          <a
+            href={LITTLE_PRINCE_YT}
+            target="_blank"
+            rel="noreferrer"
+            data-testid="little-prince-clip"
+            className="group relative mt-8 block overflow-hidden rounded-[2.5rem]"
+          >
+            <div className="aspect-video overflow-hidden">
+              <img
+                src={IMAGES.manifesto1}
+                alt="The Little Prince stage placeholder"
+                className="au-card-img h-full w-full object-cover"
+              />
+            </div>
+            <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors duration-500 group-hover:bg-black/35">
+              <span className="grid h-20 w-20 place-items-center rounded-full bg-white/90 backdrop-blur transition-transform duration-500 group-hover:scale-110">
+                <Play size={26} className="ml-1 text-[color:var(--ink)]" fill="currentColor" />
+              </span>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-white" style={{ background: "linear-gradient(180deg,transparent,rgba(15,23,42,0.55))" }}>
+              <span className="flex items-center gap-2 text-xs uppercase tracking-widest">
+                <Sparkles size={13} /> The duet that made fans fall — tap to watch on YouTube
+              </span>
+            </div>
+          </a>
+        </Reveal>
       </section>
 
       {/* AHOF section */}
@@ -126,7 +197,16 @@ export default function About() {
             <span className="font-accent text-7xl italic leading-none text-[color:var(--blue-deep)] md:text-8xl">
               AHOF
             </span>
-            <h2 className="mt-4 font-serif-display text-4xl font-medium leading-tight md:text-5xl">
+            <div className="mt-6 overflow-hidden rounded-[2rem]" data-testid="ahof-picture-placeholder">
+              <div className="aspect-[16/6] overflow-hidden">
+                <img
+                  src={IMAGES.cloudsSoft}
+                  alt="AHOF group placeholder"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+            <h2 className="mt-8 font-serif-display text-4xl font-medium leading-tight md:text-5xl">
               The group that started it all
             </h2>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
@@ -154,6 +234,25 @@ export default function About() {
 
           <Reveal delay={0.1}>
             <div className="mt-10 flex flex-wrap gap-3">
+              <a
+                href={AHOF_SPOTIFY}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="ahof-spotify-btn"
+                className="pill-btn flex items-center gap-2 rounded-full px-6 py-3 text-sm uppercase tracking-widest text-white"
+                style={{ background: "#1DB954" }}
+              >
+                <Music2 size={16} /> AHOF on Spotify
+              </a>
+              <a
+                href={AHOF_INSTAGRAM}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="ahof-instagram-btn"
+                className="pill-btn flex items-center gap-2 rounded-full border border-[color:var(--ink)] px-6 py-3 text-sm uppercase tracking-widest"
+              >
+                <Instagram size={16} /> AHOF on Instagram
+              </a>
               <Link to="/aus" data-testid="about-aus-btn" className="pill-btn rounded-full bg-[color:var(--ink)] px-6 py-3 text-sm uppercase tracking-widest text-white">
                 Read their AUs
               </Link>
