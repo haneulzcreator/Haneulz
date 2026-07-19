@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, Mic, Music, Globe, Calendar, Users, Instagram, Play, Music2, Sparkles } from "lucide-react";
@@ -7,7 +8,7 @@ import Footer from "../components/Footer";
 
 const AHOF_SPOTIFY = "https://open.spotify.com/search/AHOF";
 const AHOF_INSTAGRAM = "https://www.instagram.com/ahof_official/";
-const LITTLE_PRINCE_YT = "https://youtu.be/S5PG6lUSMHs";
+const LITTLE_PRINCE_ID = "S5PG6lUSMHs";
 
 const members = [
   {
@@ -62,6 +63,7 @@ const ahofFacts = [
 ];
 
 export default function About() {
+  const [playing, setPlaying] = useState(false);
   return (
     <div className="pt-32">
       <section className="mx-auto max-w-6xl px-6">
@@ -181,31 +183,47 @@ export default function About() {
           </h2>
         </Reveal>
         <Reveal delay={0.1}>
-          <a
-            href={LITTLE_PRINCE_YT}
-            target="_blank"
-            rel="noreferrer"
-            data-testid="little-prince-clip"
-            className="group relative mt-8 block overflow-hidden rounded-[2.5rem]"
-          >
-            <div className="aspect-video overflow-hidden">
-              <img
-                src="https://img.youtube.com/vi/S5PG6lUSMHs/maxresdefault.jpg"
-                alt="The Little Prince stage"
-                className="au-card-img h-full w-full object-cover"
-              />
-            </div>
-            <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors duration-500 group-hover:bg-black/35">
-              <span className="grid h-20 w-20 place-items-center rounded-full bg-white/90 backdrop-blur transition-transform duration-500 group-hover:scale-110">
-                <Play size={26} className="ml-1 text-[color:var(--ink)]" fill="currentColor" />
-              </span>
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 p-6 text-white" style={{ background: "linear-gradient(180deg,transparent,rgba(15,23,42,0.55))" }}>
-              <span className="flex items-center gap-2 text-xs uppercase tracking-widest">
-                <Sparkles size={13} /> The duet that made fans fall — tap to watch on YouTube
-              </span>
-            </div>
-          </a>
+          <div className="relative mt-8 overflow-hidden rounded-[2.5rem]" data-testid="little-prince-clip">
+            {playing ? (
+              <div className="aspect-video">
+                <iframe
+                  className="h-full w-full"
+                  src={`https://www.youtube.com/embed/${LITTLE_PRINCE_ID}?autoplay=1&rel=0`}
+                  title="The Little Prince · Universe League"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                  data-testid="little-prince-iframe"
+                />
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setPlaying(true)}
+                data-testid="little-prince-play"
+                className="group relative block w-full"
+                aria-label="Play The Little Prince clip"
+              >
+                <div className="aspect-video overflow-hidden">
+                  <img
+                    src="https://img.youtube.com/vi/S5PG6lUSMHs/maxresdefault.jpg"
+                    alt="The Little Prince stage"
+                    className="au-card-img h-full w-full object-cover"
+                  />
+                </div>
+                <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors duration-500 group-hover:bg-black/35">
+                  <span className="grid h-20 w-20 place-items-center rounded-full bg-white/90 backdrop-blur transition-transform duration-500 group-hover:scale-110">
+                    <Play size={26} className="ml-1 text-[color:var(--ink)]" fill="currentColor" />
+                  </span>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-left text-white" style={{ background: "linear-gradient(180deg,transparent,rgba(15,23,42,0.55))" }}>
+                  <span className="flex items-center gap-2 text-xs uppercase tracking-widest">
+                    <Sparkles size={13} /> The duet that made fans fall — tap to play
+                  </span>
+                </div>
+              </button>
+            )}
+          </div>
         </Reveal>
       </section>
 
