@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
-import { Play, Calendar } from "lucide-react";
-import { api } from "../lib/api";
+import { Play, Calendar, ListVideo } from "lucide-react";
+import { api, REAL } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
+
+const PLAYLIST_URL = "https://youtube.com/playlist?list=PLP3N6qHcYP90";
 
 export default function Variety() {
   const [shows, setShows] = useState([]);
@@ -20,9 +22,42 @@ export default function Variety() {
             Variety Corner
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
-            Every show, episode and clip of AHOF where JL & Han shared the screen — collected for
-            easy rewatching.
+            Grab a comfort snack and watch HANEULZ with AHOF — every show, game and moment where
+            JL & Han shared the screen, gathered in one cozy place.
           </p>
+        </Reveal>
+
+        {/* Featured playlist */}
+        <Reveal delay={0.05}>
+          <a
+            href={PLAYLIST_URL}
+            target="_blank"
+            rel="noreferrer"
+            data-testid="variety-playlist"
+            className="group relative mt-12 block overflow-hidden rounded-[2.5rem]"
+          >
+            <div className="aspect-[16/7] overflow-hidden">
+              <img
+                src={REAL.ahofGroup}
+                alt="Watch HANEULZ with AHOF playlist"
+                className="au-card-img h-full w-full object-cover object-top"
+              />
+            </div>
+            <div className="absolute inset-0 bg-black/25 transition-colors duration-500 group-hover:bg-black/40" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center text-white">
+              <span className="grid h-20 w-20 place-items-center rounded-full bg-white/90 backdrop-blur transition-transform duration-500 group-hover:scale-110">
+                <Play size={26} className="ml-1 text-[color:var(--ink)]" fill="currentColor" />
+              </span>
+              <div>
+                <span className="flex items-center justify-center gap-2 text-xs uppercase tracking-[0.3em]">
+                  <ListVideo size={14} /> Full playlist
+                </span>
+                <h2 className="mt-2 font-serif-display text-4xl font-medium md:text-5xl">
+                  Watch HANEULZ with AHOF
+                </h2>
+              </div>
+            </div>
+          </a>
         </Reveal>
 
         <div className="mt-16 flex flex-col gap-16 pb-10">
