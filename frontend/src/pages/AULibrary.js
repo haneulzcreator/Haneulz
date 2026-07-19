@@ -23,7 +23,6 @@ export default function AULibrary() {
   const { isSaved, count: savedCount } = useBookmarks();
 
   useEffect(() => {
-   useEffect(() => {
   api
     .get("/aus")
     .then((r) => setAus(r.data))
@@ -137,8 +136,8 @@ export default function AULibrary() {
               <Reveal>
                 <div className="mb-8 flex items-baseline gap-4">
                   <h2 className="font-serif-display text-4xl font-medium md:text-5xl">
-                    {{SOURCES[group.key]?.full || group.key}}
-                  </h2>
+  {SOURCES[group.key]?.full || group.key}
+</h2>
                   <span className="font-accent text-2xl italic text-[color:var(--pink-deep)]">
                     {group.items.length}
                   </span>
