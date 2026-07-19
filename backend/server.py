@@ -356,37 +356,7 @@ async def seed():
             await db.aus.insert_one(au.model_dump())
         logger.info("Seeded sample AUs")
 
-    if await db.variety.count_documents({}) == 0:
-        shows = [
-            {
-                "show_name": "Universe League",
-                "episode": "Final Ranking Reveal",
-                "description": "The survival show where it all began \u2014 JL ranked #1 overall and Han was MVP of Team Groove. The moment HANEULZ was born.",
-                "photo_url": "https://images.unsplash.com/photo-1780724259276-e4e91030f97f?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-                "youtube_url": "https://www.youtube.com/results?search_query=universe+league+ahof",
-                "air_date": "2025-01",
-            },
-            {
-                "show_name": "AHOF Debut Showcase",
-                "episode": "Who We Are",
-                "description": "AHOF's official debut stage. Watch the HANEULZ interactions fans replayed a thousand times.",
-                "photo_url": "https://images.unsplash.com/photo-1519683384663-c9b34271669a?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-                "youtube_url": "https://www.youtube.com/results?search_query=ahof+debut+showcase",
-                "air_date": "2025-07",
-            },
-            {
-                "show_name": "Weekly Idol",
-                "episode": "AHOF Guest Special",
-                "description": "Games, random play dance, and JL & Han getting paired up for every single mission.",
-                "photo_url": "https://images.unsplash.com/photo-1505236858219-8359eb29e329?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
-                "youtube_url": "https://www.youtube.com/results?search_query=ahof+weekly+idol",
-                "air_date": "2025-08",
-            },
-        ]
-        for s in shows:
-            v = Variety(**s)
-            await db.variety.insert_one(v.model_dump())
-        logger.info("Seeded variety shows")
+    # Variety shows are curated via the featured playlist / admin panel — no placeholder seeding.
 
 
 @app.on_event("startup")

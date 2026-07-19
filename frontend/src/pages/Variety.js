@@ -111,9 +111,6 @@ export default function Variety() {
               </div>
             </Reveal>
           ))}
-          {shows.length === 0 && (
-            <p className="text-[color:var(--ink-soft)]">Variety moments coming soon.</p>
-          )}
         </div>
       </section>
       <Footer />
