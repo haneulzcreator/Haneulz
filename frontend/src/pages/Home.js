@@ -82,11 +82,18 @@ export default function Home() {
                 Explore AUs <ArrowUpRight size={16} />
               </Link>
               <Link
+                to="/submit"
+                data-testid="hero-submit-btn"
+                className="pill-btn flex items-center gap-2 rounded-full bg-[color:var(--pink-deep)] px-6 py-3 text-sm uppercase tracking-widest text-white"
+              >
+                Submit an AU <PenLine size={15} />
+              </Link>
+              <Link
                 to="/variety"
                 data-testid="hero-variety-btn"
                 className="pill-btn flex items-center gap-2 rounded-full border border-[color:var(--ink)] px-6 py-3 text-sm uppercase tracking-widest"
               >
-                Variety Corner
+                <Tv size={15} /> AHOF Corner
               </Link>
             </motion.div>
           </div>
