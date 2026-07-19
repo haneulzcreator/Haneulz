@@ -101,9 +101,10 @@ export default function About() {
             JL & Han
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
-            Two voices that met on a survival stage and never stopped finding each other. This is
-            the heart of the HANEULZ ship — and the reason HANEULZ exists. The fanbase who keeps
-            these daydreams alive is lovingly called{" "}
+            Two voices that met on a survival stage and never stopped finding each other — together
+            they became <span className="font-semibold text-[color:var(--ink)]">HANEULZ</span>, the
+            ship at the heart of this little corner of the internet. The fanbase who keeps their
+            daydreams alive is lovingly called{" "}
             <span className="font-semibold text-[color:var(--ink)]">HANSUM</span>.
           </p>
         </Reveal>
