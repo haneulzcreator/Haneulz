@@ -319,7 +319,7 @@ async def seed():
             },
             {
                 "title": "Rockstar & Producer AU",
-                "author_name": "hanez.daydreams",
+                "author_name": "haneulz.daydreams",
                 "short_description": "Han is the frontman everyone screams for. JL is the quiet producer who hears the song beneath the noise.",
                 "full_story": "The studio was dark except for the glow of the console. Han's voice cracked on the bridge for the fourth time.\n\n\"Again,\" JL said softly into the talkback. \"But this time, sing it like you mean it for one person.\"\n\nHan looked through the glass. \"Which person?\"\n\nJL didn't answer. He just pressed record.",
                 "tags": ["angst", "music", "pining"],
@@ -369,7 +369,7 @@ async def seed():
             {
                 "show_name": "AHOF Debut Showcase",
                 "episode": "Who We Are",
-                "description": "AHOF's official debut stage. Watch the HANEZ interactions fans replayed a thousand times.",
+                "description": "AHOF's official debut stage. Watch the HANEULZ interactions fans replayed a thousand times.",
                 "photo_url": "https://images.unsplash.com/photo-1519683384663-c9b34271669a?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
                 "youtube_url": "https://www.youtube.com/results?search_query=ahof+debut+showcase",
                 "air_date": "2025-07",

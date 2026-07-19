@@ -7,7 +7,7 @@ export default function Footer() {
         <div>
           <h3 className="font-serif-display text-4xl font-medium">HANEULZ</h3>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-[color:var(--ink-soft)]">
-            A fan-made love letter to the HANEZ ship — JL Gaspar & Park Han of AHOF. Made by
+            A fan-made love letter to the HANEULZ ship — JL Gaspar & Park Han of AHOF. Made by
             FOHA, for FOHA. Unofficial fan project.
           </p>
         </div>

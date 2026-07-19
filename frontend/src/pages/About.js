@@ -19,7 +19,7 @@ const members = [
       { icon: Mic, label: "Universe League", value: "Ranked #1 overall" },
     ],
     blurb:
-      "The center who topped Universe League from start to finish. Warm, playful, and impossible to look away from — JL brings the light to every HANEZ moment.",
+      "The center who topped Universe League from start to finish. Warm, playful, and impossible to look away from — JL brings the light to every HANEULZ moment.",
     testid: "member-jl",
   },
   {
@@ -60,7 +60,7 @@ export default function About() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
             Two voices that met on a survival stage and never stopped finding each other. This is
-            the heart of the HANEZ ship — and the reason HANEULZ exists.
+            the heart of the HANEULZ ship — and the reason HANEULZ exists.
           </p>
         </Reveal>
 
@@ -127,7 +127,7 @@ export default function About() {
               Entertainment. With members from the Philippines, Korea, China, Taiwan, Japan and
               beyond, their fandom is lovingly known as{" "}
               <span className="font-medium text-[color:var(--ink)]">FOHA</span> — "Forever Our Home,
-              AHOF." Among the nine, JL and Han's chemistry sparked the HANEZ ship.
+              AHOF." Among the nine, JL and Han's chemistry sparked the HANEULZ ship.
             </p>
           </Reveal>
 

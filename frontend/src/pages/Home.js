@@ -57,7 +57,7 @@ export default function Home() {
             className="mb-6 text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]"
             data-testid="hero-eyebrow"
           >
-            The HANEZ ship · JL Gaspar × Park Han · AHOF
+            The HANEULZ ship · JL Gaspar × Park Han · AHOF
           </motion.p>
 
           <h1 className="font-serif-display text-[18vw] font-medium leading-[0.82] tracking-tighter md:text-[15rem]">
