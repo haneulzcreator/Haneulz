@@ -53,6 +53,21 @@ const PLAYLISTS = [
   },
 ];
 
+const DUETS = [
+  {
+    title: "'The Little Prince'",
+    subtitle: "Universe League duet stage",
+    thumbnail: "https://img.youtube.com/vi/S5PG6lUSMHs/maxresdefault.jpg",
+    url: "https://youtu.be/S5PG6lUSMHs",
+  },
+  {
+    title: "Duet, coming soon",
+    subtitle: "The second JL & Han duet — link dropping soon",
+    thumbnail: IMAGES.cloudsPink,
+    upcoming: true,
+  },
+];
+
 export default function Variety() {
   const [shows, setShows] = useState([]);
   const [openPlaylist, setOpenPlaylist] = useState(null);
@@ -80,6 +95,58 @@ export default function Variety() {
             JL & Han shared the screen, gathered in one cozy place.
           </p>
         </Reveal>
+
+        {/* Their duets */}
+        <div className="mt-14" data-testid="variety-duets">
+          <Reveal>
+            <div className="mb-8 flex items-baseline gap-4">
+              <h2 className="font-serif-display text-4xl font-medium md:text-5xl">Their duets</h2>
+              <span className="font-accent text-2xl italic text-[color:var(--pink-deep)]">2</span>
+            </div>
+          </Reveal>
+          <div className="grid gap-8 md:grid-cols-2">
+            {DUETS.map((d, i) => {
+              const media = (
+                <>
+                  <div className="aspect-video overflow-hidden">
+                    <img
+                      src={d.thumbnail}
+                      alt={d.title}
+                      className={`au-card-img h-full w-full object-cover ${d.upcoming ? "opacity-80" : ""}`}
+                    />
+                  </div>
+                  <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors duration-500 group-hover:bg-black/35">
+                    {d.upcoming ? (
+                      <span className="flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-xs uppercase tracking-widest text-[color:var(--ink)] backdrop-blur">
+                        <Clock size={13} /> Coming soon
+                      </span>
+                    ) : (
+                      <span className="grid h-16 w-16 place-items-center rounded-full bg-white/85 backdrop-blur transition-transform duration-500 group-hover:scale-110">
+                        <Play size={22} className="ml-1 text-[color:var(--ink)]" fill="currentColor" />
+                      </span>
+                    )}
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white" style={{ background: "linear-gradient(180deg,transparent,rgba(15,23,42,0.6))" }}>
+                    <span className="text-[0.65rem] uppercase tracking-widest">{d.subtitle}</span>
+                    <h3 className="font-serif-display text-2xl font-medium leading-tight">{d.title}</h3>
+                  </div>
+                </>
+              );
+              const cls = "group relative block overflow-hidden rounded-[2rem]";
+              return (
+                <Reveal key={d.title} delay={i * 0.08}>
+                  {d.upcoming ? (
+                    <div data-testid={`duet-${i}`} className={cls}>{media}</div>
+                  ) : (
+                    <a href={d.url} target="_blank" rel="noreferrer" data-testid={`duet-${i}`} className={cls}>
+                      {media}
+                    </a>
+                  )}
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
 
         {/* Playlists */}
         <div className="mt-14 flex flex-col gap-16" data-testid="variety-playlists">
