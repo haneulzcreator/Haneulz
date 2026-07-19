@@ -61,10 +61,10 @@ const DUETS = [
     url: "https://youtu.be/S5PG6lUSMHs",
   },
   {
-    title: "Duet, coming soon",
-    subtitle: "The second JL & Han duet — link dropping soon",
-    thumbnail: IMAGES.cloudsPink,
-    upcoming: true,
+    title: "'그대 작은 나의 세상이 되어'",
+    subtitle: "Car, the garden cover · HAN & JL",
+    thumbnail: "https://img.youtube.com/vi/42uMYQV6YV0/maxresdefault.jpg",
+    url: "https://youtu.be/42uMYQV6YV0",
   },
 ];
 
