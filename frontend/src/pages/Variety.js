@@ -40,14 +40,14 @@ const PLAYLISTS = [
   {
     name: "AHOF's First Anniversary",
     url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
-    thumbnail: IMAGES.cloudsPink,
+    thumbnail: "https://img.youtube.com/vi/roXu3mS4TOc/maxresdefault.jpg",
     description:
       "Celebrating one whole year since AHOF debuted on July 1, 2025 with 'Who We Are' — anniversary lives, heartfelt messages and all the ways FOHA is marking the group's very first anniversary together. 🎂",
   },
   {
     name: "AHOF's Music Videos",
     url: "https://youtube.com/playlist?list=PLLhA9zGDtnGQ",
-    thumbnail: IMAGES.cloudsSoft,
+    thumbnail: "https://img.youtube.com/vi/OhbMVYVNo40/maxresdefault.jpg",
     description:
       "Every AHOF music video in one place — from their debut title track to comebacks, B-sides and special releases. 🎬",
   },
