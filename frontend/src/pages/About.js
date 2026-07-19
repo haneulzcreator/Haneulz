@@ -153,10 +153,6 @@ export default function About() {
                       <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Stage name</span>
                       <span className="ml-2 text-sm font-semibold">{m.stageName}</span>
                     </div>
-                    <div className="rounded-full px-4 py-2" style={{ background: m.chip }}>
-                      <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Universe League</span>
-                      <span className="ml-2 text-sm font-semibold">{m.ul}</span>
-                    </div>
                     <a
                       href={m.instagram}
                       target="_blank"
