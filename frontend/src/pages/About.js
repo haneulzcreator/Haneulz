@@ -62,14 +62,12 @@ export default function About() {
     <div className="pt-32">
       <section className="mx-auto max-w-6xl px-6">
         <Reveal>
-          <div className="mb-10 overflow-hidden rounded-[2.5rem]" data-testid="about-hero-placeholder">
-            <div className="aspect-[16/7] overflow-hidden">
-              <img
-                src={REAL.duo}
-                alt="JL & Han"
-                className="h-full w-full object-cover object-[50%_28%]"
-              />
-            </div>
+          <div className="mb-10 flex justify-center overflow-hidden rounded-[2.5rem] bg-white/40" data-testid="about-hero-placeholder">
+            <img
+              src={REAL.duo}
+              alt="JL & Han"
+              className="h-auto max-h-[75vh] w-auto max-w-full object-contain"
+            />
           </div>
           <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
             Meet the heavenly duo
@@ -197,14 +195,12 @@ export default function About() {
             <span className="font-accent text-7xl italic leading-none text-[color:var(--blue-deep)] md:text-8xl">
               AHOF
             </span>
-            <div className="mt-6 overflow-hidden rounded-[2rem]" data-testid="ahof-picture-placeholder">
-              <div className="aspect-[16/6] overflow-hidden">
-                <img
-                  src={REAL.ahofGroup}
-                  alt="AHOF group"
-                  className="h-full w-full object-cover object-top"
-                />
-              </div>
+            <div className="mt-6 flex justify-center overflow-hidden rounded-[2rem] bg-white/40" data-testid="ahof-picture-placeholder">
+              <img
+                src={REAL.ahofGroup}
+                alt="AHOF group"
+                className="h-auto max-h-[75vh] w-auto max-w-full object-contain"
+              />
             </div>
             <h2 className="mt-8 font-serif-display text-4xl font-medium leading-tight md:text-5xl">
               The group that started it all
