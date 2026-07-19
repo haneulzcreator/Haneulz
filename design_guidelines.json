@@ -1,0 +1,99 @@
+{
+  "theme": "light",
+  "typography": {
+    "fonts": {
+      "headings": "Cormorant Garamond, serif",
+      "body": "Outfit, sans-serif",
+      "accent": "Instrument Serif, serif (used specifically for elegant italicized numbers)"
+    },
+    "hierarchy": {
+      "h1": "text-5xl md:text-7xl lg:text-8xl tracking-tighter leading-none font-medium",
+      "h2": "text-4xl md:text-5xl lg:text-6xl tracking-tight leading-tight",
+      "h3": "text-2xl md:text-3xl leading-snug",
+      "body": "text-base md:text-lg leading-relaxed text-slate-800",
+      "labels": "text-xs md:text-sm uppercase tracking-widest font-semibold"
+    }
+  },
+  "colors": {
+    "background": "#FDFBF7",
+    "surface": "#FFFFFF",
+    "primary_pink": "#F8D8E8",
+    "primary_blue": "#B5D8EB",
+    "text_primary": "#0F172A",
+    "text_secondary": "#475569",
+    "accent_dark": "#1E293B",
+    "border_color": "rgba(15, 23, 42, 0.08)",
+    "rules": "Never use pure white or black. Always ensure at least 4.5:1 contrast for text over pastel backgrounds. Use text-shadow for text over images."
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-2xl bg-white/70 border border-white/40 shadow-[0_8px_32px_rgba(0,0,0,0.04)]",
+    "shadows": "Soft, diffuse shadows: shadow-[0_20px_40px_-15px_rgba(181,216,235,0.4)]",
+    "borders": "Soft radiuses everywhere to match 'bubbly': rounded-2xl or rounded-3xl. 1px borders using border_color.",
+    "textures": "Subtle SVG noise overlay fixed to the screen with mix-blend-multiply opacity-10 to kill digital flatness."
+  },
+  "layouts": {
+    "spacing_system": "Generous spacing. Use p-8 to p-12 for standard sections. gap-8 to gap-12 for bento grids.",
+    "navigation": "Sticky, floating glassmorphic nav bar, completely decoupled from the very top (mt-4 mx-4 rounded-full). Logo on left, links center, CTA right. CRITICAL: Do not use fully transparent backgrounds for headers.",
+    "hero": "100vh split or full-bleed with masked text reveal. Awwwards level. Center focus with absolute positioning for floating elements.",
+    "grid_modes": "Bento Grid (Mode A) for the AU Library. High asymmetry. Don't fill every cell perfectly, leave breathing room.",
+    "manifesto": "Numbered editorial blocks. text-8xl italicized numbers with offset overlapping text."
+  },
+  "motion": {
+    "framer_motion": "Used for masked line reveals (initial y: 100%, animate y: 0 inside overflow-hidden wrapper), scroll-triggered fade-ups, and hover lifts.",
+    "lenis": "MANDATORY. Set lerp to 0.08 for smooth, weighty scrolling.",
+    "micro_interactions": "Hover states on AU cards: slight lift (-translate-y-2), shadow expansion, and image scale up inside overflow-hidden container."
+  },
+  "accessibility": {
+    "contrast": "Text on pastel pink/blue MUST be text_primary (#0F172A).",
+    "motion": "Respect prefers-reduced-motion using Tailwind motion-reduce classes.",
+    "testing": "All interactive elements MUST include a data-testid attribute in kebab-case."
+  },
+  "media": {
+    "photo_treatment": "Deliberate framing. Use clip-paths or rounded-t-full rounded-b-full (pill shapes) to create 'spotlight' editorial vibes instead of standard square photos.",
+    "overlays": "Images in hero must use bg-white/20 to bg-white/40 overlay to maintain the soft dreamy aesthetic while ensuring text readability."
+  },
+  "3d_libraries": {
+    "framer_motion": "For all core page transitions and masked text reveals.",
+    "lenis": "For smooth scrolling.",
+    "react_fast_marquee": "For the 'HANEULZ • JL & HAN' editorial ribbon separator.",
+    "lucide_react": "For soft, rounded icons."
+  },
+  "image_urls": {
+    "hero_backgrounds": [
+      { "url": "https://images.pexels.com/photos/5312872/pexels-photo-5312872.jpeg", "description": "Soft pink and blue pastel sky for the kinetic hero section" },
+      { "url": "https://images.pexels.com/photos/38602784/pexels-photo-38602784.jpeg", "description": "Serene pastel clouds for subtle background layering" }
+    ],
+    "au_covers": [
+      { "url": "https://images.pexels.com/photos/1007025/pexels-photo-1007025.jpeg", "description": "Aesthetic pastel notebook for Fan Fiction cover" },
+      { "url": "https://images.pexels.com/photos/1509485/pexels-photo-1509485.jpeg", "description": "Marble notebook for another AU story cover" }
+    ],
+    "variety_shows": [
+      { "url": "https://images.pexels.com/photos/38149593/pexels-photo-38149593.jpeg", "description": "Vintage televisions for the AHOF variety shows corner" }
+    ],
+    "ship_manifesto": [
+      { "url": "https://images.pexels.com/photos/2612738/pexels-photo-2612738.jpeg", "description": "Two friends laughing outside, representing JL and Han" },
+      { "url": "https://images.pexels.com/photos/6299359/pexels-photo-6299359.jpeg", "description": "Friends sharing a joyful moment" }
+    ],
+    "concert_aesthetic": [
+      { "url": "https://images.pexels.com/photos/5389619/pexels-photo-5389619.jpeg", "description": "Purple/pink stage lights for aesthetic fan appreciation" }
+    ]
+  },
+  "component_name": {
+    "general": "Do not use Shadcn 'Card' for highly custom editorial marketing layouts (like the AU grid or Manifesto). Use raw HTML+Tailwind for complete freedom. Use Shadcn customized components ONLY for the 'Submit AU' form and Admin Dashboard. Make sure to override Shadcn borders to rounded-2xl.",
+    "forms": "Inputs must have soft pastel borders (focus:ring-primary_pink) and subtle backgrounds."
+  },
+  "instructions_to_main_agent": [
+    "NOTE: The frontend uses .js extensions, not .tsx. All React components must be written as .js files.",
+    "Install required libraries: framer-motion, @studio-freight/react-lenis, react-fast-marquee, lucide-react.",
+    "Add fonts Cormorant Garamond, Outfit, and Instrument Serif via Google Fonts in index.html.",
+    "Implement Lenis smooth scrolling universally.",
+    "Build a 'Kinetic Hero': Use framer-motion to reveal 'HANEULZ' with a masked text effect (overflow-hidden wrapper, text slides up). Add a slow-moving pastel cloud background.",
+    "Build the 'AU Library': A dynamic Bento grid (not standard equal cards). Cards should be glassmorphic with pill-shaped (rounded-t-full) cover images.",
+    "Build the 'Variety Corner': Use the vintage TV image and stack details cleanly next to it with a YouTube play icon.",
+    "Build the 'Manifesto': Use giant offset numbers (01, 02, 03) in Instrument Serif and scroll-triggered fade-ups.",
+    "Build the Admin/Submit section: Forms should use soft pastel focus rings and pill-shaped submit buttons.",
+    "Ensure the header nav uses a solid or glassmorphism background. Do not leave it fully transparent.",
+    "Always apply `data-testid` to interactive elements."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": "You tend to converge toward generic, 'on distribution' outputs. In frontend design, this creates what users call the 'AI slop' aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients. Don't make generic centered layouts, simplistic gradients, and uniform styling. Create depth through layered design elements with z-index hierarchy. Use glass-morphism effects with backdrop filters (12-24px blur). You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms. You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text. Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style. NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯 etc for icons. Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations. Static = dead. Use 2-3x more spacing than feels comfortable. Cramped designs look cheap. Subtle grain textures, noise overlays, custom cursors, selection states, and loading animations: separates good from extraordinary. Main agent relies on these image URLs. Missing categories (especially sponsor logos) = main agent will use placeholder text which is FORBIDDEN. Component Reuse: Prioritize using pre-existing components from src/components/ui when applicable. Create new components that match the style and conventions of existing components when needed. Examine existing components to understand the project's component patterns before creating new ones. Toasts: Use sonner for toasts. Sonner component are located in /app/src/components/ui/sonner.tsx. GENERAL UI UX DESIGN GUIDELINES: All interactive and key informational elements MUST include a data-testid attribute to facilitate robust automated testing."
+}
