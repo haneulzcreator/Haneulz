@@ -14,16 +14,17 @@ const PLAYLISTS = [
   },
   {
     name: "AHOF's First Anniversary",
+    url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
     thumbnail: IMAGES.cloudsPink,
-    upcoming: true,
     description:
-      "One year since AHOF debuted on July 1, 2025 with 'Who We Are.' A celebration playlist for the group's very first anniversary — anniversary lives, fan projects and the sweetest HANEULZ moments. Coming soon. 🎂",
+      "One year since AHOF debuted on July 1, 2025 with 'Who We Are.' A celebration playlist for the group's very first anniversary — anniversary lives, fan projects and the sweetest HANEULZ moments. 🎂",
   },
   {
-    name: "More HANEULZ moments",
+    name: "AHOF's Music Videos",
     thumbnail: IMAGES.cloudsSoft,
     upcoming: true,
-    description: "A cozy spot reserved for the next playlist I'll be curating. Stay tuned! 💕",
+    description:
+      "All of AHOF's music videos gathered in one place — every comeback, B-side and special MV. Coming soon. 🎬",
   },
 ];
 
