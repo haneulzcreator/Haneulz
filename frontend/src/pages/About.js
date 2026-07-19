@@ -15,6 +15,7 @@ const members = [
     full: "Jay Lawrence Gaspar",
     emoji: "🦌",
     stageName: "JL",
+    fandom: "FOHA",
     instagram: "https://instagram.com/gasparjl",
     img: REAL.jl,
     accent: "var(--pink-deep)",
@@ -34,6 +35,7 @@ const members = [
     full: "Park Han · 박한",
     emoji: "🐈‍⬛",
     stageName: "Han",
+    fandom: "박하단 · Park Ha-dan",
     instagram: "https://instagram.com/qkrhan",
     img: REAL.han,
     accent: "var(--blue-deep)",
@@ -146,8 +148,8 @@ export default function About() {
                   {/* SNS + stage name */}
                   <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-[color:var(--line)] pt-6">
                     <div className="rounded-full px-4 py-2" style={{ background: m.chip }}>
-                      <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Stage name</span>
-                      <span className="ml-2 text-sm font-semibold">{m.stageName}</span>
+                      <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Fandom</span>
+                      <span className="ml-2 text-sm font-semibold">{m.fandom}</span>
                     </div>
                     <a
                       href={m.instagram}
