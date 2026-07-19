@@ -7,12 +7,6 @@ import { Reveal } from "../components/Reveal";
 import AUCard from "../components/AUCard";
 import Footer from "../components/Footer";
 
-const typeFilters = [
-  { key: "all", label: "All" },
-  { key: "story", label: "AU Stories" },
-  { key: "headcanon", label: "Headcanons" },
-];
-
 const sourceFilters = [
   { key: "all", label: "All sources" },
   { key: "x", label: "X" },
@@ -22,7 +16,7 @@ const sourceFilters = [
 
 export default function AULibrary() {
   const [aus, setAus] = useState([]);
-  const [type, setType] = useState("all");
+  const [tag, setTag] = useState("all");
   const [source, setSource] = useState("all");
   const [savedOnly, setSavedOnly] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -32,8 +26,9 @@ export default function AULibrary() {
     api.get("/aus").then((r) => setAus(r.data)).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
-  const byType = type === "all" ? aus : aus.filter((a) => a.au_type === type);
-  const bySaved = savedOnly ? byType.filter((a) => isSaved(a.id)) : byType;
+  const allTags = Array.from(new Set(aus.flatMap((a) => a.tags || []))).sort();
+  const byTag = tag === "all" ? aus : aus.filter((a) => (a.tags || []).includes(tag));
+  const bySaved = savedOnly ? byTag.filter((a) => isSaved(a.id)) : byTag;
   const visibleSources = source === "all" ? SOURCE_ORDER : [source];
   const grouped = visibleSources
     .map((s) => ({ key: s, items: bySaved.filter((a) => (a.source || "other") === s) }))
@@ -83,20 +78,31 @@ export default function AULibrary() {
           </button>
         </div>
 
-        {/* Type filters */}
-        <div className="mt-4 flex flex-wrap items-center gap-3" data-testid="au-filters">
-          {typeFilters.map((f) => (
+        {/* Tag filters */}
+        <div className="mt-4 flex flex-wrap items-center gap-3" data-testid="au-tag-filters">
+          <button
+            data-testid="tag-all"
+            onClick={() => setTag("all")}
+            className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
+              tag === "all"
+                ? "bg-[color:var(--ink)] text-white"
+                : "border border-[color:var(--line)] text-[color:var(--ink-soft)]"
+            }`}
+          >
+            All tags
+          </button>
+          {allTags.map((t) => (
             <button
-              key={f.key}
-              data-testid={`filter-${f.key}`}
-              onClick={() => setType(f.key)}
+              key={t}
+              data-testid={`tag-${t}`}
+              onClick={() => setTag(t)}
               className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
-                type === f.key
+                tag === t
                   ? "bg-[color:var(--ink)] text-white"
                   : "border border-[color:var(--line)] text-[color:var(--ink-soft)]"
               }`}
             >
-              {f.label}
+              {t}
             </button>
           ))}
           <Link
