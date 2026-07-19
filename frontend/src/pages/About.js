@@ -52,6 +52,15 @@ export default function About() {
     <div className="pt-32">
       <section className="mx-auto max-w-6xl px-6">
         <Reveal>
+          <div className="mb-10 overflow-hidden rounded-[2.5rem]" data-testid="about-hero-placeholder">
+            <div className="aspect-[16/7] overflow-hidden">
+              <img
+                src={IMAGES.heroDuo}
+                alt="JL & Han placeholder"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </div>
           <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
             Meet the heavenly duo
           </p>
