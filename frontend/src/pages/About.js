@@ -19,7 +19,7 @@ const members = [
     fandom: "ParPPIES",
     ul: "#1 Overall",
     soloSong: "ALON",
-    soloSpotify: "https://open.spotify.com/search/ALON%20JL%20Gaspar",
+    soloSpotify: "https://open.spotify.com/track/0MCy9PWMVvgrGmuKXRISBL",
     instagram: "https://instagram.com/gasparjl",
     img: REAL.jl,
     accent: "#d24f8c",
@@ -102,7 +102,9 @@ export default function About() {
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
             Two voices that met on a survival stage and never stopped finding each other. This is
-            the heart of the HANEULZ ship — and the reason HANEULZ exists.
+            the heart of the HANEULZ ship — and the reason HANEULZ exists. The fanbase who keeps
+            these daydreams alive is lovingly called{" "}
+            <span className="font-semibold text-[color:var(--ink)]">HANSUM</span>.
           </p>
         </Reveal>
 
