@@ -20,8 +20,8 @@ export default function Variety() {
             Variety Corner
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
-            Every show, episode and clip where JL & Han shared the screen — collected for easy
-            rewatching.
+            Every show, episode and clip of AHOF where JL & Han shared the screen — collected for
+            easy rewatching.
           </p>
         </Reveal>
 
