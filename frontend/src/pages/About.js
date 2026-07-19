@@ -16,6 +16,7 @@ const members = [
     emoji: "🦌",
     stageName: "JL",
     fandom: "ParPPIES",
+    ul: "#1 Overall",
     instagram: "https://instagram.com/gasparjl",
     img: REAL.jl,
     accent: "#d24f8c",
@@ -36,6 +37,7 @@ const members = [
     emoji: "🐈‍⬛",
     stageName: "Han",
     fandom: "박하단 · Park Ha-dan",
+    ul: "Team Groove MVP",
     instagram: "https://instagram.com/qkrhan",
     img: REAL.han,
     accent: "#2f7aa8",
@@ -152,8 +154,8 @@ export default function About() {
                       <span className="ml-2 text-sm font-semibold">{m.stageName}</span>
                     </div>
                     <div className="rounded-full px-4 py-2" style={{ background: m.chip }}>
-                      <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Fandom</span>
-                      <span className="ml-2 text-sm font-semibold">{m.fandom}</span>
+                      <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Universe League</span>
+                      <span className="ml-2 text-sm font-semibold">{m.ul}</span>
                     </div>
                     <a
                       href={m.instagram}
