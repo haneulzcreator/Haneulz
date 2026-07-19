@@ -1,35 +1,61 @@
 import { useEffect, useState } from "react";
-import { Play, Calendar, ListVideo, Clock } from "lucide-react";
+import { Play, Calendar, ListVideo, Clock, Youtube, Twitter, Music2, X } from "lucide-react";
 import { api, REAL, IMAGES } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
 
+const PLATFORM = {
+  youtube: { label: "YouTube", Icon: Youtube },
+  x: { label: "X", Icon: Twitter },
+  tiktok: { label: "TikTok", Icon: Music2 },
+};
+
 const PLAYLISTS = [
   {
-    name: "Watch HANEULZ with AHOF",
-    url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
+    name: "Watch HANEULZ",
     thumbnail: REAL.ahofGroup,
     description:
-      "The main playlist — every show, game and soft moment where JL & Han shared the screen, all in one place.",
+      "The main collection — every show, game and soft moment where JL & Han shared the screen, gathered from YouTube, X and TikTok.",
+    videos: [
+      {
+        title: "AHOF 'Who We Are' — full stage",
+        platform: "youtube",
+        url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
+        thumbnail: REAL.ahofGroup,
+      },
+      {
+        title: "JL & Han moment (fancam)",
+        platform: "x",
+        url: "https://x.com/",
+        thumbnail: IMAGES.cloudsPink,
+      },
+      {
+        title: "HANEZ edit",
+        platform: "tiktok",
+        url: "https://www.tiktok.com/",
+        thumbnail: IMAGES.cloudsSoft,
+      },
+    ],
   },
   {
     name: "AHOF's First Anniversary",
     url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
     thumbnail: IMAGES.cloudsPink,
     description:
-      "One year since AHOF debuted on July 1, 2025 with 'Who We Are.' A celebration playlist for the group's very first anniversary — anniversary lives, fan projects and the sweetest HANEULZ moments. 🎂",
+      "Celebrating one whole year since AHOF debuted on July 1, 2025 with 'Who We Are' — anniversary lives, heartfelt messages and all the ways FOHA is marking the group's very first anniversary together. 🎂",
   },
   {
     name: "AHOF's Music Videos",
+    url: "https://youtube.com/playlist?list=PLLhA9zGDtnGQ",
     thumbnail: IMAGES.cloudsSoft,
-    upcoming: true,
     description:
-      "All of AHOF's music videos gathered in one place — every comeback, B-side and special MV. Coming soon. 🎬",
+      "Every AHOF music video in one place — from their debut title track to comebacks, B-sides and special releases. 🎬",
   },
 ];
 
 export default function Variety() {
   const [shows, setShows] = useState([]);
+  const [openPlaylist, setOpenPlaylist] = useState(null);
 
   useEffect(() => {
     api.get("/variety").then((r) => setShows(r.data)).catch(() => {});
@@ -58,6 +84,7 @@ export default function Variety() {
         {/* Playlists */}
         <div className="mt-14 flex flex-col gap-16" data-testid="variety-playlists">
           {PLAYLISTS.map((p, i) => {
+            const hasVideos = !p.upcoming && p.videos && p.videos.length > 0;
             const media = (
               <>
                 <div className="aspect-video overflow-hidden">
@@ -80,23 +107,30 @@ export default function Variety() {
                 </div>
               </>
             );
+            const mediaClass = "group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2";
             return (
               <Reveal key={p.name} delay={0.05}>
                 <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
                   {p.upcoming ? (
-                    <div
-                      data-testid={`variety-playlist-${i}`}
-                      className="group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
-                    >
+                    <div data-testid={`variety-playlist-${i}`} className={mediaClass}>
                       {media}
                     </div>
+                  ) : hasVideos ? (
+                    <button
+                      type="button"
+                      onClick={() => setOpenPlaylist(p)}
+                      data-testid={`variety-playlist-${i}`}
+                      className={`${mediaClass} text-left`}
+                    >
+                      {media}
+                    </button>
                   ) : (
                     <a
                       href={p.url}
                       target="_blank"
                       rel="noreferrer"
                       data-testid={`variety-playlist-${i}`}
-                      className="group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
+                      className={mediaClass}
                     >
                       {media}
                     </a>
@@ -116,6 +150,15 @@ export default function Variety() {
                       <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[color:var(--pink)] px-4 py-2 text-xs uppercase tracking-widest">
                         <Clock size={13} /> Coming soon
                       </span>
+                    ) : hasVideos ? (
+                      <button
+                        type="button"
+                        onClick={() => setOpenPlaylist(p)}
+                        data-testid={`variety-open-${i}`}
+                        className="link-underline mt-5 inline-flex items-center gap-2 text-sm uppercase tracking-widest"
+                      >
+                        See all videos →
+                      </button>
                     ) : (
                       <a
                         href={p.url}
@@ -186,6 +229,66 @@ export default function Variety() {
           ))}
         </div>
       </section>
+
+      {/* Video collection modal */}
+      {openPlaylist && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" data-testid="playlist-modal">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setOpenPlaylist(null)}
+          />
+          <div className="glass relative z-10 max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] p-6 md:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <span className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
+                  Playlist · {openPlaylist.videos.length} videos
+                </span>
+                <h3 className="font-serif-display text-3xl font-medium md:text-4xl">{openPlaylist.name}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setOpenPlaylist(null)}
+                data-testid="close-playlist-modal"
+                aria-label="Close"
+                className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[color:var(--line)] hover:bg-white/60"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              {openPlaylist.videos.map((v, idx) => {
+                const plat = PLATFORM[v.platform] || PLATFORM.youtube;
+                const PlatIcon = plat.Icon;
+                return (
+                  <a
+                    key={idx}
+                    href={v.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-testid={`playlist-video-${idx}`}
+                    className="group overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-white/50 transition-shadow duration-500 hover:shadow-[0_20px_44px_-24px_rgba(243,174,203,0.7)]"
+                  >
+                    <div className="relative aspect-video overflow-hidden">
+                      <img src={v.thumbnail} alt={v.title} className="au-card-img h-full w-full object-cover" />
+                      <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-widest backdrop-blur">
+                        <PlatIcon size={12} /> {plat.label}
+                      </span>
+                      <div className="absolute inset-0 grid place-items-center bg-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <span className="grid h-12 w-12 place-items-center rounded-full bg-white/90">
+                          <Play size={16} className="ml-0.5 text-[color:var(--ink)]" fill="currentColor" />
+                        </span>
+                      </div>
+                    </div>
+                    <p className="p-4 text-sm font-medium">{v.title}</p>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
