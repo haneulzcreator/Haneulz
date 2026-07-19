@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, Mic, Music, Globe, Calendar, Users, Instagram, Play, Music2, Sparkles } from "lucide-react";
-import { IMAGES } from "../lib/api";
+import { IMAGES, REAL } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
 
 const AHOF_SPOTIFY = "https://open.spotify.com/search/AHOF";
 const AHOF_INSTAGRAM = "https://www.instagram.com/ahof_official/";
-const LITTLE_PRINCE_YT = "https://www.youtube.com/results?search_query=AHOF+JL+Han+Little+Prince+Universe+League";
+const LITTLE_PRINCE_YT = "https://youtu.be/S5PG6lUSMHs";
 
 const members = [
   {
@@ -16,7 +16,7 @@ const members = [
     emoji: "🦌",
     stageName: "JL",
     instagram: "https://www.instagram.com/ahof_official/",
-    img: IMAGES.jlPortrait,
+    img: REAL.jl,
     accent: "var(--pink-deep)",
     chip: "var(--pink)",
     facts: [
@@ -35,7 +35,7 @@ const members = [
     emoji: "🐈‍⬛",
     stageName: "Han",
     instagram: "https://www.instagram.com/ahof_official/",
-    img: IMAGES.hanPortrait,
+    img: REAL.han,
     accent: "var(--blue-deep)",
     chip: "var(--blue)",
     facts: [
@@ -200,9 +200,9 @@ export default function About() {
             <div className="mt-6 overflow-hidden rounded-[2rem]" data-testid="ahof-picture-placeholder">
               <div className="aspect-[16/6] overflow-hidden">
                 <img
-                  src={IMAGES.cloudsSoft}
-                  alt="AHOF group placeholder"
-                  className="h-full w-full object-cover"
+                  src={REAL.ahofGroup}
+                  alt="AHOF group"
+                  className="h-full w-full object-cover object-top"
                 />
               </div>
             </div>

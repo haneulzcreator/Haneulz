@@ -46,6 +46,12 @@ export const IMAGES = {
 
 export const DEFAULT_COVERS = [IMAGES.auCover1, IMAGES.auCover2, IMAGES.portrait, IMAGES.cloudsPink];
 
+export const REAL = {
+  jl: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/ajv8uahi_IMG_9135.webp",
+  han: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/f87g19iu_IMG_9137.webp",
+  ahofGroup: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/g5npnzc2_IMG_9136.jpeg",
+};
+
 export const SOURCES = {
   x: { label: "X", full: "AUs from X" },
   tiktok: { label: "TikTok", full: "AUs from TikTok" },
