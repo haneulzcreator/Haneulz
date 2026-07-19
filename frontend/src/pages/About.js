@@ -15,7 +15,7 @@ const members = [
     full: "Jay Lawrence Gaspar",
     emoji: "🦌",
     stageName: "JL",
-    fandom: "FOHA",
+    fandom: "ParPPIES",
     instagram: "https://instagram.com/gasparjl",
     img: REAL.jl,
     accent: "#d24f8c",
@@ -147,6 +147,10 @@ export default function About() {
 
                   {/* SNS + stage name */}
                   <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-[color:var(--line)] pt-6">
+                    <div className="rounded-full border border-[color:var(--line)] px-4 py-2">
+                      <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Stage name</span>
+                      <span className="ml-2 text-sm font-semibold">{m.stageName}</span>
+                    </div>
                     <div className="rounded-full px-4 py-2" style={{ background: m.chip }}>
                       <span className="text-[0.6rem] uppercase tracking-widest text-[color:var(--ink-soft)]">Fandom</span>
                       <span className="ml-2 text-sm font-semibold">{m.fandom}</span>
