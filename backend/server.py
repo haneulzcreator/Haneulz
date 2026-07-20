@@ -103,14 +103,10 @@ async def get_current_admin(request:Request):
 
         return user
 
-
     except:
         raise HTTPException(
             status_code=401,
-            detail="Invalid token"
-        )
-
-
+            detail="Invalid token")
 
 # =========================
 # AUTH
@@ -118,11 +114,8 @@ async def get_current_admin(request:Request):
 
 
 class LoginInput(BaseModel):
-
     email:EmailStr
     password:str
-
-
 
 
 # =========================
@@ -131,67 +124,28 @@ class LoginInput(BaseModel):
 
 
 class AUCreate(BaseModel):
-
     title:str
-
     short_description:str=""
-
     full_story:str=""
-
     source_url:str
-
     tags:List[str]=[]
-
     au_type:str="story"
-
     source:str="other"
-
-
 
 class AU(BaseModel):
-
-    id:str = Field(
-        default_factory=lambda:str(uuid.uuid4())
-    )
-
+    id:str = Field(default_factory=lambda:str(uuid.uuid4()))
     title:str
-
-
     author_name:str="Anonymous"
-
-
     short_description:str=""
-
-
     full_story:str=""
-
-
     cover_image_url:Optional[str]=None
-
-
     source_url:str
-
-
     tags:List[str]=[]
-
-
     au_type:str="story"
-
-
     source:str="other"
-
-
     status:str="pending"
-
-
     likes:int=0
-
-
-    created_at:str=Field(
-        default_factory=now_iso
-    )
-
-
+    created_at:str=Field(default_factory=now_iso)
 
 # =========================
 # COMMENTS
@@ -199,9 +153,7 @@ class AU(BaseModel):
 
 
 class CommentCreate(BaseModel):
-
     author_name:str="Anonymous"
-
     text:str
 
 
@@ -223,40 +175,19 @@ class Comment(BaseModel):
 
 
 class VarietyCreate(BaseModel):
-
     show_name:str
-
     episode:str
-
     description:str
-
     photo_url:Optional[str]=None
-
     youtube_url:Optional[str]=None
-
     air_date:Optional[str]=None
-
-
 
 class Variety(BaseModel):
-
-    id:str=Field(
-        default_factory=lambda:str(uuid.uuid4())
-    )
-
+    id:str=Field(default_factory=lambda:str(uuid.uuid4()))
     show_name:str
-
     episode:str
-
     description:str
-
     photo_url:Optional[str]=None
-
     youtube_url:Optional[str]=None
-
     air_date:Optional[str]=None
-
-
-    created_at:str=Field(
-        default_factory=now_iso
-    )
+    created_at:str=Field(default_factory=now_iso)
