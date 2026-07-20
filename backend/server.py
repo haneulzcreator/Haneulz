@@ -136,7 +136,13 @@ class Variety(BaseModel):
 
 @api_router.post("/auth/login")
 async def login(input: LoginInput):
-    user = await db.users.find_one({"email": input.email.lower()})
+     print("Searching email:", input.email.lower())
+    print("Database:", db.name) 
+
+all_user = await db.users.find({}).to_list(10)
+print("Users in database:", all_users)
+
+user = await db.users.find_one({"email": input.email.lower()})
     if not user or not verify_password(input.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
     token = create_access_token(user["id"], user["email"])
