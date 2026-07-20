@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Heart, ArrowLeft, Send } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 import { toast } from "sonner";
 import { api, formatApiError, DEFAULT_COVERS } from "../lib/api";
 import { Reveal } from "../components/Reveal";
@@ -13,7 +13,6 @@ export default function AUDetail() {
   const navigate = useNavigate();
   const [au, setAu] = useState(null);
   const [comments, setComments] = useState([]);
-  const [liked, setLiked] = useState(false);
   const [name, setName] = useState("");
   const [text, setText] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -22,13 +21,6 @@ export default function AUDetail() {
     api.get(`/aus/${id}`).then((r) => setAu(r.data)).catch(() => navigate("/aus"));
     api.get(`/aus/${id}/comments`).then((r) => setComments(r.data)).catch(() => {});
   }, [id, navigate]);
-
-  const like = async () => {
-    if (liked) return;
-    const { data } = await api.post(`/aus/${id}/like`);
-    setAu((a) => ({ ...a, likes: data.likes }));
-    setLiked(true);
-  };
 
   const submitComment = async (e) => {
     e.preventDefault();
@@ -93,14 +85,16 @@ export default function AUDetail() {
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <button
-            onClick={like}
-            data-testid="au-like-btn"
-            className="pill-btn flex items-center gap-2 rounded-full bg-[color:var(--pink)] px-6 py-3 text-sm uppercase tracking-widest"
-          >
-            <Heart size={16} fill={liked ? "var(--pink-deep)" : "none"} className="text-[color:var(--pink-deep)]" />
-            {au.likes} loves
-          </button>
+         {au.source_url && (
+  <a
+    href={au.source_url}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="pill-btn flex items-center gap-2 rounded-full bg-[color:var(--pink)] px-6 py-3 text-sm uppercase tracking-widest"
+  >
+    Read Story
+  </a>
+)}
           <BookmarkButton id={au.id} title={au.title} variant="pill" />
         </div>
 
