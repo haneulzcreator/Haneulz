@@ -80,6 +80,7 @@ class AUCreate(BaseModel):
     short_description: str
     full_story: str
     cover_image_url: Optional[str] = None
+    story_url: Optional[str] = None
     tags: List[str] = []
     au_type: str = "story"
     source: str = "other"
@@ -93,6 +94,7 @@ class AU(BaseModel):
     short_description: str
     full_story: str
     cover_image_url: Optional[str] = None
+    story_url: Optional[str] = None
     tags: List[str] = []
     au_type: str = "story"
     source: str = "other"
