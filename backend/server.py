@@ -125,26 +125,32 @@ class CommentCreate(BaseModel):
     text: str
 
 
- class AU(BaseModel):
+class AU(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
 
     title: str
 
-    # Admin can set this later
     author_name: Optional[str] = "Anonymous"
+
     short_description: Optional[str] = ""
+
     full_story: Optional[str] = ""
 
-    # Admin only
     cover_image_url: Optional[str] = None
-    tags: List[str] = []
-    au_type: str = "story"
-    source: str = "other"
-    status: str = "pending"
-    likes: int = 0
-    created_at: str = Field(default_factory=now_iso)
-    source_url: Optional[str] = None
 
+    tags: List[str] = []
+
+    au_type: str = "story"
+
+    source: str = "other"
+
+    status: str = "pending"
+
+    likes: int = 0
+
+    created_at: str = Field(default_factory=now_iso)
+
+    source_url: Optional[str] = None
 
 class VarietyCreate(BaseModel):
     show_name: str
