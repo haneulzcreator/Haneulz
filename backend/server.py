@@ -143,7 +143,7 @@ class AUCreate(BaseModel):
     short_description: str = ""
     full_story: str = ""
     source_url: str
-    tags: List[str] = []
+    tags: List[str] = Field(default_factory=list)
     au_type: str = "story"
     source: str = "other"
 
@@ -156,7 +156,7 @@ class AU(BaseModel):
     full_story: str = ""
     cover_image_url: Optional[str] = None
     source_url: Optional[str] = None
-    tags: List[str] = []
+    tags: List[str] = Field(default_factory=list)
     au_type: str = "story"
     source: str = "other"
     status: str = "pending"
