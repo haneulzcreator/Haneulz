@@ -7,10 +7,8 @@ import Footer from "../components/Footer";
 
 const empty = {
   title: "",
-  author_name: "Anonymous",
   short_description: "",
   full_story: "",
-  cover_image_url: "",
   source_url: "",
   tags: "",
   au_type: "story",
@@ -21,8 +19,11 @@ export default function Submit() {
   const [form, setForm] = useState(empty);
   const [submitting, setSubmitting] = useState(false);
 
-  const set = (k) => (e) =>
-    setForm({ ...form, [k]: e.target.value });
+  const set = (key) => (e) =>
+    setForm({
+      ...form,
+      [key]: e.target.value,
+    });
 
 
   const submit = async (e) => {
@@ -36,26 +37,51 @@ export default function Submit() {
     setSubmitting(true);
 
     try {
+
       await api.post("/aus", {
-        ...form,
+        title: form.title,
+
+        short_description:
+          form.short_description,
+
+        full_story:
+          form.full_story,
+
+        source_url:
+          form.source_url,
+
         tags: form.tags
           .split(",")
-          .map((t) => t.trim())
+          .map((tag)=>tag.trim())
           .filter(Boolean),
+
+        au_type:
+          form.au_type,
+
+        source:
+          form.source,
       });
+
 
       setForm(empty);
 
       toast.success(
-        "Your AU is waiting for approval. c💗🌩️💙"
+        "Your AU is waiting for approval. 💗🌩️💙"
       );
 
-    } catch (err) {
+
+    } catch(err){
+
       toast.error(
-        formatApiError(err.response?.data?.detail)
+        formatApiError(
+          err.response?.data?.detail
+        )
       );
+
     } finally {
+
       setSubmitting(false);
+
     }
   };
 
@@ -65,6 +91,7 @@ export default function Submit() {
 
 
   return (
+
     <div className="pt-32">
 
       <section className="mx-auto max-w-2xl px-6">
@@ -76,14 +103,16 @@ export default function Submit() {
             Contribute
           </p>
 
+
           <h1 className="mt-4 font-serif-display text-6xl font-medium">
             Submit an AU
           </h1>
 
+
           <p className="mt-6 text-lg text-[color:var(--ink-soft)]">
-            Share your alternate universe or headcanon.
-            Every submission will be reviewed before appearing
-            in the library.
+            Share an alternate universe or headcanon.
+            Add the original link and our admin will
+            review and add the author credit before publishing.
           </p>
 
         </Reveal>
@@ -99,7 +128,9 @@ export default function Submit() {
 
 
           <div>
-            <label className="label">Title</label>
+            <label className="label">
+              Title
+            </label>
 
             <input
               required
@@ -114,71 +145,51 @@ export default function Submit() {
 
 
           <div>
+
             <label className="label">
               Type
             </label>
 
+
             <div className="flex gap-3">
 
-              {[
-                {v:"story",l:"AU Story"},
-                {v:"headcanon",l:"Headcanon"}
-
-              ].map((o)=>(
-                <button
-                  type="button"
-                  key={o.v}
-                  onClick={() =>
-                    setForm({...form, au_type:o.v})
-                  }
-                  className={`pill-btn rounded-full px-5 py-2 text-xs uppercase ${
-                    form.au_type===o.v
-                    ?"bg-[color:var(--ink)] text-white"
-                    :"border"
-                  }`}
-                >
-                  {o.l}
-                </button>
-              ))}
-
-            </div>
-          </div>
-
-
-
-
-
-          <div>
-            <label className="label">
-              Where is this AU from?
-            </label>
-
-            <div className="flex flex-wrap gap-3">
-
             {[
-              {v:"x",l:"X"},
-              {v:"tiktok",l:"TikTok"},
-              {v:"ao3",l:"AO3"},
-              {v:"other",l:"Other"}
+              {
+                v:"story",
+                l:"AU Story"
+              },
+              {
+                v:"headcanon",
+                l:"Headcanon"
+              }
 
-            ].map((o)=>(
+            ].map((item)=>(
+
               <button
                 type="button"
-                key={o.v}
+                key={item.v}
                 onClick={() =>
-                  setForm({...form,source:o.v})
+                  setForm({
+                    ...form,
+                    au_type:item.v
+                  })
                 }
+
                 className={`pill-btn rounded-full px-5 py-2 text-xs uppercase ${
-                  form.source===o.v
-                  ?"bg-[color:var(--blue-deep)] text-white"
-                  :"border"
+                  form.au_type === item.v
+                  ? "bg-[color:var(--ink)] text-white"
+                  : "border"
                 }`}
               >
-                {o.l}
+
+                {item.l}
+
               </button>
+
             ))}
 
             </div>
+
           </div>
 
 
@@ -186,21 +197,91 @@ export default function Submit() {
 
 
           <div>
+
             <label className="label">
-              Story / Post Link
+              Source
             </label>
+
+
+            <div className="flex flex-wrap gap-3">
+
+
+            {[
+              {
+                v:"x",
+                l:"X"
+              },
+              {
+                v:"tiktok",
+                l:"TikTok"
+              },
+              {
+                v:"ao3",
+                l:"AO3"
+              },
+              {
+                v:"other",
+                l:"Other"
+              }
+
+            ].map((item)=>(
+
+              <button
+                type="button"
+                key={item.v}
+
+                onClick={() =>
+                  setForm({
+                    ...form,
+                    source:item.v
+                  })
+                }
+
+
+                className={`pill-btn rounded-full px-5 py-2 text-xs uppercase ${
+                  form.source === item.v
+                  ? "bg-[color:var(--blue-deep)] text-white"
+                  : "border"
+                }`}
+              >
+
+                {item.l}
+
+              </button>
+
+
+            ))}
+
+
+            </div>
+
+          </div>
+
+
+
+
+
+          <div>
+
+            <label className="label">
+              Original Story / Post Link
+            </label>
+
 
             <input
               required
               value={form.source_url}
               onChange={set("source_url")}
               className={input}
+
               placeholder="https://x.com/... or https://archiveofourown.org/..."
             />
 
+
             <p className="mt-2 text-xs text-gray-400">
-              This will become the Read button after approval.
+              The original creator credit will be added by admin.
             </p>
+
 
           </div>
 
@@ -209,15 +290,21 @@ export default function Submit() {
 
 
           <div>
+
             <label className="label">
-              Short description (optional)
+              Short Description
             </label>
 
+
             <textarea
+
               value={form.short_description}
               onChange={set("short_description")}
+
               rows={3}
+
               className={input}
+
               placeholder="A short summary..."
             />
 
@@ -228,16 +315,22 @@ export default function Submit() {
 
 
           <div>
+
             <label className="label">
-              Full story (optional)
+              Full Story (optional)
             </label>
 
+
             <textarea
+
               value={form.full_story}
               onChange={set("full_story")}
+
               rows={6}
+
               className={input}
-              placeholder="Only if you want the story displayed inside HANEULZ"
+
+              placeholder="Only add if you want it displayed inside HANEULZ"
             />
 
           </div>
@@ -247,14 +340,19 @@ export default function Submit() {
 
 
           <div>
+
             <label className="label">
               Tags
             </label>
 
+
             <input
+
               value={form.tags}
               onChange={set("tags")}
+
               className={input}
+
               placeholder="fluff, angst, slow burn"
             />
 
@@ -265,14 +363,17 @@ export default function Submit() {
 
 
           <button
+
             type="submit"
+
             disabled={submitting}
+
             className="pill-btn w-full rounded-full bg-[color:var(--pink-deep)] py-4 text-sm uppercase tracking-widest text-white"
           >
 
-          {submitting
-            ?"Sending..."
-            :"Submit for review"}
+            {submitting
+              ? "Sending..."
+              : "Submit for review"}
 
           </button>
 
@@ -282,11 +383,14 @@ export default function Submit() {
 
         </Reveal>
 
+
       </section>
 
 
       <Footer/>
 
+
     </div>
+
   );
 }
