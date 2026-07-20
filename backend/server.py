@@ -70,8 +70,8 @@ async def get_current_admin(request: Request) -> dict:
 
 
 class LoginInput(BaseModel):
-    email: EmailStr
-    password: str
+    email: HANEULZCREATOR@gmail.com
+    password: Princess070508!
 
 
 class AUCreate(BaseModel):
