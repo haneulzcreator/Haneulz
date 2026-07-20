@@ -7,7 +7,7 @@ import Footer from "../components/Footer";
 
 const empty = {
   title: "",
-  author_name: "",
+  author_name: "Anonymous",
   short_description: "",
   full_story: "",
   cover_image_url: "",
@@ -47,7 +47,7 @@ export default function Submit() {
       setForm(empty);
 
       toast.success(
-        "Your AU is waiting for approval. 🌸"
+        "Your AU is waiting for approval. c💗🌩️💙"
       );
 
     } catch (err) {
@@ -112,21 +112,6 @@ export default function Submit() {
 
 
 
-          <div>
-            <label className="label">
-              Your name / handle
-            </label>
-
-            <input
-              required
-              value={form.author_name}
-              onChange={set("author_name")}
-              className={input}
-              placeholder="@username"
-            />
-          </div>
-
-
 
           <div>
             <label className="label">
@@ -158,6 +143,7 @@ export default function Submit() {
 
             </div>
           </div>
+
 
 
 
@@ -215,6 +201,7 @@ export default function Submit() {
             <p className="mt-2 text-xs text-gray-400">
               This will become the Read button after approval.
             </p>
+
           </div>
 
 
@@ -223,35 +210,17 @@ export default function Submit() {
 
           <div>
             <label className="label">
-              Thumbnail Image URL
-            </label>
-
-            <input
-              required
-              value={form.cover_image_url}
-              onChange={set("cover_image_url")}
-              className={input}
-              placeholder="https://image-url.com"
-            />
-          </div>
-
-
-
-
-
-          <div>
-            <label className="label">
-              Short description
+              Short description (optional)
             </label>
 
             <textarea
-              required
               value={form.short_description}
               onChange={set("short_description")}
               rows={3}
               className={input}
               placeholder="A short summary..."
             />
+
           </div>
 
 
@@ -270,6 +239,7 @@ export default function Submit() {
               className={input}
               placeholder="Only if you want the story displayed inside HANEULZ"
             />
+
           </div>
 
 
@@ -287,6 +257,7 @@ export default function Submit() {
               className={input}
               placeholder="fluff, angst, slow burn"
             />
+
           </div>
 
 
