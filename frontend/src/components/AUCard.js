@@ -4,7 +4,10 @@ import { DEFAULT_COVERS, SOURCES } from "../lib/api";
 import BookmarkButton from "./BookmarkButton";
 
 export default function AUCard({ au, index = 0 }) {
-  const cover = au.cover_image_url || DEFAULT_COVERS[index % DEFAULT_COVERS.length];
+  const cover =
+    au.cover_image_url ||
+    DEFAULT_COVERS[index % DEFAULT_COVERS.length];
+
   const source = SOURCES[au.source] || SOURCES.other;
 
   return (
@@ -23,7 +26,10 @@ export default function AUCard({ au, index = 0 }) {
             </span>
 
             <div className="absolute right-3 top-3 z-10">
-              <BookmarkButton id={au.id} title={au.title} />
+              <BookmarkButton
+                id={au.id}
+                title={au.title}
+              />
             </div>
 
             <div className="aspect-[4/5] overflow-hidden">
@@ -40,13 +46,23 @@ export default function AUCard({ au, index = 0 }) {
 
           <div className="px-3 pb-2 pt-5">
 
-            <span className="text-[0.7rem] uppercase tracking-widest text-[color:var(--ink-soft)]">
-              {au.au_type === "headcanon" ? "Headcanon" : "AU Story"}
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="text-[0.7rem] uppercase tracking-widest text-[color:var(--ink-soft)]">
+                {au.au_type === "headcanon"
+                  ? "Headcanon"
+                  : "AU Story"}
+              </span>
+
+              <span className="rounded-full bg-[color:var(--pink)] px-4 py-2 text-[0.65rem] uppercase tracking-widest">
+                Read
+              </span>
+            </div>
+
 
             <h3 className="mt-2 font-serif-display text-2xl font-medium leading-tight">
               {au.title}
             </h3>
+
 
             <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-[color:var(--ink-soft)]">
               {au.short_description}
@@ -54,7 +70,6 @@ export default function AUCard({ au, index = 0 }) {
 
 
             <div className="mt-4 flex flex-wrap gap-2">
-
               {au.tags?.slice(0, 3).map((t) => (
                 <span
                   key={t}
@@ -63,7 +78,6 @@ export default function AUCard({ au, index = 0 }) {
                   {t}
                 </span>
               ))}
-
             </div>
 
           </div>
@@ -71,17 +85,16 @@ export default function AUCard({ au, index = 0 }) {
         </Link>
 
 
-        {au.source_url && (
-          <a
-            href={au.source_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 flex items-center justify-center gap-2 rounded-full bg-[color:var(--pink-deep)] px-5 py-3 text-xs uppercase tracking-widest text-white"
-          >
-            <ExternalLink size={13} />
-            Read
-          </a>
-        )}
+        <a
+          href={au.source_url || `/aus/${au.id}`}
+          target={au.source_url ? "_blank" : "_self"}
+          rel="noopener noreferrer"
+          className="mt-4 flex items-center justify-center gap-2 rounded-full bg-[color:var(--pink-deep)] px-5 py-3 text-xs uppercase tracking-widest text-white"
+        >
+          <ExternalLink size={13} />
+          {au.source_url ? "Read Story" : "View AU"}
+        </a>
+
 
       </article>
     </div>
