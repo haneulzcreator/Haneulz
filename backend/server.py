@@ -155,7 +155,7 @@ class AU(BaseModel):
     short_description: str = ""
     full_story: str = ""
     cover_image_url: Optional[str] = None
-    source_url: Optional[str] = Non
+    source_url: Optional[str] = None
     tags: List[str] = []
     au_type: str = "story"
     source: str = "other"
@@ -416,6 +416,7 @@ class CommentCreate(BaseModel):
     author_name: str = "Anonymous"
     text: str
 
+
 class Comment(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     au_id: str
@@ -423,23 +424,38 @@ class Comment(BaseModel):
     text: str
     status: str = "pending"
     created_at: str = Field(default_factory=now_iso)
-    
-    @api_router.post(
+
+
+
+@api_router.post(
     "/aus/{au_id}/comments",
     response_model=Comment
 )
 async def submit_comment(
-    au_id:str,
-    input:CommentCreate
+    au_id: str,
+    input: CommentCreate
 ):
-    au = await db.aus.find_one({"id":au_id})
-    if not au:raise HTTPException(status_code=404,detail="AU not found")
-    
+
+    au = await db.aus.find_one({"id": au_id})
+
+    if not au:
+        raise HTTPException(
+            status_code=404,
+            detail="AU not found"
+        )
+
+
     comment = Comment(
         au_id=au_id,
         **input.model_dump()
     )
-    await db.comments.insert_one(comment.model_dump())
+
+
+    await db.comments.insert_one(
+        comment.model_dump()
+    )
+
+
     return comment
  # =========================
 # VARIETY ROUTES
