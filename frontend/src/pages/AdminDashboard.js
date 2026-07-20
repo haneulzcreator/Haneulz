@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, X, Trash2, LogOut } from "lucide-react";
+import { Check, X, Trash2, LogOut, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
@@ -19,12 +19,23 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const [tab, setTab] = useState("aus");
   const [aus, setAus] = useState([]);
-  const [comments, setComments] = useState([]);
+const [comments, setComments] = useState([]);
+const [variety, setVariety] = useState([]);
+
+const [videoForm, setVideoForm] = useState({
+  show_name: "",
+  episode: "",
+  description: "",
+  photo_url: "",
+  youtube_url: "",
+  air_date: ""
+});
 
   const load = useCallback(() => {
-    api.get("/admin/aus").then((r) => setAus(r.data)).catch(() => {});
-    api.get("/admin/comments").then((r) => setComments(r.data)).catch(() => {});
-  }, []);
+  api.get("/admin/aus").then((r) => setAus(r.data)).catch(() => {});
+  api.get("/admin/comments").then((r) => setComments(r.data)).catch(() => {});
+  api.get("/variety").then((r) => setVariety(r.data)).catch(() => {});
+}, []);
 
   useEffect(() => {
     if (ready && !admin) navigate("/admin/login");
@@ -54,7 +65,22 @@ export default function AdminDashboard() {
     toast.success("Note deleted");
     load();
   };
+  const addVariety = async () => {
+  await api.post("/admin/variety", videoForm);
 
+  toast.success("Video added!");
+
+  setVideoForm({
+    show_name:"",
+    episode:"",
+    description:"",
+    photo_url:"",
+    youtube_url:"",
+    air_date:""
+  });
+
+  load();
+};
   if (!ready || !admin) return <div className="grid min-h-screen place-items-center text-[color:var(--ink-soft)]">Loading…</div>;
 
   const pendingAus = aus.filter((a) => a.status === "pending").length;
@@ -80,7 +106,14 @@ export default function AdminDashboard() {
           <button onClick={() => setTab("comments")} data-testid="tab-comments" className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${tab === "comments" ? "bg-[color:var(--ink)] text-white" : "border border-[color:var(--line)]"}`}>
             Notes {pendingComments > 0 && `(${pendingComments})`}
           </button>
-        </div>
+            <button 
+onClick={() => setTab("variety")}
+className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
+tab === "variety" ? "bg-[color:var(--ink)] text-white" : "border border-[color:var(--line)]"
+}`}>
+Variety
+</button>
+  </div>
 
         {tab === "aus" && (
           <div className="mt-8 space-y-4" data-testid="admin-au-list">
@@ -115,8 +148,63 @@ export default function AdminDashboard() {
             ))}
           </div>
         )}
+{tab === "variety" && (
+<div className="mt-8 glass rounded-[1.75rem] p-6">
 
-        {tab === "comments" && (
+<h2 className="font-serif-display text-3xl">
+Add Variety Video
+</h2>
+
+
+<input
+className="mt-4 w-full rounded-xl border p-3"
+placeholder="Show name"
+value={videoForm.show_name}
+onChange={(e)=>setVideoForm({...videoForm,show_name:e.target.value})}
+/>
+
+
+<input
+className="mt-3 w-full rounded-xl border p-3"
+placeholder="Episode"
+value={videoForm.episode}
+onChange={(e)=>setVideoForm({...videoForm,episode:e.target.value})}
+/>
+
+
+<textarea
+className="mt-3 w-full rounded-xl border p-3"
+placeholder="Description"
+value={videoForm.description}
+onChange={(e)=>setVideoForm({...videoForm,description:e.target.value})}
+/>
+
+
+<input
+className="mt-3 w-full rounded-xl border p-3"
+placeholder="YouTube link"
+value={videoForm.youtube_url}
+onChange={(e)=>setVideoForm({...videoForm,youtube_url:e.target.value})}
+/>
+
+
+<input
+className="mt-3 w-full rounded-xl border p-3"
+placeholder="Photo URL"
+value={videoForm.photo_url}
+onChange={(e)=>setVideoForm({...videoForm,photo_url:e.target.value})}
+/>
+
+
+<button
+onClick={addVariety}
+className="mt-5 rounded-full bg-black px-6 py-3 text-white">
+<Plus size={14}/> Add Video
+</button>
+
+
+</div>
+)}        {tab === "comments" && (
           <div className="mt-8 space-y-4" data-testid="admin-comment-list">
             {comments.length === 0 && <p className="text-[color:var(--ink-soft)]">No notes yet.</p>}
             {comments.map((c) => (
