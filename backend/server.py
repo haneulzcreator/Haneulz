@@ -99,16 +99,12 @@ class AU(BaseModel):
 
     title: str
 
-    author_name: str
+    short_description: Optional[str] = ""
 
-    short_description: str
+    full_story: Optional[str] = ""
 
-    full_story: str
-
-    cover_image_url: Optional[str] = None
-
-    # Original story link
-    story_url: Optional[str] = None
+     # User submits original story/post link only
+    source_url: str
 
     tags: List[str] = []
 
@@ -125,17 +121,29 @@ class AU(BaseModel):
     source_url: Optional[str] = None
 
 class CommentCreate(BaseModel):
-    author_name: str
+    author_name: Optional[str] = "Anonymous"
     text: str
 
 
-class Comment(BaseModel):
+ class AU(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    au_id: str
-    author_name: str
-    text: str
+
+    title: str
+
+    # Admin can set this later
+    author_name: Optional[str] = "Anonymous"
+    short_description: Optional[str] = ""
+    full_story: Optional[str] = ""
+
+    # Admin only
+    cover_image_url: Optional[str] = None
+    tags: List[str] = []
+    au_type: str = "story"
+    source: str = "other"
     status: str = "pending"
+    likes: int = 0
     created_at: str = Field(default_factory=now_iso)
+    source_url: Optional[str] = None
 
 
 class VarietyCreate(BaseModel):
@@ -187,8 +195,14 @@ async def me(admin: dict = Depends(get_current_admin)):
 
 @api_router.post("/aus", response_model=AU)
 async def submit_au(input: AUCreate):
-    au = AU(**input.model_dump())
+    au = AU(
+        **input.model_dump(),
+        author_name="Anonymous",
+        cover_image_url=None
+    )
+
     await db.aus.insert_one(au.model_dump())
+
     return au
 
 
@@ -220,10 +234,19 @@ async def like_au(au_id: str):
     return {"likes": doc["likes"]}
 
 
-@api_router.get("/aus/{au_id}/comments", response_model=List[Comment])
-async def list_comments(au_id: str):
-    docs = await db.comments.find({"au_id": au_id, "status": "approved"}, {"_id": 0}).sort("created_at", -1).to_list(500)
-    return docs
+@api_router.post("/aus/{au_id}/comments", response_model=Comment)
+async def submit_comment(au_id: str, input: CommentCreate):
+    au = await db.aus.find_one({"id": au_id})
+    if not au:
+        raise HTTPException(status_code=404, detail="AU not found")
+    comment = Comment(
+        au_id=au_id,
+        author_name=input.author_name or "Anonymous",
+        text=input.text
+    )
+
+    await db.comments.insert_one(comment.model_dump())
+    return comment
 
 
 @api_router.post("/aus/{au_id}/comments", response_model=Comment)
