@@ -137,12 +137,17 @@ class Variety(BaseModel):
 async def login(input: LoginInput):
     print("Searching email:", input.email.lower())
     print("Database:", db.name)
+
     all_users = await db.users.find({}).to_list(10)
     print("Users in database:", all_users)
+
     user = await db.users.find_one({"email": input.email.lower()})
+
     if not user or not verify_password(input.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="Invalid email or password")
+
     token = create_access_token(user["id"], user["email"])
+
     return {
         "token": token,
         "user": {
@@ -151,7 +156,6 @@ async def login(input: LoginInput):
             "role": user.get("role", "admin")
         }
     }
-
 @api_router.get("/auth/me")
 async def me(admin: dict = Depends(get_current_admin)):
     return admin
