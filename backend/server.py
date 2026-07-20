@@ -79,28 +79,49 @@ class AUCreate(BaseModel):
     author_name: str
     short_description: str
     full_story: str
+
     cover_image_url: Optional[str] = None
+
+    # Link to AO3, Wattpad, X, TikTok, Carrd, etc.
     story_url: Optional[str] = None
+
     tags: List[str] = []
+
     au_type: str = "story"
+
     source: str = "other"
+
     source_url: Optional[str] = None
 
 
 class AU(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
     title: str
+
     author_name: str
+
     short_description: str
+
     full_story: str
+
     cover_image_url: Optional[str] = None
+
+    # Original story link
     story_url: Optional[str] = None
+
     tags: List[str] = []
+
     au_type: str = "story"
+
     source: str = "other"
+
     status: str = "pending"
+
     likes: int = 0
+
     created_at: str = Field(default_factory=now_iso)
+
     source_url: Optional[str] = None
 
 class CommentCreate(BaseModel):
