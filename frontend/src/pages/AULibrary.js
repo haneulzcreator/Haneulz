@@ -22,17 +22,16 @@ export default function AULibrary() {
   const [loading, setLoading] = useState(true);
   const { isSaved, count: savedCount } = useBookmarks();
 
-  useEffect(() => {
+useEffect(() => {
   api
     .get("/aus")
-    .then((r) => setAus(r.data))
+    .then((r) => {
+      console.log("AU DATA:", r.data);
+      setAus(r.data);
+    })
     .catch((err) => console.error("AU loading error:", err))
     .finally(() => setLoading(false));
-}, []);
-  .then((r) => {
-  console.log("AU DATA:", r.data);
-  setAus(r.data);
-})
+}, [])
     const hiddenTags = new Set(["coffee shop", "fated", "headcanon", "music", "soft", "soulmate"]);
   const derivedTags = Array.from(new Set(aus.flatMap((a) => a.tags || []))).filter(
     (t) => !hiddenTags.has(t.toLowerCase())
