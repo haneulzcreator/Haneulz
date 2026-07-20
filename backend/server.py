@@ -47,39 +47,31 @@ def now_iso():
 def hash_password(password:str):
     return bcrypt.hashpw(
         password.encode(),
-        bcrypt.gensalt()
-    ).decode()
+        bcrypt.gensalt()).decode()
 
 
 
 def verify_password(password, hashed):
     return bcrypt.checkpw(
         password.encode(),
-        hashed.encode()
-    )
-
-
+        hashed.encode())
 
 def create_access_token(user_id,email):
-
     payload = {
         "sub":user_id,
         "email":email,
-        "exp":datetime.now(timezone.utc)+timedelta(days=7)
-    }
+        "exp":datetime.now(timezone.utc)+timedelta(days=7)}
 
     return jwt.encode(
         payload,
         JWT_SECRET,
-        algorithm=JWT_ALGORITHM
-    )
+        algorithm=JWT_ALGORITHM)
 
 
 
 async def get_current_admin(request:Request):
 
     header=request.headers.get("Authorization","")
-
     if not header.startswith("Bearer "):
         raise HTTPException(
             status_code=401,
@@ -215,27 +207,13 @@ class CommentCreate(BaseModel):
 
 
 class Comment(BaseModel):
-
-    id:str=Field(
-        default_factory=lambda:str(uuid.uuid4())
-    )
-
-
+    id:str=Field(default_factory=lambda:str(uuid.uuid4()))
     au_id:str
-
-
     author_name:str="Anonymous"
-
-
     text:str
-
-
     status:str="pending"
-
-
     created_at:str=Field(
-        default_factory=now_iso
-    )
+        default_factory=now_iso)
 
 
 
