@@ -83,6 +83,7 @@ class AUCreate(BaseModel):
     tags: List[str] = []
     au_type: str = "story"
     source: str = "other"
+    source_url: Optional[str] = None
 
 
 class AU(BaseModel):
@@ -98,7 +99,7 @@ class AU(BaseModel):
     status: str = "pending"
     likes: int = 0
     created_at: str = Field(default_factory=now_iso)
-
+    source_url: Optional[str] = None
 
 class CommentCreate(BaseModel):
     author_name: str
