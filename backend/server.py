@@ -163,21 +163,6 @@ class AU(BaseModel):
     likes: int = 0
     created_at: str = Field(default_factory=now_iso)
 
-# =========================
-# COMMENTS
-# =========================
-
-class CommentCreate(BaseModel):
-    author_name: str = "Anonymous"
-    text: str
-
-class Comment(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    au_id: str
-    author_name: str = "Anonymous"
-    text: str
-    status: str = "pending"
-    created_at: str = Field(default_factory=now_iso)
 
 # =========================
 # VARIETY
@@ -427,7 +412,19 @@ async def like_au(
 # COMMENTS
 # =========================
 
-@api_router.post(
+class CommentCreate(BaseModel):
+    author_name: str = "Anonymous"
+    text: str
+
+class Comment(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    au_id: str
+    author_name: str = "Anonymous"
+    text: str
+    status: str = "pending"
+    created_at: str = Field(default_factory=now_iso)
+    
+    @api_router.post(
     "/aus/{au_id}/comments",
     response_model=Comment
 )
@@ -437,7 +434,11 @@ async def submit_comment(
 ):
     au = await db.aus.find_one({"id":au_id})
     if not au:raise HTTPException(status_code=404,detail="AU not found")
-    comment = Comment(au_id=au_id,**input.model_dump())
+    
+    comment = Comment(
+        au_id=au_id,
+        **input.model_dump()
+    )
     await db.comments.insert_one(comment.model_dump())
     return comment
  # =========================
@@ -503,99 +504,27 @@ async def admin_list_aus(
     return docs
 
 
-@api_router.patch(
-    "/admin/aus/{au_id}"
-)
-async def admin_update_au(
-    au_id:str,
-    body:dict,
-    admin:dict = Depends(get_current_admin)
-):
-
-    new_status = body.get(
-        "status"
-    )
-
-
-    if new_status not in (
-        "approved",
-        "rejected",
-        "pending"
-    ):
-
-        raise HTTPException(
-            status_code=400,
-            detail="Invalid status"
-        )
-
-
-
-    result = await db.aus.update_one(
-
-        {
-            "id":au_id
-        },
-
-        {
-            "$set":{
-                "status":new_status
-            }
-        }
-
-    )
-
+@api_router.patch("/admin/aus/{au_id}")
+async def admin_update_au(au_id:str,body:dict,admin:dict = Depends(get_current_admin)):
+    new_status = body.get("status")
+    if new_status not in ("approved","rejected","pending"):
+        raise HTTPException(status_code=400,detail="Invalid status")
+    result = await db.aus.update_one({"id":au_id},
+{"$set":{"status":new_status}})
 
     if result.matched_count == 0:
+        raise HTTPException(status_code=404,detail="AU not found")
+    return {"ok":True,"status":new_status}
 
-        raise HTTPException(
-            status_code=404,
-            detail="AU not found"
-        )
-
-
-    return {
-        "ok":True,
-        "status":new_status
-    }
-
-
-
-
-
-@api_router.delete(
-    "/admin/aus/{au_id}"
-)
-async def admin_delete_au(
-    au_id:str,
-    admin:dict = Depends(get_current_admin)
-):
-
-    await db.aus.delete_one(
-        {
-            "id":au_id
-        }
-    )
-
-
-    await db.comments.delete_many(
-        {
-            "au_id":au_id
-        }
-    )
-
-
-    return {
-        "ok":True
-    }
-
-
-
-
+@api_router.delete("/admin/aus/{au_id}")
+async def admin_delete_au(au_id:str,admin:dict = Depends(get_current_admin)):
+    await db.aus.delete_one({"id":au_id})
+    await db.comments.delete_many({"au_id":au_id})
+    return {"ok":True}
 
 # =========================
 # ADMIN COMMENTS
 # =========================
-
 
 
 @api_router.get(
@@ -657,103 +586,35 @@ async def admin_update_comment(
         )
 
 
-    result = await db.comments.update_one(
-
-        {
-            "id":comment_id
-        },
-
-        {
-            "$set":{
-                "status":new_status
-            }
-        }
-
-    )
-
-
+    result = await db.comments.update_one({"id":comment_id},
+        {"$set":{"status":new_status}})
     if result.matched_count == 0:
+        raise HTTPException(status_code=404,detail="Comment not found")
 
-        raise HTTPException(
-            status_code=404,
-            detail="Comment not found"
-        )
+    return {"ok":True,"status":new_status}
 
-
-    return {
-        "ok":True,
-        "status":new_status
-    }
-
-
-@api_router.delete(
-    "/admin/comments/{comment_id}"
-)
-async def admin_delete_comment(
-    comment_id:str,
-    admin:dict=Depends(get_current_admin)
-):
-
-    await db.comments.delete_one(
-        {
-            "id":comment_id
-        }
-    )
-
-
+@api_router.delete("/admin/comments/{comment_id}")
+async def admin_delete_comment(comment_id:str,admin:dict=Depends(get_current_admin)):
+    await db.comments.delete_one({"id":comment_id})
     return {"ok":True}
  # =========================
 # ADMIN VARIETY ROUTES
 # =========================
 
+@api_router.post("/admin/variety",response_model=Variety)
+async def admin_create_variety(input: VarietyCreate,admin: dict = Depends(get_current_admin)):
+    variety = Variety(**input.model_dump())
 
-@api_router.post(
-    "/admin/variety",
-    response_model=Variety
-)
-async def admin_create_variety(
-    input: VarietyCreate,
-    admin: dict = Depends(get_current_admin)
-):
-
-    variety = Variety(
-        **input.model_dump()
-    )
-
-
-    await db.variety.insert_one(
-        variety.model_dump()
-    )
-
-
+    await db.variety.insert_one(variety.model_dump())
     return variety
 
 
-
-
-
-@api_router.delete(
-    "/admin/variety/{variety_id}"
-)
-async def admin_delete_variety(
-    variety_id:str,
-    admin:dict=Depends(get_current_admin)
-):
-
+@api_router.delete("/admin/variety/{variety_id}")
+async def admin_delete_variety(variety_id:str,admin:dict=Depends(get_current_admin)):
     await db.variety.delete_one(
-        {
-            "id":variety_id
-        }
-    )
+        {"id":variety_id})
 
-
-    return {
-        "ok":True
-    }
-
-
-
-
+    return {"ok":True}
 
 # =========================
 # ROOT
@@ -763,126 +624,42 @@ async def admin_delete_variety(
 @api_router.get("/")
 async def root():
 
-    return {
-        "message":"HANEULZ API"
-    }
-
-
-
-
+    return {"message":"HANEULZ API"}
 
 # =========================
 # INCLUDE ROUTER
 # =========================
 
-
-app.include_router(
-    api_router
-)
-
-
-
-
+app.include_router(api_router)
 
 # =========================
 # CORS
 # =========================
 
-
-app.add_middleware(
-
-    CORSMiddleware,
-
-    allow_credentials=True,
-
-    allow_origins=os.environ.get(
-        "CORS_ORIGINS",
-        "*"
-    ).split(","),
-
-    allow_methods=[
-        "*"
-    ],
-
-    allow_headers=[
-        "*"
-    ]
-
-)
-
-
-
-
+app.add_middleware(CORSMiddleware,allow_credentials=True,allow_origins=os.environ.get("CORS_ORIGINS","*").split(","),
+    allow_methods=["*"],
+    allow_headers=["*"])
 
 # =========================
 # DATABASE STARTUP
 # =========================
 
-
 async def seed():
-
-    admin_email = os.environ.get(
-        "ADMIN_EMAIL",
-        "admin@haneulz.com"
-    ).lower()
-
-
-    admin_password = os.environ.get(
-        "ADMIN_PASSWORD",
-        "haneulz2025"
-    )
-
-
-    existing = await db.users.find_one(
-        {
-            "email":admin_email
-        }
-    )
-
+    admin_email = os.environ.get("ADMIN_EMAIL","admin@haneulz.com").lower()
+    admin_password = os.environ.get("ADMIN_PASSWORD","haneulz2025")
+    existing = await db.users.find_one({"email":admin_email})
 
     if existing is None:
-
-        await db.users.insert_one({
-
-            "id":str(uuid.uuid4()),
-
-            "email":admin_email,
-
-            "password_hash":hash_password(
-                admin_password
-            ),
-
+        await db.users.insert_one({"id":str(uuid.uuid4()),"email":admin_email,"password_hash":hash_password(admin_password),
             "name":"HANEULZ Admin",
-
             "role":"admin",
-
-            "created_at":now_iso()
-
-        })
-
-
-        logger.info(
-            "Seeded admin user"
-        )
-
-
-
-
+            "created_at":now_iso()})
+        logger.info("Seeded admin user")
 
 @app.on_event("startup")
 async def on_startup():
-
-    await db.users.create_index(
-        "email",
-        unique=True
-    )
-
-
+    await db.users.create_index("email",unique=True)
     await seed()
-
-
-
-
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
