@@ -11,6 +11,7 @@ const empty = {
   short_description: "",
   full_story: "",
   cover_image_url: "",
+  source_url: "",
   tags: "",
   au_type: "story",
   source: "x",
