@@ -190,7 +190,7 @@ export default function Variety() {
         {/* Playlists */}
         <div className="mt-14 flex flex-col gap-16" data-testid="variety-playlists">
           {PLAYLISTS.map((p, i) => {
-            const hasVideos = p.category || (p.videos && p.videos.length > 0);
+            const hasVideos = p.videos && p.videos.length > 0;
             const media = (
               <>
                 <div className="aspect-video overflow-hidden">
@@ -438,6 +438,7 @@ export default function Variety() {
            </div>
     </div>
   </div>
+</div>
 )}
 
 <Footer />
