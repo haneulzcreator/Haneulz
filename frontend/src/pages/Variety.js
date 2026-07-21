@@ -53,7 +53,6 @@ const PLATFORM = {
         {
           platform: "x",
           url: "YOUR_DC_LINK",
-          thumbnail: "IMAGE_FROM_POST",
         },
       ],
     },
@@ -422,8 +421,9 @@ useEffect(() => {
   <X size={18} />
 </button>
 
+</div>
 
-       <div className="mt-6">
+<div className="mt-6">
 
         {/* Navigation */}
         <div className="mb-6 flex flex-wrap gap-3">
@@ -454,11 +454,11 @@ useEffect(() => {
                   rel="noreferrer"
                   className="aspect-square overflow-hidden rounded-xl"
                 >
-                  <img
-                    src={post.thumbnail}
-                    alt=""
-                    className="h-full w-full object-cover transition hover:scale-105"
-                  />
+                 <img
+  src={postImages[post.url] || IMAGES.cloudsPink}
+  alt=""
+  className="h-full w-full object-cover transition hover:scale-105"
+/>
                 </a>
               ))}
             </div>
