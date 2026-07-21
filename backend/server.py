@@ -405,8 +405,6 @@ async def like_au(
 
     return {"likes":doc["likes"]}
 
-
-
 # =========================
 # COMMENTS
 # =========================
@@ -423,8 +421,6 @@ class Comment(BaseModel):
     text: str
     status: str = "pending"
     created_at: str = Field(default_factory=now_iso)
-
-
 
 @api_router.post(
     "/aus/{au_id}/comments",
@@ -650,6 +646,53 @@ class FanPost(BaseModel):
     url: str
     caption: str = ""
     created_at: str = Field(default_factory=now_iso)
+
+# =========================
+# FAN POST ROUTES
+# =========================
+
+@api_router.get("/fanposts/{category}")
+async def get_fan_posts(category: str):
+
+    posts = await db.fanposts.find(
+        {"category": category},
+        {"_id":0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return posts
+
+
+@api_router.post("/admin/fanposts", response_model=FanPost)
+async def admin_create_fan_post(
+    input: FanPostCreate,
+    admin: dict = Depends(get_current_admin)
+):
+
+    post = FanPost(
+        **input.model_dump()
+    )
+
+    await db.fanposts.insert_one(
+        post.model_dump()
+    )
+
+    return post
+
+
+@api_router.delete("/admin/fanposts/{post_id}")
+async def admin_delete_fan_post(
+    post_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.fanposts.delete_one(
+        {"id": post_id}
+    )
+
+    return {"ok": True}
     
 # =========================
 # PLAYLIST ROUTES
@@ -664,7 +707,6 @@ async def get_playlist(playlist: str):
 
     return docs
 
-
 @api_router.post("/admin/playlists", response_model=PlaylistItem)
 async def admin_add_playlist_item(
     input: PlaylistItemCreate,
@@ -675,7 +717,6 @@ async def admin_add_playlist_item(
     await db.playlists.insert_one(item.model_dump())
 
     return item
-
 
 @api_router.delete("/admin/playlists/{item_id}")
 async def admin_delete_playlist_item(
@@ -689,7 +730,6 @@ async def admin_delete_playlist_item(
 # =========================
 # ROOT
 # =========================
-
 
 @api_router.get("/")
 async def root():
