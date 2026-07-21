@@ -387,19 +387,21 @@ export default function Variety() {
         </div>
       </section>
 
-     {/* Video collection modal */}
+ {/* Video collection modal */}
 {openPlaylist && (
-  <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" data-testid="playlist-modal">
+  <div
+    className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+    data-testid="playlist-modal"
+  >
     <div
-  className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-  onClick={() => {
-    setOpenPlaylist(null);
-    setActiveSection(null);
-  }}
-/>
+      className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      onClick={() => {
+        setOpenPlaylist(null);
+        setActiveSection(null);
+      }}
+    />
 
     <div className="glass relative z-10 max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] p-6 md:p-8">
-
       <div className="flex items-start justify-between gap-4">
         <div>
           <span className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
@@ -412,21 +414,18 @@ export default function Variety() {
         </div>
 
         <button
-  type="button"
-  onClick={() => {
-    setOpenPlaylist(null);
-    setActiveSection(null);
-  }}
-  className="grid h-10 w-10 place-items-center rounded-full border"
->
-  <X size={18} />
-</button>
+          type="button"
+          onClick={() => {
+            setOpenPlaylist(null);
+            setActiveSection(null);
+          }}
+          className="grid h-10 w-10 place-items-center rounded-full border"
+        >
+          <X size={18} />
+        </button>
+      </div>
 
-</div>
-
-<div className="mt-6">
-
-        {/* Navigation */}
+      <div className="mt-6">
         <div className="mb-6 flex flex-wrap gap-3">
           {openPlaylist.videos.map((section) => (
             <button
@@ -439,7 +438,6 @@ export default function Variety() {
           ))}
         </div>
 
-        {/* Grid */}
         {activeSection && (
           <div>
             <h4 className="mb-4 font-serif-display text-3xl">
@@ -455,23 +453,22 @@ export default function Variety() {
                   rel="noreferrer"
                   className="aspect-square overflow-hidden rounded-xl"
                 >
-                 <img
-  src={postImages[post.url] || IMAGES.cloudsPink}
-  alt=""
-  className="h-full w-full object-cover transition hover:scale-105"
-/>
+                  <img
+                    src={postImages[post.url] || IMAGES.cloudsPink}
+                    alt=""
+                    className="h-full w-full object-cover transition hover:scale-105"
+                  />
                 </a>
               ))}
             </div>
           </div>
         )}
-
       </div>
     </div>
   </div>
 )}
 
 <Footer />
-    </div>
-  );
+</div>
+);
 }
