@@ -126,6 +126,7 @@ async def get_current_admin(request:Request):
             status_code=401,
             detail="Invalid token"
         )
+        
 # =========================
 # AUTH MODEL
 # =========================
@@ -162,7 +163,6 @@ class AU(BaseModel):
     status: str = "pending"
     likes: int = 0
     created_at: str = Field(default_factory=now_iso)
-
 
 # =========================
 # VARIETY
@@ -612,7 +612,8 @@ async def admin_update_comment(
 async def admin_delete_comment(comment_id:str,admin:dict=Depends(get_current_admin)):
     await db.comments.delete_one({"id":comment_id})
     return {"ok":True}
- # =========================
+    
+# =========================
 # ADMIN VARIETY ROUTES
 # =========================
 
@@ -623,13 +624,33 @@ async def admin_create_variety(input: VarietyCreate,admin: dict = Depends(get_cu
     await db.variety.insert_one(variety.model_dump())
     return variety
 
-
 @api_router.delete("/admin/variety/{variety_id}")
 async def admin_delete_variety(variety_id:str,admin:dict=Depends(get_current_admin)):
     await db.variety.delete_one(
         {"id":variety_id})
     return {"ok":True}
 
+# =========================
+# FAN POSTS / DC PLAYLIST
+# =========================
+
+class FanPostCreate(BaseModel):
+    category: str   # yence-posts, han-posts, haneulz-dc
+    platform: str   # instagram, x, tiktok
+    thumbnail: str
+    url: str
+    caption: str = ""
+
+
+class FanPost(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    category: str
+    platform: str
+    thumbnail: str
+    url: str
+    caption: str = ""
+    created_at: str = Field(default_factory=now_iso)
+    
 # =========================
 # PLAYLIST ROUTES
 # =========================
