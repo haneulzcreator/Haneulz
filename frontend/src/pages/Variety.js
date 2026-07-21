@@ -95,36 +95,37 @@ export default function Variety() {
   const [playingDuet, setPlayingDuet] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
   const [postImages, setPostImages] = useState({});
-  
-useEffect(() => {
-  const loadImages = async () => {
+  useEffect(() => {
+  const loadPosts = async () => {
     const images = {};
 
-    for (const section of PLAYLISTS[0].videos) {
-      for (const post of section.posts) {
-        try {
-          const res = await fetch("/api/posts/preview", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              url: post.url,
-            }),
-          });
+    const categories = [
+      "yence-posts",
+      "han-posts",
+      "haneulz-dc"
+    ];
 
-          const data = await res.json();
-          images[post.url] = data.thumbnail;
-        } catch {
-          images[post.url] = null;
-        }
+    for (const category of categories) {
+      try {
+        const res = await fetch(
+          `/api/fanposts/${category}`
+        );
+
+        const posts = await res.json();
+
+        posts.forEach(post => {
+          images[post.url] = post.thumbnail;
+        });
+
+      } catch (err) {
+        console.error(err);
       }
     }
 
     setPostImages(images);
   };
 
-  loadImages();
+  loadPosts();
 }, []);
 
   return (
