@@ -12,26 +12,13 @@ const PLATFORM = {
 
   const PLAYLISTS = [
   {
-    name: "📸💗 HANEULZ 💙🌩️",
-    category: "haneulz",
-    thumbnail: REAL.ahofGroup,
-    description:
-      "A collection of Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
-  },
-  {
-    name: "🐈‍⬛ Han Posts",
-    category: "han-posts",
-    thumbnail: IMAGES.cloudsSoft,
-    description:
-      "A collection of Han-related posts, updates and memorable moments.",
-  },
-  {
-    name: "🎬 HANEULZ DC",
-    category: "haneulz-dc",
-    thumbnail: REAL.ahofGroup,
-    description:
-      "Fan edits, clips and community posts celebrating HANEULZ.",
-  },
+    {
+  name: "📸💗 HANEULZ 💙🌩️",
+  category: "haneulz",
+  thumbnail: REAL.ahofGroup,
+  description:
+    "A collection of Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
+},
   {
     name: "AHOF's First Anniversary",
     url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
