@@ -244,14 +244,17 @@ export default function Variety() {
                       {media}
                     </div>
                   ) : hasVideos ? (
-                    <button
-                      type="button"
-                      onClick={() => setOpenPlaylist(p)}
-                      data-testid={`variety-playlist-${i}`}
-                      className={`${mediaClass} text-left`}
-                    >
-                      {media}
-                    </button>
+                   <button
+  type="button"
+  onClick={() => {
+    setOpenPlaylist(p);
+    setActiveSection(p.videos?.[0]);
+  }}
+  data-testid={`variety-playlist-${i}`}
+  className={`${mediaClass} text-left`}
+>
+  {media}
+</button>
                   ) : (
                     <a
                       href={p.url}
@@ -281,7 +284,10 @@ export default function Variety() {
                     ) : hasVideos ? (
                       <button
                         type="button"
-                        onClick={() => setOpenPlaylist(p)}
+                       onClick={() => {
+  setOpenPlaylist(p);
+  setActiveSection(p.videos?.[0]);
+}}
                         data-testid={`variety-open-${i}`}
                         className="link-underline mt-5 inline-flex items-center gap-2 text-sm uppercase tracking-widest"
                       >
@@ -429,10 +435,12 @@ export default function Variety() {
             />
           </a>
         ))}
-      </div>
+           </div>
     </div>
-  )}
+  </div>
+)}
 
-</div>
+<Footer />
+    </div>
   );
 }
