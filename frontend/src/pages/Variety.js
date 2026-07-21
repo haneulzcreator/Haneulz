@@ -16,24 +16,21 @@ const PLAYLISTS = [
     category: "yence-posts",
     thumbnail: IMAGES.cloudsPink,
     description:
-      "A collection of Yence-related posts from Instagram, X and TikTok — soft moments, updates and memories shared by fans.",
-    videos: [],
+      "A collection of Yence-related posts, updates and moments from the fandom.",
   },
   {
     name: "🐈‍⬛ Han Posts",
     category: "han-posts",
     thumbnail: IMAGES.cloudsSoft,
     description:
-      "A cozy archive of Han posts — edits, photos and fan moments collected from different platforms.",
-    videos: [],
+      "A collection of Han-related posts, updates and memorable moments.",
   },
   {
     name: "🎬 HANEULZ DC",
     category: "haneulz-dc",
     thumbnail: REAL.ahofGroup,
     description:
-      "The HANEULZ digital corner — fan content, clips and memorable moments gathered in one place.",
-    videos: [],
+      "Fan edits, clips and community posts celebrating HANEULZ.",
   },
   {
     name: "AHOF's First Anniversary",
@@ -41,7 +38,7 @@ const PLAYLISTS = [
     thumbnail:
       "https://img.youtube.com/vi/roXu3mS4TOc/maxresdefault.jpg",
     description:
-      "Celebrating one whole year since AHOF debuted on July 1, 2025 with 'Who We Are' — anniversary lives, heartfelt messages and FOHA memories. 🎂",
+      "Celebrating AHOF's first anniversary with lives, messages and memories.",
   },
   {
     name: "AHOF's Music Videos",
@@ -49,7 +46,7 @@ const PLAYLISTS = [
     thumbnail:
       "https://img.youtube.com/vi/OhbMVYVNo40/maxresdefault.jpg",
     description:
-      "Every AHOF music video in one place — debut tracks, comebacks, B-sides and special releases. 🎬",
+      "Every AHOF music video in one place.",
   },
 ];
 
