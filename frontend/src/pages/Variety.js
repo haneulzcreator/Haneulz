@@ -13,44 +13,56 @@ const PLATFORM = {
 
   const PLAYLISTS = [
   {
-    name: "📸💗 HANEULZ 💙🌩️",
-    thumbnail: REAL.ahofGroup,
-    description:
-      "Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
-    videos: [
-      {
-        title: "🦌 Yence Posts",
-        platform: "x",
-        url: "https://x.com/AHOF_official/status/2078841987353264451/photo/1",
-        thumbnail: IMAGES.cloudsPink,
-      },
-      {
-        title: "🦌 Yence Instagram",
-        platform: "instagram",
-        url: "https://www.instagram.com/p/Da72O9cEzFN/?igsh=ZXNnczljNDg2endl",
-        thumbnail: "YOUR_IMAGE",
-      },
-      {
-        title: "🐈‍⬛ Han Posts",
-        platform: "x",
-        url: "https://x.com/AHOF_official/status/2071251182857924744/photo/1",
-        thumbnail: IMAGES.cloudsSoft,
-      },
-      {
-        title: "🐈‍⬛ Han Instagram",
-        platform: "instagram",
-        url: "https://www.instagram.com/p/DZ7tG4dkxEP/?igsh=OTZsZmZsd2U2emkw",
-        thumbnail: "YOUR_IMAGE",
-      },
-      {
-        title: "🎬 HANEULZ DC",
-        platform: "x",
-        url: "YOUR_DC_LINK",
-        thumbnail: REAL.ahofGroup,
-      },
-    ],
-  },
+  name: "📸💗 HANEULZ 💙🌩️",
+  thumbnail: REAL.ahofGroup,
+  description:
+    "Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
 
+  videos: [
+    {
+      category: "🦌 Yence Posts",
+      posts: [
+        {
+          platform: "x",
+          url: "YOUR_X_LINK",
+          thumbnail: "IMAGE_FROM_X_POST",
+        },
+        {
+          platform: "instagram",
+          url: "YOUR_IG_LINK",
+          thumbnail: "IMAGE_FROM_IG_POST",
+        },
+      ],
+    },
+
+    {
+      category: "🐈‍⬛ Han Posts",
+      posts: [
+        {
+          platform: "x",
+          url: "YOUR_X_LINK",
+          thumbnail: "IMAGE_FROM_X_POST",
+        },
+        {
+          platform: "instagram",
+          url: "YOUR_IG_LINK",
+          thumbnail: "IMAGE_FROM_IG_POST",
+        },
+      ],
+    },
+
+    {
+      category: "🎬 HANEULZ DC",
+      posts: [
+        {
+          platform: "x",
+          url: "YOUR_DC_LINK",
+          thumbnail: "IMAGE_FROM_POST",
+        },
+      ],
+    },
+  ],
+},
   {
     name: "AHOF's First Anniversary",
     url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
@@ -348,59 +360,35 @@ export default function Variety() {
 
       {/* Video collection modal */}
       {openPlaylist && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" data-testid="playlist-modal">
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setOpenPlaylist(null)}
-          />
-          <div className="glass relative z-10 max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] p-6 md:p-8">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <span className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
-                  Playlist · {openPlaylist.videos.length} videos
-                </span>
-                <h3 className="font-serif-display text-3xl font-medium md:text-4xl">{openPlaylist.name}</h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setOpenPlaylist(null)}
-                data-testid="close-playlist-modal"
-                aria-label="Close"
-                className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[color:var(--line)] hover:bg-white/60"
-              >
-                <X size={18} />
-              </button>
-            </div>
+        <div className="mt-6">
+  {openPlaylist.videos.map((section) => (
+    <div key={section.category} className="mb-10">
 
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {openPlaylist.videos.map((v, idx) => {
-                const plat = PLATFORM[v.platform] || PLATFORM.youtube;
-                const PlatIcon = plat.Icon;
-                return (
-                  <a
-                    key={idx}
-                    href={v.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-testid={`playlist-video-${idx}`}
-                    className="group overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-white/50 transition-shadow duration-500 hover:shadow-[0_20px_44px_-24px_rgba(243,174,203,0.7)]"
-                  >
-                    <div className="relative aspect-video overflow-hidden">
-                      <img src={v.thumbnail} alt={v.title} className="au-card-img h-full w-full object-cover" />
-                      <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-[0.6rem] font-medium uppercase tracking-widest backdrop-blur">
-                        <PlatIcon size={12} /> {plat.label}
-                      </span>
-                      <div className="absolute inset-0 grid place-items-center bg-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <span className="grid h-12 w-12 place-items-center rounded-full bg-white/90">
-                          <Play size={16} className="ml-0.5 text-[color:var(--ink)]" fill="currentColor" />
-                        </span>
-                      </div>
-                    </div>
-                    <p className="p-4 text-sm font-medium">{v.title}</p>
-                  </a>
-                );
-              })}
-            </div>
+      <h4 className="mb-4 font-serif-display text-3xl">
+        {section.category}
+      </h4>
+
+      <div className="grid grid-cols-3 gap-3">
+        {section.posts.map((post, idx) => (
+          <a
+            key={idx}
+            href={post.url}
+            target="_blank"
+            rel="noreferrer"
+            className="aspect-square overflow-hidden rounded-xl"
+          >
+            <img
+              src={post.thumbnail}
+              alt=""
+              className="h-full w-full object-cover transition hover:scale-105"
+            />
+          </a>
+        ))}
+      </div>
+
+    </div>
+  ))}
+</div>
           </div>
         </div>
       )}
