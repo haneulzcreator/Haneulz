@@ -25,12 +25,10 @@ const PLATFORM = {
         {
           platform: "x",
           url: "https://x.com/ahof_official/status/2078841987353264451?s=61",
-          thumbnail: "IMAGE_FROM_X_POST",
         },
         {
           platform: "instagram",
           url: "https://www.instagram.com/p/Da72O9cEzFN/?igsh=ZXNnczljNDg2endl",
-          thumbnail: "IMAGE_FROM_IG_POST",
         },
       ],
     },
@@ -41,12 +39,10 @@ const PLATFORM = {
         {
           platform: "x",
           url: "https://x.com/ahof_official/status/2036311045216878942?s=61",
-          thumbnail: "IMAGE_FROM_X_POST",
         },
         {
           platform: "instagram",
           url: "https://www.instagram.com/p/DaA2dJ7Ez0k/?igsh=MXRrdHIxM29tZTJqOA==",
-          thumbnail: "IMAGE_FROM_IG_POST",
         },
       ],
     },
@@ -99,11 +95,37 @@ export default function Variety() {
   const [openPlaylist, setOpenPlaylist] = useState(null);
   const [playingDuet, setPlayingDuet] = useState(null);
   const [activeSection, setActiveSection] = useState(null);
+  const [postImages, setPostImages] = useState({});
   
-  useEffect(() => {
-  api.get("/variety")
-    .then((r) => setShows(r.data))
-    .catch(() => {});
+useEffect(() => {
+  const loadImages = async () => {
+    const images = {};
+
+    for (const section of PLAYLISTS[0].videos) {
+      for (const post of section.posts) {
+        try {
+          const res = await fetch("/api/posts/preview", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              url: post.url,
+            }),
+          });
+
+          const data = await res.json();
+          images[post.url] = data.thumbnail;
+        } catch {
+          images[post.url] = null;
+        }
+      }
+    }
+
+    setPostImages(images);
+  };
+
+  loadImages();
 }, []);
 
   return (
@@ -369,9 +391,12 @@ export default function Variety() {
 {openPlaylist && (
   <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" data-testid="playlist-modal">
     <div
-      className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-      onClick={() => setOpenPlaylist(null)}
-    />
+  className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+  onClick={() => {
+    setOpenPlaylist(null);
+    setActiveSection(null);
+  }}
+/>
 
     <div className="glass relative z-10 max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] p-6 md:p-8">
 
@@ -387,13 +412,15 @@ export default function Variety() {
         </div>
 
         <button
-          type="button"
-          onClick={() => setOpenPlaylist(null)}
-          className="grid h-10 w-10 place-items-center rounded-full border"
-        >
-          <X size={18} />
-        </button>
-      </div>
+  type="button"
+  onClick={() => {
+    setOpenPlaylist(null);
+    setActiveSection(null);
+  }}
+  className="grid h-10 w-10 place-items-center rounded-full border"
+>
+  <X size={18} />
+</button>
 
 
        <div className="mt-6">
