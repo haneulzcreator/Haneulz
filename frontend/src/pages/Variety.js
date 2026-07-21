@@ -7,53 +7,50 @@ import Footer from "../components/Footer";
 const PLATFORM = {
   youtube: { label: "YouTube", Icon: Youtube },
   x: { label: "X", Icon: Twitter },
+  instagram: { label: "Instagram", Icon: Music2 },
   tiktok: { label: "TikTok", Icon: Music2 },
 };
 
   const PLAYLISTS = [
-{
-  name: "📸💗 HANEULZ 💙🌩️",
-  thumbnail: REAL.ahofGroup,
-  description:
-    "Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
-  videos: [
-    {
-      title: "🦌 Yence Posts",
-      platform: "x",
-      url: "https://x.com/AHOF_official/status/2078841987353264451/photo/1",
-      thumbnail: IMAGES.cloudsPink,
-    },
-    {
-      title: "🦌 Yence Instagram",
-      platform: "instagram",
-      url: "https://www.instagram.com/p/Da72O9cEzFN/?igsh=ZXNnczljNDg2endl",
-      thumbnail: "YOUR_IMAGE",
-    },
-    {
-      title: "🐈‍⬛ Han Posts",
-      platform: "x",
-      url: "https://x.com/AHOF_official/status/2071251182857924744/photo/1",
-      thumbnail: IMAGES.cloudsSoft,
-    },
-    {
-      title: "🐈‍⬛ Han Instagram",
-      platform: "instagram",
-      url: "https://www.instagram.com/p/DZ7tG4dkxEP/?igsh=OTZsZmZsd2U2emkw",
-      thumbnail: "YOUR_IMAGE",
-    },
-    {
-      title: "🎬 HANEULZ DC",
-      platform: "x",
-      url: "YOUR_DC_LINK",
-      thumbnail: REAL.ahofGroup,
-    },
-{
-      title: "🎬 HANEULZ DC",
-      platform: "x",
-      url: "YOUR_DC_LINK",
-      thumbnail: REAL.ahofGroup,
-     },
-    ], 
+  {
+    name: "📸💗 HANEULZ 💙🌩️",
+    thumbnail: REAL.ahofGroup,
+    description:
+      "Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
+    videos: [
+      {
+        title: "🦌 Yence Posts",
+        platform: "x",
+        url: "https://x.com/AHOF_official/status/2078841987353264451/photo/1",
+        thumbnail: IMAGES.cloudsPink,
+      },
+      {
+        title: "🦌 Yence Instagram",
+        platform: "instagram",
+        url: "https://www.instagram.com/p/Da72O9cEzFN/?igsh=ZXNnczljNDg2endl",
+        thumbnail: "YOUR_IMAGE",
+      },
+      {
+        title: "🐈‍⬛ Han Posts",
+        platform: "x",
+        url: "https://x.com/AHOF_official/status/2071251182857924744/photo/1",
+        thumbnail: IMAGES.cloudsSoft,
+      },
+      {
+        title: "🐈‍⬛ Han Instagram",
+        platform: "instagram",
+        url: "https://www.instagram.com/p/DZ7tG4dkxEP/?igsh=OTZsZmZsd2U2emkw",
+        thumbnail: "YOUR_IMAGE",
+      },
+      {
+        title: "🎬 HANEULZ DC",
+        platform: "x",
+        url: "YOUR_DC_LINK",
+        thumbnail: REAL.ahofGroup,
+      },
+    ],
+  },
+
   {
     name: "AHOF's First Anniversary",
     url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
@@ -62,6 +59,7 @@ const PLATFORM = {
     description:
       "Celebrating AHOF's first anniversary with lives, messages and memories.",
   },
+
   {
     name: "AHOF's Music Videos",
     url: "https://youtube.com/playlist?list=PLLhA9zGDtnGQ",
@@ -71,7 +69,6 @@ const PLATFORM = {
       "Every AHOF music video in one place.",
   },
 ];
-
 const DUETS = [
   {
     title: "'The Little Prince'",
