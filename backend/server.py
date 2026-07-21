@@ -256,20 +256,12 @@ async def login(input: LoginInput):
 
     }
 
-
-
-
-
 @api_router.get("/auth/me")
 async def me(
     admin: dict = Depends(get_current_admin)
 ):
 
     return admin
-
-
-
-
 
 # =========================
 # AU ROUTES
@@ -464,7 +456,7 @@ async def submit_comment(
 
 
     return comment
- # =========================
+# =========================
 # VARIETY ROUTES
 # =========================
 
@@ -638,6 +630,41 @@ async def admin_delete_variety(variety_id:str,admin:dict=Depends(get_current_adm
         {"id":variety_id})
     return {"ok":True}
 
+# =========================
+# PLAYLIST ROUTES
+# =========================
+
+@api_router.get("/playlists/{playlist}")
+async def get_playlist(playlist: str):
+    docs = await db.playlists.find(
+        {"playlist": playlist},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(500)
+
+    return docs
+
+
+@api_router.post("/admin/playlists", response_model=PlaylistItem)
+async def admin_add_playlist_item(
+    input: PlaylistItemCreate,
+    admin: dict = Depends(get_current_admin)
+):
+    item = PlaylistItem(**input.model_dump())
+
+    await db.playlists.insert_one(item.model_dump())
+
+    return item
+
+
+@api_router.delete("/admin/playlists/{item_id}")
+async def admin_delete_playlist_item(
+    item_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+    await db.playlists.delete_one({"id": item_id})
+
+    return {"ok": True}
+    
 # =========================
 # ROOT
 # =========================
