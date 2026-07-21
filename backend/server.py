@@ -456,7 +456,6 @@ async def submit_comment(
 # VARIETY ROUTES
 # =========================
 
-
 @api_router.get(
     "/variety",
     response_model=List[Variety]
@@ -481,7 +480,6 @@ async def list_variety():
 # =========================
 # ADMIN AU ROUTES
 # =========================
-
 
 @api_router.get(
     "/admin/aus",
@@ -514,7 +512,6 @@ async def admin_list_aus(
 
     return docs
 
-
 @api_router.patch("/admin/aus/{au_id}")
 async def admin_update_au(au_id:str,body:dict,admin:dict = Depends(get_current_admin)):
     new_status = body.get("status")
@@ -536,7 +533,6 @@ async def admin_delete_au(au_id:str,admin:dict = Depends(get_current_admin)):
 # =========================
 # ADMIN COMMENTS
 # =========================
-
 
 @api_router.get(
     "/admin/comments",
