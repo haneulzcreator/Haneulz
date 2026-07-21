@@ -286,7 +286,7 @@ export default function Variety() {
                   className="group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
                 >
                   <div className="aspect-video overflow-hidden">
-                    <<img
+                    <img
   src={s.photo_url || IMAGES.cloudsPink}
   alt={s.show_name}
   className="au-card-img h-full w-full object-cover"
