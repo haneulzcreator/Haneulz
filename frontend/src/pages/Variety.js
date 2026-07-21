@@ -286,12 +286,12 @@ export default function Variety() {
                   className="group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
                 >
                   <div className="aspect-video overflow-hidden">
-                    <img
-                      src={s.photo_url}
-                      alt={s.show_name}
-                      className="au-card-img h-full w-full object-cover"
-                      loading="lazy"
-                    />
+                    <<img
+  src={s.photo_url || IMAGES.cloudsPink}
+  alt={s.show_name}
+  className="au-card-img h-full w-full object-cover"
+  loading="lazy"
+/>
                   </div>
                   <div className="absolute inset-0 grid place-items-center bg-black/15 transition-colors duration-500 group-hover:bg-black/30">
                     <span className="grid h-16 w-16 place-items-center rounded-full bg-white/85 backdrop-blur transition-transform duration-500 group-hover:scale-110">
