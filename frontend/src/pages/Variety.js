@@ -69,9 +69,10 @@ export default function Variety() {
   const [playingDuet, setPlayingDuet] = useState(null);
 
   useEffect(() => {
-    api.get("/variety")
-      .then((r) => setShows(r.data))
-      .catch(() => {});
+  api.get("/variety")
+    .then((r) => setShows(r.data))
+    .catch(() => {});
+}, []);
 
   return (
     <div
