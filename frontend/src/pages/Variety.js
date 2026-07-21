@@ -11,30 +11,26 @@ const PLATFORM = {
 };
 
 const PLAYLISTS = [
-  {
-    name: "Watch HANEULZ",
-    thumbnail: REAL.ahofGroup,
-    description:
-      "The main collection — every show, game and soft moment where JL & Han shared the screen, gathered from YouTube, X and TikTok.",
-    videos: [
-      {
-        title: "AHOF 'Who We Are' — full stage",
-        platform: "youtube",
-        url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
-        thumbnail: REAL.ahofGroup,
-      },
-      {
-        title: "JL & Han moment (fancam)",
-        platform: "x",
-        url: "https://x.com/",
-        thumbnail: IMAGES.cloudsPink,
-      },
-      {
-        title: "HANEZ edit",
-        platform: "tiktok",
-        url: "https://www.tiktok.com/",
-        thumbnail: IMAGES.cloudsSoft,
-      },
+ {
+  title: "🦌 Yence Posts",
+  platform: "posts",
+  category: "yence-posts",
+  thumbnail: IMAGES.cloudsPink,
+},
+
+{
+  title: "🐈‍⬛ Han Posts",
+  platform: "posts",
+  category: "han-posts",
+  thumbnail: IMAGES.cloudsSoft,
+},
+
+{
+  title: "🎬 HANEULZ DC",
+  platform: "posts",
+  category: "haneulz-dc",
+  thumbnail: REAL.ahofGroup,
+},
     ],
   },
   {
