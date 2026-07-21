@@ -185,7 +185,24 @@ class Variety(BaseModel):
     youtube_url: Optional[str] = None
     air_date: Optional[str] = None
     created_at: str = Field(default_factory=now_iso)
- # =========================
+
+class PlaylistItemCreate(BaseModel):
+    playlist: str
+    title: str
+    platform: str
+    thumbnail: Optional[str] = None
+    url: str
+
+class PlaylistItem(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    playlist: str
+    title: str
+    platform: str
+    thumbnail: Optional[str] = None
+    url: str
+    created_at: str = Field(default_factory=now_iso)
+    
+# =========================
 # AUTH ROUTES
 # =========================
 
@@ -259,7 +276,6 @@ async def me(
 # =========================
 
 
-
 @api_router.post(
     "/aus",
     response_model=AU
@@ -280,9 +296,6 @@ async def submit_au(
 
 
     return au
-
-
-
 
 
 @api_router.get(
@@ -326,9 +339,6 @@ async def list_aus(
     return docs
 
 
-
-
-
 @api_router.get(
     "/aus/{au_id}",
     response_model=AU
@@ -357,9 +367,6 @@ async def get_au(
 
 
     return doc
-
-
-
 
 
 @api_router.post(
@@ -629,7 +636,6 @@ async def admin_create_variety(input: VarietyCreate,admin: dict = Depends(get_cu
 async def admin_delete_variety(variety_id:str,admin:dict=Depends(get_current_admin)):
     await db.variety.delete_one(
         {"id":variety_id})
-
     return {"ok":True}
 
 # =========================
