@@ -10,13 +10,13 @@ const PLATFORM = {
   tiktok: { label: "TikTok", Icon: Music2 },
 };
 
-const PLAYLISTS = [
+  const PLAYLISTS = [
   {
-    name: "🦌 Yence Posts",
-    category: "yence-posts",
-    thumbnail: IMAGES.cloudsPink,
+    name: "📸💗 HANEULZ 💙🌩️",
+    category: "haneulz",
+    thumbnail: REAL.ahofGroup,
     description:
-      "A collection of Yence-related posts, updates and moments from the fandom.",
+      "A collection of Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
   },
   {
     name: "🐈‍⬛ Han Posts",
