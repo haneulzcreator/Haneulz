@@ -50,9 +50,21 @@ const PLAYLISTS = [
   },
 ];
 
+const DUETS = [
+  {
+    title: "'The Little Prince'",
+    subtitle: "Universe League duet stage",
+    videoId: "S5PG6lUSMHs",
+  },
+  {
+    title: "'그대 작은 나의 세상이 되어'",
+    subtitle: "Car, the garden cover · HAN & JL",
+    videoId: "42uMYQV6YV0",
+  },
+];
+
 export default function Variety() {
   const [shows, setShows] = useState([]);
-  const [fanPosts, setFanPosts] = useState([]);
   const [openPlaylist, setOpenPlaylist] = useState(null);
   const [playingDuet, setPlayingDuet] = useState(null);
 
@@ -60,11 +72,6 @@ export default function Variety() {
     api.get("/variety")
       .then((r) => setShows(r.data))
       .catch(() => {});
-
-    api.get("/fan-posts/yence-posts")
-      .then((r) => setFanPosts(r.data))
-      .catch(() => {});
-  }, []);
 
   return (
     <div
