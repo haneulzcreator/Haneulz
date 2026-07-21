@@ -396,49 +396,51 @@ export default function Variety() {
       </div>
 
 
-      <div className="mt-6">
+       <div className="mt-6">
 
-  {/* Navigation */}
-  <div className="mb-6 flex flex-wrap gap-3">
-    {openPlaylist.videos.map((section) => (
-      <button
-        key={section.category}
-        onClick={() => setActiveSection(section)}
-        className="rounded-full border px-4 py-2 text-sm hover:bg-white/60"
-      >
-        {section.category}
-      </button>
-    ))}
-  </div>
+        {/* Navigation */}
+        <div className="mb-6 flex flex-wrap gap-3">
+          {openPlaylist.videos.map((section) => (
+            <button
+              key={section.category}
+              onClick={() => setActiveSection(section)}
+              className="rounded-full border px-4 py-2 text-sm hover:bg-white/60"
+            >
+              {section.category}
+            </button>
+          ))}
+        </div>
 
+        {/* Grid */}
+        {activeSection && (
+          <div>
+            <h4 className="mb-4 font-serif-display text-3xl">
+              {activeSection.category}
+            </h4>
 
-  {/* Grid */}
-  {activeSection && (
-    <div>
-      <h4 className="mb-4 font-serif-display text-3xl">
-        {activeSection.category}
-      </h4>
+            <div className="grid grid-cols-3 gap-3">
+              {activeSection.posts.map((post, idx) => (
+                <a
+                  key={idx}
+                  href={post.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="aspect-square overflow-hidden rounded-xl"
+                >
+                  <img
+                    src={post.thumbnail}
+                    alt=""
+                    className="h-full w-full object-cover transition hover:scale-105"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
-      <div className="grid grid-cols-3 gap-3">
-        {activeSection.posts.map((post, idx) => (
-          <a
-            key={idx}
-            href={post.url}
-            target="_blank"
-            rel="noreferrer"
-            className="aspect-square overflow-hidden rounded-xl"
-          >
-            <img
-              src={post.thumbnail}
-              alt=""
-              className="h-full w-full object-cover transition hover:scale-105"
-            />
-          </a>
-        ))}
-           </div>
+      </div>
     </div>
   </div>
-</div>
 )}
 
 <Footer />
