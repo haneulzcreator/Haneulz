@@ -81,6 +81,12 @@ const [videoForm, setVideoForm] = useState({
 
   load();
 };
+  const deleteVariety = async (id) => {
+  await api.delete(`/admin/variety/${id}`);
+  toast.success("Video deleted");
+  load();
+};
+  
   if (!ready || !admin) return <div className="grid min-h-screen place-items-center text-[color:var(--ink-soft)]">Loading…</div>;
 
   const pendingAus = aus.filter((a) => a.status === "pending").length;
@@ -202,7 +208,31 @@ className="mt-5 rounded-full bg-black px-6 py-3 text-white">
 <Plus size={14}/> Add Video
 </button>
 
+<div className="mt-8 space-y-4">
+  {variety.map((v) => (
+    <div key={v.id} className="glass rounded-[1.75rem] p-5">
+      <h3 className="font-serif-display text-xl">
+        {v.show_name}
+      </h3>
 
+      <p className="text-sm">
+        Episode: {v.episode}
+      </p>
+
+      <p className="mt-2 text-sm">
+        {v.description}
+      </p>
+
+      <button
+        onClick={() => deleteVariety(v.id)}
+        className="mt-4 rounded-full border px-4 py-2 text-xs"
+      >
+        Delete
+      </button>
+    </div>
+  ))}
+</div>
+  
 </div>
 )}        {tab === "comments" && (
           <div className="mt-8 space-y-4" data-testid="admin-comment-list">
