@@ -24,12 +24,12 @@ const PLATFORM = {
       posts: [
         {
           platform: "x",
-          url: "YOUR_X_LINK",
+          url: "https://x.com/ahof_official/status/2078841987353264451?s=61",
           thumbnail: "IMAGE_FROM_X_POST",
         },
         {
           platform: "instagram",
-          url: "YOUR_IG_LINK",
+          url: "https://www.instagram.com/p/Da72O9cEzFN/?igsh=ZXNnczljNDg2endl",
           thumbnail: "IMAGE_FROM_IG_POST",
         },
       ],
@@ -40,12 +40,12 @@ const PLATFORM = {
       posts: [
         {
           platform: "x",
-          url: "YOUR_X_LINK",
+          url: "https://x.com/ahof_official/status/2036311045216878942?s=61",
           thumbnail: "IMAGE_FROM_X_POST",
         },
         {
           platform: "instagram",
-          url: "YOUR_IG_LINK",
+          url: "https://www.instagram.com/p/DaA2dJ7Ez0k/?igsh=MXRrdHIxM29tZTJqOA==",
           thumbnail: "IMAGE_FROM_IG_POST",
         },
       ],
@@ -358,42 +358,72 @@ export default function Variety() {
         </div>
       </section>
 
-      {/* Video collection modal */}
-      {openPlaylist && (
-        <div className="mt-6">
-  {openPlaylist.videos.map((section) => (
-    <div key={section.category} className="mb-10">
+     {/* Video collection modal */}
+{openPlaylist && (
+  <div className="fixed inset-0 z-[100] flex items-center justify-center p-4" data-testid="playlist-modal">
+    <div
+      className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      onClick={() => setOpenPlaylist(null)}
+    />
 
-      <h4 className="mb-4 font-serif-display text-3xl">
-        {section.category}
-      </h4>
+    <div className="glass relative z-10 max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] p-6 md:p-8">
 
-      <div className="grid grid-cols-3 gap-3">
-        {section.posts.map((post, idx) => (
-          <a
-            key={idx}
-            href={post.url}
-            target="_blank"
-            rel="noreferrer"
-            className="aspect-square overflow-hidden rounded-xl"
-          >
-            <img
-              src={post.thumbnail}
-              alt=""
-              className="h-full w-full object-cover transition hover:scale-105"
-            />
-          </a>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <span className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
+            HANEULZ Posts
+          </span>
+
+          <h3 className="font-serif-display text-3xl font-medium md:text-4xl">
+            {openPlaylist.name}
+          </h3>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setOpenPlaylist(null)}
+          className="grid h-10 w-10 place-items-center rounded-full border"
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+
+      <div className="mt-6">
+        {openPlaylist.videos.map((section) => (
+          <div key={section.category} className="mb-10">
+
+            <h4 className="mb-4 font-serif-display text-3xl">
+              {section.category}
+            </h4>
+
+            <div className="grid grid-cols-3 gap-3">
+
+              {section.posts.map((post, idx) => (
+                <a
+                  key={idx}
+                  href={post.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="aspect-square overflow-hidden rounded-xl"
+                >
+                  <img
+                    src={post.thumbnail}
+                    alt={post.title || ""}
+                    className="h-full w-full object-cover transition hover:scale-105"
+                  />
+                </a>
+              ))}
+
+            </div>
+
+          </div>
         ))}
       </div>
 
     </div>
-  ))}
-</div>
-          </div>
-        </div>
-      )}
-
-      <Footer />
+  </div>
+)}
     </div>
   );
 }
