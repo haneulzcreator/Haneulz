@@ -356,7 +356,9 @@ setShows(Array.isArray(res.data) ? res.data : []);
         {section === "whole-group" && "NOW, THE WHOLE GROUP"}
       </h2>
 
-      {shows.map((s, i) => (
+ {shows
+.filter((s) => s.section === section)
+.map((s, i) => (
           <Reveal key={s.id} delay={0.05}>
             <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
 
@@ -397,6 +399,7 @@ setShows(Array.isArray(res.data) ? res.data : []);
 </section>
 
 {/* Video collection modal */}
+{openPlaylist && (
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
           data-testid="playlist-modal"
@@ -474,7 +477,7 @@ setShows(Array.isArray(res.data) ? res.data : []);
             </div>
           </div>
         </div>
-      )}
+  )}
 
       <Footer />
         </div>
