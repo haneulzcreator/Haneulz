@@ -9,7 +9,8 @@ import jwt
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, File, UploadFile
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field, EmailStr
@@ -43,6 +44,15 @@ api_router = APIRouter(prefix="/api")
 logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger(__name__)
+
+# =========================
+# FILE UPLOAD SETUP
+# =========================
+
+UPLOAD_DIR = Path(__file__).parent / "static" / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+app.mount("/static", StaticFiles(directory=ROOT_DIR / "static"), name="static")
 
 # =========================
 # HELPERS
@@ -278,7 +288,6 @@ async def me(
 # AU ROUTES
 # =========================
 
-
 @api_router.post(
     "/aus",
     response_model=AU
@@ -299,7 +308,6 @@ async def submit_au(
 
 
     return au
-
 
 @api_router.get(
     "/aus",
@@ -743,6 +751,31 @@ async def root():
 
     return {"message":"HANEULZ API"}
 
+# =========================
+# UPLOAD ROUTE
+# =========================
+
+@api_router.post("/upload-thumbnail")
+async def upload_thumbnail(
+    file: UploadFile = File(...),
+    admin: dict = Depends(get_current_admin)
+):
+    try:
+        # Generate a unique filename so photos never overwrite each other
+        file_extension = Path(file.filename).suffix
+        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        file_path = UPLOAD_DIR / unique_filename
+
+        with open(file_path, "wb") as buffer:
+            buffer.write(await file.read())
+
+        # Returns the path that will be stored in MongoDB for the post
+        return {"url": f"/static/uploads/{unique_filename}"}
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to upload image: {str(e)}"
+        )
 # =========================
 # INCLUDE ROUTER
 # =========================
