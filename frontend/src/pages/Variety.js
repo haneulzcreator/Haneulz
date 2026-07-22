@@ -132,7 +132,7 @@ export default function Variety() {
   const loadVariety = async () => {
     try {
       const res = await api.get("/variety");
-   setShows(Array.isArray(res.data) ? res.data : []);
+setShows(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
     }
