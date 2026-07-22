@@ -408,15 +408,15 @@ export default function Variety() {
                       Watch the clip →
                     </a>
                   )}
-                </div>
+                               </div>
               </div>
             </Reveal>
           ))}
-        </div>
-      </div>
+    </div>
+  ))}
+</div>
 
-      {/* Video collection modal */}
-      {openPlaylist && (
+{/* Video collection modal */}
         <div
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
           data-testid="playlist-modal"
