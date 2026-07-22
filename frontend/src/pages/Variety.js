@@ -128,6 +128,18 @@ export default function Variety() {
   loadPosts();
 }, []);
 
+  useEffect(() => {
+  const loadVariety = async () => {
+    try {
+      const res = await api.get("/variety");
+      setShows(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  loadVariety();
+}, []);
   return (
     <div
       className="min-h-screen pt-32"
