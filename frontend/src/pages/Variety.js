@@ -412,8 +412,7 @@ export default function Variety() {
               </div>
             </Reveal>
           ))}
-        </div>
-      </section>
+                    </div>
 
       {/* Video collection modal */}
       {openPlaylist && (
@@ -497,6 +496,7 @@ export default function Variety() {
       )}
 
       <Footer />
-    </div>
+              </section>
+        </div>
   );
 }
