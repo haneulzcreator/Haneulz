@@ -23,6 +23,9 @@ const [comments, setComments] = useState([]);
 const [variety, setVariety] = useState([]);
 
 const [videoForm, setVideoForm] = useState({
+  section: "haneulz",
+  category: "han-posts",
+  label: "",
   show_name: "",
   episode: "",
   description: "",
@@ -71,13 +74,16 @@ const [videoForm, setVideoForm] = useState({
   toast.success("Video added!");
 
   setVideoForm({
-    show_name:"",
-    episode:"",
-    description:"",
-    photo_url:"",
-    youtube_url:"",
-    air_date:""
-  });
+  section:"haneulz",
+  category:"han-posts",
+  label:"",
+  show_name:"",
+  episode:"",
+  description:"",
+  photo_url:"",
+  youtube_url:"",
+  air_date:""
+});
 
   load();
 };
@@ -161,6 +167,47 @@ Variety
 Add Variety Video
 </h2>
 
+  <select
+className="mt-4 w-full rounded-xl border p-3"
+value={videoForm.section}
+onChange={(e)=>setVideoForm({...videoForm, section:e.target.value})}
+>
+<option value="haneulz">📸💗 HANEULZ 💙🌩️</option>
+<option value="duets">Their Duets</option>
+<option value="whole-group">NOW, THE WHOLE GROUP</option>
+</select>
+
+{videoForm.section === "haneulz" && (
+<select
+className="mt-3 w-full rounded-xl border p-3"
+value={videoForm.category}
+onChange={(e)=>setVideoForm({...videoForm, category:e.target.value})}
+>
+<option value="yence-posts">🦌 Yence Posts</option>
+<option value="han-posts">🐈‍⬛ Han Posts</option>
+<option value="haneulz-dc">🎬 HANEULZ DC</option>
+</select>
+)}
+
+ <select
+  className="mt-3 w-full rounded-xl border p-3"
+  value={videoForm.label}
+  onChange={(e)=>setVideoForm({...videoForm,label:e.target.value})}
+>
+  <option value="">No Label</option>
+  <option value="EP">EP</option>
+  <option value="Playlist">Playlist</option>
+</select> 
+
+<select
+className="mt-3 w-full rounded-xl border p-3"
+value={videoForm.label}
+onChange={(e)=>setVideoForm({...videoForm,label:e.target.value})}
+>
+<option value="">No Label</option>
+<option value="EP">EP</option>
+<option value="Playlist">Playlist</option>
+</select>
 
 <input
 className="mt-4 w-full rounded-xl border p-3"
