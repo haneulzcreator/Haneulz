@@ -345,40 +345,56 @@ export default function Variety() {
           })}
         </div>
 
-     <div className="mt-16 flex flex-col gap-16 pb-10">
-  {shows.map((s, i) => (
-    <Reveal key={s.id} delay={0.05}>
-      <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
-        
-        <a
-          href={s.youtube_url || "#"}
-          target="_blank"
-          rel="noreferrer"
-          className="group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
-        >
-          <div className="aspect-video overflow-hidden">
-            <img
-              src={s.photo_url || IMAGES.cloudsPink}
-              alt={s.show_name}
-              className="au-card-img h-full w-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        </a>
+   <div className="mt-16 flex flex-col gap-16 pb-10">
 
-        <div className="md:w-1/2 md:px-8">
-          <h2 className="font-serif-display text-4xl">
-            {s.show_name}
-          </h2>
+  {["haneulz", "duets", "whole-group"].map((section) => (
+    <div key={section}>
 
-          <p className="mt-4 text-[color:var(--ink-soft)]">
-            {s.description}
-          </p>
-        </div>
+      <h2 className="mb-8 font-serif-display text-4xl">
+        {section === "haneulz" && "📸💗 HANEULZ 💙🌩️"}
+        {section === "duets" && "Their Duets"}
+        {section === "whole-group" && "NOW, THE WHOLE GROUP"}
+      </h2>
 
-      </div>
-    </Reveal>
+      {shows
+        .filter((s) => s.section === section)
+        .map((s, i) => (
+          <Reveal key={s.id} delay={0.05}>
+            <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
+
+              <a
+                href={s.youtube_url || "#"}
+                target="_blank"
+                rel="noreferrer"
+                className="group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
+              >
+                <div className="aspect-video overflow-hidden">
+                  <img
+                    src={s.photo_url || IMAGES.cloudsPink}
+                    alt={s.show_name}
+                    className="au-card-img h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              </a>
+
+              <div className="md:w-1/2 md:px-8">
+                <h2 className="font-serif-display text-4xl">
+                  {s.show_name}
+                </h2>
+
+                <p className="mt-4 text-[color:var(--ink-soft)]">
+                  {s.description}
+                </p>
+              </div>
+
+            </div>
+          </Reveal>
+        ))}
+
+    </div>
   ))}
+
 </div>
 </section>
 
@@ -463,7 +479,6 @@ export default function Variety() {
       )}
 
       <Footer />
-              </section>
         </div>
   );
 }
