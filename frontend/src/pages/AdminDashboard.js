@@ -76,8 +76,8 @@ const [videoForm, setVideoForm] = useState({
   setVideoForm({
   section:"haneulz",
   category:"han-posts",
-  label:"",
   show_name:"",
+  label:"",
   episode:"",
   description:"",
   photo_url:"",
