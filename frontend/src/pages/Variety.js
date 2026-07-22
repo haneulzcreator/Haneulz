@@ -345,8 +345,20 @@ export default function Variety() {
           })}
         </div>
 
-        <div className="mt-16 flex flex-col gap-16 pb-10">
-          {shows.map((s, i) => (
+     <div className="mt-16 flex flex-col gap-16 pb-10">
+
+  {["haneulz", "duets", "whole-group"].map((section) => (
+    <div key={section}>
+
+      <h2 className="mb-8 font-serif-display text-4xl">
+        {section === "haneulz" && "📸💗 HANEULZ 💙🌩️"}
+        {section === "duets" && "Their Duets"}
+        {section === "whole-group" && "NOW, THE WHOLE GROUP"}
+      </h2>
+
+      {shows
+        .filter((s) => s.section === section)
+        .map((s, i) => (
             <Reveal key={s.id} delay={0.05}>
               <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
                 <a
