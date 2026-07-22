@@ -412,7 +412,8 @@ export default function Variety() {
               </div>
             </Reveal>
           ))}
-                    </div>
+        </div>
+      </div>
 
       {/* Video collection modal */}
       {openPlaylist && (
