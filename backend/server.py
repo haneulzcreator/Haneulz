@@ -169,21 +169,32 @@ class AU(BaseModel):
 # =========================
 
 class VarietyCreate(BaseModel):
+    section: str   # haneulz, duets, whole-group
+    category: Optional[str] = None # yence-posts, han-posts, dc
     show_name: str
-    episode: str
-    description: str
+    label: Optional[str] = "" # EP, Playlist, or blank
+    episode: Optional[str] = ""
+    description: str = ""
+    photo_url: Optional[str] = None
+    youtube_url: Optional[str] = None
+    air_date: Optional[str] = None
+    
+class Variety(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+
+    section: str
+    category: Optional[str] = None
+
+    show_name: str
+    label: Optional[str] = ""
+    episode: Optional[str] = ""
+
+    description: str = ""
+
     photo_url: Optional[str] = None
     youtube_url: Optional[str] = None
     air_date: Optional[str] = None
 
-class Variety(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    show_name: str
-    episode: str
-    description: str
-    photo_url: Optional[str] = None
-    youtube_url: Optional[str] = None
-    air_date: Optional[str] = None
     created_at: str = Field(default_factory=now_iso)
 
 class PlaylistItemCreate(BaseModel):
