@@ -366,7 +366,11 @@ export default function Variety() {
                   <h2 className="mt-3 font-serif-display text-4xl font-medium leading-tight md:text-5xl">
                     {s.show_name}
                   </h2>
-                  <p className="mt-2 text-lg italic text-[color:var(--ink-soft)]">Ep. {s.episode}</p>
+                {s.label && (
+  <p className="mt-2 text-lg italic text-[color:var(--ink-soft)]">
+    {s.label}{s.episode && ` · ${s.episode}`}
+  </p>
+)}
                   <p className="mt-4 text-base leading-relaxed text-[color:var(--ink-soft)]">
                     {s.description}
                   </p>
