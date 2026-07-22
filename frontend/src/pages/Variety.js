@@ -131,7 +131,7 @@ export default function Variety() {
   useEffect(() => {
   const loadVariety = async () => {
     try {
-      const res = await api.get("/variety");
+    const res = await api.get("/variety");
 setShows(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
@@ -356,9 +356,7 @@ setShows(Array.isArray(res.data) ? res.data : []);
         {section === "whole-group" && "NOW, THE WHOLE GROUP"}
       </h2>
 
-      {shows
-       .filter((s) => s?.section === section)
-        .map((s, i) => (
+      {shows.map((s, i) => (
           <Reveal key={s.id} delay={0.05}>
             <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
 
@@ -371,7 +369,7 @@ setShows(Array.isArray(res.data) ? res.data : []);
                 <div className="aspect-video overflow-hidden">
                   <img
                     src={s.photo_url || IMAGES.cloudsPink}
-                    alt={s.show_name}
+                    alt={s?.show_name || "Variety"}
                     className="au-card-img h-full w-full object-cover"
                     loading="lazy"
                   />
@@ -380,11 +378,11 @@ setShows(Array.isArray(res.data) ? res.data : []);
 
               <div className="md:w-1/2 md:px-8">
                 <h2 className="font-serif-display text-4xl">
-                  {s.show_name}
+                  {s?.show_name}
                 </h2>
 
                 <p className="mt-4 text-[color:var(--ink-soft)]">
-                  {s.description}
+                  {s?.description}
                 </p>
               </div>
 
