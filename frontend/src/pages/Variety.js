@@ -132,7 +132,7 @@ export default function Variety() {
   const loadVariety = async () => {
     try {
       const res = await api.get("/variety");
-      setShows(res.data);
+   setShows(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error(err);
     }
@@ -357,7 +357,7 @@ export default function Variety() {
       </h2>
 
       {shows
-        .filter((s) => s.section === section)
+       .filter((s) => s?.section === section)
         .map((s, i) => (
           <Reveal key={s.id} delay={0.05}>
             <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
