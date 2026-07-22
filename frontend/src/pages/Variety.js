@@ -1,82 +1,16 @@
 import { useEffect, useState } from "react";
-import { Play, Calendar, ListVideo, Clock, Youtube, Twitter, Music2, X, Users } from "lucide-react";
+import {
+  Play,
+  Clock,
+  ListVideo,
+  Users,
+  X
+} from "lucide-react";
+
 import { api, REAL, IMAGES } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
 
-const PLATFORM = {
-  youtube: { label: "YouTube", Icon: Youtube },
-  x: { label: "X", Icon: Twitter },
-  instagram: { label: "Instagram", Icon: Music2 },
-  tiktok: { label: "TikTok", Icon: Music2 },
-};
-
-  const PLAYLISTS = [
-  {
-  name: "📸💗 HANEULZ 💙🌩️",
-  thumbnail: REAL.ahofGroup,
-  description:
-    "Yence posts, Han posts, HANEULZ DC updates, edits and fan moments.",
-
-  videos: [
-    {
-      category: "🦌 Yence Posts",
-      posts: [
-       {
- platform: "x",
- url: "https://x.com/ahof_official/status/2078841987353264451",
- image: "/images/yence-post1.jpg"
-},
-        {
-          platform: "instagram",
-          url: "https://www.instagram.com/p/Da72O9cEzFN/?igsh=ZXNnczljNDg2endl",
-          image: "/images/yence-post1.jpg"        },
-      ],
-    },
-
-    {
-      category: "🐈‍⬛ Han Posts",
-      posts: [
-        {
-          platform: "x",
-          url: "https://x.com/ahof_official/status/2036311045216878942?s=61",
-          image: "/images/han-post1.jpg"        },
-        {
-          platform: "instagram",
-          url: "https://www.instagram.com/p/DaA2dJ7Ez0k/?igsh=MXRrdHIxM29tZTJqOA==",
-          image: "/images/han-post1.jpg"        },
-      ],
-    },
-
-    {
-      category: "🎬 HANEULZ DC",
-      posts: [
-        {
-          platform: "x",
-          url: "YOUR_DC_LINK",
-          image: "/images/haneulz-dc1.jpg"        },
-      ],
-    },
-  ],
-},
-  {
-    name: "AHOF's First Anniversary",
-    url: "https://youtube.com/playlist?list=PLP3N6qHcYP90",
-    thumbnail:
-      "https://img.youtube.com/vi/roXu3mS4TOc/maxresdefault.jpg",
-    description:
-      "Celebrating AHOF's first anniversary with lives, messages and memories.",
-  },
-
-  {
-    name: "AHOF's Music Videos",
-    url: "https://youtube.com/playlist?list=PLLhA9zGDtnGQ",
-    thumbnail:
-      "https://img.youtube.com/vi/OhbMVYVNo40/maxresdefault.jpg",
-    description:
-      "Every AHOF music video in one place.",
-  },
-];
 const DUETS = [
   {
     title: "'The Little Prince'",
@@ -90,58 +24,107 @@ const DUETS = [
   },
 ];
 
+const PLAYLISTS = [
+  {
+    name: "📸💗 HANEULZ 💙🌩️",
+    thumbnail: REAL.ahofGroup,
+    description:
+      "Yence posts, Han posts, HANEULZ DC updates and fan moments.",
+
+    videos: [
+      {
+        category: "🦌 Yence Posts",
+        posts: [
+          {
+            image: "/images/yence1.jpg",
+            url: "https://x.com/"
+          },
+          {
+            image: "/images/yence2.jpg",
+            url: "https://instagram.com/"
+          }
+        ]
+      },
+
+      {
+        category: "🐈‍⬛ Han Posts",
+        posts: [
+          {
+            image: "/images/han1.jpg",
+            url: "https://x.com/"
+          },
+          {
+            image: "/images/han2.jpg",
+            url: "https://instagram.com/"
+          }
+        ]
+      },
+
+      {
+        category: "🎬 HANEULZ DC",
+        posts: [
+          {
+            image: "/images/dc1.jpg",
+            url: "https://x.com/"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    name: "AHOF's First Anniversary",
+    url: "https://youtube.com/",
+    thumbnail:
+      "https://img.youtube.com/vi/roXu3mS4TOc/maxresdefault.jpg",
+
+    description:
+      "Celebrating AHOF's first anniversary with lives and memories."
+  },
+
+  {
+    name: "AHOF Music Videos",
+    url: "https://youtube.com/",
+    thumbnail:
+      "https://img.youtube.com/vi/OhbMVYVNo40/maxresdefault.jpg",
+
+    description:
+      "Every AHOF music video in one place."
+  }
+];
+
 export default function Variety() {
+
   const [shows, setShows] = useState([]);
-  const [openPlaylist, setOpenPlaylist] = useState(null);
+
   const [playingDuet, setPlayingDuet] = useState(null);
+
+  const [openPlaylist, setOpenPlaylist] = useState(null);
+
   const [activeSection, setActiveSection] = useState(null);
-  const [postImages, setPostImages] = useState({});
+
   useEffect(() => {
-  const loadPosts = async () => {
-    const images = {};
 
-    const categories = [
-      "yence-posts",
-      "han-posts",
-      "haneulz-dc"
-    ];
+    async function loadVariety() {
 
-    for (const category of categories) {
       try {
-        const res = await fetch(
-          `/api/fanposts/${category}`
-        );
 
-        const posts = await res.json();
+        const res = await api.get("/variety");
 
-        posts.forEach(post => {
-          images[post.url] = post.thumbnail;
-        });
+        setShows(Array.isArray(res.data) ? res.data : []);
 
       } catch (err) {
+
         console.error(err);
+
       }
+
     }
 
-    setPostImages(images);
-  };
+    loadVariety();
 
-  loadPosts();
-}, []);
-
-  useEffect(() => {
-  const loadVariety = async () => {
-    try {
-    const res = await api.get("/variety");
-setShows(Array.isArray(res.data) ? res.data : []);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  loadVariety();
-}, []);
-  return (
+  }, []);
+    return (
     <div
       className="min-h-screen pt-32"
       style={{
@@ -150,285 +133,296 @@ setShows(Array.isArray(res.data) ? res.data : []);
       }}
     >
       <section className="mx-auto max-w-6xl px-6">
+
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">On screen together</p>
-          <h1 className="mt-4 font-serif-display text-6xl font-medium leading-none md:text-8xl">
+          <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
+            On screen together
+          </p>
+
+          <h1 className="mt-4 font-serif-display text-6xl md:text-8xl">
             Variety Corner
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
-            Grab a comfort snack and watch HANEULZ with AHOF — every show, game and moment where
-            JL & Han shared the screen, gathered in one cozy place.
+
+          <p className="mt-6 max-w-xl text-lg text-[color:var(--ink-soft)]">
+            Grab a comfort snack and watch HANEULZ with AHOF —
+            every show, game and memorable moment together.
           </p>
         </Reveal>
 
-        {/* Their duets */}
-        <div className="mt-14" data-testid="variety-duets">
+        {/* DUETS */}
+
+        <div className="mt-20">
+
           <Reveal>
-            <div className="mb-8 flex items-baseline gap-4">
-              <h2 className="font-serif-display text-4xl font-medium md:text-5xl">Their duets</h2>
-              <span className="font-accent text-2xl italic text-[color:var(--pink-deep)]">2</span>
-            </div>
+
+            <h2 className="mb-10 font-serif-display text-5xl">
+              Their Duets
+            </h2>
+
           </Reveal>
+
           <div className="grid gap-8 md:grid-cols-2">
+
             {DUETS.map((d, i) => {
-              const isPlaying = playingDuet === i;
-              if (isPlaying) {
+
+              if (playingDuet === i) {
+
                 return (
-                  <Reveal key={d.title} delay={i * 0.08}>
-                    <div className="overflow-hidden rounded-[2rem]" data-testid={`duet-${i}`}>
-                      <div className="aspect-video">
-                        <iframe
-                          className="h-full w-full"
-                          src={`https://www.youtube.com/embed/${d.videoId}?autoplay=1&rel=0`}
-                          title={d.title}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          allowFullScreen
-                          data-testid={`duet-iframe-${i}`}
-                        />
-                      </div>
-                    </div>
-                  </Reveal>
+
+                  <iframe
+                    key={i}
+                    className="aspect-video w-full rounded-[2rem]"
+                    src={`https://www.youtube.com/embed/${d.videoId}?autoplay=1`}
+                    allowFullScreen
+                    title={d.title}
+                  />
+
                 );
+
               }
+
               return (
-                <Reveal key={d.title} delay={i * 0.08}>
+
+                <Reveal key={i}>
+
                   <button
-                    type="button"
                     onClick={() => setPlayingDuet(i)}
-                    data-testid={`duet-${i}`}
-                    className="group relative block w-full overflow-hidden rounded-[2rem] text-left"
+                    className="group relative overflow-hidden rounded-[2rem]"
                   >
-                    <div className="aspect-video overflow-hidden">
-                      <img
-                        src={`https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg`}
-                        alt={d.title}
-                        className="au-card-img h-full w-full object-cover"
-                      />
+
+                    <img
+                      src={`https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg`}
+                      alt={d.title}
+                      className="aspect-video w-full object-cover"
+                    />
+
+                    <div className="absolute inset-0 grid place-items-center bg-black/25">
+
+                      <div className="rounded-full bg-white p-5">
+
+                        <Play fill="currentColor" />
+
+                      </div>
+
                     </div>
-                    <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors duration-500 group-hover:bg-black/35">
-                      <span className="grid h-16 w-16 place-items-center rounded-full bg-white/85 backdrop-blur transition-transform duration-500 group-hover:scale-110">
-                        <Play size={22} className="ml-1 text-[color:var(--ink)]" fill="currentColor" />
-                      </span>
-                    </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 text-white" style={{ background: "linear-gradient(180deg,transparent,rgba(15,23,42,0.6))" }}>
-                      <span className="text-[0.65rem] uppercase tracking-widest">{d.subtitle}</span>
-                      <h3 className="font-serif-display text-2xl font-medium leading-tight">{d.title}</h3>
-                    </div>
+
                   </button>
+
                 </Reveal>
+
               );
+
             })}
+
           </div>
+
         </div>
 
-        {/* Playlists */}
-        <div className="mt-14 flex flex-col gap-16" data-testid="variety-playlists">
-          {PLAYLISTS.map((p, i) => {
-            const hasVideos = p.videos && p.videos.length > 0;
-            const media = (
-              <>
-                <div className="aspect-video overflow-hidden">
-                  <img
-                    src={p.thumbnail}
-                    alt={p.name}
-                    className={`au-card-img h-full w-full object-cover object-top ${p.upcoming ? "opacity-80" : ""}`}
-                  />
-                </div>
-                <div className="absolute inset-0 grid place-items-center bg-black/20 transition-colors duration-500 group-hover:bg-black/35">
-                  {p.upcoming ? (
-                    <span className="flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-xs uppercase tracking-widest text-[color:var(--ink)] backdrop-blur">
-                      <Clock size={13} /> Coming soon
-                    </span>
-                  ) : (
-                    <span className="grid h-16 w-16 place-items-center rounded-full bg-white/85 backdrop-blur transition-transform duration-500 group-hover:scale-110">
-                      <Play size={22} className="ml-1 text-[color:var(--ink)]" fill="currentColor" />
-                    </span>
-                  )}
-                </div>
-              </>
-            );
-            const mediaClass = "group relative block w-full overflow-hidden rounded-[2.5rem] md:w-1/2";
-            return (
-              <div key={p.name} className="flex flex-col gap-16">
-                {i === 1 && (
-                  <Reveal>
-                    <div
-                      className="rounded-[2rem] border border-[color:var(--line)] p-8 md:p-10"
-                      data-testid="whole-group-section"
-                      style={{ background: "linear-gradient(135deg, rgba(181,216,235,0.35), rgba(248,216,232,0.25))" }}
-                    >
-                      <span className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
-                        <Users size={14} /> Now, the whole group
-                      </span>
-                      <h2 className="mt-3 font-serif-display text-4xl font-medium leading-tight md:text-5xl">
-                        Beyond the duets — all of AHOF
-                      </h2>
-                      <p className="mt-4 max-w-2xl text-base leading-relaxed text-[color:var(--ink-soft)]">
-                        From here the spotlight widens to the whole group. These playlists celebrate
-                        AHOF as nine — anniversaries, music videos and everything the boys do
-                        together.
-                      </p>
-                    </div>
-                  </Reveal>
-                )}
-                <Reveal delay={0.05}>
-                <div className={`flex flex-col gap-8 md:flex-row md:items-center ${i % 2 ? "md:flex-row-reverse" : ""}`}>
-                  {p.upcoming ? (
-                    <div data-testid={`variety-playlist-${i}`} className={mediaClass}>
-                      {media}
-                    </div>
-                  ) : hasVideos ? (
-                   <button
-  type="button"
-  onClick={() => {
-    setOpenPlaylist(p);
-    setActiveSection(p.videos?.[0]);
-  }}
-  data-testid={`variety-playlist-${i}`}
-  className={`${mediaClass} text-left`}
->
-  {media}
-</button>
-                  ) : (
-                    <a
-                      href={p.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      data-testid={`variety-playlist-${i}`}
-                      className={mediaClass}
-                    >
-                      {media}
-                    </a>
-                  )}
+        {/* PLAYLISTS */}
 
-                  <div className="md:w-1/2 md:px-8">
-                    <span className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
-                      <ListVideo size={14} /> {p.upcoming ? "Upcoming playlist" : "Playlist"}
-                    </span>
-                    <h2 className="mt-3 font-serif-display text-4xl font-medium leading-tight md:text-5xl">
-                      {p.name}
-                    </h2>
-                    <p className="mt-4 text-base leading-relaxed text-[color:var(--ink-soft)]">
-                      {p.description}
-                    </p>
-                    {p.upcoming ? (
-                      <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[color:var(--pink)] px-4 py-2 text-xs uppercase tracking-widest">
-                        <Clock size={13} /> Coming soon
-                      </span>
-                    ) : hasVideos ? (
-                      <button
-                        type="button"
-                       onClick={() => {
-  setOpenPlaylist(p);
-  setActiveSection(p.videos?.[0]);
-}}
-                        data-testid={`variety-open-${i}`}
-                        className="link-underline mt-5 inline-flex items-center gap-2 text-sm uppercase tracking-widest"
-                      >
-                        See all videos →
-                      </button>
-                    ) : (
-                      <a
-                        href={p.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="link-underline mt-5 inline-flex items-center gap-2 text-sm uppercase tracking-widest"
-                      >
-                        View playlist →
-                      </a>
-                    )}
-                  </div>
-                </div>
-                </Reveal>
-              </div>
-            );
-          })}
-        </div> 
+        <div className="mt-24 space-y-20">
 
+          {PLAYLISTS.map((playlist, i) => (
 
-{/* Video collection modal */}
-{openPlaylist && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-          data-testid="playlist-modal"
-        >
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => {
-              setOpenPlaylist(null);
-              setActiveSection(null);
-            }}
-          />
+            <Reveal key={playlist.name}>
 
-          <div className="glass relative z-10 max-h-[85vh] w-full max-w-3xl overflow-y-auto rounded-[2rem] p-6 md:p-8">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <span className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
-                  HANEULZ Posts
-                </span>
-
-                <h3 className="font-serif-display text-3xl font-medium md:text-4xl">
-                  {openPlaylist.name}
-                </h3>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setOpenPlaylist(null);
-                  setActiveSection(null);
-                }}
-                className="grid h-10 w-10 place-items-center rounded-full border"
+              <div
+                className={`flex flex-col gap-8 md:items-center ${
+                  i % 2
+                    ? "md:flex-row-reverse"
+                    : "md:flex-row"
+                }`}
               >
-                <X size={18} />
-              </button>
-            </div>
 
-            <div className="mt-6">
-              <div className="mb-6 flex flex-wrap gap-3">
+                {playlist.videos ? (
+
+                  <button
+                    onClick={() => {
+
+                      setOpenPlaylist(playlist);
+
+                      setActiveSection(
+                        playlist.videos[0]
+                      );
+
+                    }}
+                    className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
+                  >
+
+                    <img
+                      src={playlist.thumbnail}
+                      className="aspect-video w-full object-cover"
+                      alt={playlist.name}
+                    />
+
+                    <div className="absolute inset-0 grid place-items-center bg-black/20">
+
+                      <div className="rounded-full bg-white p-5">
+
+                        <Play fill="currentColor" />
+
+                      </div>
+
+                    </div>
+
+                  </button>
+
+                ) : (
+
+                  <a
+                    href={playlist.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
+                  >
+
+                    <img
+                      src={playlist.thumbnail}
+                      className="aspect-video w-full object-cover"
+                      alt={playlist.name}
+                    />
+
+                  </a>
+
+                )}
+
+                <div className="md:w-1/2">
+
+                  <span className="flex items-center gap-2 text-xs uppercase tracking-[0.3em]">
+
+                    <ListVideo size={15} />
+
+                    Playlist
+
+                  </span>
+
+                  <h2 className="mt-3 font-serif-display text-5xl">
+
+                    {playlist.name}
+
+                  </h2>
+
+                  <p className="mt-5 text-[color:var(--ink-soft)]">
+
+                    {playlist.description}
+
+                  </p>
+
+                </div>
+
+              </div>
+
+            </Reveal>
+
+          ))}
+
+        </div>
+        {/* HANEULZ POSTS MODAL */}
+
+        {openPlaylist && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+
+            <div
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+              onClick={() => {
+                setOpenPlaylist(null);
+                setActiveSection(null);
+              }}
+            />
+
+            <div className="relative z-10 max-h-[85vh] w-full max-w-4xl overflow-y-auto rounded-[2rem] bg-white p-8">
+
+              <div className="flex items-center justify-between">
+
+                <div>
+
+                  <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
+                    HANEULZ POSTS
+                  </p>
+
+                  <h2 className="mt-2 font-serif-display text-4xl">
+                    {openPlaylist.name}
+                  </h2>
+
+                </div>
+
+                <button
+                  onClick={() => {
+                    setOpenPlaylist(null);
+                    setActiveSection(null);
+                  }}
+                  className="rounded-full border p-2"
+                >
+                  <X size={20} />
+                </button>
+
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+
                 {openPlaylist.videos.map((section) => (
+
                   <button
                     key={section.category}
                     onClick={() => setActiveSection(section)}
-                    className="rounded-full border px-4 py-2 text-sm hover:bg-white/60"
+                    className={`rounded-full border px-4 py-2 ${
+                      activeSection?.category === section.category
+                        ? "bg-pink-100"
+                        : ""
+                    }`}
                   >
                     {section.category}
                   </button>
+
                 ))}
+
               </div>
 
               {activeSection && (
-                <div>
-                  <h4 className="mb-4 font-serif-display text-3xl">
-                    {activeSection.category}
-                  </h4>
 
-                  <div className="grid grid-cols-3 gap-3">
-                    {activeSection.posts.map((post, idx) => (
+                <div className="mt-8">
+
+                  <h3 className="mb-6 font-serif-display text-3xl">
+                    {activeSection.category}
+                  </h3>
+
+                  <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+
+                    {activeSection.posts.map((post, index) => (
+
                       <a
-                        key={idx}
+                        key={index}
                         href={post.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="aspect-square overflow-hidden rounded-xl"
+                        className="overflow-hidden rounded-xl"
                       >
+
                         <img
-                          src={postImages[post.url] || IMAGES.cloudsPink}
+                          src={post.image}
                           alt=""
-                          className="h-full w-full object-cover transition hover:scale-105"
+                          className="aspect-square w-full object-cover transition duration-300 hover:scale-105"
                         />
+
                       </a>
+
                     ))}
+
                   </div>
+
                 </div>
+
               )}
+
             </div>
+
           </div>
-        </div>
-  )}
+        )}
+
+      </section>
 
       <Footer />
-        </div>
+
+    </div>
   );
 }
