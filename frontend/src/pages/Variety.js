@@ -22,14 +22,15 @@ const PLATFORM = {
     {
       category: "🦌 Yence Posts",
       posts: [
-        {
-          platform: "x",
-          url: "https://x.com/ahof_official/status/2078841987353264451?s=61",
-        },
+       {
+ platform: "x",
+ url: "https://x.com/ahof_official/status/2078841987353264451",
+ image: "/images/yence-post1.jpg"
+},
         {
           platform: "instagram",
           url: "https://www.instagram.com/p/Da72O9cEzFN/?igsh=ZXNnczljNDg2endl",
-        },
+          image: "/images/yence-post1.jpg"        },
       ],
     },
 
@@ -39,11 +40,11 @@ const PLATFORM = {
         {
           platform: "x",
           url: "https://x.com/ahof_official/status/2036311045216878942?s=61",
-        },
+          image: "/images/han-post1.jpg"        },
         {
           platform: "instagram",
           url: "https://www.instagram.com/p/DaA2dJ7Ez0k/?igsh=MXRrdHIxM29tZTJqOA==",
-        },
+          image: "/images/han-post1.jpg"        },
       ],
     },
 
@@ -53,7 +54,7 @@ const PLATFORM = {
         {
           platform: "x",
           url: "YOUR_DC_LINK",
-        },
+          image: "/images/haneulz-dc1.jpg"        },
       ],
     },
   ],
@@ -343,7 +344,7 @@ setShows(Array.isArray(res.data) ? res.data : []);
               </div>
             );
           })}
-        </div>
+        </div> 
 
 
 {/* Video collection modal */}
