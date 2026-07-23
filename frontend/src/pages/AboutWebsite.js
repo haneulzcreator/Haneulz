@@ -1,6 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function AboutWebsite() {
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/settings')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch settings');
+        return res.json();
+      })
+      .then((data) => {
+        setSettings(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Error loading site settings:', err);
+        setLoading(false);
+      });
+  }, []);
+
   return (
     <div className="about-container" style={{
       maxWidth: '800px',
@@ -30,30 +49,36 @@ export default function AboutWebsite() {
             marginBottom: '5px',
             fontWeight: '700'
           }}>
-            Our Little Corner
+            {settings?.about_title || 'Our Little Corner'}
           </h1>
           <p style={{ color: '#F48FB1', fontWeight: '600', fontSize: '1.1rem' }}>
-            Welcome to Haneulz Corner ☁️💗
+            {settings?.about_subtitle || 'Welcome to Haneulz Corner ☁️💗'}
           </p>
         </div>
 
         {/* Welcome Section */}
         <div style={{ lineHeight: '1.8', fontSize: '1.05rem', marginBottom: '35px' }}>
-          <p>
-            Haneulz Corner started as a simple idea from one Hansum who just wanted a place where everything about <strong>HANEULZ</strong> could be found a little more easily.
-          </p>
-          <p>
-            Like many fans, I often found myself scrolling through old bookmarks, searching for a specific AU, trying to remember where I had saved a variety clip, or looking for that one post I loved but couldn’t find again. Eventually, I thought, <em>why not create a little corner where I can keep everything together?</em>
-          </p>
-          <p>
-            What began as a personal collection slowly grew into a space that I wanted to share with fellow fans. This website was never meant to be anything official—it’s simply a passion project made with love for the HANEULZ community.
-          </p>
-          <p>
-            Whether you’re here to discover a new AU, revisit an old favorite, catch up on variety appearances, or simply spend a little time enjoying the creativity of fellow Hansums, I hope this little corner makes your visit a little easier and a little happier.
-          </p>
-          <p>
-            Thank you for stopping by, and I hope Haneulz Corner becomes a place you’ll always enjoy coming back to.
-          </p>
+          {settings?.about_letter ? (
+            <div style={{ whiteSpace: 'pre-line' }}>{settings.about_letter}</div>
+          ) : (
+            <>
+              <p>
+                Haneulz Corner started as a simple idea from one Hansum who just wanted a place where everything about <strong>HANEULZ</strong> could be found a little more easily.
+              </p>
+              <p>
+                Like many fans, I often found myself scrolling through old bookmarks, searching for a specific AU, trying to remember where I had saved a variety clip, or looking for that one post I loved but couldn’t find again. Eventually, I thought, <em>why not create a little corner where I can keep everything together?</em>
+              </p>
+              <p>
+                What began as a personal collection slowly grew into a space that I wanted to share with fellow fans. This website was never meant to be anything official—it’s simply a passion project made with love for the HANEULZ community.
+              </p>
+              <p>
+                Whether you’re here to discover a new AU, revisit an old favorite, catch up on variety appearances, or simply spend a little time enjoying the creativity of fellow Hansums, I hope this little corner makes your visit a little easier and a little happier.
+              </p>
+              <p>
+                Thank you for stopping by, and I hope Haneulz Corner becomes a place you’ll always enjoy coming back to.
+              </p>
+            </>
+          )}
 
           {/* Personal Handwritten Sign-off */}
           <div style={{
@@ -63,8 +88,12 @@ export default function AboutWebsite() {
             color: '#7C4DFF',
             fontWeight: '600'
           }}>
-            <p style={{ margin: 0 }}>Made with lots of love, late-night ideas, and a few too many bookmarks.</p>
-            <p style={{ margin: '5px 0 0 0', fontSize: '1.2rem', fontWeight: '700' }}>— K ☁️💗</p>
+            <p style={{ margin: 0 }}>
+              {settings?.about_signoff_text || 'Made with lots of love, late-night ideas, and a few too many bookmarks.'}
+            </p>
+            <p style={{ margin: '5px 0 0 0', fontSize: '1.2rem', fontWeight: '700' }}>
+              {settings?.about_signoff_author || '— K ☁️💗'}
+            </p>
           </div>
         </div>
 
