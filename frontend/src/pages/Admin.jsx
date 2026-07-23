@@ -12,7 +12,7 @@ export default function Admin() {
   const [isDragging, setIsDragging] = useState(false);
   const [publishingPost, setPublishingPost] = useState(false);
   const [postStatus, setPostStatus] = useState(null);
-  
+
   const fileInputRef = useRef(null);
 
   // Clean up object URLs on unmount or preview changes
@@ -25,14 +25,22 @@ export default function Admin() {
   }, [previewUrl]);
 
   // ==========================================
-  // SECTION 2 STATES: PENDING AU SUBMISSIONS
+  // SECTION 2 STATES: PENDING AU SUBMISSIONS & MODAL
   // ==========================================
   const [pendingAus, setPendingAus] = useState([]);
   const [loadingPending, setLoadingPending] = useState(true);
+  const [auActionStatus, setAuActionStatus] = useState(null);
+  const [selectedAuModal, setSelectedAuModal] = useState(null); // Feature 4: Modal state
+
+  const showAuNotification = (type, text) => {
+    setAuActionStatus({ type, text });
+    setTimeout(() => setAuActionStatus(null), 4000);
+  };
 
   // ==========================================
   // SECTION 3 STATES: SITE CONTENT SETTINGS
   // ==========================================
+  const [initialSettings, setInitialSettings] = useState({}); // For dirty check
   const [siteSettings, setSiteSettings] = useState({
     hero_title: "",
     hero_subtitle: "",
@@ -48,12 +56,31 @@ export default function Admin() {
   const [savingSettings, setSavingSettings] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
 
+  // Check if settings have unsaved edits
+  const isSettingsDirty =
+    JSON.stringify(siteSettings) !== JSON.stringify(initialSettings);
+
+  // Feature 3: Warn before leaving page with unsaved changes
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isSettingsDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isSettingsDirty]);
+
   // Fetch initial data
   useEffect(() => {
     async function fetchData() {
       try {
         const settingsData = await getSettings();
-        if (settingsData) setSiteSettings(settingsData);
+        if (settingsData) {
+          setSiteSettings(settingsData);
+          setInitialSettings(settingsData);
+        }
       } catch (err) {
         console.error("Failed to load settings:", err);
       } finally {
@@ -74,7 +101,7 @@ export default function Admin() {
   }, []);
 
   // ==========================================
-  // DRAG & DROP & IMAGE HANDLERS
+  // DRAG & DROP & IMAGE HANDLERS (Feature 2: Guard)
   // ==========================================
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -87,13 +114,27 @@ export default function Admin() {
   };
 
   const handleFileSelect = (file) => {
-    if (file && file.type.startsWith("image/")) {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      setImageFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    } else {
-      alert("Please upload a valid image file.");
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setPostStatus({ type: "error", text: "Please upload a valid image file." });
+      return;
     }
+
+    // Feature 2: 5MB size limit check
+    const MAX_SIZE_MB = 5;
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
+      setPostStatus({
+        type: "error",
+        text: `Image size exceeds ${MAX_SIZE_MB}MB limit. Please select a smaller file.`,
+      });
+      return;
+    }
+
+    setPostStatus(null);
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setImageFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
   };
 
   const handleDrop = (e) => {
@@ -160,25 +201,44 @@ export default function Admin() {
   // HANDLERS FOR SECTION 2: AU MANAGEMENT
   // ==========================================
   const handleApproveAU = async (id) => {
+    const targetAu = pendingAus.find((au) => (au.id || au._id) === id);
+
+    setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
+    showAuNotification("success", `Approved "${targetAu?.title || "AU"}"! ☁️💗`);
+
+    if (selectedAuModal && (selectedAuModal.id || selectedAuModal._id) === id) {
+      setSelectedAuModal(null);
+    }
+
     try {
       await api.post(`/admin/approve-au/${id}`);
-      setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
-      alert("AU Approved! ☁️💗");
     } catch (err) {
       console.error("Failed to approve AU:", err);
-      alert("Failed to approve AU.");
+      if (targetAu) {
+        setPendingAus((prev) => [targetAu, ...prev]);
+      }
+      showAuNotification("error", "Failed to approve AU on server. Action reverted.");
     }
   };
 
   const handleDeleteAU = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this AU submission?"))
-      return;
+    const targetAu = pendingAus.find((au) => (au.id || au._id) === id);
+
+    setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
+    showAuNotification("info", "Submission removed.");
+
+    if (selectedAuModal && (selectedAuModal.id || selectedAuModal._id) === id) {
+      setSelectedAuModal(null);
+    }
+
     try {
       await api.delete(`/admin/au/${id}`);
-      setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
     } catch (err) {
       console.error("Failed to delete AU:", err);
-      alert("Failed to delete AU.");
+      if (targetAu) {
+        setPendingAus((prev) => [targetAu, ...prev]);
+      }
+      showAuNotification("error", "Failed to delete AU from server. Action reverted.");
     }
   };
 
@@ -197,6 +257,7 @@ export default function Admin() {
 
     try {
       await updateSettings(siteSettings);
+      setInitialSettings(siteSettings); // Reset dirty check state
       setStatusMessage({
         type: "success",
         text: "Settings saved successfully! ☁️💗",
@@ -262,7 +323,7 @@ export default function Admin() {
           {/* Drag & Drop Zone */}
           <div style={{ marginBottom: "20px" }}>
             <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>
-              Cover Image:
+              Cover Image (Max 5MB):
             </label>
 
             {!previewUrl ? (
@@ -306,7 +367,7 @@ export default function Admin() {
                     Drag & drop your image here, or <span style={{ color: "#5C9CE6", textDecoration: "underline" }}>browse</span>
                   </p>
                   <p style={{ margin: "4px 0 0 0", fontSize: "0.8rem", color: "#888" }}>
-                    Supports PNG, JPG, WEBP, or GIF
+                    Supports PNG, JPG, WEBP, or GIF (Up to 5MB)
                   </p>
                 </div>
               </div>
@@ -373,12 +434,48 @@ export default function Admin() {
           Pending AU Submissions ({pendingAus.length}) ☁️
         </h2>
 
+        {auActionStatus && (
+          <div
+            style={{
+              padding: "10px 14px",
+              marginBottom: "16px",
+              borderRadius: "8px",
+              fontSize: "0.9rem",
+              fontWeight: "bold",
+              backgroundColor:
+                auActionStatus.type === "success"
+                  ? "#E8F5E9"
+                  : auActionStatus.type === "error"
+                  ? "#FFEBEE"
+                  : "#E3F2FD",
+              color:
+                auActionStatus.type === "success"
+                  ? "#2E7D32"
+                  : auActionStatus.type === "error"
+                  ? "#C62828"
+                  : "#1565C0",
+            }}
+          >
+            {auActionStatus.text}
+          </div>
+        )}
+
         {loadingPending ? (
           <p>Loading pending submissions...</p>
         ) : pendingAus.length === 0 ? (
           <p style={{ fontStyle: "italic", color: "#666" }}>No pending AU submissions to review!</p>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          /* Feature 1: Scrollable container for long submission lists */
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
+              maxHeight: "520px",
+              overflowY: "auto",
+              paddingRight: "6px",
+            }}
+          >
             {pendingAus.map((au) => {
               const auId = au.id || au._id;
               return (
@@ -403,9 +500,13 @@ export default function Admin() {
                   <p style={{ margin: 0, fontSize: "0.9rem", color: "#666" }}>
                     By: <strong>{au.author || "Anonymous"}</strong>
                   </p>
-                  <p style={{ margin: "8px 0", fontSize: "0.95rem" }}>{au.summary}</p>
+                  
+                  {/* Truncated Summary */}
+                  <p style={{ margin: "4px 0", fontSize: "0.95rem", color: "#444" }}>
+                    {au.summary?.length > 140 ? `${au.summary.slice(0, 140)}...` : au.summary}
+                  </p>
 
-                  <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                  <div style={{ display: "flex", gap: "10px", marginTop: "8px", alignItems: "center" }}>
                     <button
                       type="button"
                       onClick={() => handleApproveAU(auId)}
@@ -435,6 +536,24 @@ export default function Admin() {
                     >
                       Reject / Delete
                     </button>
+                    
+                    {/* Feature 4: View full details modal trigger */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedAuModal(au)}
+                      style={{
+                        marginLeft: "auto",
+                        background: "none",
+                        border: "none",
+                        color: "#5C9CE6",
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                        fontSize: "0.85rem",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Read Full Submission 🔍
+                    </button>
                   </div>
                 </div>
               );
@@ -445,7 +564,25 @@ export default function Admin() {
 
       {/* SECTION 3: EDIT SITE CONTENT */}
       <section style={{ padding: "20px", border: "1px solid #e3f2fd", borderRadius: "12px", background: "#fbfcfe" }}>
-        <h2 style={{ color: "#5C9CE6" }}>Edit Site Content ☁️</h2>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+          <h2 style={{ color: "#5C9CE6", margin: 0 }}>Edit Site Content ☁️</h2>
+          {/* Feature 3: Unsaved Changes Badge */}
+          {isSettingsDirty && (
+            <span
+              style={{
+                backgroundColor: "#FFF3E0",
+                color: "#E65100",
+                padding: "4px 10px",
+                borderRadius: "12px",
+                fontSize: "0.8rem",
+                fontWeight: "bold",
+                border: "1px solid #FFE0B2",
+              }}
+            >
+              ⚠️ Unsaved Changes
+            </span>
+          )}
+        </div>
 
         {loadingSettings ? (
           <p>Loading site settings... ☁️</p>
@@ -580,6 +717,93 @@ export default function Admin() {
           </form>
         )}
       </section>
+
+      {/* FEATURE 4: AU SUBMISSION DETAILS MODAL */}
+      {selectedAuModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+            padding: "20px",
+            boxSizing: "border-box",
+          }}
+          onClick={() => setSelectedAuModal(null)}
+        >
+          <div
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: "12px",
+              padding: "24px",
+              maxWidth: "600px",
+              width: "100%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "12px" }}>
+              <h2 style={{ margin: 0, color: "#d81b60" }}>{selectedAuModal.title}</h2>
+              <button
+                onClick={() => setSelectedAuModal(null)}
+                style={{ background: "none", border: "none", fontSize: "1.2rem", cursor: "pointer", color: "#888" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <p style={{ margin: "4px 0", color: "#666", fontSize: "0.9rem" }}>
+              <strong>Author:</strong> {selectedAuModal.author || "Anonymous"} | <strong>Genre:</strong> {selectedAuModal.genre || "AU"}
+            </p>
+
+            <hr style={{ border: "none", borderTop: "1px solid #f8bbd0", margin: "16px 0" }} />
+
+            <div style={{ fontSize: "0.95rem", lineHeight: "1.6", color: "#333", whiteSpace: "pre-wrap" }}>
+              {selectedAuModal.content || selectedAuModal.summary || "No extended content provided."}
+            </div>
+
+            <div style={{ display: "flex", gap: "12px", marginTop: "24px", justifyContent: "flex-end" }}>
+              <button
+                type="button"
+                onClick={() => handleDeleteAU(selectedAuModal.id || selectedAuModal._id)}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#fff",
+                  color: "#c62828",
+                  border: "1px solid #c62828",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                Reject & Delete
+              </button>
+              <button
+                type="button"
+                onClick={() => handleApproveAU(selectedAuModal.id || selectedAuModal._id)}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#d81b60",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "6px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Approve AU ☁️
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
