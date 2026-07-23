@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getSettings, updateSettings, formatApiError, api } from "../lib/api";
 
-// 💡 YOUTUBE THUMBNAIL HELPER UTILITY
-// Automatically extracts video ID from past YouTube URLs (supports standard, shortener, & embed links)
+// 💡 ENHANCED YOUTUBE THUMBNAIL HELPER
+// Supports standard, shortener, embed, and YouTube Shorts links
 export const getYouTubeThumbnail = (url) => {
   if (!url) return null;
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const regExp = /^.*(?:youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
 
-  if (match && match[2].length === 11) {
-    const videoId = match[2];
-    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  if (match && match[1] && match[1].length === 11) {
+    return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
   }
   return null;
 };
@@ -19,7 +18,7 @@ export default function Admin() {
   // SECTION 1 STATES: NEW POST / VARIETY SUBMISSION
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [youtubeUrl, setYoutubeUrl] = useState(""); // 👈 Added YouTube URL field
+  const [youtubeUrl, setYoutubeUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -32,18 +31,19 @@ export default function Admin() {
   const [loadingPending, setLoadingPending] = useState(true);
   const [auActionStatus, setAuActionStatus] = useState(null);
   const [selectedAuModal, setSelectedAuModal] = useState(null);
-  
+
   // Search & Filter States
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All");
 
-  // SECTION 3 STATES: SITE CONTENT SETTINGS (Includes Restored "Whole Group" Fields)
+  // SECTION 3 STATES: SITE CONTENT SETTINGS
   const [initialSettings, setInitialSettings] = useState({});
   const [siteSettings, setSiteSettings] = useState({
     hero_title: "",
     hero_description: "",
     whole_group_title: "NOW, THE WHOLE GROUP",
-    whole_group_desc: "Beyond the duets — all of AHOF. From here the spotlight widens to the whole group. These playlists celebrate AHOF as nine — anniversaries, music videos and everything the boys do together.",
+    whole_group_desc:
+      "Beyond the duets — all of AHOF. From here the spotlight widens to the whole group. These playlists celebrate AHOF as nine — anniversaries, music videos and everything the boys do together.",
     about_title: "Our Little Corner",
     about_subtitle: "",
     about_letter: "",
@@ -83,23 +83,51 @@ export default function Admin() {
           setSiteSettings((prev) => ({ ...prev, ...settingsData }));
           setInitialSettings((prev) => ({ ...prev, ...settingsData }));
         }
-      } catch (err) { 
-        console.error("Error loading settings:", err); 
-      } finally { 
-        setLoadingSettings(false); 
+      } catch (err) {
+        console.error("Error loading settings:", err);
+      } finally {
+        setLoadingSettings(false);
       }
 
       try {
         const response = await api.get("/admin/pending-aus");
         setPendingAus(response.data || []);
-      } catch (err) { 
-        console.error("Error loading pending AUs:", err); 
-      } finally { 
-        setLoadingPending(false); 
+      } catch (err) {
+        console.error("Error loading pending AUs:", err);
+      } finally {
+        setLoadingPending(false);
       }
     }
     fetchData();
   }, []);
+
+  // Section 1: Publish Handler
+  const handlePublishPost = async (e) => {
+    e.preventDefault();
+    setPublishingPost(true);
+    setPostStatus(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("youtubeUrl", youtubeUrl);
+      if (imageFile) formData.append("image", imageFile);
+
+      await api.post("/admin/posts", formData);
+
+      setPostStatus({ type: "success", text: "Post published successfully! 🌸" });
+      setTitle("");
+      setDescription("");
+      setYoutubeUrl("");
+      setImageFile(null);
+      setPreviewUrl(null);
+    } catch (err) {
+      setPostStatus({ type: "error", text: formatApiError(err) });
+    } finally {
+      setPublishingPost(false);
+    }
+  };
 
   // Filtered AUs calculation
   const genres = ["All", ...Array.from(new Set(pendingAus.map((au) => au.genre || "AU")))];
@@ -159,40 +187,80 @@ export default function Admin() {
     <div style={{ padding: "30px", maxWidth: "800px", margin: "0 auto", fontFamily: "sans-serif" }}>
       <h1>Haneulz Corner Admin Panel ☁️</h1>
 
-      {/* SECTION 1: ADD CONTENT / VARIETY (WITH YOUTUBE AUTO-THUMBNAIL) */}
+      {/* SECTION 1: ADD CONTENT / VARIETY */}
       <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff" }}>
         <h2 style={{ color: "#d81b60", marginTop: 0 }}>Add Variety / Video Post 🎵</h2>
-        
-        <div style={{ marginBottom: "16px" }}>
-          <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>YouTube Video Link</label>
-          <input
-            type="text"
-            placeholder="https://youtu.be/xxxxx or https://www.youtube.com/watch?v=xxxxx"
-            value={youtubeUrl}
-            onChange={(e) => setYoutubeUrl(e.target.value)}
-            style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
-          />
-        </div>
 
-        {/* Live Auto Thumbnail Preview */}
-        {autoYoutubeThumbnail && (
-          <div style={{ marginBottom: "16px", padding: "12px", background: "#fff5f8", borderRadius: "8px", textAlign: "center" }}>
-            <p style={{ margin: "0 0 8px 0", fontSize: "0.85rem", color: "#d81b60", fontWeight: "bold" }}>
-              ✨ Auto-generated YouTube Thumbnail (No upload required):
-            </p>
-            <img
-              src={autoYoutubeThumbnail}
-              alt="YouTube Preview"
-              style={{ width: "100%", maxHeight: "200px", objectFit: "cover", borderRadius: "6px" }}
-              onError={(e) => {
-                // Fallback if maxresdefault isn't available for this video
-                if (e.target.src.includes("maxresdefault")) {
-                  e.target.src = e.target.src.replace("maxresdefault", "hqdefault");
-                }
-              }}
-            />
+        {postStatus && (
+          <div style={{ padding: "10px", marginBottom: "16px", borderRadius: "8px", fontWeight: "bold", backgroundColor: postStatus.type === "success" ? "#E8F5E9" : "#FFEBEE", color: postStatus.type === "success" ? "#2E7D32" : "#C62828" }}>
+            {postStatus.text}
           </div>
         )}
+
+        <form onSubmit={handlePublishPost}>
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Title</label>
+            <input
+              type="text"
+              required
+              placeholder="Post title..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+            />
+          </div>
+
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Description</label>
+            <textarea
+              rows={3}
+              placeholder="Short description..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+            />
+          </div>
+
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>YouTube Video Link</label>
+            <input
+              type="text"
+              placeholder="https://youtu.be/xxxxx, shorts, or watch link"
+              value={youtubeUrl}
+              onChange={(e) => setYoutubeUrl(e.target.value)}
+              style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+            />
+          </div>
+
+          {/* Live Auto Thumbnail Preview */}
+          {autoYoutubeThumbnail && (
+            <div style={{ marginBottom: "16px", padding: "12px", background: "#fff5f8", borderRadius: "8px", textAlign: "center" }}>
+              <p style={{ margin: "0 0 8px 0", fontSize: "0.85rem", color: "#d81b60", fontWeight: "bold" }}>
+                ✨ Auto-generated YouTube Thumbnail:
+              </p>
+              <img
+                src={autoYoutubeThumbnail}
+                alt="YouTube Preview"
+                style={{ width: "100%", maxHeight: "200px", objectFit: "cover", borderRadius: "6px" }}
+                onError={(e) => {
+                  if (e.target.src.includes("maxresdefault.jpg")) {
+                    e.target.src = e.target.src.replace("maxresdefault.jpg", "hqdefault.jpg");
+                  } else {
+                    e.target.style.display = "none";
+                  }
+                }}
+              />
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={publishingPost}
+            style={{ padding: "10px 20px", backgroundColor: "#d81b60", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "bold", cursor: "pointer" }}
+          >
+            {publishingPost ? "Publishing..." : "Publish Post"}
+          </button>
+        </form>
       </section>
 
       {/* SECTION 2: PENDING AUs WITH SEARCH & FILTER */}
@@ -201,7 +269,6 @@ export default function Admin() {
           Pending AU Submissions ({filteredAus.length}/{pendingAus.length}) ☁️
         </h2>
 
-        {/* Search & Genre Controls */}
         <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
           <input
             type="text"
@@ -261,7 +328,7 @@ export default function Admin() {
         )}
       </section>
 
-      {/* SECTION 3: SITE CONTENT SETTINGS (RESTORED WHOLE GROUP SECTION) */}
+      {/* SECTION 3: SITE CONTENT SETTINGS */}
       <section style={{ padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff" }}>
         <h2 style={{ color: "#d81b60", marginTop: 0 }}>Website Content Settings 📝</h2>
         {statusMessage && (
@@ -274,7 +341,8 @@ export default function Admin() {
           <p>Loading settings...</p>
         ) : (
           <form onSubmit={handleSaveSettings}>
-            {/* Hero Section Inputs */}
+            {/* Hero Section */}
+            <h3 style={{ color: "#d81b60", marginBottom: "10px" }}>Hero Banner</h3>
             <div style={{ marginBottom: "16px" }}>
               <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Hero Title</label>
               <input
@@ -297,9 +365,10 @@ export default function Admin() {
 
             <hr style={{ border: "none", borderTop: "1px dashed #f8bbd0", margin: "20px 0" }} />
 
-            {/* Restored Whole Group Section Inputs */}
+            {/* Whole Group Section */}
+            <h3 style={{ color: "#d81b60", marginBottom: "10px" }}>Whole Group Section</h3>
             <div style={{ marginBottom: "16px" }}>
-              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Whole Group Section Title</label>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Title</label>
               <input
                 type="text"
                 value={siteSettings.whole_group_title || ""}
@@ -309,13 +378,70 @@ export default function Admin() {
             </div>
 
             <div style={{ marginBottom: "16px" }}>
-              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Whole Group Section Description</label>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Description</label>
               <textarea
                 rows={3}
                 value={siteSettings.whole_group_desc || ""}
                 onChange={(e) => setSiteSettings({ ...siteSettings, whole_group_desc: e.target.value })}
                 style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
               />
+            </div>
+
+            <hr style={{ border: "none", borderTop: "1px dashed #f8bbd0", margin: "20px 0" }} />
+
+            {/* About Section */}
+            <h3 style={{ color: "#d81b60", marginBottom: "10px" }}>About Section</h3>
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>About Title</label>
+              <input
+                type="text"
+                value={siteSettings.about_title || ""}
+                onChange={(e) => setSiteSettings({ ...siteSettings, about_title: e.target.value })}
+                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Subtitle</label>
+              <input
+                type="text"
+                value={siteSettings.about_subtitle || ""}
+                onChange={(e) => setSiteSettings({ ...siteSettings, about_subtitle: e.target.value })}
+                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Letter / Note</label>
+              <textarea
+                rows={4}
+                value={siteSettings.about_letter || ""}
+                onChange={(e) => setSiteSettings({ ...siteSettings, about_letter: e.target.value })}
+                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Signoff Text</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Warmly,"
+                  value={siteSettings.about_signoff_text || ""}
+                  onChange={(e) => setSiteSettings({ ...siteSettings, about_signoff_text: e.target.value })}
+                  style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Author Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Haneul"
+                  value={siteSettings.about_signoff_author || ""}
+                  onChange={(e) => setSiteSettings({ ...siteSettings, about_signoff_author: e.target.value })}
+                  style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+                />
+              </div>
             </div>
 
             <button
