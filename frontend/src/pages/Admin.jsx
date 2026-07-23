@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { getSettings, updateSettings, formatApiError, api } from "../lib/api";
 
 export default function Admin() {
-  // ==========================================
-  // SECTION 1 STATES: VARIETY POST
-  // ==========================================
+  // ... (Section 1 States stay the same)
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -12,201 +10,102 @@ export default function Admin() {
   const [isDragging, setIsDragging] = useState(false);
   const [publishingPost, setPublishingPost] = useState(false);
   const [postStatus, setPostStatus] = useState(null);
-  
   const fileInputRef = useRef(null);
 
-  // Clean up object URLs on unmount or preview changes
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-    };
-  }, [previewUrl]);
-
-  // ==========================================
-  // SECTION 2 STATES: PENDING AU SUBMISSIONS
-  // ==========================================
+  // SECTION 2 STATES: PENDING AU SUBMISSIONS & MODAL + SEARCH/FILTER
   const [pendingAus, setPendingAus] = useState([]);
   const [loadingPending, setLoadingPending] = useState(true);
+  const [auActionStatus, setAuActionStatus] = useState(null);
+  const [selectedAuModal, setSelectedAuModal] = useState(null);
+  
+  // New Search & Filter States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("All");
 
-  // ==========================================
   // SECTION 3 STATES: SITE CONTENT SETTINGS
-  // ==========================================
+  const [initialSettings, setInitialSettings] = useState({});
   const [siteSettings, setSiteSettings] = useState({
-    hero_title: "",
-    hero_subtitle: "",
-    whole_group_title: "",
-    whole_group_desc: "",
-    about_title: "",
-    about_subtitle: "",
-    about_letter: "",
-    about_signoff_text: "",
-    about_signoff_author: "",
+    hero_title: "", hero_subtitle: "", whole_group_title: "",
+    whole_group_desc: "", about_title: "", about_subtitle: "",
+    about_letter: "", about_signoff_text: "", about_signoff_author: "",
   });
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
 
-  // Fetch initial data
+  const showAuNotification = (type, text) => {
+    setAuActionStatus({ type, text });
+    setTimeout(() => setAuActionStatus(null), 4000);
+  };
+
+  const isSettingsDirty = JSON.stringify(siteSettings) !== JSON.stringify(initialSettings);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (isSettingsDirty) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [isSettingsDirty]);
+
   useEffect(() => {
     async function fetchData() {
       try {
         const settingsData = await getSettings();
-        if (settingsData) setSiteSettings(settingsData);
-      } catch (err) {
-        console.error("Failed to load settings:", err);
-      } finally {
-        setLoadingSettings(false);
-      }
+        if (settingsData) {
+          setSiteSettings(settingsData);
+          setInitialSettings(settingsData);
+        }
+      } catch (err) { console.error(err); } 
+      finally { setLoadingSettings(false); }
 
       try {
         const response = await api.get("/admin/pending-aus");
         setPendingAus(response.data || []);
-      } catch (err) {
-        console.error("Failed to load pending AUs:", err);
-      } finally {
-        setLoadingPending(false);
-      }
+      } catch (err) { console.error(err); } 
+      finally { setLoadingPending(false); }
     }
-
     fetchData();
   }, []);
 
-  // ==========================================
-  // DRAG & DROP & IMAGE HANDLERS
-  // ==========================================
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
+  // Filtered AUs calculation
+  const genres = ["All", ...Array.from(new Set(pendingAus.map((au) => au.genre || "AU")))];
+  const filteredAus = pendingAus.filter((au) => {
+    const matchesSearch =
+      au.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      au.author?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      au.summary?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesGenre = selectedGenre === "All" || (au.genre || "AU") === selectedGenre;
+    return matchesSearch && matchesGenre;
+  });
 
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleFileSelect = (file) => {
-    if (file && file.type.startsWith("image/")) {
-      if (previewUrl) URL.revokeObjectURL(previewUrl);
-      setImageFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-    } else {
-      alert("Please upload a valid image file.");
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = e.dataTransfer.files;
-    if (files && files[0]) {
-      handleFileSelect(files[0]);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    if (previewUrl) URL.revokeObjectURL(previewUrl);
-    setImageFile(null);
-    setPreviewUrl(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  // ==========================================
-  // HANDLERS FOR SECTION 1: VARIETY POST
-  // ==========================================
-  const handlePublishPost = async (e) => {
-    e.preventDefault();
-    if (!title.trim()) {
-      setPostStatus({ type: "error", text: "Please provide an episode title." });
-      return;
-    }
-
-    setPublishingPost(true);
-    setPostStatus(null);
-
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
-
-    try {
-      await api.post("/admin/variety-posts", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      setPostStatus({
-        type: "success",
-        text: "Variety post published successfully! ☁️💗",
-      });
-
-      setTitle("");
-      setDescription("");
-      handleRemoveImage();
-    } catch (err) {
-      const errorMsg =
-        formatApiError?.(err.response?.data?.detail) || "Failed to publish post.";
-      setPostStatus({ type: "error", text: errorMsg });
-    } finally {
-      setPublishingPost(false);
-    }
-  };
-
-  // ==========================================
-  // HANDLERS FOR SECTION 2: AU MANAGEMENT
-  // ==========================================
+  // Handlers for AU actions
   const handleApproveAU = async (id) => {
+    const targetAu = pendingAus.find((au) => (au.id || au._id) === id);
+    setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
+    showAuNotification("success", `Approved "${targetAu?.title || "AU"}"! ☁️💗`);
+    if (selectedAuModal && (selectedAuModal.id || selectedAuModal._id) === id) setSelectedAuModal(null);
     try {
       await api.post(`/admin/approve-au/${id}`);
-      setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
-      alert("AU Approved! ☁️💗");
     } catch (err) {
-      console.error("Failed to approve AU:", err);
-      alert("Failed to approve AU.");
+      if (targetAu) setPendingAus((prev) => [targetAu, ...prev]);
+      showAuNotification("error", "Failed to approve AU on server.");
     }
   };
 
   const handleDeleteAU = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this AU submission?"))
-      return;
+    const targetAu = pendingAus.find((au) => (au.id || au._id) === id);
+    setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
+    showAuNotification("info", "Submission removed.");
+    if (selectedAuModal && (selectedAuModal.id || selectedAuModal._id) === id) setSelectedAuModal(null);
     try {
       await api.delete(`/admin/au/${id}`);
-      setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
     } catch (err) {
-      console.error("Failed to delete AU:", err);
-      alert("Failed to delete AU.");
-    }
-  };
-
-  // ==========================================
-  // HANDLERS FOR SECTION 3: SITE SETTINGS
-  // ==========================================
-  const handleSettingsChange = (e) => {
-    const { name, value } = e.target;
-    setSiteSettings((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSaveSettings = async (e) => {
-    e.preventDefault();
-    setSavingSettings(true);
-    setStatusMessage(null);
-
-    try {
-      await updateSettings(siteSettings);
-      setStatusMessage({
-        type: "success",
-        text: "Settings saved successfully! ☁️💗",
-      });
-    } catch (err) {
-      const errorMsg =
-        formatApiError?.(err.response?.data?.detail) || "Failed to save settings.";
-      setStatusMessage({ type: "error", text: errorMsg });
-    } finally {
-      setSavingSettings(false);
+      if (targetAu) setPendingAus((prev) => [targetAu, ...prev]);
+      showAuNotification("error", "Failed to delete AU on server.");
     }
   };
 
@@ -214,226 +113,63 @@ export default function Admin() {
     <div style={{ padding: "30px", maxWidth: "800px", margin: "0 auto", fontFamily: "sans-serif" }}>
       <h1>HANEULZ Admin Panel</h1>
 
-      {/* SECTION 1: ADD VARIETY POST */}
-      <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #eee", borderRadius: "12px", background: "#fff" }}>
-        <h2>Add Variety Post</h2>
+      {/* SECTION 2: PENDING AUs WITH SEARCH & FILTER */}
+      <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff5f8" }}>
+        <h2 style={{ color: "#d81b60", marginTop: 0 }}>
+          Pending AU Submissions ({filteredAus.length}/{pendingAus.length}) ☁️
+        </h2>
 
-        {postStatus && (
-          <div
-            style={{
-              padding: "12px",
-              marginBottom: "16px",
-              borderRadius: "8px",
-              backgroundColor: postStatus.type === "success" ? "#E8F5E9" : "#FFEBEE",
-              color: postStatus.type === "success" ? "#2E7D32" : "#C62828",
-              fontWeight: "bold",
-            }}
+        {/* Search & Genre Controls */}
+        <div style={{ display: "flex", gap: "12px", marginBottom: "16px" }}>
+          <input
+            type="text"
+            placeholder="Search by title, author, or summary..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            style={{ flex: 1, padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1" }}
+          />
+          <select
+            value={selectedGenre}
+            onChange={(e) => setSelectedGenre(e.target.value)}
+            style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", background: "#fff" }}
           >
-            {postStatus.text}
+            {genres.map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
+          </select>
+        </div>
+
+        {auActionStatus && (
+          <div style={{ padding: "10px", marginBottom: "16px", borderRadius: "8px", fontWeight: "bold", backgroundColor: auActionStatus.type === "success" ? "#E8F5E9" : "#FFEBEE", color: auActionStatus.type === "success" ? "#2E7D32" : "#C62828" }}>
+            {auActionStatus.text}
           </div>
         )}
 
-        <form onSubmit={handlePublishPost}>
-          <div style={{ marginBottom: "16px" }}>
-            <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold" }}>
-              Episode Title:
-            </label>
-            <input
-              placeholder="Episode title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
-            />
-          </div>
-
-          <div style={{ marginBottom: "16px" }}>
-            <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold" }}>
-              Description:
-            </label>
-            <textarea
-              placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={4}
-              style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
-            />
-          </div>
-
-          {/* Drag & Drop Zone */}
-          <div style={{ marginBottom: "20px" }}>
-            <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>
-              Cover Image:
-            </label>
-
-            {!previewUrl ? (
-              <div
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                style={{
-                  border: isDragging ? "2px dashed #5C9CE6" : "2px dashed #ccc",
-                  backgroundColor: isDragging ? "#F0F7FF" : "#fafafa",
-                  borderRadius: "12px",
-                  padding: "30px 20px",
-                  textAlign: "center",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease-in-out",
-                  position: "relative",
-                }}
-              >
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      handleFileSelect(e.target.files[0]);
-                    }
-                  }}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    opacity: 0,
-                    cursor: "pointer",
-                  }}
-                />
-                <div style={{ pointerEvents: "none" }}>
-                  <p style={{ margin: "0 0 6px 0", fontSize: "1.5rem" }}>☁️ 🖼️</p>
-                  <p style={{ margin: 0, fontWeight: "600", color: "#333", fontSize: "0.95rem" }}>
-                    Drag & drop your image here, or <span style={{ color: "#5C9CE6", textDecoration: "underline" }}>browse</span>
-                  </p>
-                  <p style={{ margin: "4px 0 0 0", fontSize: "0.8rem", color: "#888" }}>
-                    Supports PNG, JPG, WEBP, or GIF
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div style={{ position: "relative", display: "inline-block" }}>
-                <img
-                  src={previewUrl}
-                  alt="Cover Preview"
-                  style={{
-                    width: "160px",
-                    height: "160px",
-                    objectFit: "cover",
-                    borderRadius: "12px",
-                    border: "1px solid #e0e0e0",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={handleRemoveImage}
-                  style={{
-                    position: "absolute",
-                    top: "-8px",
-                    right: "-8px",
-                    backgroundColor: "#ff4d4f",
-                    color: "#fff",
-                    border: "none",
-                    borderRadius: "50%",
-                    width: "26px",
-                    height: "26px",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                    fontSize: "12px",
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                  }}
-                  title="Remove Image"
-                >
-                  ✕
-                </button>
-              </div>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={publishingPost}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: publishingPost ? "#999" : "#333",
-              color: "#fff",
-              border: "none",
-              borderRadius: "6px",
-              cursor: publishingPost ? "not-allowed" : "pointer",
-            }}
-          >
-            {publishingPost ? "Publishing..." : "Publish Post"}
-          </button>
-        </form>
-      </section>
-
-      {/* SECTION 2: PENDING AU SUBMISSIONS */}
-      <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff5f8" }}>
-        <h2 style={{ color: "#d81b60" }}>
-          Pending AU Submissions ({pendingAus.length}) ☁️
-        </h2>
-
         {loadingPending ? (
           <p>Loading pending submissions...</p>
-        ) : pendingAus.length === 0 ? (
-          <p style={{ fontStyle: "italic", color: "#666" }}>No pending AU submissions to review!</p>
+        ) : filteredAus.length === 0 ? (
+          <p style={{ fontStyle: "italic", color: "#666" }}>No matching AU submissions found.</p>
         ) : (
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {pendingAus.map((au) => {
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", maxHeight: "520px", overflowY: "auto" }}>
+            {filteredAus.map((au) => {
               const auId = au.id || au._id;
               return (
-                <div
-                  key={auId}
-                  style={{
-                    padding: "16px",
-                    background: "#ffffff",
-                    border: "1px solid #f48fb1",
-                    borderRadius: "8px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                  }}
-                >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <div key={auId} style={{ padding: "16px", background: "#fff", border: "1px solid #f48fb1", borderRadius: "8px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <h3 style={{ margin: 0 }}>{au.title}</h3>
-                    <span style={{ fontSize: "0.8rem", color: "#d81b60", fontWeight: "bold" }}>
-                      {au.genre || "AU"}
-                    </span>
+                    <span style={{ fontSize: "0.8rem", color: "#d81b60", fontWeight: "bold" }}>{au.genre || "AU"}</span>
                   </div>
-                  <p style={{ margin: 0, fontSize: "0.9rem", color: "#666" }}>
-                    By: <strong>{au.author || "Anonymous"}</strong>
-                  </p>
-                  <p style={{ margin: "8px 0", fontSize: "0.95rem" }}>{au.summary}</p>
-
+                  <p style={{ margin: "4px 0", fontSize: "0.9rem", color: "#666" }}>By: <strong>{au.author || "Anonymous"}</strong></p>
+                  <p style={{ margin: "4px 0", fontSize: "0.95rem" }}>{au.summary}</p>
                   <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
-                    <button
-                      type="button"
-                      onClick={() => handleApproveAU(auId)}
-                      style={{
-                        padding: "8px 16px",
-                        backgroundColor: "#d81b60",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Approve AU
+                    <button onClick={() => handleApproveAU(auId)} style={{ padding: "6px 12px", backgroundColor: "#d81b60", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}>
+                      Approve
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteAU(auId)}
-                      style={{
-                        padding: "8px 16px",
-                        backgroundColor: "#fff",
-                        color: "#c62828",
-                        border: "1px solid #c62828",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Reject / Delete
+                    <button onClick={() => handleDeleteAU(auId)} style={{ padding: "6px 12px", backgroundColor: "#fff", color: "#c62828", border: "1px solid #c62828", borderRadius: "6px", cursor: "pointer" }}>
+                      Delete
+                    </button>
+                    <button onClick={() => setSelectedAuModal(au)} style={{ marginLeft: "auto", background: "none", border: "none", color: "#5C9CE6", textDecoration: "underline", cursor: "pointer" }}>
+                      Read Full 🔍
                     </button>
                   </div>
                 </div>
@@ -443,143 +179,16 @@ export default function Admin() {
         )}
       </section>
 
-      {/* SECTION 3: EDIT SITE CONTENT */}
-      <section style={{ padding: "20px", border: "1px solid #e3f2fd", borderRadius: "12px", background: "#fbfcfe" }}>
-        <h2 style={{ color: "#5C9CE6" }}>Edit Site Content ☁️</h2>
-
-        {loadingSettings ? (
-          <p>Loading site settings... ☁️</p>
-        ) : (
-          <form onSubmit={handleSaveSettings} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            {statusMessage && (
-              <div
-                style={{
-                  padding: "12px",
-                  borderRadius: "8px",
-                  backgroundColor: statusMessage.type === "success" ? "#E8F5E9" : "#FFEBEE",
-                  color: statusMessage.type === "success" ? "#2E7D32" : "#C62828",
-                  fontWeight: "bold",
-                }}
-              >
-                {statusMessage.text}
-              </div>
-            )}
-
-            {/* HERO SECTION SETTINGS */}
-            <div style={{ background: "#F0F7FF", padding: "16px", borderRadius: "12px" }}>
-              <h3 style={{ marginTop: 0, color: "#42A5F5" }}>Hero Section</h3>
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Hero Title:</label>
-              <input
-                type="text"
-                name="hero_title"
-                value={siteSettings.hero_title || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginBottom: "12px", boxSizing: "border-box" }}
-              />
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Hero Subtitle:</label>
-              <input
-                type="text"
-                name="hero_subtitle"
-                value={siteSettings.hero_subtitle || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
-              />
-            </div>
-
-            {/* WHOLE GROUP SECTION SETTINGS */}
-            <div style={{ background: "#F5F5F5", padding: "16px", borderRadius: "12px" }}>
-              <h3 style={{ marginTop: 0, color: "#616161" }}>Whole Group Section</h3>
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Section Title:</label>
-              <input
-                type="text"
-                name="whole_group_title"
-                value={siteSettings.whole_group_title || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginBottom: "12px", boxSizing: "border-box" }}
-              />
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Section Description:</label>
-              <input
-                type="text"
-                name="whole_group_desc"
-                value={siteSettings.whole_group_desc || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
-              />
-            </div>
-
-            {/* ABOUT SECTION SETTINGS */}
-            <div style={{ background: "#FFF5F8", padding: "16px", borderRadius: "12px" }}>
-              <h3 style={{ marginTop: 0, color: "#F48FB1" }}>Our Little Corner (About Page)</h3>
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Title:</label>
-              <input
-                type="text"
-                name="about_title"
-                value={siteSettings.about_title || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginBottom: "12px", boxSizing: "border-box" }}
-              />
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Subtitle:</label>
-              <input
-                type="text"
-                name="about_subtitle"
-                value={siteSettings.about_subtitle || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginBottom: "12px", boxSizing: "border-box" }}
-              />
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Journal Letter:</label>
-              <textarea
-                name="about_letter"
-                rows={6}
-                value={siteSettings.about_letter || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginBottom: "12px", fontFamily: "inherit", boxSizing: "border-box" }}
-              />
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Sign-off Text:</label>
-              <input
-                type="text"
-                name="about_signoff_text"
-                value={siteSettings.about_signoff_text || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginBottom: "12px", boxSizing: "border-box" }}
-              />
-
-              <label style={{ display: "block", fontWeight: "bold", marginBottom: "4px" }}>Sign-off Author:</label>
-              <input
-                type="text"
-                name="about_signoff_author"
-                value={siteSettings.about_signoff_author || ""}
-                onChange={handleSettingsChange}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={savingSettings}
-              style={{
-                padding: "12px 24px",
-                backgroundColor: savingSettings ? "#90CAF9" : "#5C9CE6",
-                color: "#ffffff",
-                fontWeight: "bold",
-                border: "none",
-                borderRadius: "8px",
-                cursor: savingSettings ? "not-allowed" : "pointer",
-                fontSize: "1rem",
-              }}
-            >
-              {savingSettings ? "Saving Settings..." : "Save All Changes ☁️💗"}
-            </button>
-          </form>
-        )}
-      </section>
+      {/* Modal View */}
+      {selectedAuModal && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "rgba(0,0,0,0.4)", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={() => setSelectedAuModal(null)}>
+          <div style={{ backgroundColor: "#fff", padding: "24px", borderRadius: "12px", maxWidth: "600px", width: "100%" }} onClick={(e) => e.stopPropagation()}>
+            <h2>{selectedAuModal.title}</h2>
+            <p style={{ whiteSpace: "pre-wrap" }}>{selectedAuModal.content || selectedAuModal.summary}</p>
+            <button onClick={() => setSelectedAuModal(null)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
