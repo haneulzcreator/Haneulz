@@ -1,6 +1,6 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
-import { Sparkles, Image as ImageIcon, Upload, X, ShieldAlert } from "lucide-react";
+import { Sparkles, ShieldAlert } from "lucide-react";
 import { api, formatApiError } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
@@ -11,8 +11,6 @@ const empty = {
   short_description: "",
   full_story: "",
   source_url: "",
-  thumbnail_url: "",
-  tags: "",
   au_type: "story",
   source: "x",
 };
@@ -20,37 +18,12 @@ const empty = {
 export default function Submit() {
   const [form, setForm] = useState(empty);
   const [submitting, setSubmitting] = useState(false);
-  const fileInputRef = useRef(null);
 
   const set = (key) => (e) =>
     setForm({
       ...form,
       [key]: e.target.value,
     });
-
-  const handleImageChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image size must be under 5MB.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setForm((prev) => ({
-        ...prev,
-        thumbnail_url: reader.result,
-      }));
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const removeImage = () => {
-    setForm((prev) => ({ ...prev, thumbnail_url: "" }));
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -69,17 +42,11 @@ export default function Submit() {
         short_description: form.short_description,
         full_story: form.full_story,
         source_url: form.source_url,
-        thumbnail_url: form.thumbnail_url,
-        tags: form.tags
-          .split(",")
-          .map((tag) => tag.trim())
-          .filter(Boolean),
         au_type: form.au_type,
         source: form.source,
       });
 
       setForm(empty);
-      if (fileInputRef.current) fileInputRef.current.value = "";
       toast.success("Your AU is waiting for approval. 💗🌩️💙");
     } catch (err) {
       toast.error(formatApiError(err.response?.data?.detail));
@@ -105,7 +72,7 @@ export default function Submit() {
           </h1>
 
           <p className="mt-6 text-lg text-[color:var(--ink-soft)]">
-            Share an alternate universe or headcanon. Upload a thumbnail cover from your device so our admin can review it.
+            Share an alternate universe or headcanon. Add the original link and our admin team will review, tag, and set up the cover before publishing.
           </p>
         </Reveal>
 
@@ -139,52 +106,6 @@ export default function Submit() {
               />
             </div>
 
-            {/* Thumbnail Upload */}
-            <div>
-              <label className="label mb-2 flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
-                <ImageIcon size={14} /> Cover / Thumbnail Image
-              </label>
-
-              <input
-                type="file"
-                ref={fileInputRef}
-                accept="image/png, image/jpeg, image/jpg, image/webp"
-                onChange={handleImageChange}
-                className="hidden"
-                id="thumbnail-upload"
-              />
-
-              {!form.thumbnail_url ? (
-                <label
-                  htmlFor="thumbnail-upload"
-                  className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[1.25rem] border-2 border-dashed border-[color:var(--line)] bg-white/50 p-6 transition-colors hover:bg-white"
-                >
-                  <Upload size={24} className="text-[color:var(--ink-soft)]" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-[color:var(--ink-soft)]">
-                    Choose file from photo gallery or files
-                  </span>
-                  <span className="text-[10px] text-[color:var(--ink-soft)]">
-                    PNG, JPG, or WEBP (Max 5MB)
-                  </span>
-                </label>
-              ) : (
-                <div className="relative mt-2 inline-block">
-                  <img
-                    src={form.thumbnail_url}
-                    alt="Thumbnail preview"
-                    className="h-32 w-32 rounded-[1.25rem] border border-[color:var(--line)] object-cover shadow-sm"
-                  />
-                  <button
-                    type="button"
-                    onClick={removeImage}
-                    className="absolute -right-2 -top-2 rounded-full bg-red-500 p-1 text-white shadow-md hover:bg-red-600"
-                  >
-                    <X size={14} />
-                  </button>
-                </div>
-              )}
-            </div>
-
             <div>
               <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Type
@@ -212,7 +133,7 @@ export default function Submit() {
 
             <div>
               <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
-                Source
+                Source Platform
               </label>
               <div className="flex flex-wrap gap-3">
                 {[
@@ -277,19 +198,7 @@ export default function Submit() {
               />
             </div>
 
-            <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
-                Tags (Comma Separated)
-              </label>
-              <input
-                value={form.tags}
-                onChange={set("tags")}
-                className={inputStyle}
-                placeholder="fluff, angst, slow burn, college au"
-              />
-            </div>
-
-            {/* Integrated Disclaimer Box */}
+            {/* Disclaimer Box */}
             <div className="space-y-2 rounded-2xl border border-[color:var(--line)] bg-white/40 p-5 text-xs text-[color:var(--ink-soft)]">
               <p className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[color:var(--ink)]">
                 <ShieldAlert size={14} /> Disclaimer & Community Notice
