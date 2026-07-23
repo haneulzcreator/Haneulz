@@ -44,6 +44,7 @@ export function formatApiError(detail) {
 
   return String(detail);
 }
+
 export const IMAGES = {
   heroDuo:
     "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/ab92e1a8e9c953d7750906de4c2de631d1ba2aee7e3a83b2a07a4eb88c7043db.png",
@@ -93,3 +94,17 @@ export const SOURCE_ORDER = [
   "ao3",
   "other",
 ];
+
+// =========================
+// SITE SETTINGS API
+// =========================
+
+export async function getSettings() {
+  const response = await api.get("/settings");
+  return response.data;
+}
+
+export async function updateSettings(settingsData) {
+  const response = await api.post("/admin/settings", settingsData);
+  return response.data;
+}
