@@ -175,6 +175,21 @@ class AU(BaseModel):
     created_at: str = Field(default_factory=now_iso)
 
 # =========================
+# SITE SETTINGS MODEL
+# =========================
+
+class SiteSettings(BaseModel):
+    hero_title: str = "HANEULZ CORNER"
+    hero_subtitle: str = "Your cozy space for all things AHOF & Haneulz"
+    whole_group_title: str = "NOW, THE WHOLE GROUP"
+    whole_group_desc: str = "Spotlighting all nine members of AHOF together."
+    about_title: str = "Our Little Corner"
+    about_subtitle: str = "Welcome to Haneulz Corner ☁️💗"
+    about_letter: str = "Haneulz Corner started as a simple idea from one Hansum who just wanted a place where everything about HANEULZ could be found a little more easily.\n\nLike many fans, I often found myself scrolling through old bookmarks..."
+    about_signoff_text: str = "Made with lots of love, late-night ideas, and a few too many bookmarks."
+    about_signoff_author: str = "— K ☁️💗"
+
+# =========================
 # VARIETY
 # =========================
 
@@ -471,6 +486,7 @@ async def submit_comment(
 
 
     return comment
+
 # =========================
 # VARIETY ROUTES
 # =========================
@@ -741,7 +757,45 @@ async def admin_delete_playlist_item(
     await db.playlists.delete_one({"id": item_id})
 
     return {"ok": True}
-    
+
+# =========================
+# SITE SETTINGS ROUTES
+# =========================
+
+@api_router.get("/settings")
+async def get_settings():
+    settings = await db.settings.find_one({"_id": "site_content"}, {"_id": 0})
+    if not settings:
+        default_settings = {
+            "hero_title": "HANEULZ CORNER",
+            "hero_subtitle": "Your cozy space for all things AHOF & Haneulz",
+            "whole_group_title": "NOW, THE WHOLE GROUP",
+            "whole_group_desc": "Spotlighting all nine members of AHOF together.",
+            "about_title": "Our Little Corner",
+            "about_subtitle": "Welcome to Haneulz Corner ☁️💗",
+            "about_letter": "Haneulz Corner started as a simple idea from one Hansum who just wanted a place where everything about HANEULZ could be found a little more easily.\n\nLike many fans, I often found myself scrolling through old bookmarks...",
+            "about_signoff_text": "Made with lots of love, late-night ideas, and a few too many bookmarks.",
+            "about_signoff_author": "— K ☁️💗"
+        }
+        await db.settings.insert_one({"_id": "site_content", **default_settings})
+        return default_settings
+
+    return settings
+
+
+@api_router.post("/admin/settings")
+async def update_settings(
+    settings: SiteSettings,
+    admin: dict = Depends(get_current_admin)
+):
+    data = settings.model_dump()
+    await db.settings.update_one(
+        {"_id": "site_content"},
+        {"$set": data},
+        upsert=True
+    )
+    return {"message": "Settings updated successfully! ☁️💗", "settings": data}
+
 # =========================
 # ROOT
 # =========================
