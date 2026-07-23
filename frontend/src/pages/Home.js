@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Marquee from "react-fast-marquee";
 import { ArrowUpRight, Sparkles, Tv, PenLine } from "lucide-react";
-import { api, IMAGES } from "../lib/api";
+import { api, getSettings, IMAGES } from "../lib/api";
 import { Reveal, MaskLine, ease } from "../components/Reveal";
 import AUCard from "../components/AUCard";
 import Footer from "../components/Footer";
@@ -17,7 +17,7 @@ const chapters = [
   {
     n: "02",
     title: "Haneulz, acknowledged",
-    body: "During the debut, fans coined the name by blending the Korean names of JL and Han — first \u201cHaneul,\u201d then HANEULZ. Fitting, since \u201chaneul\u201d means sky, and both of them have the most heavenly vocals.",
+    body: "During the debut, fans coined the name by blending the Korean names of JL and Han — first “Haneul,” then HANEULZ. Fitting, since “haneul” means sky, and both of them have the most heavenly vocals.",
   },
   {
     n: "03",
@@ -28,12 +28,18 @@ const chapters = [
 
 export default function Home() {
   const [aus, setAus] = useState([]);
+  const [settings, setSettings] = useState(null);
+
   const { scrollY } = useScroll();
   const cloudY = useTransform(scrollY, [0, 600], [0, 160]);
   const heroScale = useTransform(scrollY, [0, 600], [1, 1.12]);
 
   useEffect(() => {
+    // Fetch featured AUs
     api.get("/aus").then((r) => setAus(r.data.slice(0, 3))).catch(() => {});
+
+    // Fetch site settings for dynamic text
+    getSettings().then((data) => setSettings(data)).catch(() => {});
   }, []);
 
   return (
@@ -61,13 +67,16 @@ export default function Home() {
           </motion.p>
 
           <h1 className="font-serif-display text-[18vw] font-medium leading-[0.82] tracking-tighter md:text-[15rem]">
-            <MaskLine delay={0.35}>HANEULZ</MaskLine>
+            <MaskLine delay={0.35}>
+              {settings?.hero_title || "HANEULZ"}
+            </MaskLine>
           </h1>
 
           <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
             <MaskLine delay={0.7} className="max-w-md font-serif-display text-2xl italic leading-snug text-[color:var(--ink-soft)] md:text-3xl">
-              a soft place for the daydreams,
+              {settings?.hero_subtitle || "a soft place for the daydreams,"}
             </MaskLine>
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
