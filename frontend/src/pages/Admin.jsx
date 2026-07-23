@@ -2,17 +2,26 @@ import React, { useState, useEffect } from "react";
 import { getSettings, updateSettings, formatApiError, api } from "../lib/api";
 
 export default function Admin() {
-  // 1. Variety Post State
+  // ==========================================
+  // SECTION 1 STATES: VARIETY POST
+  // ==========================================
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [publishingPost, setPublishingPost] = useState(false);
   const [postStatus, setPostStatus] = useState(null);
 
-  // 2. Pending AU Submissions State
+  // ==========================================
+  // SECTION 2 STATES: PENDING AU SUBMISSIONS
+  // ==========================================
   const [pendingAus, setPendingAus] = useState([]);
   const [loadingPending, setLoadingPending] = useState(true);
 
-  // 3. Site Settings State
+  // ==========================================
+  // SECTION 3 STATES: SITE CONTENT SETTINGS
+  // ==========================================
   const [siteSettings, setSiteSettings] = useState({
     hero_title: "",
     hero_subtitle: "",
@@ -24,12 +33,11 @@ export default function Admin() {
     about_signoff_text: "",
     about_signoff_author: "",
   });
-
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
 
-  // Load pending AUs and initial settings on mount
+  // Fetch pending AUs and initial settings on mount
   useEffect(() => {
     async function fetchData() {
       // Fetch site settings
@@ -56,7 +64,43 @@ export default function Admin() {
     fetchData();
   }, []);
 
-  // --- Handlers for Section 1: Variety Post ---
+  // ==========================================
+  // DRAG & DROP HANDLERS (SECTION 1)
+  // ==========================================
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      const file = files[0];
+      if (file.type.startsWith("image/")) {
+        setImageFile(file);
+        setPreviewUrl(URL.createObjectURL(file));
+      } else {
+        alert("Please upload an image file.");
+      }
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setPreviewUrl(null);
+  };
+
+  // ==========================================
+  // HANDLERS FOR SECTION 1: VARIETY POST
+  // ==========================================
   const handlePublishPost = async (e) => {
     e.preventDefault();
     if (!title.trim()) {
@@ -67,20 +111,39 @@ export default function Admin() {
     setPublishingPost(true);
     setPostStatus(null);
 
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
     try {
-      await api.post("/admin/variety-posts", { title, description });
-      setPostStatus({ type: "success", text: "Variety post published successfully! ☁️💗" });
+      await api.post("/admin/variety-posts", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setPostStatus({
+        type: "success",
+        text: "Variety post published successfully! ☁️💗",
+      });
+
       setTitle("");
       setDescription("");
+      setImageFile(null);
+      setPreviewUrl(null);
     } catch (err) {
-      const errorMsg = formatApiError?.(err.response?.data?.detail) || "Failed to publish post.";
+      const errorMsg =
+        formatApiError?.(err.response?.data?.detail) || "Failed to publish post.";
       setPostStatus({ type: "error", text: errorMsg });
     } finally {
       setPublishingPost(false);
     }
   };
 
-  // --- Handlers for Section 2: AU Management ---
+  // ==========================================
+  // HANDLERS FOR SECTION 2: AU MANAGEMENT
+  // ==========================================
   const handleApproveAU = async (id) => {
     try {
       await api.post(`/admin/approve-au/${id}`);
@@ -93,7 +156,8 @@ export default function Admin() {
   };
 
   const handleDeleteAU = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this AU submission?")) return;
+    if (!window.confirm("Are you sure you want to delete this AU submission?"))
+      return;
     try {
       await api.delete(`/admin/au/${id}`);
       setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
@@ -103,7 +167,9 @@ export default function Admin() {
     }
   };
 
-  // --- Handlers for Section 3: Site Settings ---
+  // ==========================================
+  // HANDLERS FOR SECTION 3: SITE SETTINGS
+  // ==========================================
   const handleSettingsChange = (e) => {
     const { name, value } = e.target;
     setSiteSettings((prev) => ({ ...prev, [name]: value }));
@@ -116,9 +182,13 @@ export default function Admin() {
 
     try {
       await updateSettings(siteSettings);
-      setStatusMessage({ type: "success", text: "Settings saved successfully! ☁️💗" });
+      setStatusMessage({
+        type: "success",
+        text: "Settings saved successfully! ☁️💗",
+      });
     } catch (err) {
-      const errorMsg = formatApiError?.(err.response?.data?.detail) || "Failed to save settings.";
+      const errorMsg =
+        formatApiError?.(err.response?.data?.detail) || "Failed to save settings.";
       setStatusMessage({ type: "error", text: errorMsg });
     } finally {
       setSavingSettings(false);
@@ -130,9 +200,9 @@ export default function Admin() {
       <h1>HANEULZ Admin Panel</h1>
 
       {/* ========================================== */}
-      {/* SECTION 1: ADD VARIETY POST               */}
+      {/* SECTION 1: ADD VARIETY POST WITH DROPZONE  */}
       {/* ========================================== */}
-      <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #eee", borderRadius: "12px" }}>
+      <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #eee", borderRadius: "12px", background: "#fff" }}>
         <h2>Add Variety Post</h2>
 
         {postStatus && (
@@ -151,24 +221,122 @@ export default function Admin() {
         )}
 
         <form onSubmit={handlePublishPost}>
-          <input
-            placeholder="Episode title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
-          />
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold" }}>
+              Episode Title:
+            </label>
+            <input
+              placeholder="Episode title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
+            />
+          </div>
 
-          <br /><br />
+          <div style={{ marginBottom: "16px" }}>
+            <label style={{ display: "block", marginBottom: "6px", fontWeight: "bold" }}>
+              Description:
+            </label>
+            <textarea
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={4}
+              style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
+            />
+          </div>
 
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-            style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", boxSizing: "border-box" }}
-          />
+          {/* Drag and Drop Cover Image Zone */}
+          <div style={{ marginBottom: "20px" }}>
+            <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>
+              Cover Image:
+            </label>
 
-          <br /><br />
+            {!previewUrl ? (
+              <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                style={{
+                  border: isDragging ? "2px dashed #5C9CE6" : "2px dashed #ccc",
+                  backgroundColor: isDragging ? "#F0F7FF" : "#fafafa",
+                  borderRadius: "12px",
+                  padding: "30px 20px",
+                  textAlign: "center",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease-in-out",
+                  position: "relative",
+                }}
+              >
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setImageFile(file);
+                      setPreviewUrl(URL.createObjectURL(file));
+                    }
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    opacity: 0,
+                    cursor: "pointer",
+                  }}
+                />
+                <div style={{ pointerEvents: "none" }}>
+                  <p style={{ margin: "0 0 6px 0", fontSize: "1.5rem" }}>☁️ 🖼️</p>
+                  <p style={{ margin: 0, fontWeight: "600", color: "#333", fontSize: "0.95rem" }}>
+                    Drag & drop your image here, or <span style={{ color: "#5C9CE6", textDecoration: "underline" }}>browse</span>
+                  </p>
+                  <p style={{ margin: "4px 0 0 0", fontSize: "0.8rem", color: "#888" }}>
+                    Supports PNG, JPG, WEBP, or GIF
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <img
+                  src={previewUrl}
+                  alt="Cover Preview"
+                  style={{
+                    width: "160px",
+                    height: "160px",
+                    objectFit: "cover",
+                    borderRadius: "12px",
+                    border: "1px solid #e0e0e0",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  style={{
+                    position: "absolute",
+                    top: "-8px",
+                    right: "-8px",
+                    backgroundColor: "#ff4d4f",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: "50%",
+                    width: "26px",
+                    height: "26px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    fontSize: "12px",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                  }}
+                  title="Remove Image"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+          </div>
 
           <button
             type="submit"
@@ -179,10 +347,10 @@ export default function Admin() {
               color: "#fff",
               border: "none",
               borderRadius: "6px",
-              cursor: publishingPost ? "not-allowed" : "pointer"
+              cursor: publishingPost ? "not-allowed" : "pointer",
             }}
           >
-            {publishingPost ? "Publishing..." : "Publish"}
+            {publishingPost ? "Publishing..." : "Publish Post"}
           </button>
         </form>
       </section>
