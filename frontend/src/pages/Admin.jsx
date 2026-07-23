@@ -12,7 +12,7 @@ export default function Admin() {
   const [isDragging, setIsDragging] = useState(false);
   const [publishingPost, setPublishingPost] = useState(false);
   const [postStatus, setPostStatus] = useState(null);
-  
+
   const fileInputRef = useRef(null);
 
   // Clean up object URLs on unmount or preview changes
@@ -29,6 +29,12 @@ export default function Admin() {
   // ==========================================
   const [pendingAus, setPendingAus] = useState([]);
   const [loadingPending, setLoadingPending] = useState(true);
+  const [auActionStatus, setAuActionStatus] = useState(null);
+
+  const showAuNotification = (type, text) => {
+    setAuActionStatus({ type, text });
+    setTimeout(() => setAuActionStatus(null), 4000);
+  };
 
   // ==========================================
   // SECTION 3 STATES: SITE CONTENT SETTINGS
@@ -157,28 +163,45 @@ export default function Admin() {
   };
 
   // ==========================================
-  // HANDLERS FOR SECTION 2: AU MANAGEMENT
+  // HANDLERS FOR SECTION 2: AU MANAGEMENT (OPTIMISTIC)
   // ==========================================
   const handleApproveAU = async (id) => {
+    const targetAu = pendingAus.find((au) => (au.id || au._id) === id);
+
+    // 1. Optimistic update
+    setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
+    showAuNotification("success", `Approved "${targetAu?.title || "AU"}"! ☁️💗`);
+
+    // 2. Server request
     try {
       await api.post(`/admin/approve-au/${id}`);
-      setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
-      alert("AU Approved! ☁️💗");
     } catch (err) {
       console.error("Failed to approve AU:", err);
-      alert("Failed to approve AU.");
+      // 3. Rollback on failure
+      if (targetAu) {
+        setPendingAus((prev) => [targetAu, ...prev]);
+      }
+      showAuNotification("error", "Failed to approve AU on server. Action reverted.");
     }
   };
 
   const handleDeleteAU = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this AU submission?"))
-      return;
+    const targetAu = pendingAus.find((au) => (au.id || au._id) === id);
+
+    // 1. Optimistic update
+    setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
+    showAuNotification("info", "Submission removed.");
+
+    // 2. Server request
     try {
       await api.delete(`/admin/au/${id}`);
-      setPendingAus((prev) => prev.filter((au) => (au.id || au._id) !== id));
     } catch (err) {
       console.error("Failed to delete AU:", err);
-      alert("Failed to delete AU.");
+      // 3. Rollback on failure
+      if (targetAu) {
+        setPendingAus((prev) => [targetAu, ...prev]);
+      }
+      showAuNotification("error", "Failed to delete AU from server. Action reverted.");
     }
   };
 
@@ -372,6 +395,34 @@ export default function Admin() {
         <h2 style={{ color: "#d81b60" }}>
           Pending AU Submissions ({pendingAus.length}) ☁️
         </h2>
+
+        {/* AU ACTION NOTIFICATION BANNER */}
+        {auActionStatus && (
+          <div
+            style={{
+              padding: "10px 14px",
+              marginBottom: "16px",
+              borderRadius: "8px",
+              fontSize: "0.9rem",
+              fontWeight: "bold",
+              backgroundColor:
+                auActionStatus.type === "success"
+                  ? "#E8F5E9"
+                  : auActionStatus.type === "error"
+                  ? "#FFEBEE"
+                  : "#E3F2FD",
+              color:
+                auActionStatus.type === "success"
+                  ? "#2E7D32"
+                  : auActionStatus.type === "error"
+                  ? "#C62828"
+                  : "#1565C0",
+              transition: "all 0.3s ease",
+            }}
+          >
+            {auActionStatus.text}
+          </div>
+        )}
 
         {loadingPending ? (
           <p>Loading pending submissions...</p>
