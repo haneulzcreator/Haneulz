@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getSettings, updateSettings, formatApiError } from "../api";
+import { getSettings, updateSettings, formatApiError, api } from "../lib/api";
 
 export default function Admin() {
   // Existing Variety Post state
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  // Pending AU Submissions state
+  const [pendingAus, setPendingAus] = useState([]);
+  const [loadingPending, setLoadingPending] = useState(true);
 
   // Site Settings state
   const [siteSettings, setSiteSettings] = useState({
@@ -23,20 +27,56 @@ export default function Admin() {
   const [savingSettings, setSavingSettings] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
 
-  // Fetch initial settings from MongoDB on mount
+  // Load pending AUs and initial settings on mount
   useEffect(() => {
-    async function loadSettings() {
+    async function fetchData() {
+      // Fetch settings
       try {
-        const data = await getSettings();
-        setSiteSettings(data);
+        const settingsData = await getSettings();
+        if (settingsData) setSiteSettings(settingsData);
       } catch (err) {
         console.error("Failed to load settings:", err);
       } finally {
         setLoadingSettings(false);
       }
+
+      // Fetch pending AU submissions
+      try {
+        const response = await api.get("/admin/pending-aus");
+        setPendingAus(response.data || []);
+      } catch (err) {
+        console.error("Failed to load pending AUs:", err);
+      } finally {
+        setLoadingPending(false);
+      }
     }
-    loadSettings();
+
+    fetchData();
   }, []);
+
+  // Handler to approve an AU
+  const handleApproveAU = async (id) => {
+    try {
+      await api.post(`/admin/approve-au/${id}`);
+      setPendingAus((prev) => prev.filter((au) => au.id !== id && au._id !== id));
+      alert("AU Approved! ☁️💗");
+    } catch (err) {
+      console.error("Failed to approve AU:", err);
+      alert("Failed to approve AU.");
+    }
+  };
+
+  // Handler to delete/reject an AU
+  const handleDeleteAU = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this AU submission?")) return;
+    try {
+      await api.delete(`/admin/au/${id}`);
+      setPendingAus((prev) => prev.filter((au) => au.id !== id && au._id !== id));
+    } catch (err) {
+      console.error("Failed to delete AU:", err);
+      alert("Failed to delete AU.");
+    }
+  };
 
   const handleSettingsChange = (e) => {
     const { name, value } = e.target;
@@ -103,7 +143,83 @@ export default function Admin() {
       </section>
 
       {/* ========================================== */}
-      {/* SECTION 2: EDIT SITE CONTENT (SETTINGS)    */}
+      {/* SECTION 2: PENDING AU SUBMISSIONS         */}
+      {/* ========================================== */}
+      <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff5f8" }}>
+        <h2 style={{ color: "#d81b60" }}>
+          Pending AU Submissions ({pendingAus.length}) ☁️
+        </h2>
+
+        {loadingPending ? (
+          <p>Loading pending submissions...</p>
+        ) : pendingAus.length === 0 ? (
+          <p style={{ fontStyle: "italic", color: "#666" }}>No pending AU submissions to review!</p>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {pendingAus.map((au) => {
+              const auId = au.id || au._id;
+              return (
+                <div
+                  key={auId}
+                  style={{
+                    padding: "16px",
+                    background: "#ffffff",
+                    border: "1px solid #f48fb1",
+                    borderRadius: "8px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px"
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                    <h3 style={{ margin: 0 }}>{au.title}</h3>
+                    <span style={{ fontSize: "0.8rem", color: "#d81b60", fontWeight: "bold" }}>
+                      {au.genre || "AU"}
+                    </span>
+                  </div>
+                  <p style={{ margin: 0, fontSize: "0.9rem", color: "#666" }}>
+                    By: <strong>{au.author || "Anonymous"}</strong>
+                  </p>
+                  <p style={{ margin: "8px 0", fontSize: "0.95rem" }}>{au.summary}</p>
+
+                  <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                    <button
+                      onClick={() => handleApproveAU(auId)}
+                      style={{
+                        padding: "8px 16px",
+                        backgroundColor: "#d81b60",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Approve AU
+                    </button>
+                    <button
+                      onClick={() => handleDeleteAU(auId)}
+                      style={{
+                        padding: "8px 16px",
+                        backgroundColor: "#fff",
+                        color: "#c62828",
+                        border: "1px solid #c62828",
+                        borderRadius: "6px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      Reject / Delete
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      {/* ========================================== */}
+      {/* SECTION 3: EDIT SITE CONTENT (SETTINGS)   */}
       {/* ========================================== */}
       <section style={{ padding: "20px", border: "1px solid #e3f2fd", borderRadius: "12px", background: "#fbfcfe" }}>
         <h2 style={{ color: "#5C9CE6" }}>Edit Site Content ☁️</h2>
