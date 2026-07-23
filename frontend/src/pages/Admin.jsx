@@ -1,10 +1,25 @@
 import React, { useState, useEffect, useRef } from "react";
 import { getSettings, updateSettings, formatApiError, api } from "../lib/api";
 
+// 💡 YOUTUBE THUMBNAIL HELPER UTILITY
+// Automatically extracts video ID from past YouTube URLs (supports standard, shortener, & embed links)
+export const getYouTubeThumbnail = (url) => {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+
+  if (match && match[2].length === 11) {
+    const videoId = match[2];
+    return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  }
+  return null;
+};
+
 export default function Admin() {
-  // ... (Section 1 States stay the same)
+  // SECTION 1 STATES: NEW POST / VARIETY SUBMISSION
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState(""); // 👈 Added YouTube URL field
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -18,20 +33,29 @@ export default function Admin() {
   const [auActionStatus, setAuActionStatus] = useState(null);
   const [selectedAuModal, setSelectedAuModal] = useState(null);
   
-  // New Search & Filter States
+  // Search & Filter States
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("All");
 
-  // SECTION 3 STATES: SITE CONTENT SETTINGS
+  // SECTION 3 STATES: SITE CONTENT SETTINGS (Includes Restored "Whole Group" Fields)
   const [initialSettings, setInitialSettings] = useState({});
   const [siteSettings, setSiteSettings] = useState({
-    hero_title: "", hero_subtitle: "", whole_group_title: "",
-    whole_group_desc: "", about_title: "", about_subtitle: "",
-    about_letter: "", about_signoff_text: "", about_signoff_author: "",
+    hero_title: "",
+    hero_description: "",
+    whole_group_title: "NOW, THE WHOLE GROUP",
+    whole_group_desc: "Beyond the duets — all of AHOF. From here the spotlight widens to the whole group. These playlists celebrate AHOF as nine — anniversaries, music videos and everything the boys do together.",
+    about_title: "Our Little Corner",
+    about_subtitle: "",
+    about_letter: "",
+    about_signoff_text: "",
+    about_signoff_author: "",
   });
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
+
+  // Auto-calculated YouTube Thumbnail preview
+  const autoYoutubeThumbnail = getYouTubeThumbnail(youtubeUrl);
 
   const showAuNotification = (type, text) => {
     setAuActionStatus({ type, text });
@@ -56,17 +80,23 @@ export default function Admin() {
       try {
         const settingsData = await getSettings();
         if (settingsData) {
-          setSiteSettings(settingsData);
-          setInitialSettings(settingsData);
+          setSiteSettings((prev) => ({ ...prev, ...settingsData }));
+          setInitialSettings((prev) => ({ ...prev, ...settingsData }));
         }
-      } catch (err) { console.error(err); } 
-      finally { setLoadingSettings(false); }
+      } catch (err) { 
+        console.error("Error loading settings:", err); 
+      } finally { 
+        setLoadingSettings(false); 
+      }
 
       try {
         const response = await api.get("/admin/pending-aus");
         setPendingAus(response.data || []);
-      } catch (err) { console.error(err); } 
-      finally { setLoadingPending(false); }
+      } catch (err) { 
+        console.error("Error loading pending AUs:", err); 
+      } finally { 
+        setLoadingPending(false); 
+      }
     }
     fetchData();
   }, []);
@@ -109,9 +139,61 @@ export default function Admin() {
     }
   };
 
+  // Handler for Saving Site Content Settings
+  const handleSaveSettings = async (e) => {
+    e.preventDefault();
+    setSavingSettings(true);
+    setStatusMessage(null);
+    try {
+      await updateSettings(siteSettings);
+      setInitialSettings(siteSettings);
+      setStatusMessage({ type: "success", text: "Site settings updated successfully! ☁️" });
+    } catch (err) {
+      setStatusMessage({ type: "error", text: formatApiError(err) });
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
   return (
     <div style={{ padding: "30px", maxWidth: "800px", margin: "0 auto", fontFamily: "sans-serif" }}>
-      <h1>HANEULZ Admin Panel</h1>
+      <h1>Haneulz Corner Admin Panel ☁️</h1>
+
+      {/* SECTION 1: ADD CONTENT / VARIETY (WITH YOUTUBE AUTO-THUMBNAIL) */}
+      <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff" }}>
+        <h2 style={{ color: "#d81b60", marginTop: 0 }}>Add Variety / Video Post 🎵</h2>
+        
+        <div style={{ marginBottom: "16px" }}>
+          <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>YouTube Video Link</label>
+          <input
+            type="text"
+            placeholder="https://youtu.be/xxxxx or https://www.youtube.com/watch?v=xxxxx"
+            value={youtubeUrl}
+            onChange={(e) => setYoutubeUrl(e.target.value)}
+            style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+          />
+        </div>
+
+        {/* Live Auto Thumbnail Preview */}
+        {autoYoutubeThumbnail && (
+          <div style={{ marginBottom: "16px", padding: "12px", background: "#fff5f8", borderRadius: "8px", textAlign: "center" }}>
+            <p style={{ margin: "0 0 8px 0", fontSize: "0.85rem", color: "#d81b60", fontWeight: "bold" }}>
+              ✨ Auto-generated YouTube Thumbnail (No upload required):
+            </p>
+            <img
+              src={autoYoutubeThumbnail}
+              alt="YouTube Preview"
+              style={{ width: "100%", maxHeight: "200px", objectFit: "cover", borderRadius: "6px" }}
+              onError={(e) => {
+                // Fallback if maxresdefault isn't available for this video
+                if (e.target.src.includes("maxresdefault")) {
+                  e.target.src = e.target.src.replace("maxresdefault", "hqdefault");
+                }
+              }}
+            />
+          </div>
+        )}
+      </section>
 
       {/* SECTION 2: PENDING AUs WITH SEARCH & FILTER */}
       <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff5f8" }}>
@@ -179,13 +261,92 @@ export default function Admin() {
         )}
       </section>
 
+      {/* SECTION 3: SITE CONTENT SETTINGS (RESTORED WHOLE GROUP SECTION) */}
+      <section style={{ padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff" }}>
+        <h2 style={{ color: "#d81b60", marginTop: 0 }}>Website Content Settings 📝</h2>
+        {statusMessage && (
+          <div style={{ padding: "10px", marginBottom: "16px", borderRadius: "8px", fontWeight: "bold", backgroundColor: statusMessage.type === "success" ? "#E8F5E9" : "#FFEBEE", color: statusMessage.type === "success" ? "#2E7D32" : "#C62828" }}>
+            {statusMessage.text}
+          </div>
+        )}
+
+        {loadingSettings ? (
+          <p>Loading settings...</p>
+        ) : (
+          <form onSubmit={handleSaveSettings}>
+            {/* Hero Section Inputs */}
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Hero Title</label>
+              <input
+                type="text"
+                value={siteSettings.hero_title || ""}
+                onChange={(e) => setSiteSettings({ ...siteSettings, hero_title: e.target.value })}
+                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Hero Description</label>
+              <textarea
+                rows={3}
+                value={siteSettings.hero_description || ""}
+                onChange={(e) => setSiteSettings({ ...siteSettings, hero_description: e.target.value })}
+                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <hr style={{ border: "none", borderTop: "1px dashed #f8bbd0", margin: "20px 0" }} />
+
+            {/* Restored Whole Group Section Inputs */}
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Whole Group Section Title</label>
+              <input
+                type="text"
+                value={siteSettings.whole_group_title || ""}
+                onChange={(e) => setSiteSettings({ ...siteSettings, whole_group_title: e.target.value })}
+                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "16px" }}>
+              <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>Whole Group Section Description</label>
+              <textarea
+                rows={3}
+                value={siteSettings.whole_group_desc || ""}
+                onChange={(e) => setSiteSettings({ ...siteSettings, whole_group_desc: e.target.value })}
+                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={savingSettings || !isSettingsDirty}
+              style={{
+                padding: "10px 20px",
+                backgroundColor: isSettingsDirty ? "#d81b60" : "#ccc",
+                color: "#fff",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: "bold",
+                cursor: isSettingsDirty ? "pointer" : "not-allowed",
+              }}
+            >
+              {savingSettings ? "Saving..." : "Save Website Content"}
+            </button>
+          </form>
+        )}
+      </section>
+
       {/* Modal View */}
       {selectedAuModal && (
-        <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "rgba(0,0,0,0.4)", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={() => setSelectedAuModal(null)}>
-          <div style={{ backgroundColor: "#fff", padding: "24px", borderRadius: "12px", maxWidth: "600px", width: "100%" }} onClick={(e) => e.stopPropagation()}>
-            <h2>{selectedAuModal.title}</h2>
-            <p style={{ whiteSpace: "pre-wrap" }}>{selectedAuModal.content || selectedAuModal.summary}</p>
-            <button onClick={() => setSelectedAuModal(null)}>Close</button>
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", backgroundColor: "rgba(0,0,0,0.4)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000 }} onClick={() => setSelectedAuModal(null)}>
+          <div style={{ backgroundColor: "#fff", padding: "24px", borderRadius: "12px", maxWidth: "600px", width: "90%", maxHeight: "80vh", overflowY: "auto" }} onClick={(e) => e.stopPropagation()}>
+            <h2 style={{ color: "#d81b60", marginTop: 0 }}>{selectedAuModal.title}</h2>
+            <p style={{ fontStyle: "italic", color: "#666" }}>By: {selectedAuModal.author || "Anonymous"}</p>
+            <p style={{ whiteSpace: "pre-wrap", lineHeight: "1.6" }}>{selectedAuModal.content || selectedAuModal.summary}</p>
+            <button onClick={() => setSelectedAuModal(null)} style={{ padding: "8px 16px", backgroundColor: "#d81b60", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer", marginTop: "16px" }}>
+              Close
+            </button>
           </div>
         </div>
       )}
