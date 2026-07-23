@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  Play,
-  Clock,
-  ListVideo,
-  Users,
-  X
-} from "lucide-react";
+import { Play, ListVideo, X } from "lucide-react";
 
-import { api, REAL, IMAGES } from "../lib/api";
+import { api, REAL } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
 
@@ -30,67 +24,60 @@ const PLAYLISTS = [
     thumbnail: REAL.ahofGroup,
     description:
       "Yence posts, Han posts, HANEULZ DC updates and fan moments.",
-
     videos: [
       {
         category: "🦌 Yence Posts",
         posts: [
           {
             image: "/images/yence1.jpg",
-            url: "https://x.com/"
+            url: "https://x.com/",
           },
           {
             image: "/images/yence2.jpg",
-            url: "https://instagram.com/"
-          }
-        ]
+            url: "https://instagram.com/",
+          },
+        ],
       },
-
       {
         category: "🐈‍⬛ Han Posts",
         posts: [
           {
             image: "/images/han1.jpg",
-            url: "https://x.com/"
+            url: "https://x.com/",
           },
           {
             image: "/images/han2.jpg",
-            url: "https://instagram.com/"
-          }
-        ]
+            url: "https://instagram.com/",
+          },
+        ],
       },
-
       {
         category: "🎬 HANEULZ DC",
         posts: [
           {
             image: "/images/dc1.jpg",
-            url: "https://x.com/"
-          }
-        ]
-      }
-    ]
+            url: "https://x.com/",
+          },
+        ],
+      },
+    ],
   },
-
   {
     name: "AHOF's First Anniversary",
     url: "https://youtube.com/",
     thumbnail:
       "https://img.youtube.com/vi/roXu3mS4TOc/maxresdefault.jpg",
-
     description:
-      "Celebrating AHOF's first anniversary with lives and memories."
+      "Celebrating AHOF's first anniversary with lives and memories.",
   },
-
   {
     name: "AHOF Music Videos",
     url: "https://youtube.com/",
     thumbnail:
       "https://img.youtube.com/vi/OhbMVYVNo40/maxresdefault.jpg",
-
     description:
-      "Every AHOF music video in one place."
-  }
+      "Every AHOF music video in one place.",
+  },
 ];
 
 export default function Variety() {
@@ -111,6 +98,31 @@ export default function Variety() {
 
     loadVariety();
   }, []);
+
+  // Close modal with Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setOpenPlaylist(null);
+        setActiveSection(null);
+      }
+    };
+
+    if (openPlaylist) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
+  }, [openPlaylist]);
+
+  const handleCloseModal = () => {
+    setOpenPlaylist(null);
+    setActiveSection(null);
+  };
 
   return (
     <div
@@ -164,7 +176,7 @@ export default function Variety() {
                           />
                         </div>
                       )}
-                      
+
                       <div className="mt-4 flex flex-1 flex-col justify-between">
                         <div>
                           <h3 className="font-serif-display text-2xl text-[color:var(--ink)]">
@@ -222,17 +234,18 @@ export default function Variety() {
                 <Reveal key={i}>
                   <button
                     onClick={() => setPlayingDuet(i)}
-                    className="group relative overflow-hidden rounded-[2rem]"
+                    className="group relative w-full overflow-hidden rounded-[2rem] text-left"
+                    aria-label={`Play ${d.title}`}
                   >
                     <img
                       src={`https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg`}
                       alt={d.title}
-                      className="aspect-video w-full object-cover"
+                      className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
                     />
 
-                    <div className="absolute inset-0 grid place-items-center bg-black/25">
-                      <div className="rounded-full bg-white p-5">
-                        <Play fill="currentColor" />
+                    <div className="absolute inset-0 grid place-items-center bg-black/25 transition duration-300 group-hover:bg-black/40">
+                      <div className="rounded-full bg-white p-5 shadow-lg transition duration-300 group-hover:scale-110">
+                        <Play fill="currentColor" className="translate-x-0.5" />
                       </div>
                     </div>
                   </button>
@@ -255,19 +268,19 @@ export default function Variety() {
                   <button
                     onClick={() => {
                       setOpenPlaylist(playlist);
-                      setActiveSection(playlist.videos[0]);
+                      setActiveSection(playlist.videos[0] || null);
                     }}
                     className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
                   >
                     <img
                       src={playlist.thumbnail}
-                      className="aspect-video w-full object-cover"
+                      className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
                       alt={playlist.name}
                     />
 
-                    <div className="absolute inset-0 grid place-items-center bg-black/20">
-                      <div className="rounded-full bg-white p-5">
-                        <Play fill="currentColor" />
+                    <div className="absolute inset-0 grid place-items-center bg-black/20 transition duration-300 group-hover:bg-black/35">
+                      <div className="rounded-full bg-white p-5 shadow-lg transition duration-300 group-hover:scale-110">
+                        <Play fill="currentColor" className="translate-x-0.5" />
                       </div>
                     </div>
                   </button>
@@ -280,14 +293,14 @@ export default function Variety() {
                   >
                     <img
                       src={playlist.thumbnail}
-                      className="aspect-video w-full object-cover"
+                      className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
                       alt={playlist.name}
                     />
                   </a>
                 )}
 
                 <div className="md:w-1/2">
-                  <span className="flex items-center gap-2 text-xs uppercase tracking-[0.3em]">
+                  <span className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
                     <ListVideo size={15} />
                     Playlist
                   </span>
@@ -310,13 +323,10 @@ export default function Variety() {
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <div
               className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-              onClick={() => {
-                setOpenPlaylist(null);
-                setActiveSection(null);
-              }}
+              onClick={handleCloseModal}
             />
 
-            <div className="relative z-10 max-h-[85vh] w-full max-w-4xl overflow-y-auto rounded-[2rem] bg-white p-8">
+            <div className="relative z-10 max-h-[85vh] w-full max-w-4xl overflow-y-auto rounded-[2rem] bg-white p-8 shadow-2xl">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
@@ -329,31 +339,31 @@ export default function Variety() {
                 </div>
 
                 <button
-                  onClick={() => {
-                    setOpenPlaylist(null);
-                    setActiveSection(null);
-                  }}
-                  className="rounded-full border p-2"
+                  onClick={handleCloseModal}
+                  className="rounded-full border p-2 transition hover:bg-gray-100"
+                  aria-label="Close modal"
                 >
                   <X size={20} />
                 </button>
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                {openPlaylist.videos.map((section) => (
-                  <button
-                    key={section.category}
-                    onClick={() => setActiveSection(section)}
-                    className={`rounded-full border px-4 py-2 ${
-                      activeSection?.category === section.category
-                        ? "bg-pink-100"
-                        : ""
-                    }`}
-                  >
-                    {section.category}
-                  </button>
-                ))}
-              </div>
+              {openPlaylist.videos && (
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {openPlaylist.videos.map((section) => (
+                    <button
+                      key={section.category}
+                      onClick={() => setActiveSection(section)}
+                      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                        activeSection?.category === section.category
+                          ? "border-pink-300 bg-pink-100 text-pink-900"
+                          : "hover:bg-gray-50"
+                      }`}
+                    >
+                      {section.category}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {activeSection && (
                 <div className="mt-8">
@@ -362,18 +372,18 @@ export default function Variety() {
                   </h3>
 
                   <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                    {activeSection.posts.map((post, index) => (
+                    {activeSection.posts?.map((post, index) => (
                       <a
                         key={index}
                         href={post.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="overflow-hidden rounded-xl"
+                        className="group overflow-hidden rounded-xl border bg-gray-50"
                       >
                         <img
                           src={post.image}
-                          alt=""
-                          className="aspect-square w-full object-cover transition duration-300 hover:scale-105"
+                          alt={`${activeSection.category} post ${index + 1}`}
+                          className="aspect-square w-full object-cover transition duration-300 group-hover:scale-105"
                         />
                       </a>
                     ))}
