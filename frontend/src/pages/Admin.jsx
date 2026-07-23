@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { getSettings, updateSettings, formatApiError, api } from "../lib/api";
 
 export default function Admin() {
@@ -12,6 +12,17 @@ export default function Admin() {
   const [isDragging, setIsDragging] = useState(false);
   const [publishingPost, setPublishingPost] = useState(false);
   const [postStatus, setPostStatus] = useState(null);
+  
+  const fileInputRef = useRef(null);
+
+  // Clean up object URLs on unmount or preview changes
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   // ==========================================
   // SECTION 2 STATES: PENDING AU SUBMISSIONS
@@ -37,10 +48,9 @@ export default function Admin() {
   const [savingSettings, setSavingSettings] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
 
-  // Fetch pending AUs and initial settings on mount
+  // Fetch initial data
   useEffect(() => {
     async function fetchData() {
-      // Fetch site settings
       try {
         const settingsData = await getSettings();
         if (settingsData) setSiteSettings(settingsData);
@@ -50,7 +60,6 @@ export default function Admin() {
         setLoadingSettings(false);
       }
 
-      // Fetch pending AU submissions
       try {
         const response = await api.get("/admin/pending-aus");
         setPendingAus(response.data || []);
@@ -65,7 +74,7 @@ export default function Admin() {
   }, []);
 
   // ==========================================
-  // DRAG & DROP HANDLERS (SECTION 1)
+  // DRAG & DROP & IMAGE HANDLERS
   // ==========================================
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -77,25 +86,32 @@ export default function Admin() {
     setIsDragging(false);
   };
 
+  const handleFileSelect = (file) => {
+    if (file && file.type.startsWith("image/")) {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    } else {
+      alert("Please upload a valid image file.");
+    }
+  };
+
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragging(false);
-
     const files = e.dataTransfer.files;
     if (files && files[0]) {
-      const file = files[0];
-      if (file.type.startsWith("image/")) {
-        setImageFile(file);
-        setPreviewUrl(URL.createObjectURL(file));
-      } else {
-        alert("Please upload an image file.");
-      }
+      handleFileSelect(files[0]);
     }
   };
 
   const handleRemoveImage = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
     setImageFile(null);
     setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   // ==========================================
@@ -130,8 +146,7 @@ export default function Admin() {
 
       setTitle("");
       setDescription("");
-      setImageFile(null);
-      setPreviewUrl(null);
+      handleRemoveImage();
     } catch (err) {
       const errorMsg =
         formatApiError?.(err.response?.data?.detail) || "Failed to publish post.";
@@ -199,9 +214,7 @@ export default function Admin() {
     <div style={{ padding: "30px", maxWidth: "800px", margin: "0 auto", fontFamily: "sans-serif" }}>
       <h1>HANEULZ Admin Panel</h1>
 
-      {/* ========================================== */}
-      {/* SECTION 1: ADD VARIETY POST WITH DROPZONE  */}
-      {/* ========================================== */}
+      {/* SECTION 1: ADD VARIETY POST */}
       <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #eee", borderRadius: "12px", background: "#fff" }}>
         <h2>Add Variety Post</h2>
 
@@ -246,7 +259,7 @@ export default function Admin() {
             />
           </div>
 
-          {/* Drag and Drop Cover Image Zone */}
+          {/* Drag & Drop Zone */}
           <div style={{ marginBottom: "20px" }}>
             <label style={{ display: "block", marginBottom: "8px", fontWeight: "bold" }}>
               Cover Image:
@@ -269,13 +282,12 @@ export default function Admin() {
                 }}
               >
                 <input
+                  ref={fileInputRef}
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file) {
-                      setImageFile(file);
-                      setPreviewUrl(URL.createObjectURL(file));
+                    if (e.target.files && e.target.files[0]) {
+                      handleFileSelect(e.target.files[0]);
                     }
                   }}
                   style={{
@@ -355,9 +367,7 @@ export default function Admin() {
         </form>
       </section>
 
-      {/* ========================================== */}
-      {/* SECTION 2: PENDING AU SUBMISSIONS         */}
-      {/* ========================================== */}
+      {/* SECTION 2: PENDING AU SUBMISSIONS */}
       <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff5f8" }}>
         <h2 style={{ color: "#d81b60" }}>
           Pending AU Submissions ({pendingAus.length}) ☁️
@@ -381,7 +391,7 @@ export default function Admin() {
                     borderRadius: "8px",
                     display: "flex",
                     flexDirection: "column",
-                    gap: "8px"
+                    gap: "8px",
                   }}
                 >
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
@@ -406,7 +416,7 @@ export default function Admin() {
                         border: "none",
                         borderRadius: "6px",
                         cursor: "pointer",
-                        fontWeight: "bold"
+                        fontWeight: "bold",
                       }}
                     >
                       Approve AU
@@ -420,7 +430,7 @@ export default function Admin() {
                         color: "#c62828",
                         border: "1px solid #c62828",
                         borderRadius: "6px",
-                        cursor: "pointer"
+                        cursor: "pointer",
                       }}
                     >
                       Reject / Delete
@@ -433,9 +443,7 @@ export default function Admin() {
         )}
       </section>
 
-      {/* ========================================== */}
-      {/* SECTION 3: EDIT SITE CONTENT (SETTINGS)   */}
-      {/* ========================================== */}
+      {/* SECTION 3: EDIT SITE CONTENT */}
       <section style={{ padding: "20px", border: "1px solid #e3f2fd", borderRadius: "12px", background: "#fbfcfe" }}>
         <h2 style={{ color: "#5C9CE6" }}>Edit Site Content ☁️</h2>
 
