@@ -26,7 +26,7 @@ const DUETS = [
 
 const PLAYLISTS = [
   {
-    name: "📸💗 HANEULZ 💙🌩️",
+    name: "📸 HANEULZ ☁️",
     thumbnail: REAL.ahofGroup,
     description:
       "Yence posts, Han posts, HANEULZ DC updates and fan moments.",
@@ -94,37 +94,25 @@ const PLAYLISTS = [
 ];
 
 export default function Variety() {
-
   const [shows, setShows] = useState([]);
-
   const [playingDuet, setPlayingDuet] = useState(null);
-
   const [openPlaylist, setOpenPlaylist] = useState(null);
-
   const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
-
     async function loadVariety() {
-
       try {
-
         const res = await api.get("/variety");
-
         setShows(Array.isArray(res.data) ? res.data : []);
-
       } catch (err) {
-
-        console.error(err);
-
+        console.error("Failed to load variety shows:", err);
       }
-
     }
 
     loadVariety();
-
   }, []);
-    return (
+
+  return (
     <div
       className="min-h-screen pt-32"
       style={{
@@ -133,7 +121,6 @@ export default function Variety() {
       }}
     >
       <section className="mx-auto max-w-6xl px-6">
-
         <Reveal>
           <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
             On screen together
@@ -149,26 +136,78 @@ export default function Variety() {
           </p>
         </Reveal>
 
+        {/* DYNAMIC VARIETY POSTS / SHOWS FROM BACKEND */}
+        {shows.length > 0 && (
+          <div className="mt-20">
+            <Reveal>
+              <h2 className="mb-10 font-serif-display text-5xl">
+                Featured Episodes
+              </h2>
+            </Reveal>
+
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {shows.map((show, idx) => {
+                const imageUrl = show.image_url || show.imageUrl || show.image;
+                const title = show.title || "Untitled Episode";
+                const description = show.description || show.content;
+                const linkUrl = show.url || show.link;
+
+                return (
+                  <Reveal key={show.id || show._id || idx}>
+                    <div className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white/60 p-5 backdrop-blur-md transition duration-300 hover:shadow-xl">
+                      {imageUrl && (
+                        <div className="overflow-hidden rounded-xl">
+                          <img
+                            src={imageUrl}
+                            alt={title}
+                            className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+                      
+                      <div className="mt-4 flex flex-1 flex-col justify-between">
+                        <div>
+                          <h3 className="font-serif-display text-2xl text-[color:var(--ink)]">
+                            {title}
+                          </h3>
+                          {description && (
+                            <p className="mt-2 text-sm text-[color:var(--ink-soft)] line-clamp-3">
+                              {description}
+                            </p>
+                          )}
+                        </div>
+
+                        {linkUrl && (
+                          <a
+                            href={linkUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[color:var(--blue-deep)] hover:underline"
+                          >
+                            Watch Now <Play size={12} fill="currentColor" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* DUETS */}
-
         <div className="mt-20">
-
           <Reveal>
-
             <h2 className="mb-10 font-serif-display text-5xl">
               Their Duets
             </h2>
-
           </Reveal>
 
           <div className="grid gap-8 md:grid-cols-2">
-
             {DUETS.map((d, i) => {
-
               if (playingDuet === i) {
-
                 return (
-
                   <iframe
                     key={i}
                     className="aspect-video w-full rounded-[2rem]"
@@ -176,20 +215,15 @@ export default function Variety() {
                     allowFullScreen
                     title={d.title}
                   />
-
                 );
-
               }
 
               return (
-
                 <Reveal key={i}>
-
                   <button
                     onClick={() => setPlayingDuet(i)}
                     className="group relative overflow-hidden rounded-[2rem]"
                   >
-
                     <img
                       src={`https://img.youtube.com/vi/${d.videoId}/maxresdefault.jpg`}
                       alt={d.title}
@@ -197,58 +231,34 @@ export default function Variety() {
                     />
 
                     <div className="absolute inset-0 grid place-items-center bg-black/25">
-
                       <div className="rounded-full bg-white p-5">
-
                         <Play fill="currentColor" />
-
                       </div>
-
                     </div>
-
                   </button>
-
                 </Reveal>
-
               );
-
             })}
-
           </div>
-
         </div>
 
         {/* PLAYLISTS */}
-
         <div className="mt-24 space-y-20">
-
           {PLAYLISTS.map((playlist, i) => (
-
             <Reveal key={playlist.name}>
-
               <div
                 className={`flex flex-col gap-8 md:items-center ${
-                  i % 2
-                    ? "md:flex-row-reverse"
-                    : "md:flex-row"
+                  i % 2 ? "md:flex-row-reverse" : "md:flex-row"
                 }`}
               >
-
                 {playlist.videos ? (
-
                   <button
                     onClick={() => {
-
                       setOpenPlaylist(playlist);
-
-                      setActiveSection(
-                        playlist.videos[0]
-                      );
-
+                      setActiveSection(playlist.videos[0]);
                     }}
                     className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
                   >
-
                     <img
                       src={playlist.thumbnail}
                       className="aspect-video w-full object-cover"
@@ -256,72 +266,48 @@ export default function Variety() {
                     />
 
                     <div className="absolute inset-0 grid place-items-center bg-black/20">
-
                       <div className="rounded-full bg-white p-5">
-
                         <Play fill="currentColor" />
-
                       </div>
-
                     </div>
-
                   </button>
-
                 ) : (
-
                   <a
                     href={playlist.url}
                     target="_blank"
                     rel="noreferrer"
                     className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
                   >
-
                     <img
                       src={playlist.thumbnail}
                       className="aspect-video w-full object-cover"
                       alt={playlist.name}
                     />
-
                   </a>
-
                 )}
 
                 <div className="md:w-1/2">
-
                   <span className="flex items-center gap-2 text-xs uppercase tracking-[0.3em]">
-
                     <ListVideo size={15} />
-
                     Playlist
-
                   </span>
 
                   <h2 className="mt-3 font-serif-display text-5xl">
-
                     {playlist.name}
-
                   </h2>
 
                   <p className="mt-5 text-[color:var(--ink-soft)]">
-
                     {playlist.description}
-
                   </p>
-
                 </div>
-
               </div>
-
             </Reveal>
-
           ))}
-
         </div>
-        {/* HANEULZ POSTS MODAL */}
 
+        {/* HANEULZ POSTS MODAL */}
         {openPlaylist && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-
             <div
               className="absolute inset-0 bg-black/50 backdrop-blur-sm"
               onClick={() => {
@@ -331,11 +317,8 @@ export default function Variety() {
             />
 
             <div className="relative z-10 max-h-[85vh] w-full max-w-4xl overflow-y-auto rounded-[2rem] bg-white p-8">
-
               <div className="flex items-center justify-between">
-
                 <div>
-
                   <p className="text-xs uppercase tracking-[0.3em] text-[color:var(--blue-deep)]">
                     HANEULZ POSTS
                   </p>
@@ -343,7 +326,6 @@ export default function Variety() {
                   <h2 className="mt-2 font-serif-display text-4xl">
                     {openPlaylist.name}
                   </h2>
-
                 </div>
 
                 <button
@@ -355,13 +337,10 @@ export default function Variety() {
                 >
                   <X size={20} />
                 </button>
-
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
-
                 {openPlaylist.videos.map((section) => (
-
                   <button
                     key={section.category}
                     onClick={() => setActiveSection(section)}
@@ -373,23 +352,17 @@ export default function Variety() {
                   >
                     {section.category}
                   </button>
-
                 ))}
-
               </div>
 
               {activeSection && (
-
                 <div className="mt-8">
-
                   <h3 className="mb-6 font-serif-display text-3xl">
                     {activeSection.category}
                   </h3>
 
                   <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-
                     {activeSection.posts.map((post, index) => (
-
                       <a
                         key={index}
                         href={post.url}
@@ -397,32 +370,22 @@ export default function Variety() {
                         rel="noreferrer"
                         className="overflow-hidden rounded-xl"
                       >
-
                         <img
                           src={post.image}
                           alt=""
                           className="aspect-square w-full object-cover transition duration-300 hover:scale-105"
                         />
-
                       </a>
-
                     ))}
-
                   </div>
-
                 </div>
-
               )}
-
             </div>
-
           </div>
         )}
-
       </section>
 
       <Footer />
-
     </div>
   );
 }
