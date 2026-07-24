@@ -88,11 +88,14 @@ def youtube_thumbnail(url: str):
     return None
 
 async def save_image(image: UploadFile):
+
     if not image:
         return None
 
     ext = Path(image.filename).suffix
+
     filename = f"{uuid.uuid4()}{ext}"
+
     file_path = UPLOAD_DIR / filename
 
     with open(file_path, "wb") as buffer:
@@ -186,13 +189,13 @@ class SiteSettings(BaseModel):
 # =========================
 
 class VarietyCreate(BaseModel):
-    section: str   # haneulz, duets, whole-group
-    category: Optional[str] = None # yence-posts, han-posts, dc
+    section: str
+    category: Optional[str] = None
     show_name: str
-    label: Optional[str] = "" # EP, Playlist, or blank
+    label: Optional[str] = ""
     episode: Optional[str] = ""
     description: str = ""
-    photo_url: Optional[str] = None
+    thumbnail: Optional[str] = None
     youtube_url: Optional[str] = None
     air_date: Optional[str] = None
     
