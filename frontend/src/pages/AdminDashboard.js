@@ -172,8 +172,9 @@ Variety
 </button>
   </div>
 
-    {tab === "aus" && (
+{tab === "aus" && (
   <div className="mt-8 space-y-4" data-testid="admin-au-list">
+
     {aus.length === 0 && (
       <p className="text-[color:var(--ink-soft)]">
         No submissions yet.
@@ -181,8 +182,8 @@ Variety
     )}
 
     {aus.map((au) => (
-      <div 
-        key={au.id} 
+      <div
+        key={au.id}
         className="glass rounded-[1.75rem] p-6"
       >
 
@@ -190,6 +191,7 @@ Variety
 
           <div className="flex items-center gap-3">
             <StatusPill status={au.status} />
+
             <span className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
               {au.au_type}
             </span>
@@ -198,18 +200,27 @@ Variety
           <div className="flex gap-2">
 
             {au.status !== "approved" && (
-              <button onClick={() => setAuStatus(au.id,"approved")}>
+              <button
+                onClick={() => setAuStatus(au.id,"approved")}
+                className="pill-btn rounded-full bg-[color:var(--pink-deep)] px-4 py-2 text-xs text-white"
+              >
                 <Check size={13}/> Approve
               </button>
             )}
 
             {au.status !== "rejected" && (
-              <button onClick={() => setAuStatus(au.id,"rejected")}>
+              <button
+                onClick={() => setAuStatus(au.id,"rejected")}
+                className="pill-btn rounded-full border px-4 py-2 text-xs"
+              >
                 <X size={13}/> Reject
               </button>
             )}
 
-            <button onClick={() => delAu(au.id)}>
+            <button
+              onClick={() => delAu(au.id)}
+              className="pill-btn rounded-full border px-4 py-2 text-xs"
+            >
               <Trash2 size={13}/>
             </button>
 
@@ -221,16 +232,17 @@ Variety
           {au.title}
         </h3>
 
-        <p className="text-xs">
+        <p className="text-xs text-[color:var(--ink-soft)]">
           by {au.author_name}
         </p>
 
-        <p className="mt-2 text-sm">
+        <p className="mt-2 text-sm text-[color:var(--ink-soft)]">
           {au.short_description}
         </p>
 
       </div>
     ))}
+
   </div>
 )}
 {tab === "variety" && (
