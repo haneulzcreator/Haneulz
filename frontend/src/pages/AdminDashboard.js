@@ -21,7 +21,9 @@ export default function AdminDashboard() {
   const [aus, setAus] = useState([]);
 const [comments, setComments] = useState([]);
 const [variety, setVariety] = useState([]);
-
+  const [editingVariety, setEditingVariety] = useState(null);
+const [editingAU, setEditingAU] = useState(null);
+  
 const [videoForm, setVideoForm] = useState({
   section: "haneulz",
   category: "han-posts",
@@ -74,23 +76,58 @@ const [videoForm, setVideoForm] = useState({
   toast.success("Video added!");
 
   setVideoForm({
-  section:"haneulz",
-  category:"han-posts",
-  show_name:"",
-  label:"",
-  episode:"",
-  description:"",
-  photo_url:"",
-  youtube_url:"",
-  air_date:""
-});
+    section:"haneulz",
+    category:"han-posts",
+    show_name:"",
+    label:"",
+    episode:"",
+    description:"",
+    photo_url:"",
+    youtube_url:"",
+    air_date:""
+  });
 
   load();
 };
-  const deleteVariety = async (id) => {
-  await api.delete(`/admin/variety/${id}`);
-  toast.success("Video deleted");
+const updateVariety = async () => {
+  await api.put(
+    `/admin/variety/${editingVariety.id}`,
+    videoForm
+  );
+
+  toast.success("Video updated");
+
+  setEditingVariety(null);
+
+  setVideoForm({
+    section:"haneulz",
+    category:"han-posts",
+    show_name:"",
+    label:"",
+    episode:"",
+    description:"",
+    photo_url:"",
+    youtube_url:"",
+    air_date:""
+  });
+
   load();
+};
+
+  const editVariety = (v) => {
+  setEditingVariety(v);
+
+  setVideoForm({
+    section: v.section || "haneulz",
+    category: v.category || "han-posts",
+    label: v.label || "",
+    show_name: v.show_name || "",
+    episode: v.episode || "",
+    description: v.description || "",
+    photo_url: v.photo_url || "",
+    youtube_url: v.youtube_url || "",
+    air_date: v.air_date || ""
+  });
 };
   
   if (!ready || !admin) return <div className="grid min-h-screen place-items-center text-[color:var(--ink-soft)]">Loading…</div>;
@@ -164,7 +201,7 @@ Variety
 <div className="mt-8 glass rounded-[1.75rem] p-6">
 
 <h2 className="font-serif-display text-3xl">
-Add Variety Video
+{editingVariety ? "Edit Variety Video" : "Add Variety Video"}
 </h2>
 
   <select
@@ -188,16 +225,6 @@ onChange={(e)=>setVideoForm({...videoForm, category:e.target.value})}
 <option value="haneulz-dc">🎬 HANEULZ DC</option>
 </select>
 )}
-
- <select
-  className="mt-3 w-full rounded-xl border p-3"
-  value={videoForm.label}
-  onChange={(e)=>setVideoForm({...videoForm,label:e.target.value})}
->
-  <option value="">No Label</option>
-  <option value="EP">EP</option>
-  <option value="Playlist">Playlist</option>
-</select> 
 
 <select
 className="mt-3 w-full rounded-xl border p-3"
@@ -250,9 +277,11 @@ onChange={(e)=>setVideoForm({...videoForm,photo_url:e.target.value})}
 
 
 <button
-onClick={addVariety}
-className="mt-5 rounded-full bg-black px-6 py-3 text-white">
-<Plus size={14}/> Add Video
+onClick={editingVariety ? updateVariety : addVariety}
+className="mt-5 rounded-full bg-black px-6 py-3 text-white"
+>
+<Plus size={14}/>
+{editingVariety ? "Save Changes" : "Add Video"}
 </button>
 
 <div className="mt-8 space-y-4">
@@ -270,18 +299,29 @@ className="mt-5 rounded-full bg-black px-6 py-3 text-white">
         {v.description}
       </p>
 
-      <button
-        onClick={() => deleteVariety(v.id)}
-        className="mt-4 rounded-full border px-4 py-2 text-xs"
-      >
-        Delete
-      </button>
+    <div className="flex gap-2 mt-4">
+
+<button
+onClick={() => editVariety(v)}
+  className="rounded-full border px-4 py-2 text-xs"
+>
+  Edit
+</button>
+
+<button
+  onClick={() => deleteVariety(v.id)}
+  className="rounded-full border px-4 py-2 text-xs"
+>
+  Delete
+</button>
+
     </div>
-  ))}
-</div>
+  </div>
+))}
   
 </div>
-)}        {tab === "comments" && (
+)}      
+{tab === "comments" && (
           <div className="mt-8 space-y-4" data-testid="admin-comment-list">
             {comments.length === 0 && <p className="text-[color:var(--ink-soft)]">No notes yet.</p>}
             {comments.map((c) => (
