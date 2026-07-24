@@ -188,15 +188,14 @@ class VarietyCreate(BaseModel):
 class Variety(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     section: str
-    category: Optional[str] = None
+    category: str
+    label: str
     show_name: str
-    label: Optional[str] = ""
-    episode: Optional[str] = ""
-    description: str = ""
-    photo_url: Optional[str] = None
-    youtube_url: Optional[str] = None
-    spotify_url: Optional[str] = None
-    air_date: Optional[str] = None
+    episode: str
+    description: str
+    photo_url: str
+    youtube_url: str
+    air_date: str
     featured: bool = False
     created_at: str = Field(default_factory=now_iso)
     updated_at: str = Field(default_factory=now_iso)
@@ -620,6 +619,23 @@ async def admin_update_comment(
 async def admin_delete_comment(comment_id:str,admin:dict=Depends(get_current_admin)):
     await db.comments.delete_one({"id":comment_id})
     return {"ok":True}
+
+# =========================
+# PUBLIC VARIETY ROUTE
+# =========================
+
+@api_router.get("/variety")
+async def get_variety():
+
+    docs = await db.variety.find(
+        {},
+        {"_id":0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return docs
     
 # =========================
 # ADMIN VARIETY ROUTES
