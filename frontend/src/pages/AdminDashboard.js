@@ -40,7 +40,7 @@ const [videoForm, setVideoForm] = useState({
   try {
     const ausRes = await api.get("/admin/aus");
     const commentsRes = await api.get("/admin/comments");
-    const varietyRes = await api.get("/variety");
+   const varietyRes = await api.get("/admin/variety");
 
     setAus(ausRes.data);
     setComments(commentsRes.data);
