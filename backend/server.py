@@ -632,6 +632,58 @@ async def admin_update_au(au_id:str,body:dict,admin:dict = Depends(get_current_a
         raise HTTPException(status_code=404,detail="AU not found")
     return {"ok":True,"status":new_status}
 
+@api_router.put("/admin/aus/{au_id}", response_model=AU)
+async def admin_edit_au(
+    au_id: str,
+    title: str = Form(...),
+    author_name: str = Form("Anonymous"),
+    short_description: str = Form(""),
+    full_story: str = Form(""),
+    source_url: str = Form(...),
+    au_type: str = Form("story"),
+    source: str = Form("other"),
+    image: UploadFile = File(None),
+    admin: dict = Depends(get_current_admin)
+):
+
+    data = {
+        "title": title,
+        "author_name": author_name,
+        "short_description": short_description,
+        "full_story": full_story,
+        "source_url": source_url,
+        "au_type": au_type,
+        "source": source,
+        "updated_at": now_iso()
+    }
+
+    if image:
+        uploaded_image = await save_image(image)
+
+        if uploaded_image:
+            data["cover_image_url"] = uploaded_image
+
+
+    result = await db.aus.update_one(
+        {"id": au_id},
+        {
+            "$set": data
+        }
+    )
+
+
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="AU not found"
+        )
+
+
+    return await db.aus.find_one(
+        {"id": au_id},
+        {"_id":0}
+    )
+    
 @api_router.delete("/admin/aus/{au_id}")
 async def admin_delete_au(au_id:str,admin:dict = Depends(get_current_admin)):
     await db.aus.delete_one({"id":au_id})
@@ -714,27 +766,10 @@ async def admin_delete_comment(comment_id:str,admin:dict=Depends(get_current_adm
     return {"ok":True}
 
 # =========================
-# PUBLIC VARIETY ROUTE
-# =========================
-
-@api_router.get("/variety")
-async def get_variety():
-
-    docs = await db.variety.find(
-        {},
-        {"_id":0}
-    ).sort(
-        "created_at",
-        -1
-    ).to_list(500)
-
-    return docs
-    
-# =========================
 # ADMIN VARIETY ROUTES
 # =========================
 
-@@api_router.post("/admin/variety", response_model=Variety)
+@api_router.post("/admin/variety", response_model=Variety)
 async def admin_create_variety(
     section: str = Form(...),
     category: str = Form(""),
