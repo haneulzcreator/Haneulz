@@ -54,12 +54,8 @@ const submit = async (e) => {
       formData.append("image", form.image);
     }
 
-    await api.post("/aus", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-
+    await api.post("/aus", formData);
+    
     setForm(empty);
 
     toast.success("Your AU is waiting for approval. 💗🌩️💙");
@@ -189,21 +185,21 @@ const submit = async (e) => {
 
 <div>
   <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
-    Cover Image (JPG/PNG)
+    Cover Image (Optional)
   </label>
 
   <input
     type="file"
-    accept="image/png,image/jpeg,image/jpg"
-    className={inputStyle}
+    accept="image/*"
     onChange={(e) =>
       setForm({
         ...form,
         image: e.target.files[0],
       })
     }
+    className={inputStyle}
   />
-</div>                              
+</div>                            
             <div>
               <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Short Description
