@@ -149,7 +149,7 @@ export default function Variety() {
         </Reveal>
 
         {/* DYNAMIC VARIETY POSTS / SHOWS FROM BACKEND */}
-        {shows.length > 0 && (
+       {shows.filter((show) => show.section === "whole-group").length > 0 && (
           <div className="mt-20">
             <Reveal>
               <h2 className="mb-10 font-serif-display text-5xl">
@@ -158,7 +158,9 @@ export default function Variety() {
             </Reveal>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {shows.map((show, idx) => {
+              {shows
+.filter((show) => show.section === "whole-group")
+.map((show, idx) => {
                 const imageUrl = show.image_url || show.imageUrl || show.image;
                 const title = show.title || "Untitled Episode";
                 const description = show.description || show.content;
