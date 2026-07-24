@@ -693,86 +693,85 @@ async def get_variety():
 # ADMIN VARIETY ROUTES
 # =========================
 
-@api_router.post("/admin/variety", response_model=Variety)
+@@api_router.post("/admin/variety", response_model=Variety)
 async def admin_create_variety(
-    input: VarietyCreate,
+    section: str = Form(...),
+    category: str = Form(""),
+    show_name: str = Form(...),
+    label: str = Form(""),
+    episode: str = Form(""),
+    description: str = Form(""),
+    youtube_url: str = Form(""),
+    air_date: str = Form(""),
     image: UploadFile = File(None),
     admin: dict = Depends(get_current_admin)
 ):
 
-    data = input.model_dump()
+    thumbnail = None
 
-    data["id"] = str(uuid.uuid4())
-
-    # Uploaded JPG/PNG thumbnail
     if image:
-        uploaded_image = await save_image(image)
+        thumbnail = await save_image(image)
 
-        if uploaded_image:
-            data["thumbnail"] = uploaded_image
-
-    # YouTube thumbnail fallback
-    elif data.get("youtube_url"):
-        thumbnail = youtube_thumbnail(data["youtube_url"])
-
-        if thumbnail:
-            data["thumbnail"] = thumbnail
-
+    elif youtube_url:
+        thumbnail = youtube_thumbnail(youtube_url)
 
     variety = Variety(
-        **data
+        id=str(uuid.uuid4()),
+        section=section,
+        category=category,
+        show_name=show_name,
+        label=label,
+        episode=episode,
+        description=description,
+        youtube_url=youtube_url,
+        air_date=air_date,
+        thumbnail=thumbnail
     )
 
-
-    await db.variety.insert_one(
-        variety.model_dump()
-    )
-
+    await db.variety.insert_one(variety.model_dump())
 
     return variety
     
 @api_router.put("/admin/variety/{variety_id}", response_model=Variety)
 async def admin_update_variety(
     variety_id: str,
-    input: VarietyCreate,
+
+    section: str = Form(...),
+    category: str = Form(""),
+    show_name: str = Form(...),
+    label: str = Form(""),
+    episode: str = Form(""),
+    description: str = Form(""),
+    youtube_url: str = Form(""),
+    air_date: str = Form(""),
+
     image: UploadFile = File(None),
+
     admin: dict = Depends(get_current_admin)
 ):
 
-    data = input.model_dump()
+    data = {
+        "section": section,
+        "category": category,
+        "show_name": show_name,
+        "label": label,
+        "episode": episode,
+        "description": description,
+        "youtube_url": youtube_url,
+        "air_date": air_date,
+        "updated_at": now_iso()
+    }
 
-    # JPG/PNG uploaded by admin
     if image:
-        uploaded_image = await save_image(image)
+        data["thumbnail"] = await save_image(image)
 
-        if uploaded_image:
-            data["thumbnail"] = uploaded_image
+    elif youtube_url:
+        data["thumbnail"] = youtube_thumbnail(youtube_url)
 
-    # If no image uploaded, use YouTube thumbnail
-    elif data.get("youtube_url"):
-        thumbnail = youtube_thumbnail(data["youtube_url"])
-
-        if thumbnail:
-            data["thumbnail"] = thumbnail
-
-
-    result = await db.variety.update_one(
+    await db.variety.update_one(
         {"id": variety_id},
-        {
-            "$set": {
-                **data,
-                "updated_at": now_iso()
-            }
-        }
+        {"$set": data}
     )
-
-
-    if result.matched_count == 0:
-        raise HTTPException(
-            status_code=404,
-            detail="Variety video not found"
-        )
-
 
     return await db.variety.find_one(
         {"id": variety_id},
