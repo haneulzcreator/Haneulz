@@ -152,10 +152,17 @@ export default function Variety() {
        {shows.filter((show) => show.section === "whole-group").length > 0 && (
           <div className="mt-20">
             <Reveal>
-              <h2 className="mb-10 font-serif-display text-5xl">
-                Featured Episodes
-              </h2>
-            </Reveal>
+  <div className="mb-10">
+    <h2 className="font-serif-display text-5xl">
+      NOW, THE WHOLE GROUP
+    </h2>
+
+    <p className="mt-3 max-w-2xl text-[color:var(--ink-soft)]">
+      Beyond the duets — all of AHOF. From here the spotlight widens to the whole group.
+      These playlists celebrate AHOF as nine — anniversaries, music videos and everything the boys do together.
+    </p>
+  </div>
+</Reveal>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {shows
