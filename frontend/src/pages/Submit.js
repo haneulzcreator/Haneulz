@@ -13,6 +13,7 @@ const empty = {
   source_url: "",
   au_type: "story",
   source: "x",
+  image: null,
 };
 
 export default function Submit() {
@@ -25,35 +26,49 @@ export default function Submit() {
       [key]: e.target.value,
     });
 
-  const submit = async (e) => {
-    e.preventDefault();
+const submit = async (e) => {
+  e.preventDefault();
 
-    if (!form.source_url) {
-      toast.error("Please add the story link.");
-      return;
+  if (!form.source_url) {
+    toast.error("Please add the story link.");
+    return;
+  }
+
+  setSubmitting(true);
+
+  try {
+    const formData = new FormData();
+
+    formData.append("title", form.title);
+    formData.append(
+      "author_name",
+      form.author_name.trim() || "Anonymous"
+    );
+    formData.append("short_description", form.short_description);
+    formData.append("full_story", form.full_story);
+    formData.append("source_url", form.source_url);
+    formData.append("au_type", form.au_type);
+    formData.append("source", form.source);
+
+    if (form.image) {
+      formData.append("image", form.image);
     }
 
-    setSubmitting(true);
+    await api.post("/aus", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
 
-    try {
-      await api.post("/aus", {
-        title: form.title,
-        author_name: form.author_name.trim() || "Anonymous",
-        short_description: form.short_description,
-        full_story: form.full_story,
-        source_url: form.source_url,
-        au_type: form.au_type,
-        source: form.source,
-      });
+    setForm(empty);
 
-      setForm(empty);
-      toast.success("Your AU is waiting for approval. 💗🌩️💙");
-    } catch (err) {
-      toast.error(formatApiError(err.response?.data?.detail));
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    toast.success("Your AU is waiting for approval. 💗🌩️💙");
+  } catch (err) {
+    toast.error(formatApiError(err.response?.data?.detail));
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   const inputStyle =
     "w-full rounded-[1.25rem] border border-[color:var(--line)] bg-white/70 px-5 py-3 text-sm outline-none focus:ring-2 focus:ring-[color:var(--pink-deep)]";
@@ -172,6 +187,23 @@ export default function Submit() {
               />
             </div>
 
+<div>
+  <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+    Cover Image (JPG/PNG)
+  </label>
+
+  <input
+    type="file"
+    accept="image/png,image/jpeg,image/jpg"
+    className={inputStyle}
+    onChange={(e) =>
+      setForm({
+        ...form,
+        image: e.target.files[0],
+      })
+    }
+  />
+</div>                              
             <div>
               <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Short Description
