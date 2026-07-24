@@ -5,6 +5,20 @@ import { api, REAL } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
 
+const getYouTubeThumbnail = (url) => {
+  if (!url) return null;
+
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&?]+)/
+  );
+
+  if (match && match[1]) {
+    return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+  }
+
+  return null;
+};
+
 const DUETS = [
   {
     title: "'The Little Prince'",
@@ -301,7 +315,7 @@ export default function Variety() {
                     className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
                   >
                     <img
-                      src={playlist.thumbnail}
+                      src={playlist.thumbnail || getYouTubeThumbnail(playlist.url)}
                       className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
                       alt={playlist.show_name}
                     />
