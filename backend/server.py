@@ -632,7 +632,21 @@ async def admin_create_variety(input: VarietyCreate,admin: dict = Depends(get_cu
     await db.variety.insert_one(variety.model_dump())
     return variety
 
+@api_router.get("/admin/variety")
+async def admin_list_variety(
+    admin: dict = Depends(get_current_admin)
+):
 
+    docs = await db.variety.find(
+        {},
+        {"_id":0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return docs
+    
 @api_router.put("/admin/variety/{variety_id}",response_model=Variety)
 async def admin_update_variety(
     variety_id: str,
