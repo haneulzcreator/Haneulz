@@ -165,37 +165,43 @@ Variety
   </div>
 
         {tab === "aus" && (
-          <div className="mt-8 space-y-4" data-testid="admin-au-list">
-            {aus.length === 0 && <p className="text-[color:var(--ink-soft)]">No submissions yet.</p>}
-            {aus.map((au) => (
-              <div key={au.id} className="glass rounded-[1.75rem] p-6" data-testid={`admin-au-${au.id}`}>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <StatusPill status={au.status} />
-                    <span className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">{au.au_type}</span>
-                  </div>
-                  <div className="flex gap-2">
-                    {au.status !== "approved" && (
-                      <button onClick={() => setAuStatus(au.id, "approved")} data-testid={`approve-au-${au.id}`} className="pill-btn flex items-center gap-1 rounded-full bg-[color:var(--pink-deep)] px-4 py-2 text-[0.65rem] uppercase tracking-widest text-white">
-                        <Check size={13} /> Approve
-                      </button>
-                    )}
-                    {au.status !== "rejected" && (
-                      <button onClick={() => setAuStatus(au.id, "rejected")} data-testid={`reject-au-${au.id}`} className="pill-btn flex items-center gap-1 rounded-full border border-[color:var(--line)] px-4 py-2 text-[0.65rem] uppercase tracking-widest">
-                        <X size={13} /> Reject
-                      </button>
-                    )}
-                    <button onClick={() => delAu(au.id)} data-testid={`delete-au-${au.id}`} className="pill-btn flex items-center gap-1 rounded-full border border-[color:var(--line)] px-4 py-2 text-[0.65rem] uppercase tracking-widest text-[color:var(--destructive,#d9534f)]">
-                      <Trash2 size={13} />
-                    </button>
-                  </div>
-                </div>
-                <h3 className="mt-4 font-serif-display text-2xl font-medium">{au.title}</h3>
-                <p className="text-xs text-[color:var(--ink-soft)]">by {au.author_name}</p>
-                <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink-soft)]">{au.short_description}</p>
-              </div>
-            ))}
-          </div>
+ <div className="mt-8 space-y-4">
+  {variety.map((v) => (
+    <div key={v.id} className="glass rounded-[1.75rem] p-5">
+
+      <h3 className="font-serif-display text-xl">
+        {v.show_name}
+      </h3>
+
+      <p className="text-sm">
+        Episode: {v.episode}
+      </p>
+
+      <p className="mt-2 text-sm">
+        {v.description}
+      </p>
+
+      <div className="flex gap-2 mt-4">
+
+        <button
+          onClick={() => editVariety(v)}
+          className="rounded-full border px-4 py-2 text-xs"
+        >
+          Edit
+        </button>
+
+        <button
+          onClick={() => deleteVariety(v.id)}
+          className="rounded-full border px-4 py-2 text-xs"
+        >
+          Delete
+        </button>
+
+      </div>
+
+    </div>
+  ))}
+</div>
         )}
 {tab === "variety" && (
 <div className="mt-8 glass rounded-[1.75rem] p-6">
