@@ -5,6 +5,7 @@ import uuid
 import logging
 import bcrypt
 import jwt
+import re
 
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
@@ -58,35 +59,55 @@ app.mount("/static", StaticFiles(directory=ROOT_DIR / "static"), name="static")
 # HELPERS
 # =========================
 
-def now_iso():
+import re
 
+
+def now_iso():
     return datetime.now(
         timezone.utc
     ).isoformat()
 
-def hash_password(password:str):
 
+def youtube_thumbnail(url: str):
+    if not url:
+        return None
+
+    patterns = [
+        r"youtu\.be\/([^?&]+)",
+        r"youtube\.com\/watch\?v=([^?&]+)",
+        r"youtube\.com\/embed\/([^?&]+)",
+        r"youtube\.com\/shorts\/([^?&]+)",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, url)
+
+        if match:
+            video_id = match.group(1)
+            return f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
+
+    return None
+
+
+def hash_password(password: str):
     return bcrypt.hashpw(
         password.encode("utf-8"),
         bcrypt.gensalt()
     ).decode("utf-8")
 
-def verify_password(password, hashed):
 
+def verify_password(password, hashed):
     return bcrypt.checkpw(
         password.encode("utf-8"),
         hashed.encode("utf-8")
     )
 
-def create_access_token(user_id,email):
 
+def create_access_token(user_id, email):
     payload = {
         "sub": user_id,
         "email": email,
-        "exp":
-        datetime.now(timezone.utc)
-        +
-        timedelta(days=7)
+        "exp": datetime.now(timezone.utc) + timedelta(days=7)
     }
 
     return jwt.encode(
@@ -94,49 +115,6 @@ def create_access_token(user_id,email):
         JWT_SECRET,
         algorithm=JWT_ALGORITHM
     )
-
-async def get_current_admin(request:Request):
-
-    header = request.headers.get(
-        "Authorization",
-        ""
-    )
-
-
-    if not header.startswith("Bearer "):
-
-        raise HTTPException(
-            status_code=401,
-            detail="Not authenticated"
-        )
-
-
-    token = header[7:]
-
-
-    try:
-
-        payload = jwt.decode(
-            token,
-            JWT_SECRET,
-            algorithms=[JWT_ALGORITHM]
-        )
-
-
-        user = await db.users.find_one({"id":payload["sub"]},
-            {"_id":0,"password_hash":0})
-
-        if not user:
-            raise HTTPException(status_code=401,detail="User not found")
-        return user
-
-    except:
-
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid token"
-        )
-        
 # =========================
 # AUTH MODEL
 # =========================
@@ -172,7 +150,10 @@ class AU(BaseModel):
     source: str = "other"
     status: str = "pending"
     likes: int = 0
+    featured: bool = False
+    bookmarked: int = 0
     created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
 
 # =========================
 # SITE SETTINGS MODEL
@@ -206,21 +187,19 @@ class VarietyCreate(BaseModel):
     
 class Variety(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-
     section: str
     category: Optional[str] = None
-
     show_name: str
     label: Optional[str] = ""
     episode: Optional[str] = ""
-
     description: str = ""
-
     photo_url: Optional[str] = None
     youtube_url: Optional[str] = None
+    spotify_url: Optional[str] = None
     air_date: Optional[str] = None
-
+    featured: bool = False
     created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
 
 class PlaylistItemCreate(BaseModel):
     playlist: str
@@ -235,8 +214,10 @@ class PlaylistItem(BaseModel):
     title: str
     platform: str
     thumbnail: Optional[str] = None
+    description: str = ""
     url: str
     created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
     
 # =========================
 # AUTH ROUTES
