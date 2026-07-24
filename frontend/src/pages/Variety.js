@@ -148,76 +148,6 @@ export default function Variety() {
           </p>
         </Reveal>
 
-        {/* DYNAMIC VARIETY POSTS / SHOWS FROM BACKEND */}
-       {shows.filter((show) => show.section === "whole-group").length > 0 && (
-          <div className="mt-20">
-            <Reveal>
-  <div className="mb-10">
-    <h2 className="font-serif-display text-5xl">
-      NOW, THE WHOLE GROUP
-    </h2>
-
-    <p className="mt-3 max-w-2xl text-[color:var(--ink-soft)]">
-      Beyond the duets — all of AHOF. From here the spotlight widens to the whole group.
-      These playlists celebrate AHOF as nine — anniversaries, music videos and everything the boys do together.
-    </p>
-  </div>
-</Reveal>
-
-            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {shows
-  .filter((show) => show.section === "whole-group")
-  .map((show, idx) => {
-
-    const imageUrl = show.photo_url;
-    const title = show.show_name || "Untitled Episode";
-    const description = show.description;
-    const linkUrl = show.youtube_url;
-
-    return (
-                  <Reveal key={show.id || show._id || idx}>
-                    <div className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white/60 p-5 backdrop-blur-md transition duration-300 hover:shadow-xl">
-                      {imageUrl && (
-                        <div className="overflow-hidden rounded-xl">
-                          <img
-                            src={imageUrl}
-                            alt={title}
-                            className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
-                          />
-                        </div>
-                      )}
-
-                      <div className="mt-4 flex flex-1 flex-col justify-between">
-                        <div>
-                          <h3 className="font-serif-display text-2xl text-[color:var(--ink)]">
-                            {title}
-                          </h3>
-                          {description && (
-                            <p className="mt-2 text-sm text-[color:var(--ink-soft)] line-clamp-3">
-                              {description}
-                            </p>
-                          )}
-                        </div>
-
-                        {linkUrl && (
-                          <a
-                            href={linkUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="mt-6 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[color:var(--blue-deep)] hover:underline"
-                          >
-                            Watch Now <Play size={12} fill="currentColor" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </Reveal>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
         {/* DUETS */}
         <div className="mt-20">
           <Reveal>
@@ -265,10 +195,42 @@ export default function Variety() {
           </div>
         </div>
 
-        {/* PLAYLISTS */}
-        <div className="mt-24 space-y-20">
-          {PLAYLISTS.map((playlist, i) => (
-            <Reveal key={playlist.name}>
+<Reveal>
+
+        <div className="mt-24 rounded-[2.75rem] border border-[color:var(--line)] bg-white/40 p-10 backdrop-blur-md">
+
+          <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--blue-deep)]">
+
+            NOW, THE WHOLE GROUP
+
+          </p>
+
+          <h2 className="mt-4 font-serif-display text-5xl md:text-7xl">
+
+            Beyond the duets — all of AHOF
+
+          </h2>
+
+          <p className="mt-6 max-w-4xl text-lg text-[color:var(--ink-soft)]">
+
+            From here the spotlight widens to the whole group.
+
+            These playlists celebrate AHOF as nine — anniversaries,
+
+            music videos and everything the boys do together.
+
+          </p>
+
+        </div>
+
+      </Reveal>
+            
+       {/* PLAYLISTS */}
+<div className="mt-24 space-y-20">
+  {shows
+    .filter((show) => show.section === "whole-group")
+    .map((playlist, i) => (
+            <Reveal key={playlist.show_name}>
               <div
                 className={`flex flex-col gap-8 md:items-center ${
                   i % 2 ? "md:flex-row-reverse" : "md:flex-row"
@@ -285,7 +247,7 @@ export default function Variety() {
                     <img
                       src={playlist.thumbnail}
                       className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
-                      alt={playlist.name}
+                      alt={playlist.show_name}
                     />
 
                     <div className="absolute inset-0 grid place-items-center bg-black/20 transition duration-300 group-hover:bg-black/35">
@@ -304,7 +266,7 @@ export default function Variety() {
                     <img
                       src={playlist.thumbnail}
                       className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
-                      alt={playlist.name}
+                      alt={playlist.show_name}
                     />
                   </a>
                 )}
@@ -316,7 +278,7 @@ export default function Variety() {
                   </span>
 
                   <h2 className="mt-3 font-serif-display text-5xl">
-                    {playlist.name}
+                    {playlist.show_name}
                   </h2>
 
                   <p className="mt-5 text-[color:var(--ink-soft)]">
