@@ -158,15 +158,16 @@ export default function Variety() {
             </Reveal>
 
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {shows
-.filter((show) => show.section === "whole-group")
-.map((show, idx) => {
-                const imageUrl = show.image_url || show.imageUrl || show.image;
-                const title = show.title || "Untitled Episode";
-                const description = show.description || show.content;
-                const linkUrl = show.url || show.link;
+            {shows
+  .filter((show) => show.section === "whole-group")
+  .map((show, idx) => {
 
-                return (
+    const imageUrl = show.photo_url;
+    const title = show.show_name || "Untitled Episode";
+    const description = show.description;
+    const linkUrl = show.youtube_url;
+
+    return (
                   <Reveal key={show.id || show._id || idx}>
                     <div className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white/60 p-5 backdrop-blur-md transition duration-300 hover:shadow-xl">
                       {imageUrl && (
