@@ -633,7 +633,7 @@ async def admin_create_variety(input: VarietyCreate,admin: dict = Depends(get_cu
     return variety
 
 
-@api_router.put("/admin/variety/{variety_id}")
+@api_router.put("/admin/variety/{variety_id}",response_model=Variety)
 async def admin_update_variety(
     variety_id: str,
     input: VarietyCreate,
