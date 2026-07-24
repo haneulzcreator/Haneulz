@@ -114,6 +114,14 @@ const updateVariety = async () => {
   load();
 };
 
+const deleteVariety = async (id) => {
+  await api.delete(`/admin/variety/${id}`);
+
+  toast.success("Video deleted");
+
+  load();
+};
+  
   const editVariety = (v) => {
   setEditingVariety(v);
 
@@ -164,45 +172,67 @@ Variety
 </button>
   </div>
 
-        {tab === "aus" && (
- <div className="mt-8 space-y-4">
-  {variety.map((v) => (
-    <div key={v.id} className="glass rounded-[1.75rem] p-5">
-
-      <h3 className="font-serif-display text-xl">
-        {v.show_name}
-      </h3>
-
-      <p className="text-sm">
-        Episode: {v.episode}
+    {tab === "aus" && (
+  <div className="mt-8 space-y-4" data-testid="admin-au-list">
+    {aus.length === 0 && (
+      <p className="text-[color:var(--ink-soft)]">
+        No submissions yet.
       </p>
+    )}
 
-      <p className="mt-2 text-sm">
-        {v.description}
-      </p>
+    {aus.map((au) => (
+      <div 
+        key={au.id} 
+        className="glass rounded-[1.75rem] p-6"
+      >
 
-      <div className="flex gap-2 mt-4">
+        <div className="flex flex-wrap items-center justify-between gap-3">
 
-        <button
-          onClick={() => editVariety(v)}
-          className="rounded-full border px-4 py-2 text-xs"
-        >
-          Edit
-        </button>
+          <div className="flex items-center gap-3">
+            <StatusPill status={au.status} />
+            <span className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
+              {au.au_type}
+            </span>
+          </div>
 
-        <button
-          onClick={() => deleteVariety(v.id)}
-          className="rounded-full border px-4 py-2 text-xs"
-        >
-          Delete
-        </button>
+          <div className="flex gap-2">
+
+            {au.status !== "approved" && (
+              <button onClick={() => setAuStatus(au.id,"approved")}>
+                <Check size={13}/> Approve
+              </button>
+            )}
+
+            {au.status !== "rejected" && (
+              <button onClick={() => setAuStatus(au.id,"rejected")}>
+                <X size={13}/> Reject
+              </button>
+            )}
+
+            <button onClick={() => delAu(au.id)}>
+              <Trash2 size={13}/>
+            </button>
+
+          </div>
+
+        </div>
+
+        <h3 className="mt-4 font-serif-display text-2xl">
+          {au.title}
+        </h3>
+
+        <p className="text-xs">
+          by {au.author_name}
+        </p>
+
+        <p className="mt-2 text-sm">
+          {au.short_description}
+        </p>
 
       </div>
-
-    </div>
-  ))}
-</div>
-        )}
+    ))}
+  </div>
+)}
 {tab === "variety" && (
 <div className="mt-8 glass rounded-[1.75rem] p-6">
 
