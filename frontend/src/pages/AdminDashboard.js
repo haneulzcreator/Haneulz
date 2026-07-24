@@ -36,10 +36,19 @@ const [videoForm, setVideoForm] = useState({
   air_date: ""
 });
 
-  const load = useCallback(() => {
-  api.get("/admin/aus").then((r) => setAus(r.data)).catch(() => {});
-  api.get("/admin/comments").then((r) => setComments(r.data)).catch(() => {});
-  api.get("/variety").then((r) => setVariety(r.data)).catch(() => {});
+ const load = useCallback(async () => {
+  try {
+    const ausRes = await api.get("/admin/aus");
+    const commentsRes = await api.get("/admin/comments");
+    const varietyRes = await api.get("/variety");
+
+    setAus(ausRes.data);
+    setComments(commentsRes.data);
+    setVariety(varietyRes.data);
+
+  } catch (error) {
+    console.log(error);
+  }
 }, []);
 
   useEffect(() => {
@@ -87,7 +96,7 @@ const [videoForm, setVideoForm] = useState({
     air_date:""
   });
 
-  load();
+await load();
 };
 const updateVariety = async () => {
   await api.put(
