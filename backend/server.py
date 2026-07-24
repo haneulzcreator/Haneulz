@@ -10,7 +10,7 @@ import re
 from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, File, UploadFile
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, File, UploadFile, Form
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -336,26 +336,67 @@ async def me(
 # =========================
 
 @api_router.post(
+
     "/aus",
+
     response_model=AU
+
 )
+
 async def submit_au(
-    input: AUCreate
+
+    title: str = Form(...),
+
+    author_name: str = Form("Anonymous"),
+
+    short_description: str = Form(""),
+
+    full_story: str = Form(""),
+
+    source_url: str = Form(...),
+
+    au_type: str = Form("story"),
+
+    source: str = Form("other"),
+
+    image: UploadFile = File(None)
+
 ):
 
-    au = AU(
-        **input.model_dump(),
-        author_name="Anonymous"
-    )
+    cover_image = None
 
+    if image:
+
+        cover_image = await save_image(image)
+
+    au = AU(
+
+        title=title,
+
+        author_name=author_name or "Anonymous",
+
+        short_description=short_description,
+
+        full_story=full_story,
+
+        source_url=source_url,
+
+        au_type=au_type,
+
+        source=source,
+
+        cover_image_url=cover_image
+
+    )
 
     await db.aus.insert_one(
+
         au.model_dump()
+
     )
 
-
     return au
-
+    
 @api_router.get(
     "/aus",
     response_model=List[AU]
