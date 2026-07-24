@@ -217,7 +217,45 @@ class PlaylistItem(BaseModel):
     url: str
     created_at: str = Field(default_factory=now_iso)
     updated_at: str = Field(default_factory=now_iso)
-    
+
+
+# =========================
+# ADMIN AUTH CHECK
+# =========================
+
+async def get_current_admin(request: Request):
+
+    auth = request.headers.get("Authorization")
+
+    if not auth:
+        raise HTTPException(
+            status_code=401,
+            detail="Missing authorization"
+        )
+
+    try:
+        token = auth.replace("Bearer ", "")
+
+        payload = jwt.decode(
+            token,
+            os.getenv("JWT_SECRET"),
+            algorithms=["HS256"]
+        )
+
+        if not payload.get("email"):
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+
+        return payload
+
+    except Exception:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token"
+        )
+        
 # =========================
 # AUTH ROUTES
 # =========================
@@ -545,42 +583,6 @@ async def admin_delete_au(au_id:str,admin:dict = Depends(get_current_admin)):
     await db.comments.delete_many({"au_id":au_id})
     return {"ok":True}
 
-# =========================
-# ADMIN AUTH CHECK
-# =========================
-
-async def get_current_admin(request: Request):
-
-    auth = request.headers.get("Authorization")
-
-    if not auth:
-        raise HTTPException(
-            status_code=401,
-            detail="Missing authorization"
-        )
-
-    try:
-        token = auth.replace("Bearer ", "")
-
-        payload = jwt.decode(
-            token,
-            os.getenv("JWT_SECRET"),
-            algorithms=["HS256"]
-        )
-
-        if not payload.get("email"):
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid token"
-            )
-
-        return payload
-
-    except Exception:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid token"
-        )
 # =========================
 # ADMIN COMMENTS
 # =========================
