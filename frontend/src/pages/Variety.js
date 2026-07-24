@@ -195,7 +195,50 @@ export default function Variety() {
           </div>
         </div>
 
+           {/* HANEULZ POSTS PLAYLIST */}
 <Reveal>
+  <div className="mt-24 flex flex-col gap-8 md:flex-row md:items-center">
+
+    <button
+      onClick={() => {
+        setOpenPlaylist(PLAYLISTS[0]);
+        setActiveSection(PLAYLISTS[0].videos[0]);
+      }}
+      className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
+    >
+      <img
+        src={PLAYLISTS[0].thumbnail}
+        alt="HANEULZ Posts"
+        className="aspect-video w-full object-cover transition duration-300 group-hover:scale-105"
+      />
+
+      <div className="absolute inset-0 grid place-items-center bg-black/20">
+        <div className="rounded-full bg-white p-5 shadow-lg">
+          <Play fill="currentColor" />
+        </div>
+      </div>
+
+    </button>
+
+
+    <div className="md:w-1/2">
+
+      <span className="text-xs uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
+        Playlist
+      </span>
+
+      <h2 className="mt-3 font-serif-display text-5xl">
+        ☁️ HANEULZ POST 📸
+      </h2>
+
+      <p className="mt-5 text-[color:var(--ink-soft)]">
+        Yence posts, Han posts, HANEULZ DC updates and fan moments.
+      </p>
+
+    </div>
+
+  </div>
+</Reveal> 
 
         <div className="mt-24 rounded-[2.75rem] border border-[color:var(--line)] bg-white/40 p-10 backdrop-blur-md">
 
