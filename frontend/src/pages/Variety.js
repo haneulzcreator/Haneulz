@@ -240,33 +240,27 @@ export default function Variety() {
   </div>
 </Reveal> 
 
-        <div className="mt-24 rounded-[2.75rem] border border-[color:var(--line)] bg-white/40 p-10 backdrop-blur-md">
+                <Reveal>
+          <div className="mt-24 rounded-[2.75rem] border border-[color:var(--line)] bg-white/40 p-10 backdrop-blur-md">
 
-          <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--blue-deep)]">
+            <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--blue-deep)]">
+              NOW, THE WHOLE GROUP
+            </p>
 
-            NOW, THE WHOLE GROUP
+            <h2 className="mt-4 font-serif-display text-5xl md:text-7xl">
+              Beyond the duets — all of AHOF
+            </h2>
 
-          </p>
+            <p className="mt-6 max-w-4xl text-lg text-[color:var(--ink-soft)]">
+              From here the spotlight widens to the whole group.
 
-          <h2 className="mt-4 font-serif-display text-5xl md:text-7xl">
+              These playlists celebrate AHOF as nine — anniversaries,
 
-            Beyond the duets — all of AHOF
+              music videos and everything the boys do together.
+            </p>
 
-          </h2>
-
-          <p className="mt-6 max-w-4xl text-lg text-[color:var(--ink-soft)]">
-
-            From here the spotlight widens to the whole group.
-
-            These playlists celebrate AHOF as nine — anniversaries,
-
-            music videos and everything the boys do together.
-
-          </p>
-
-        </div>
-
-      </Reveal>
+          </div>
+        </Reveal>
             
        {/* PLAYLISTS */}
 <div className="mt-24 space-y-20">
