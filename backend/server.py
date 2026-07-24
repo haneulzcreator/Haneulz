@@ -335,13 +335,7 @@ async def me(
 # AU ROUTES
 # =========================
 
-@api_router.post(
-
-    "/aus",
-
-    response_model=AU
-
-)
+@api_router.post("/aus",response_model=AU)
 
 async def submit_au(
 
@@ -406,21 +400,15 @@ async def list_aus(
     source: Optional[str] = None
 ):
 
-    query = {
-        "status": "approved"
-    }
-
+    query = {}
 
     if au_type:
 
         query["au_type"] = au_type
 
-
     if source:
 
         query["source"] = source
-
-
 
     docs = await db.aus.find(
         query,
