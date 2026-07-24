@@ -323,6 +323,7 @@ className="mt-5 rounded-full bg-black px-6 py-3 text-white"
 <div className="mt-8 space-y-4">
   {variety.map((v) => (
     <div key={v.id} className="glass rounded-[1.75rem] p-5">
+
       <h3 className="font-serif-display text-xl">
         {v.show_name}
       </h3>
@@ -335,28 +336,31 @@ className="mt-5 rounded-full bg-black px-6 py-3 text-white"
         {v.description}
       </p>
 
-    <div className="flex gap-2 mt-4">
+      <div className="flex gap-2 mt-4">
 
-<button
-onClick={() => editVariety(v)}
-  className="rounded-full border px-4 py-2 text-xs"
->
-  Edit
-</button>
+        <button
+          onClick={() => editVariety(v)}
+          className="rounded-full border px-4 py-2 text-xs"
+        >
+          Edit
+        </button>
 
-<button
-  onClick={() => deleteVariety(v.id)}
-  className="rounded-full border px-4 py-2 text-xs"
->
-  Delete
-</button>
+        <button
+          onClick={() => deleteVariety(v.id)}
+          className="rounded-full border px-4 py-2 text-xs"
+        >
+          Delete
+        </button>
+
+      </div>
 
     </div>
-  </div>
-))}
-  
+  ))}
 </div>
-)}      
+
+</div>
+)}
+
 {tab === "comments" && (
           <div className="mt-8 space-y-4" data-testid="admin-comment-list">
             {comments.length === 0 && <p className="text-[color:var(--ink-soft)]">No notes yet.</p>}
