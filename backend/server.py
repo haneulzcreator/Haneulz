@@ -679,12 +679,42 @@ async def get_variety():
 # ADMIN VARIETY ROUTES
 # =========================
 
-@api_router.post("/admin/variety",response_model=Variety)
-async def admin_create_variety(input: VarietyCreate,admin: dict = Depends(get_current_admin)):
-    variety = Variety(**input.model_dump())
+@api_router.put("/admin/variety/{variety_id}", response_model=Variety)
+async def admin_update_variety(
+    variety_id: str,
+    input: VarietyCreate,
+    admin: dict = Depends(get_current_admin)
+):
 
-    await db.variety.insert_one(variety.model_dump())
-    return variety
+    data = input.model_dump()
+
+    # Automatically update YouTube thumbnail
+    if data.get("youtube_url"):
+        thumbnail = youtube_thumbnail(data["youtube_url"])
+
+        if thumbnail:
+            data["photo_url"] = thumbnail
+
+    result = await db.variety.update_one(
+        {"id": variety_id},
+        {
+            "$set": {
+                **data,
+                "updated_at": now_iso()
+            }
+        }
+    )
+
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Variety video not found"
+        )
+
+    return await db.variety.find_one(
+        {"id": variety_id},
+        {"_id":0}
+    )
 
 @api_router.get("/admin/variety")
 async def admin_list_variety(
