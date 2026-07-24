@@ -193,7 +193,7 @@ class Variety(BaseModel):
     show_name: str
     episode: str
     description: str
-    photo_url: str
+    thumbnail: str | None = None
     youtube_url: str
     air_date: str
     featured: bool = False
@@ -683,17 +683,26 @@ async def get_variety():
 async def admin_update_variety(
     variety_id: str,
     input: VarietyCreate,
+    image: UploadFile = File(None),
     admin: dict = Depends(get_current_admin)
 ):
 
     data = input.model_dump()
 
-    # Automatically update YouTube thumbnail
-    if data.get("youtube_url"):
+    # JPG/PNG uploaded by admin
+    if image:
+        uploaded_image = await save_image(image)
+
+        if uploaded_image:
+            data["thumbnail"] = uploaded_image
+
+    # If no image uploaded, use YouTube thumbnail
+    elif data.get("youtube_url"):
         thumbnail = youtube_thumbnail(data["youtube_url"])
 
         if thumbnail:
-            data["photo_url"] = thumbnail
+            data["thumbnail"] = thumbnail
+
 
     result = await db.variety.update_one(
         {"id": variety_id},
@@ -705,53 +714,13 @@ async def admin_update_variety(
         }
     )
 
-    if result.matched_count == 0:
-        raise HTTPException(
-            status_code=404,
-            detail="Variety video not found"
-        )
-
-    return await db.variety.find_one(
-        {"id": variety_id},
-        {"_id":0}
-    )
-
-@api_router.get("/admin/variety")
-async def admin_list_variety(
-    admin: dict = Depends(get_current_admin)
-):
-
-    docs = await db.variety.find(
-        {},
-        {"_id":0}
-    ).sort(
-        "created_at",
-        -1
-    ).to_list(500)
-
-    return docs
-    
-@api_router.put("/admin/variety/{variety_id}",response_model=Variety)
-async def admin_update_variety(
-    variety_id: str,
-    input: VarietyCreate,
-    admin: dict = Depends(get_current_admin)
-):
-    result = await db.variety.update_one(
-        {"id": variety_id},
-        {
-            "$set": {
-                **input.model_dump(),
-                "updated_at": now_iso()
-            }
-        }
-    )
 
     if result.matched_count == 0:
         raise HTTPException(
             status_code=404,
             detail="Variety video not found"
         )
+
 
     return await db.variety.find_one(
         {"id": variety_id},
@@ -760,11 +729,15 @@ async def admin_update_variety(
 
 
 @api_router.delete("/admin/variety/{variety_id}")
-async def admin_delete_variety(variety_id:str,admin:dict=Depends(get_current_admin)):
+async def admin_delete_variety(
+    variety_id: str,
+    admin: dict = Depends(get_current_admin)
+):
     await db.variety.delete_one(
-        {"id":variety_id}
+        {"id": variety_id}
     )
-    return {"ok":True}
+
+    return {"ok": True}
 
 # =========================
 # FAN POSTS / DC PLAYLIST
