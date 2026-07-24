@@ -632,10 +632,40 @@ async def admin_create_variety(input: VarietyCreate,admin: dict = Depends(get_cu
     await db.variety.insert_one(variety.model_dump())
     return variety
 
+
+@api_router.put("/admin/variety/{variety_id}")
+async def admin_update_variety(
+    variety_id: str,
+    input: VarietyCreate,
+    admin: dict = Depends(get_current_admin)
+):
+    result = await db.variety.update_one(
+        {"id": variety_id},
+        {
+            "$set": {
+                **input.model_dump(),
+                "updated_at": now_iso()
+            }
+        }
+    )
+
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Variety video not found"
+        )
+
+    return await db.variety.find_one(
+        {"id": variety_id},
+        {"_id":0}
+    )
+
+
 @api_router.delete("/admin/variety/{variety_id}")
 async def admin_delete_variety(variety_id:str,admin:dict=Depends(get_current_admin)):
     await db.variety.delete_one(
-        {"id":variety_id})
+        {"id":variety_id}
+    )
     return {"ok":True}
 
 # =========================
