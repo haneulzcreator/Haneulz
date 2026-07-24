@@ -31,7 +31,7 @@ const [videoForm, setVideoForm] = useState({
   show_name: "",
   episode: "",
   description: "",
-  photo_url: "",
+ image: null,
   youtube_url: "",
   air_date: ""
 });
@@ -79,10 +79,37 @@ const [videoForm, setVideoForm] = useState({
     toast.success("Note deleted");
     load();
   };
-  const addVariety = async () => {
-  await api.post("/admin/variety", videoForm);
+ const addVariety = async () => {
+
+  const formData = new FormData();
+
+  formData.append("section", videoForm.section);
+  formData.append("category", videoForm.category);
+  formData.append("label", videoForm.label);
+  formData.append("show_name", videoForm.show_name);
+  formData.append("episode", videoForm.episode);
+  formData.append("description", videoForm.description);
+  formData.append("youtube_url", videoForm.youtube_url);
+  formData.append("air_date", videoForm.air_date);
+
+  if(videoForm.image){
+    formData.append("image", videoForm.image);
+  }
+
+
+  await api.post(
+    "/admin/variety",
+    formData,
+    {
+      headers:{
+        "Content-Type":"multipart/form-data"
+      }
+    }
+  );
+
 
   toast.success("Video added!");
+
 
   setVideoForm({
     section:"haneulz",
@@ -91,18 +118,43 @@ const [videoForm, setVideoForm] = useState({
     label:"",
     episode:"",
     description:"",
-    photo_url:"",
+    image:null,
     youtube_url:"",
     air_date:""
   });
 
-await load();
+
+  await load();
 };
-const updateVariety = async () => {
+  const updateVariety = async () => {
+
+  const formData = new FormData();
+
+  formData.append("section", videoForm.section);
+  formData.append("category", videoForm.category);
+  formData.append("label", videoForm.label);
+  formData.append("show_name", videoForm.show_name);
+  formData.append("episode", videoForm.episode);
+  formData.append("description", videoForm.description);
+  formData.append("youtube_url", videoForm.youtube_url);
+  formData.append("air_date", videoForm.air_date);
+
+
+  if(videoForm.image){
+    formData.append("image", videoForm.image);
+  }
+
+
   await api.put(
     `/admin/variety/${editingVariety.id}`,
-    videoForm
+    formData,
+    {
+      headers:{
+        "Content-Type":"multipart/form-data"
+      }
+    }
   );
+
 
   toast.success("Video updated");
 
@@ -115,10 +167,11 @@ const updateVariety = async () => {
     label:"",
     episode:"",
     description:"",
-    photo_url:"",
+    image:null,
     youtube_url:"",
     air_date:""
   });
+
 
   load();
 };
@@ -141,7 +194,7 @@ const deleteVariety = async (id) => {
     show_name: v.show_name || "",
     episode: v.episode || "",
     description: v.description || "",
-    photo_url: v.photo_url || "",
+    image: null,
     youtube_url: v.youtube_url || "",
     air_date: v.air_date || ""
   });
@@ -326,10 +379,15 @@ onChange={(e)=>setVideoForm({...videoForm,youtube_url:e.target.value})}
 
 
 <input
+type="file"
+accept="image/jpeg,image/png"
 className="mt-3 w-full rounded-xl border p-3"
-placeholder="Photo URL"
-value={videoForm.photo_url}
-onChange={(e)=>setVideoForm({...videoForm,photo_url:e.target.value})}
+onChange={(e)=>
+  setVideoForm({
+    ...videoForm,
+    image:e.target.files[0]
+  })
+}
 />
 
 
