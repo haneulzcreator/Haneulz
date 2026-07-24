@@ -61,7 +61,6 @@ app.mount("/static", StaticFiles(directory=ROOT_DIR / "static"), name="static")
 
 import re
 
-
 def now_iso():
     return datetime.now(
         timezone.utc
@@ -88,6 +87,18 @@ def youtube_thumbnail(url: str):
 
     return None
 
+async def save_image(image: UploadFile):
+    if not image:
+        return None
+
+    ext = Path(image.filename).suffix
+    filename = f"{uuid.uuid4()}{ext}"
+    file_path = UPLOAD_DIR / filename
+
+    with open(file_path, "wb") as buffer:
+        buffer.write(await image.read())
+
+    return f"/static/uploads/{filename}"
 
 def hash_password(password: str):
     return bcrypt.hashpw(
@@ -679,6 +690,44 @@ async def get_variety():
 # ADMIN VARIETY ROUTES
 # =========================
 
+@api_router.post("/admin/variety", response_model=Variety)
+async def admin_create_variety(
+    input: VarietyCreate,
+    image: UploadFile = File(None),
+    admin: dict = Depends(get_current_admin)
+):
+
+    data = input.model_dump()
+
+    data["id"] = str(uuid.uuid4())
+
+    # Uploaded JPG/PNG thumbnail
+    if image:
+        uploaded_image = await save_image(image)
+
+        if uploaded_image:
+            data["thumbnail"] = uploaded_image
+
+    # YouTube thumbnail fallback
+    elif data.get("youtube_url"):
+        thumbnail = youtube_thumbnail(data["youtube_url"])
+
+        if thumbnail:
+            data["thumbnail"] = thumbnail
+
+
+    variety = Variety(
+        **data
+    )
+
+
+    await db.variety.insert_one(
+        variety.model_dump()
+    )
+
+
+    return variety
+    
 @api_router.put("/admin/variety/{variety_id}", response_model=Variety)
 async def admin_update_variety(
     variety_id: str,
