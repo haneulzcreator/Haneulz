@@ -582,31 +582,23 @@ async def list_variety():
     response_model=List[AU]
 )
 async def admin_list_aus(
-    status: Optional[str] = None,
-    admin: dict = Depends(get_current_admin)
+    status: Optional[str] = None
 ):
 
-    query = {}
+  query = {}
 
+if status:
+    query["status"] = status
 
-    if status:
+docs = await db.aus.find(
+    query,
+    {"_id":0}
+).sort(
+    "created_at",
+    -1
+).to_list(1000)
 
-        query["status"] = status
-
-    docs = await db.aus.find(
-        query,
-        {
-            "_id":0
-        }
-
-    ).sort(
-        "created_at",
-        -1
-
-    ).to_list(1000)
-
-
-    return docs
+return docs
 
 @api_router.patch("/admin/aus/{au_id}")
 async def admin_update_au(au_id:str,body:dict,admin:dict = Depends(get_current_admin)):
