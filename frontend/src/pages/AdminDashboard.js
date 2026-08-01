@@ -36,19 +36,25 @@ const [videoForm, setVideoForm] = useState({
   air_date: ""
 });
 
- const load = useCallback(async () => {
+const load = useCallback(async () => {
   try {
-    const ausRes = await api.get("/admin/aus");
-    console.log("ADMIN AUS:", ausRes.data);
-    const commentsRes = await api.get("/admin/comments");
-   const varietyRes = await api.get("/admin/variety");
+    const [ausRes, commentsRes, varietyRes] = await Promise.all([
+      api.get("/admin/aus"),
+      api.get("/admin/comments"),
+      api.get("/admin/variety"),
+    ]);
 
-    setAus(ausRes.data);
-    setComments(commentsRes.data);
-    setVariety(varietyRes.data);
+    console.log("ADMIN AUS DATA:", ausRes.data);
+
+    setAus(Array.isArray(ausRes.data) ? ausRes.data : []);
+    setComments(Array.isArray(commentsRes.data) ? commentsRes.data : []);
+    setVariety(Array.isArray(varietyRes.data) ? varietyRes.data : []);
 
   } catch (error) {
-    console.log(error);
+    console.error(
+      "ADMIN LOAD ERROR:",
+      error.response?.data || error.message
+    );
   }
 }, []);
 
