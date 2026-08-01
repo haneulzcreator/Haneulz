@@ -25,11 +25,16 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const { data } = await api.post("/auth/login", { email, password });
-    localStorage.setItem("haneulz_token", data.token);
-    setAdmin(data.user);
-    return data.user;
-  };
+  const { data } = await api.post("/auth/login", { email, password });
+
+  console.log("LOGIN TOKEN:", data.token);
+
+  localStorage.setItem("haneulz_token", data.token);
+
+  setAdmin(data.user);
+
+  return data.user;
+};
 
   const logout = () => {
     localStorage.removeItem("haneulz_token");
