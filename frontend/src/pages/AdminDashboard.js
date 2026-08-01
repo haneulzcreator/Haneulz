@@ -39,6 +39,7 @@ const [videoForm, setVideoForm] = useState({
  const load = useCallback(async () => {
   try {
     const ausRes = await api.get("/admin/aus");
+    console.log("ADMIN AUS:", ausRes.data);
     const commentsRes = await api.get("/admin/comments");
    const varietyRes = await api.get("/admin/variety");
 
