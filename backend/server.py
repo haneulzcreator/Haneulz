@@ -23,8 +23,7 @@ from pydantic import BaseModel, Field, EmailStr
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
 
-mongo_url = mongodb+srv://princessmedes90_db_user:<db_password>@haneulz.xmpyn2q.mongodb.net/?appName=Haneulz
-
+mongo_url = mongo_url = os.environ["MONGO_URL"]
 client = AsyncIOMotorClient(mongo_url)
 
 db = client[os.environ["DB_NAME"]]
