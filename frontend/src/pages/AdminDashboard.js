@@ -38,23 +38,24 @@ const [videoForm, setVideoForm] = useState({
 });
 
 const load = useCallback(async () => {
+
+  console.log("BASE URL:", api.defaults.baseURL);
+  console.log("TOKEN:", localStorage.getItem("haneulz_token"));
+
   try {
-    const [ausRes, commentsRes, varietyRes] = await Promise.all([
-      api.get("/admin/aus"),
-      api.get("/admin/comments"),
-      api.get("/admin/variety"),
-    ]);
+    const ausRes = await api.get("/admin/aus");
+
+    console.log("ALL ADMIN AUS:", ausRes.data);
 
     setAus(ausRes.data);
-    setComments(Array.isArray(commentsRes.data) ? commentsRes.data : []);
-    setVariety(Array.isArray(varietyRes.data) ? varietyRes.data : []);
 
   } catch (error) {
     console.error(
-      "ADMIN LOAD ERROR:",
+      "ERROR:",
       error.response?.data || error.message
     );
   }
+
 }, []);
 
   useEffect(() => {
