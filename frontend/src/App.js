@@ -37,6 +37,7 @@ function Shell() {
         <Route path="/aus/:id" element={<AUDetail />} />
         <Route path="/variety" element={<Variety />} />
         <Route path="/submit" element={<Submit />} />
+  <Route path="/our-little-corner"  element={<OurLittleCorner />} />
   <Route path="/about-haneulz" element={<AboutWebsite />} />
   <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminDashboard />} />
