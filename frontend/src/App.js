@@ -13,7 +13,7 @@ import Variety from "./pages/Variety";
 import Submit from "./pages/Submit";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
-import AboutHaneulz from "./pages/AboutHaneulz";
+import AboutWebsite from "./pages/AboutWebsite";
 
 function ScrollTop() {
   const { pathname } = useLocation();
@@ -37,7 +37,7 @@ function Shell() {
         <Route path="/aus/:id" element={<AUDetail />} />
         <Route path="/variety" element={<Variety />} />
         <Route path="/submit" element={<Submit />} />
-  <Route path="/about-haneulz" element={<AboutHaneulz />} />
+  <Route path="/about-haneulz" element={<AboutWebsite />} />
   <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
