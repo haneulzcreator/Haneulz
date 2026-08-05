@@ -1,16 +1,8 @@
 export default function AboutHaneulz() {
   return (
-    <main className="min-h-screen px-6 pt-32 pb-24 overflow-hidden">
+    <main className="min-h-screen px-6 pt-32 pb-24">
 
-      {/* Floating decorations */}
-      <div className="pointer-events-none fixed top-32 left-10 text-4xl opacity-40">
-        ☁️
-      </div>
-      <div className="pointer-events-none fixed top-64 right-10 text-3xl opacity-40">
-        💗
-      </div>
-
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-4xl">
 
         {/* Hero */}
         <section className="text-center">
@@ -19,85 +11,94 @@ export default function AboutHaneulz() {
             ☁️
           </div>
 
-          <p className="mt-7 uppercase tracking-[0.4em] text-xs text-[color:var(--pink-deep)]">
+          <p className="mt-8 uppercase tracking-[0.4em] text-xs text-[color:var(--pink-deep)]">
             Our Little Corner
           </p>
 
-          <h1 className="mt-5 font-serif-display text-5xl md:text-7xl">
-            Welcome to
-            <br />
-            Haneulz Corner 💗
+          <h1 className="mt-5 font-serif-display text-5xl md:text-6xl">
+            Welcome to Haneulz Corner 💗
           </h1>
 
-          <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-[color:var(--ink-soft)]">
-            A small cozy corner created by a Hansum, for Hansums —
-            a place where stories, memories, music, and moments of HANEULZ
-            can stay together.
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
+            A small corner on the internet created with love,
+            where memories, stories, and little moments of HANEULZ
+            can stay together. ☁️
           </p>
-
-          <div className="mx-auto mt-10 flex justify-center gap-3 text-2xl">
-            ☁️ 💗 ☁️
-          </div>
 
         </section>
 
 
-        {/* Beginning Story */}
-        <section className="mt-20 glass rounded-[2.5rem] p-8 md:p-14">
+        {/* Main Story */}
+        <section className="mt-20 glass rounded-[2.5rem] p-8 md:p-12">
 
-          <h2 className="font-serif-display text-4xl">
-            ☁️ How This Little Corner Started
+          <h2 className="font-serif-display text-3xl">
+            ☁️ The Story Behind This Little Corner
           </h2>
 
 
           <div className="mt-8 space-y-7 text-[color:var(--ink-soft)] leading-8">
 
+
             <p>
               Haneulz Corner started from a simple thought:
               <span className="font-medium text-[color:var(--ink)]">
-                {" "}what if there was one little place where everything about
-                HANEULZ could be found more easily?
+                {" "}what if there was a place where every little HANEULZ
+                memory could be found again?
               </span>
             </p>
 
 
             <p>
-              Like many fans, I experienced those moments of searching through
-              endless bookmarks, scrolling through old posts, trying to find
-              that one AU that made me smile, that one variety clip I wanted to
-              watch again, or that one memory I knew I saved somewhere.
+              Like many fans, I found myself saving posts, bookmarking stories,
+              looking for old videos, and trying to remember where I found
+              something that made me smile before.
+            </p>
+
+
+            <p>
+              Sometimes it was a story that kept me awake because I wanted to
+              know what happened next. Sometimes it was a funny variety moment
+              that I wanted to watch again. Sometimes it was simply a small
+              interaction that reminded me why I became a fan.
             </p>
 
 
             <div className="rounded-3xl bg-[color:var(--pink)] p-7 text-center">
 
               <p className="font-serif-display text-2xl text-[color:var(--ink)]">
-                "Maybe we just need a little corner where all these memories
-                can stay together."
+                "Maybe these little moments deserve a place where they can stay."
               </p>
 
             </div>
 
 
             <p>
-              What started as a personal collection slowly became something
-              bigger — a small space that could also be shared with fellow
-              Hansums who love HANEULZ just as much.
+              And that was where Haneulz Corner began.
             </p>
 
 
             <p>
-              This website is not an official platform.
-              It is simply a passion project made with appreciation, creativity,
-              and love for the HANEULZ community.
+              What started as a personal collection slowly became a small
+              archive that I wanted to share with other Hansums — a place where
+              fans can discover stories, revisit memories, and appreciate the
+              creativity of the community.
             </p>
 
 
             <p>
-              Whether you are here to discover a new story, revisit an old
-              favorite, find a memorable clip, or simply spend a few quiet
-              moments surrounded by things made by fans —
-              I hope Haneulz Corner feels like a warm little home on the internet.
+              This website is not an official HANEULZ platform.
+              It is simply a passion project made by a fan who wanted to create
+              a cozy little space filled with the things that make being a
+              Hansum special.
+            </p>
+
+
+            <p>
+              Whether you are a longtime fan or someone who is just discovering
+              HANEULZ, I hope this corner feels welcoming.
+              A place where you can stay for a while, find something new,
+              remember something old, and enjoy the wonderful creativity
+              shared by fellow fans.
             </p>
 
           </div>
@@ -106,118 +107,47 @@ export default function AboutHaneulz() {
 
 
 
-        {/* Mission */}
-        <section className="mt-16 grid gap-6 md:grid-cols-3">
-
-          <div className="glass rounded-[2rem] p-7 text-center">
-
-            <div className="text-4xl">
-              📚
-            </div>
-
-            <h3 className="mt-4 font-serif-display text-2xl">
-              Preserve Memories
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[color:var(--ink-soft)]">
-              Keeping favorite stories, moments, and creations easier to find
-              and revisit.
-            </p>
-
-          </div>
-
-
-          <div className="glass rounded-[2rem] p-7 text-center">
-
-            <div className="text-4xl">
-              💗
-            </div>
-
-            <h3 className="mt-4 font-serif-display text-2xl">
-              Celebrate Fans
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[color:var(--ink-soft)]">
-              A place that appreciates the creativity and passion of Hansums.
-            </p>
-
-          </div>
-
-
-          <div className="glass rounded-[2rem] p-7 text-center">
-
-            <div className="text-4xl">
-              ☁️
-            </div>
-
-            <h3 className="mt-4 font-serif-display text-2xl">
-              Create a Home
-            </h3>
-
-            <p className="mt-3 text-sm leading-7 text-[color:var(--ink-soft)]">
-              A peaceful corner where fans can always come back to.
-            </p>
-
-          </div>
-
-
-        </section>
-
-
-
-        {/* What's Inside */}
-        <section className="mt-20">
+        {/* Purpose */}
+        <section className="mt-16">
 
           <h2 className="text-center font-serif-display text-4xl">
-            What's Waiting Inside? ☁️
+            Why Haneulz Corner Exists ☁️
           </h2>
 
 
-          <p className="mx-auto mt-4 max-w-2xl text-center text-[color:var(--ink-soft)]">
-            Explore different parts of our little corner made especially for
-            the HANEULZ community.
-          </p>
-
-
-          <div className="mt-10 grid gap-5 md:grid-cols-2">
-
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
 
             {[
               {
-                icon:"📖",
-                title:"AU Library",
-                text:"Discover fan-written stories and revisit unforgettable AUs created by talented Hansums."
+                icon:"📚",
+                title:"Remember",
+                text:"To keep track of stories, moments, and creations that deserve to be remembered."
               },
               {
-                icon:"🎬",
-                title:"Variety Corner",
-                text:"A collection of HANEULZ moments, appearances, and videos worth remembering."
+                icon:"💗",
+                title:"Appreciate",
+                text:"To celebrate the amazing creativity and effort shared by Hansums."
               },
               {
-                icon:"🎵",
-                title:"Hansum Playlists",
-                text:"Songs and playlists that bring comfort, memories, and HANEULZ feelings."
-              },
-              {
-                icon:"✨",
-                title:"Community Space",
-                text:"A place celebrating fan creativity, love, and the little things that make this fandom special."
+                icon:"☁️",
+                title:"Connect",
+                text:"To create a small welcoming space where fans can enjoy HANEULZ together."
               }
             ].map((item)=>(
               <div
                 key={item.title}
-                className="glass rounded-[2rem] p-8 transition duration-300 hover:-translate-y-2"
+                className="glass rounded-[2rem] p-7 text-center transition hover:-translate-y-2"
               >
 
-                <div className="text-5xl">
+                <div className="text-4xl">
                   {item.icon}
                 </div>
 
-                <h3 className="mt-5 font-serif-display text-3xl">
+                <h3 className="mt-5 font-serif-display text-2xl">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 leading-7 text-sm text-[color:var(--ink-soft)]">
+                <p className="mt-3 text-sm leading-7 text-[color:var(--ink-soft)]">
                   {item.text}
                 </p>
 
@@ -230,43 +160,80 @@ export default function AboutHaneulz() {
 
 
 
-        {/* Community Notice */}
+
+        {/* What's Inside */}
         <section className="mt-20 glass rounded-[2.5rem] p-8 md:p-12">
 
+          <h2 className="text-center font-serif-display text-3xl">
+            What's Waiting Inside? 💗
+          </h2>
 
-          <h2 className="font-serif-display text-4xl">
+
+          <div className="mt-8 space-y-5">
+
+            {[
+              ["📚","AU Library","Discover stories created by talented Hansums and revisit favorites whenever you want."],
+              ["🎬","Variety Corner","A collection of HANEULZ moments, videos, and memories worth keeping."],
+              ["🎵","Playlist Corner","Songs and playlists that remind us of HANEULZ and special memories."],
+              ["💌","Community Space","A place celebrating the creativity and love shared by fans."]
+            ].map(([icon,title,text])=>(
+              
+              <div
+                key={title}
+                className="rounded-3xl border border-[color:var(--line)] p-6"
+              >
+
+                <h3 className="font-serif-display text-2xl">
+                  {icon} {title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-[color:var(--ink-soft)]">
+                  {text}
+                </p>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </section>
+
+
+
+
+        {/* Community Notice */}
+
+        <section className="mt-16 glass rounded-[2.5rem] p-8 md:p-12">
+
+          <h2 className="font-serif-display text-3xl">
             📢 A Little Community Note
           </h2>
 
 
-          <div className="mt-7 space-y-6 leading-8 text-[color:var(--ink-soft)]">
+          <div className="mt-6 space-y-5 leading-8 text-[color:var(--ink-soft)]">
 
             <p>
               Haneulz Corner is a fan-made directory created to organize,
-              appreciate, and celebrate the amazing creativity within the
-              HANEULZ community.
+              appreciate, and celebrate the creativity within the HANEULZ
+              community.
             </p>
-
 
             <p>
-              All AUs, fan edits, playlists, videos, artwork, and featured
-              creations belong to their original creators.
-              This website does not claim ownership of any linked works.
+              Every AU, fan edit, artwork, playlist, video, and featured work
+              belongs to its original creator. This website does not claim
+              ownership of any linked content.
             </p>
-
 
             <p>
-              Some links may change, disappear, or become unavailable over
-              time. If you notice something that needs updating, please feel
-              free to reach out.
+              The purpose of this corner is simply to make things easier to
+              discover, easier to revisit, and easier to appreciate.
             </p>
-
 
             <p>
-              Above all, please continue supporting the writers, artists,
-              editors, and creators whose passion makes this community special.
+              Thank you to every author, artist, editor, creator, and fan who
+              continues to make this community special. 💗
             </p>
-
 
           </div>
 
@@ -275,24 +242,18 @@ export default function AboutHaneulz() {
 
 
         {/* Signature */}
-        <section className="mt-24 text-center">
 
-          <div className="text-3xl">
-            ☁️💗
-          </div>
+        <section className="mt-20 text-center">
 
-          <p className="mt-6 font-serif-display text-3xl italic">
+          <p className="font-serif-display text-2xl italic">
             Made with lots of love,
-            <br/>
             late-night ideas,
-            <br/>
             and a few too many bookmarks.
           </p>
 
-          <p className="mt-6 text-xl">
+          <p className="mt-5 text-xl">
             — K ☁️💗
           </p>
-
 
         </section>
 
