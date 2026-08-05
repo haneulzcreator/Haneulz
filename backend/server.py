@@ -11,6 +11,7 @@ from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, File, UploadFile, Form
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -37,6 +38,8 @@ JWT_ALGORITHM = "HS256"
 # =========================
 
 app = FastAPI()
+
+security = HTTPBearer()
 
 api_router = APIRouter(prefix="/api")
 
@@ -236,23 +239,17 @@ class PlaylistItem(BaseModel):
 # ADMIN AUTH CHECK
 # =========================
 
-async def get_current_admin(request: Request):
+async def get_current_admin(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
 
-    auth = request.headers.get("Authorization")
-
-    if not auth:
-        raise HTTPException(
-            status_code=401,
-            detail="Missing authorization"
-        )
+    token = credentials.credentials
 
     try:
-        token = auth.replace("Bearer ", "")
-
         payload = jwt.decode(
             token,
-            os.getenv("JWT_SECRET"),
-            algorithms=["HS256"]
+            JWT_SECRET,
+            algorithms=[JWT_ALGORITHM]
         )
 
         if not payload.get("email"):
