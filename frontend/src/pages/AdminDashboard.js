@@ -42,7 +42,7 @@ const load = useCallback(async () => {
 
   try {
     const [ausRes, commentsRes, varietyRes] = await Promise.all([
-      api.get("/admin/aus"),
+      api.get("/admin/aus?status=approved"),
       api.get("/admin/comments"),
       api.get("/admin/variety"),
     ]);
