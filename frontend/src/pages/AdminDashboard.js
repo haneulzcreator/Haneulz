@@ -78,6 +78,12 @@ const load = useCallback(async () => {
   if (admin) load();
 }, [admin, load]);
 
+useEffect(() => {
+  if (admin && tab === "variety") {
+    loadVariety();
+  }
+}, [admin, tab]);
+  
   const setAuStatus = async (id, status) => {
     await api.patch(`/admin/aus/${id}`, { status });
     toast.success(`AU ${status}`);
