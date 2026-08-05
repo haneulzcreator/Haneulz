@@ -9,7 +9,7 @@ const links = [
   { to: "/aus", label: "AU Library" },
   { to: "/variety", label: "Variety Corner" },
   { to: "/our-little-corner", label: "Our Little Corner" },
-  { to: "/submit", label: "Submit" },
+  { to: "/about-haneulz", label: "About Us" },
 ];
 
 export default function Nav() {
