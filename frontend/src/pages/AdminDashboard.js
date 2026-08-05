@@ -66,9 +66,6 @@ const load = useCallback(async () => {
   useEffect(() => {
   if (admin) load();
 }, [admin, load]);
-  
- setAus(ausRes.data);
-alert("AUs loaded: " + ausRes.data.length);
 
   const setAuStatus = async (id, status) => {
     await api.patch(`/admin/aus/${id}`, { status });
