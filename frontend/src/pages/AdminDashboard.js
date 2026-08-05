@@ -38,6 +38,8 @@ const [videoForm, setVideoForm] = useState({
 });
 
 const load = useCallback(async () => {
+  alert("TOKEN: " + localStorage.getItem("haneulz_token"));
+
   try {
     const [ausRes, commentsRes, varietyRes] = await Promise.all([
       api.get("/admin/aus"),
