@@ -16,8 +16,11 @@ export function AuthProvider({ children }) {
       return;
     }
 
-    api
-      .get("/auth/me")
+    api.defaults.headers.common.Authorization =
+  `Bearer ${token}`;
+
+api
+  .get("/auth/me")
       .then((r) => setAdmin(r.data))
       .catch(() => {
         localStorage.removeItem("haneulz_token");
