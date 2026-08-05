@@ -58,6 +58,18 @@ const load = useCallback(async () => {
 
 }, []);
 
+  const loadVariety = async () => {
+  try {
+    const res = await api.get("/variety");
+    setVariety(res.data);
+  } catch (error) {
+    console.error(
+      "VARIETY ERROR:",
+      error.response?.data || error.message
+    );
+  }
+};
+  
   useEffect(() => {
     if (ready && !admin) navigate("/admin/login");
   }, [ready, admin, navigate]);
