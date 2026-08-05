@@ -1,249 +1,293 @@
+import { motion } from "framer-motion";
+
 export default function AboutHaneulz() {
+  const sections = [
+    {
+      icon: "📚",
+      title: "AU Library",
+      text: "A cozy shelf of stories created by talented Hansums. Discover new worlds, revisit favorite moments, and support the amazing writers who share their imagination with the community."
+    },
+    {
+      icon: "🎬",
+      title: "Variety Corner",
+      text: "A little collection of HANEULZ moments, clips, appearances, and memories gathered together so fans can easily find and enjoy them again."
+    },
+    {
+      icon: "🎵",
+      title: "Hansum Playlists",
+      text: "A collection of songs and playlists that remind us of HANEULZ, special memories, and the feelings that make this corner feel like home."
+    },
+    {
+      icon: "💗",
+      title: "Community Love",
+      text: "A place that celebrates the creativity, kindness, and passion of every author, editor, artist, and fan who makes the HANEULZ community special."
+    }
+  ];
+
   return (
-    <main className="min-h-screen px-6 pt-32 pb-24">
+    <main className="relative min-h-screen overflow-hidden px-6 pt-32 pb-24">
 
-      <div className="mx-auto max-w-4xl">
+      {/* Floating decorations */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
 
-        {/* Hero */}
-        <section className="text-center">
+        <div className="absolute left-10 top-40 text-5xl opacity-70 animate-bounce">
+          ☁️
+        </div>
 
-          <div className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-[color:var(--pink)] text-5xl shadow-lg">
+        <div className="absolute right-12 top-72 text-4xl opacity-70 animate-pulse">
+          💗
+        </div>
+
+        <div className="absolute left-20 top-[700px] text-3xl">
+          ✨
+        </div>
+
+        <div className="absolute right-20 top-[1200px] text-5xl opacity-60 animate-bounce">
+          ☁️
+        </div>
+
+        <div className="absolute left-1/3 top-[1700px] text-3xl">
+          💕
+        </div>
+
+      </div>
+
+
+      <div className="relative mx-auto max-w-4xl">
+
+
+        {/* Header */}
+
+        <motion.section
+          initial={{opacity:0, y:30}}
+          whileInView={{opacity:1, y:0}}
+          viewport={{once:true}}
+          transition={{duration:0.8}}
+          className="text-center"
+        >
+
+          <div className="mx-auto grid h-24 w-24 place-items-center rounded-full bg-[color:var(--pink)] text-5xl shadow">
             ☁️
           </div>
 
-          <p className="mt-8 uppercase tracking-[0.4em] text-xs text-[color:var(--pink-deep)]">
+
+          <p className="mt-8 uppercase tracking-[0.4em] text-sm text-[color:var(--pink-deep)]">
             Our Little Corner
           </p>
+
 
           <h1 className="mt-5 font-serif-display text-5xl md:text-6xl">
             Welcome to Haneulz Corner 💗
           </h1>
 
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
-            A small corner on the internet created with love,
-            where memories, stories, and little moments of HANEULZ
-            can stay together. ☁️
+
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[color:var(--ink-soft)]">
+            A tiny corner on the internet where stories, memories,
+            playlists, and little pieces of HANEULZ love can stay together.
           </p>
 
-        </section>
+        </motion.section>
 
 
-        {/* Main Story */}
-        <section className="mt-20 glass rounded-[2.5rem] p-8 md:p-12">
+
+        {/* Story */}
+
+        <motion.section
+          initial={{opacity:0, y:40}}
+          whileInView={{opacity:1, y:0}}
+          viewport={{once:true}}
+          transition={{duration:0.8}}
+          className="mt-20 glass rounded-[2rem] p-8 md:p-12"
+        >
 
           <h2 className="font-serif-display text-3xl">
-            ☁️ The Story Behind This Little Corner
+            ☁ How This Little Corner Began
           </h2>
 
 
-          <div className="mt-8 space-y-7 text-[color:var(--ink-soft)] leading-8">
-
+          <div className="mt-8 space-y-6 leading-8 text-[color:var(--ink-soft)]">
 
             <p>
               Haneulz Corner started from a simple thought:
-              <span className="font-medium text-[color:var(--ink)]">
-                {" "}what if there was a place where every little HANEULZ
-                memory could be found again?
-              </span>
+              what if there was a little place where everything about
+              HANEULZ could be found more easily?
             </p>
 
 
             <p>
-              Like many fans, I found myself saving posts, bookmarking stories,
-              looking for old videos, and trying to remember where I found
-              something that made me smile before.
+              Like many fans, I found myself searching through old bookmarks,
+              trying to find a specific AU I loved, looking for a variety clip
+              I wanted to watch again, or remembering a post that made me smile
+              but was buried somewhere online.
+            </p>
+
+
+            <p className="rounded-3xl bg-[color:var(--pink)] p-6 text-xl font-serif-display text-[color:var(--ink)]">
+              "Maybe we just need a small corner where all these memories can stay."
             </p>
 
 
             <p>
-              Sometimes it was a story that kept me awake because I wanted to
-              know what happened next. Sometimes it was a funny variety moment
-              that I wanted to watch again. Sometimes it was simply a small
-              interaction that reminded me why I became a fan.
-            </p>
-
-
-            <div className="rounded-3xl bg-[color:var(--pink)] p-7 text-center">
-
-              <p className="font-serif-display text-2xl text-[color:var(--ink)]">
-                "Maybe these little moments deserve a place where they can stay."
-              </p>
-
-            </div>
-
-
-            <p>
-              And that was where Haneulz Corner began.
+              What started as a personal collection slowly became a space
+              that I wanted to share with fellow Hansums.
             </p>
 
 
             <p>
-              What started as a personal collection slowly became a small
-              archive that I wanted to share with other Hansums — a place where
-              fans can discover stories, revisit memories, and appreciate the
-              creativity of the community.
+              Haneulz Corner is not an official website.
+              It is simply a fan-made passion project created with love,
+              appreciation, and endless support for HANEULZ.
             </p>
 
 
             <p>
-              This website is not an official HANEULZ platform.
-              It is simply a passion project made by a fan who wanted to create
-              a cozy little space filled with the things that make being a
-              Hansum special.
-            </p>
-
-
-            <p>
-              Whether you are a longtime fan or someone who is just discovering
-              HANEULZ, I hope this corner feels welcoming.
-              A place where you can stay for a while, find something new,
-              remember something old, and enjoy the wonderful creativity
-              shared by fellow fans.
+              Whether you are here to discover a new AU, revisit an old
+              favorite, find variety moments, or simply spend a little time
+              enjoying the creativity of fellow fans, I hope this corner feels
+              like a warm and comfortable place you can always return to.
             </p>
 
           </div>
 
-        </section>
+        </motion.section>
 
 
 
-        {/* Purpose */}
-        <section className="mt-16">
+
+        {/* Cards */}
+
+        <motion.section
+          initial={{opacity:0, y:40}}
+          whileInView={{opacity:1, y:0}}
+          viewport={{once:true}}
+          transition={{duration:0.8}}
+          className="mt-20"
+        >
 
           <h2 className="text-center font-serif-display text-4xl">
-            Why Haneulz Corner Exists ☁️
+            What's Inside Our Corner? ☁️
           </h2>
 
 
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
 
-            {[
-              {
-                icon:"📚",
-                title:"Remember",
-                text:"To keep track of stories, moments, and creations that deserve to be remembered."
-              },
-              {
-                icon:"💗",
-                title:"Appreciate",
-                text:"To celebrate the amazing creativity and effort shared by Hansums."
-              },
-              {
-                icon:"☁️",
-                title:"Connect",
-                text:"To create a small welcoming space where fans can enjoy HANEULZ together."
-              }
-            ].map((item)=>(
-              <div
+            {sections.map((item,index)=>(
+
+              <motion.div
                 key={item.title}
-                className="glass rounded-[2rem] p-7 text-center transition hover:-translate-y-2"
+                initial={{opacity:0, y:20}}
+                whileInView={{opacity:1, y:0}}
+                viewport={{once:true}}
+                transition={{delay:index * 0.1}}
+                className="glass rounded-[2rem] p-7 rotate-[-1deg] transition hover:-translate-y-2 hover:rotate-0"
               >
 
-                <div className="text-4xl">
+                <div className="text-5xl">
                   {item.icon}
                 </div>
+
 
                 <h3 className="mt-5 font-serif-display text-2xl">
                   {item.title}
                 </h3>
 
-                <p className="mt-3 text-sm leading-7 text-[color:var(--ink-soft)]">
+
+                <p className="mt-3 leading-7 text-sm text-[color:var(--ink-soft)]">
                   {item.text}
                 </p>
 
-              </div>
+              </motion.div>
+
             ))}
 
           </div>
 
-        </section>
+        </motion.section>
 
 
 
 
-        {/* What's Inside */}
-        <section className="mt-20 glass rounded-[2.5rem] p-8 md:p-12">
 
-          <h2 className="text-center font-serif-display text-3xl">
-            What's Waiting Inside? 💗
+        {/* Made by Hansum */}
+
+        <motion.section
+          initial={{opacity:0, y:40}}
+          whileInView={{opacity:1, y:0}}
+          viewport={{once:true}}
+          className="mt-20 glass rounded-[2rem] p-8 text-center"
+        >
+
+          <h2 className="font-serif-display text-3xl">
+            ☁️ Made by a Hansum, for Hansums 💗
           </h2>
 
 
-          <div className="mt-8 space-y-5">
+          <p className="mt-5 leading-8 text-[color:var(--ink-soft)]">
+            This little corner was created by a fan who simply wanted a place
+            where HANEULZ memories, stories, and creations could be collected
+            together.
 
-            {[
-              ["📚","AU Library","Discover stories created by talented Hansums and revisit favorites whenever you want."],
-              ["🎬","Variety Corner","A collection of HANEULZ moments, videos, and memories worth keeping."],
-              ["🎵","Playlist Corner","Songs and playlists that remind us of HANEULZ and special memories."],
-              ["💌","Community Space","A place celebrating the creativity and love shared by fans."]
-            ].map(([icon,title,text])=>(
-              
-              <div
-                key={title}
-                className="rounded-3xl border border-[color:var(--line)] p-6"
-              >
+            <br/><br/>
 
-                <h3 className="font-serif-display text-2xl">
-                  {icon} {title}
-                </h3>
+            Every saved bookmark, every late-night idea, and every moment that
+            brought happiness helped shape this small space.
+          </p>
 
-                <p className="mt-3 text-sm leading-7 text-[color:var(--ink-soft)]">
-                  {text}
-                </p>
 
-              </div>
+        </motion.section>
 
-            ))}
-
-          </div>
-
-        </section>
 
 
 
 
         {/* Community Notice */}
 
-        <section className="mt-16 glass rounded-[2.5rem] p-8 md:p-12">
+        <motion.section
+          initial={{opacity:0, y:40}}
+          whileInView={{opacity:1, y:0}}
+          viewport={{once:true}}
+          className="mt-16 glass rounded-[2rem] p-8"
+        >
 
           <h2 className="font-serif-display text-3xl">
-            📢 A Little Community Note
+            📢 A Small Community Note
           </h2>
 
 
-          <div className="mt-6 space-y-5 leading-8 text-[color:var(--ink-soft)]">
+          <p className="mt-5 leading-8 text-[color:var(--ink-soft)]">
+            Haneulz Corner is a fan-made directory created to organize,
+            appreciate, and celebrate the creativity within the HANEULZ
+            community.
+          </p>
 
-            <p>
-              Haneulz Corner is a fan-made directory created to organize,
-              appreciate, and celebrate the creativity within the HANEULZ
-              community.
-            </p>
 
-            <p>
-              Every AU, fan edit, artwork, playlist, video, and featured work
-              belongs to its original creator. This website does not claim
-              ownership of any linked content.
-            </p>
+          <p className="mt-5 leading-8 text-[color:var(--ink-soft)]">
+            All AUs, fan edits, playlists, videos, artwork, and other featured
+            content belong to their original creators.
+            This website does not claim ownership over any linked works.
+          </p>
 
-            <p>
-              The purpose of this corner is simply to make things easier to
-              discover, easier to revisit, and easier to appreciate.
-            </p>
 
-            <p>
-              Thank you to every author, artist, editor, creator, and fan who
-              continues to make this community special. 💗
-            </p>
+          <p className="mt-5 leading-8 text-[color:var(--ink-soft)]">
+            This corner exists only to help fans discover, revisit, and support
+            the amazing creators who share their work.
+          </p>
 
-          </div>
 
-        </section>
+        </motion.section>
+
+
 
 
 
         {/* Signature */}
 
-        <section className="mt-20 text-center">
+        <motion.section
+          initial={{opacity:0}}
+          whileInView={{opacity:1}}
+          viewport={{once:true}}
+          className="mt-20 text-center"
+        >
 
           <p className="font-serif-display text-2xl italic">
             Made with lots of love,
@@ -251,11 +295,12 @@ export default function AboutHaneulz() {
             and a few too many bookmarks.
           </p>
 
+
           <p className="mt-5 text-xl">
             — K ☁️💗
           </p>
 
-        </section>
+        </motion.section>
 
 
       </div>
