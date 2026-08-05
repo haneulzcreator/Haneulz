@@ -47,7 +47,6 @@ const load = useCallback(async () => {
 
     console.log("ADMIN AUS DATA:", ausRes.data);
     
-    alert("Loaded AUs: " + ausRes.data.length);
     setAus(ausRes.data);alert("AUs loaded: " + ausRes.data.length);
     setComments(Array.isArray(commentsRes.data) ? commentsRes.data : []);
     setVariety(Array.isArray(varietyRes.data) ? varietyRes.data : []);
