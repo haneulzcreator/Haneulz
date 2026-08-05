@@ -245,6 +245,8 @@ Variety
 {tab === "aus" && (
   <div className="mt-8 space-y-4" data-testid="admin-au-list">
 
+  <p>Total AUs: {aus.length}</p>
+ 
     {aus.length === 0 && (
       <p className="text-[color:var(--ink-soft)]">
         No submissions yet.
