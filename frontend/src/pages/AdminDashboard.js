@@ -19,7 +19,8 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const [tab, setTab] = useState("aus");
   const [aus, setAus] = useState([]);
-const [comments, setComments] = useState([]);
+  const [refresh, setRefresh] = useState(0);
+  const [comments, setComments] = useState([]);
 const [variety, setVariety] = useState([]);
   const [editingVariety, setEditingVariety] = useState(null);
 const [editingAU, setEditingAU] = useState(null);
@@ -45,7 +46,8 @@ const load = useCallback(async () => {
     ]);
 
     console.log("ADMIN AUS DATA:", ausRes.data);
-
+    
+    alert("Loaded AUs: " + ausRes.data.length);
     setAus(ausRes.data);alert("AUs loaded: " + ausRes.data.length);
     setComments(Array.isArray(commentsRes.data) ? commentsRes.data : []);
     setVariety(Array.isArray(varietyRes.data) ? varietyRes.data : []);
@@ -63,8 +65,11 @@ const load = useCallback(async () => {
   }, [ready, admin, navigate]);
 
   useEffect(() => {
-    if (admin) load();
-  }, [admin, load]);
+  if (admin) load();
+}, [admin, load]);
+  
+ setAus(ausRes.data);
+alert("AUs loaded: " + ausRes.data.length);
 
   const setAuStatus = async (id, status) => {
     await api.patch(`/admin/aus/${id}`, { status });
