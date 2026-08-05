@@ -45,7 +45,8 @@ const load = useCallback(async () => {
       api.get("/admin/variety"),
     ]);
 
-    console.log("ADMIN AUS DATA:", ausRes.data);
+    console.log("TOKEN:", localStorage.getItem("haneulz_token"));
+console.log("ADMIN AUS DATA:", ausRes.data);
     
     setAus(ausRes.data);alert("AUs loaded: " + ausRes.data.length);
     setComments(Array.isArray(commentsRes.data) ? commentsRes.data : []);
