@@ -14,6 +14,7 @@ import Submit from "./pages/Submit";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AboutWebsite from "./pages/AboutWebsite";
+import OurLittleCorner from "./pages/OurLittleCorner";
 
 function ScrollTop() {
   const { pathname } = useLocation();
