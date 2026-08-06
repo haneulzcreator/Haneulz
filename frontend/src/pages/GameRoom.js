@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MemoryMatch from "../games/MemoryMatch";
+import MemoryMatch from "../Games/MemoryMatch";
 
 export default function GameRoom() {
   const [activeGame, setActiveGame] = useState(false);
