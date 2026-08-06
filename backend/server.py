@@ -1032,7 +1032,6 @@ async def admin_delete_game(
 
     return {"ok": True}
 
-
 # =========================
 # SITE SETTINGS ROUTES
 # =========================
