@@ -1,7 +1,11 @@
 import { useState } from "react";
+import memoryData from "./memoryData";
 import { X, RotateCcw } from "lucide-react";
 
 export default function MemoryMatch({ onClose }) {
+
+  const [cards, setCards] = useState(memoryData);
+
   return (
     <div className="fixed inset-0 z-[100] bg-[color:var(--bg)]">
       <div className="mx-auto flex h-full max-w-7xl flex-col px-6 py-10">
@@ -65,24 +69,40 @@ export default function MemoryMatch({ onClose }) {
 
         {/* Game Grid */}
 
-        <div className="grid flex-1 grid-cols-4 gap-5 md:grid-cols-4">
+       <div className="grid flex-1 grid-cols-4 gap-5">
 
-          {Array.from({ length: 16 }).map((_, index) => (
+  {cards.map((card) => (
 
-            <button
-              key={index}
-              className="aspect-square rounded-[2rem] border border-[color:var(--line)] bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl"
-            >
+    <button
+      key={card.uuid}
+      className="aspect-square rounded-[2rem] border border-[color:var(--line)] bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+    >
 
-              <div className="flex h-full items-center justify-center text-5xl">
-                ☁️
-              </div>
+      <div className="flex h-full flex-col items-center justify-center">
 
-            </button>
+        {card.flipped ? (
+          <>
+            <div className="text-5xl">
+              {card.icon}
+            </div>
 
-          ))}
+            <p className="mt-3 font-serif-display text-lg">
+              {card.title}
+            </p>
+          </>
+        ) : (
+          <div className="text-5xl">
+            ☁️
+          </div>
+        )}
 
-        </div>
+      </div>
+
+    </button>
+
+  ))}
+
+</div>
 
       </div>
     </div>
