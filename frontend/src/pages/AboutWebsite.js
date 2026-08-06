@@ -297,13 +297,13 @@ export default function AboutWebsite() {
 
           <p className="font-serif-display text-3xl italic leading-relaxed">
             Made with lots of love,
-            late-night ideas,
+            late-night ideas, delulu,
             and a determination to create something meaningful.
           </p>
 
 
           <p className="mt-6 text-lg">
-            — K
+            — K 💗
           </p>
 
         </Reveal>
