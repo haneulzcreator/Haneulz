@@ -79,7 +79,7 @@ export default function MemoryMatch({ onClose }) {
 
         {/* Game Grid */}
 
-       <div className="grid flex-1 grid-cols-4 gap-5">
+       <div className="grid grid-cols-4 gap-5 pb-10">
 
   {cards.map((card) => (
 
