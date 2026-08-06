@@ -7,7 +7,7 @@ export default function MemoryMatch({ onClose }) {
   const [cards, setCards] = useState(memoryData);
 
   return (
-    <div className="fixed inset-0 z-[100] overflow-y-auto relative bg-gradient-to-br from-pink-100 via-white to-blue-100">
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-gradient-to-br from-pink-100 via-white to-blue-100">
      <div className="pointer-events-none absolute inset-0 overflow-hidden">
 
   <div className="absolute -top-20 -left-20 h-72 w-72 rounded-full bg-pink-200/40 blur-3xl"></div>
