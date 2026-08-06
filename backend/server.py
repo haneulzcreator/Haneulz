@@ -234,7 +234,28 @@ class PlaylistItem(BaseModel):
     created_at: str = Field(default_factory=now_iso)
     updated_at: str = Field(default_factory=now_iso)
 
+# =========================
+# GAMES
+# =========================
 
+class GameCreate(BaseModel):
+    title: str
+    description: str
+    thumbnail: Optional[str] = None
+    game_url: str
+    category: str = "quiz"
+
+
+class Game(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    thumbnail: Optional[str] = None
+    game_url: str
+    category: str = "quiz"
+    created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
+    
 # =========================
 # ADMIN AUTH CHECK
 # =========================
@@ -944,6 +965,73 @@ async def admin_delete_playlist_item(
     await db.playlists.delete_one({"id": item_id})
 
     return {"ok": True}
+
+# =========================
+# GAME ROUTES
+# =========================
+
+@api_router.get("/games", response_model=List[Game])
+async def get_games():
+
+    docs = await db.games.find(
+        {},
+        {"_id": 0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return docs
+
+
+@api_router.post("/admin/games", response_model=Game)
+async def admin_create_game(
+    input: GameCreate,
+    admin: dict = Depends(get_current_admin)
+):
+
+    game = Game(**input.model_dump())
+
+    await db.games.insert_one(
+        game.model_dump()
+    )
+
+    return game
+
+
+@api_router.put("/admin/games/{game_id}", response_model=Game)
+async def admin_update_game(
+    game_id: str,
+    input: GameCreate,
+    admin: dict = Depends(get_current_admin)
+):
+
+    data = input.model_dump()
+    data["updated_at"] = now_iso()
+
+    await db.games.update_one(
+        {"id": game_id},
+        {"$set": data}
+    )
+
+    return await db.games.find_one(
+        {"id": game_id},
+        {"_id": 0}
+    )
+
+
+@api_router.delete("/admin/games/{game_id}")
+async def admin_delete_game(
+    game_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.games.delete_one(
+        {"id": game_id}
+    )
+
+    return {"ok": True}
+
 
 # =========================
 # SITE SETTINGS ROUTES
