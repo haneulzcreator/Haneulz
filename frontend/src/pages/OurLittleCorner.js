@@ -1,25 +1,51 @@
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
-import { Music2, Gamepad2, Heart, Sparkles } from "lucide-react";
+import {
+  Music2,
+  Gamepad2,
+  ArrowUpRight,
+  Sparkles,
+  Heart,
+} from "lucide-react";
 
-const sections = [
+
+const playlists = [
   {
-    icon: Music2,
-    title: "Spotify Corner",
-    text:
-      "A little collection of playlists made for moments, memories, and everything that reminds us of HANEULZ.",
+    title: "HANEULZ Playlist",
+    description:
+      "Songs that feel like memories, comfort, and the little moments that remind us of HANEULZ.",
   },
   {
-    icon: Gamepad2,
-    title: "Game Corner",
-    text:
-      "Take a break and enjoy fun games, quizzes, and fan-made activities created for Hansums.",
+    title: "JL's Playlist",
+    description:
+      "A collection of songs that match JL's energy, warmth, and bright moments.",
   },
   {
-    icon: Heart,
-    title: "Fan Notes",
-    text:
-      "A place for little messages, memories, and things shared by the community.",
+    title: "Han's Playlist",
+    description:
+      "A softer corner filled with songs that carry Han's calm and emotional charm.",
+  },
+];
+
+
+const games = [
+  {
+    title: "HANEULZ Quiz",
+    description:
+      "How well do you know HANEULZ? Test your knowledge with fun fan questions.",
+    status: "Coming Soon",
+  },
+  {
+    title: "Memory Game",
+    description:
+      "Match the memories and moments hidden inside the corner.",
+    status: "Coming Soon",
+  },
+  {
+    title: "Fan Challenge",
+    description:
+      "Small challenges made for Hansums to enjoy.",
+    status: "Coming Soon",
   },
 ];
 
@@ -28,17 +54,18 @@ export default function OurLittleCorner() {
   return (
     <div className="pt-32">
 
-      {/* INTRO */}
+
+      {/* HERO */}
       <section className="mx-auto max-w-6xl px-6">
 
         <Reveal>
 
           <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
-            A small place for little things
+            A hidden space inside Haneulz
           </p>
 
 
-          <h1 className="mt-5 max-w-4xl font-serif-display text-6xl font-medium leading-none md:text-8xl">
+          <h1 className="mt-5 font-serif-display text-6xl font-medium leading-none md:text-8xl">
             Our Little
             <br />
             Corner
@@ -46,8 +73,8 @@ export default function OurLittleCorner() {
 
 
           <p className="mt-8 max-w-2xl text-xl leading-relaxed text-[color:var(--ink-soft)]">
-            A cozy space filled with playlists, games,
-            and little moments created for Hansums.
+            A small place where playlists, games,
+            memories, and little fan moments stay together.
           </p>
 
         </Reveal>
@@ -55,123 +82,78 @@ export default function OurLittleCorner() {
       </section>
 
 
-      {/* FEATURE SECTIONS */}
-      <section className="mx-auto mt-20 grid max-w-6xl gap-6 px-6 md:grid-cols-3">
 
-        {sections.map((item,index)=>(
 
-          <Reveal key={item.title} delay={index*0.1}>
 
-            <div className="glass rounded-[2.5rem] p-8">
 
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-[color:var(--pink)]">
 
-                <item.icon size={22}/>
+      {/* PLAYLIST SHELF */}
+      <section className="mx-auto mt-24 max-w-6xl px-6">
 
+        <Reveal>
+
+          <div className="glass rounded-[3rem] p-8 md:p-12">
+
+
+            <div className="flex items-center gap-4">
+
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-[#1DB954] text-white">
+                <Music2 size={22}/>
               </div>
 
 
-              <h2 className="mt-6 font-serif-display text-3xl">
-                {item.title}
-              </h2>
+              <div>
 
+                <p className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
+                  Music Shelf
+                </p>
 
-              <p className="mt-4 leading-relaxed text-[color:var(--ink-soft)]">
-                {item.text}
-              </p>
+                <h2 className="font-serif-display text-5xl">
+                  Spotify Corner
+                </h2>
 
-
-            </div>
-
-          </Reveal>
-
-        ))}
-
-      </section>
-
-
-      {/* SPOTIFY */}
-      <section className="mx-auto mt-24 max-w-6xl px-6">
-
-        <Reveal>
-
-          <div className="glass rounded-[3rem] p-10 md:p-14">
-
-            <div className="flex items-center gap-3">
-
-              <Music2 />
-
-              <h2 className="font-serif-display text-5xl">
-                Spotify Corner
-              </h2>
+              </div>
 
             </div>
 
 
-            <p className="mt-5 max-w-2xl text-lg text-[color:var(--ink-soft)]">
-              Listen to playlists created for different moods
-              and moments.
-            </p>
-
-
-            <div className="mt-10 rounded-[2rem] border border-[color:var(--line)] p-10 text-center">
-
-              <Sparkles className="mx-auto" />
-
-              <p className="mt-4 text-[color:var(--ink-soft)]">
-                Spotify playlists will be added here.
-              </p>
-
-            </div>
-
-
-          </div>
-
-        </Reveal>
-
-      </section>
-
-
-
-      {/* GAME CORNER */}
-      <section className="mx-auto mt-24 max-w-6xl px-6">
-
-        <Reveal>
-
-          <div className="glass rounded-[3rem] p-10 md:p-14">
-
-            <div className="flex items-center gap-3">
-
-              <Gamepad2 />
-
-              <h2 className="font-serif-display text-5xl">
-                Game Corner
-              </h2>
-
-            </div>
-
-
-            <p className="mt-5 max-w-2xl text-lg text-[color:var(--ink-soft)]">
-              A fun little space for games and activities
-              made for the HANEULZ community.
-            </p>
 
 
 
             <div className="mt-10 grid gap-6 md:grid-cols-3">
 
 
-              <div className="rounded-[2rem] bg-[color:var(--pink)] p-8">
+              {playlists.map((item,index)=>(
 
-                <h3 className="font-serif-display text-2xl">
-                  Coming Soon
-                </h3>
+                <Reveal key={item.title} delay={index*0.1}>
 
-                <p className="mt-3 text-sm">
-                  Fan games and quizzes will appear here.
-                </p>
+                  <div className="group rounded-[2rem] border border-[color:var(--line)] bg-white/40 p-7 transition hover:-translate-y-2">
 
-              </div>
+
+                    <h3 className="font-serif-display text-2xl">
+                      {item.title}
+                    </h3>
+
+
+                    <p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
+                      {item.description}
+                    </p>
+
+
+
+                    <button
+                      className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest"
+                    >
+                      Listen
+                      <ArrowUpRight size={14}/>
+                    </button>
+
+
+                  </div>
+
+                </Reveal>
+
+              ))}
 
 
             </div>
@@ -181,26 +163,165 @@ export default function OurLittleCorner() {
 
         </Reveal>
 
+
       </section>
 
-      {/* END */}
-      <section className="mx-auto mt-24 max-w-4xl px-6 text-center">
+
+
+
+
+
+
+
+
+      {/* GAME ROOM */}
+      <section className="mx-auto mt-24 max-w-6xl px-6">
+
 
         <Reveal>
 
-          <p className="font-serif-display text-3xl italic">
-            A small corner made for memories,
-            creativity, and fun.
-          </p>
+
+          <div className="rounded-[3rem] bg-[color:var(--pink)] p-8 md:p-12">
 
 
-          <p className="mt-6">
-            — K
-          </p>
+            <div className="flex items-center gap-4">
+
+
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-white/60">
+
+                <Gamepad2 size={22}/>
+
+              </div>
+
+
+
+              <div>
+
+                <p className="text-xs uppercase tracking-widest">
+                  Fun Zone
+                </p>
+
+                <h2 className="font-serif-display text-5xl">
+                  Game Room
+                </h2>
+
+              </div>
+
+
+            </div>
+
+
+
+
+
+
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed">
+              A little room for fun activities, quizzes,
+              and games created especially for Hansums.
+            </p>
+
+
+
+
+
+
+
+            <div className="mt-10 grid gap-6 md:grid-cols-3">
+
+
+              {games.map((game,index)=>(
+
+                <Reveal key={game.title} delay={index*0.1}>
+
+
+                  <div className="rounded-[2rem] bg-white/60 p-7 backdrop-blur">
+
+
+                    <Sparkles size={20}/>
+
+
+                    <h3 className="mt-5 font-serif-display text-2xl">
+                      {game.title}
+                    </h3>
+
+
+                    <p className="mt-3 text-sm leading-7">
+                      {game.description}
+                    </p>
+
+
+
+                    <span className="mt-6 inline-block rounded-full border border-black/10 px-4 py-2 text-xs uppercase tracking-widest">
+                      {game.status}
+                    </span>
+
+
+                  </div>
+
+
+                </Reveal>
+
+
+              ))}
+
+
+
+            </div>
+
+
+
+          </div>
+
 
         </Reveal>
 
+
       </section>
+
+
+
+
+
+
+
+
+
+      {/* LITTLE NOTE */}
+      <section className="mx-auto mt-24 max-w-4xl px-6 text-center">
+
+
+        <Reveal>
+
+
+          <Heart className="mx-auto" size={25}/>
+
+
+          <h2 className="mt-6 font-serif-display text-4xl">
+            A Corner Made For Memories
+          </h2>
+
+
+
+          <p className="mt-5 text-lg leading-relaxed text-[color:var(--ink-soft)]">
+            Because sometimes the smallest things —
+            a song, a game, or a saved memory —
+            become the things we remember the most.
+          </p>
+
+
+
+          <p className="mt-8">
+            — K
+          </p>
+
+
+        </Reveal>
+
+
+      </section>
+
+
+
 
 
       <Footer />
