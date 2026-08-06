@@ -7,7 +7,7 @@ export default function MemoryMatch({ onClose }) {
   const [cards, setCards] = useState(memoryData);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[color:var(--bg)]">
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-[color:var(--bg)]">
       <div className="mx-auto flex h-full max-w-7xl flex-col px-6 py-10">
 
         {/* Top */}
