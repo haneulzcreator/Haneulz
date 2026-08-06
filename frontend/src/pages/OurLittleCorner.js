@@ -1,3 +1,5 @@
+import { useState } from "react";
+import MemoryMatch from "../Game/MemoryMatch";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
 import {
@@ -51,6 +53,9 @@ const games = [
 
 
 export default function OurLittleCorner() {
+
+  const [openGame, setOpenGame] = useState(null);
+
   return (
     <div className="pt-32">
 
@@ -251,9 +256,16 @@ export default function OurLittleCorner() {
 
 
 
-                    <span className="mt-6 inline-block rounded-full border border-black/10 px-4 py-2 text-xs uppercase tracking-widest">
-                      {game.status}
-                    </span>
+                    <button
+  onClick={() => {
+    if(game.title === "Memory Game"){
+      setOpenGame("memory");
+    }
+  }}
+  className="mt-6 inline-block rounded-full border border-black/10 px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition"
+>
+  {game.title === "Memory Game" ? "Play Now" : game.status}
+</button>
 
 
                   </div>
@@ -321,8 +333,11 @@ export default function OurLittleCorner() {
       </section>
 
 
-
-
+{openGame === "memory" && (
+  <MemoryMatch
+    onClose={() => setOpenGame(null)}
+  />
+)}
 
       <Footer />
 
