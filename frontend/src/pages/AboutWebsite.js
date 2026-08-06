@@ -1,311 +1,318 @@
 import { motion } from "framer-motion";
+import { Code2, Heart, Sparkles, BookOpen, Tv, Music2, Users } from "lucide-react";
 import { Reveal } from "../components/Reveal";
+import Footer from "../components/Footer";
 
-export default function About() {
+const journey = [
+  {
+    icon: Code2,
+    title: "A New Challenge",
+    text:
+      "I never expected that being a fan would lead me to learning how to build a website. Haneulz Corner started as an idea, but slowly became a project that pushed me to explore something completely new."
+  },
+  {
+    icon: Sparkles,
+    title: "Learning Through Mistakes",
+    text:
+      "There were broken pages, confusing errors, and moments when nothing seemed to work. But every problem became part of learning how to create something better."
+  },
+  {
+    icon: Heart,
+    title: "A Corner Made With Love",
+    text:
+      "Behind every page is the excitement of wanting to create a place where fans can easily discover stories, memories, and moments connected to HANEULZ."
+  }
+];
+
+const features = [
+  {
+    icon: BookOpen,
+    title: "AU Library",
+    text: "A collection of alternate universe stories created and shared by talented Hansums."
+  },
+  {
+    icon: Tv,
+    title: "Variety Corner",
+    text: "A place to revisit memorable moments and clips that fans love."
+  },
+  {
+    icon: Music2,
+    title: "Playlists",
+    text: "A space for songs and playlists that remind us of special memories."
+  },
+  {
+    icon: Users,
+    title: "Community",
+    text: "A corner celebrating the creativity and passion of fellow fans."
+  }
+];
+
+
+export default function AboutWebsite() {
   return (
-    <main className="relative min-h-screen overflow-hidden px-6 pt-32 pb-24">
+    <div className="pt-32">
 
-      {/* Soft background glow */}
-      <div className="pointer-events-none absolute left-[-120px] top-40 h-80 w-80 rounded-full bg-[color:var(--pink)] opacity-20 blur-3xl" />
+      {/* INTRO */}
+      <section className="mx-auto max-w-6xl px-6">
 
-      <div className="pointer-events-none absolute right-[-120px] top-[600px] h-96 w-96 rounded-full bg-[color:var(--blue)] opacity-20 blur-3xl" />
+        <Reveal>
 
-
-      {/* Hero */}
-      <section className="mx-auto max-w-5xl text-center">
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9 }}
-        >
-
-          <p className="text-xs uppercase tracking-[0.45em] text-[color:var(--pink-deep)]">
-            About Haneulz Corner
+          <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
+            The story behind this corner
           </p>
 
 
-          <h1 className="mt-8 font-serif-display text-6xl leading-tight md:text-8xl">
-            A Little Corner
+          <h1 className="mt-5 max-w-4xl font-serif-display text-6xl font-medium leading-none md:text-8xl">
+            Haneulz
             <br />
-            Made With Love
+            Corner
           </h1>
 
 
-          <p className="mx-auto mt-8 max-w-2xl text-lg leading-9 text-[color:var(--ink-soft)]">
-            A fan-made archive created to keep stories,
-            memories, and moments of HANEULZ together
-            in one special place.
+          <p className="mt-8 max-w-3xl text-xl leading-relaxed text-[color:var(--ink-soft)]">
+            A small fan-made corner on the internet created from a simple
+            wish — to keep HANEULZ memories, stories, and moments together
+            in one place.
           </p>
 
-        </motion.div>
+        </Reveal>
+
 
       </section>
 
 
-      {/* Beginning */}
-      <Reveal>
-        <section className="mx-auto mt-24 max-w-4xl">
 
-          <div className="glass rounded-[2.5rem] p-8 md:p-12">
 
-            <p className="text-xs uppercase tracking-[0.4em] text-[color:var(--pink-deep)]">
-              The Beginning
+
+      {/* STORY */}
+      <section className="mx-auto mt-24 max-w-6xl px-6">
+
+        <Reveal>
+
+          <div className="glass rounded-[2.5rem] p-8 md:p-14">
+
+            <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--pink-deep)]">
+              How it started
             </p>
 
 
-            <h2 className="mt-5 font-serif-display text-4xl">
-              How Haneulz Corner Started
+            <h2 className="mt-5 font-serif-display text-4xl md:text-5xl">
+              From a simple idea into a little home for memories
             </h2>
 
 
-            <div className="mt-8 space-y-6 text-lg leading-9 text-[color:var(--ink-soft)]">
+            <div className="mt-8 max-w-3xl space-y-6 text-lg leading-relaxed text-[color:var(--ink-soft)]">
 
               <p>
-                Haneulz Corner started from a simple idea:
-                creating a place where everything about HANEULZ
-                could be found a little more easily.
+                Haneulz Corner started because I wanted a place where
+                everything about HANEULZ could be easier to find.
               </p>
 
 
               <p>
-                Like many fans, I found myself saving posts,
-                bookmarking stories, and keeping memories
-                scattered across different places.
+                Like many fans, I had saved posts, stories, videos, and
+                moments that meant something to me. But they were scattered
+                everywhere.
               </p>
 
 
               <p>
-                Sometimes I wanted to revisit a favorite AU,
-                find a variety moment again, or share something
-                special with other fans.
+                I wanted to create a small space where those memories could
+                stay — a place fans could visit whenever they wanted to
+                discover, revisit, or simply enjoy HANEULZ.
               </p>
 
 
               <p className="font-serif-display text-2xl text-[color:var(--ink)]">
-                I wanted to create a small corner where those
-                memories could stay.
+                What started as an idea became a journey I never expected.
               </p>
 
-
-              <p>
-                What started as a personal collection slowly
-                became something I wanted to share with fellow
-                Hansums.
-              </p>
 
             </div>
 
           </div>
 
-        </section>
-      </Reveal>
+        </Reveal>
+
+      </section>
 
 
-      {/* Coding Journey */}
-      <Reveal>
-        <section className="mx-auto mt-20 max-w-4xl">
-
-          <div className="glass rounded-[2.5rem] p-8 md:p-12">
-
-            <p className="text-xs uppercase tracking-[0.4em] text-[color:var(--pink-deep)]">
-              A Personal Journey
-            </p>
 
 
-            <h2 className="mt-5 font-serif-display text-4xl">
-              Something I Never Expected
-            </h2>
 
 
-            <div className="mt-8 space-y-6 text-lg leading-9 text-[color:var(--ink-soft)]">
 
-              <p>
-                I never thought that being a fan would lead me
-                to learning how to build a website.
-              </p>
+      {/* CODING JOURNEY */}
+      <section className="mx-auto mt-24 max-w-6xl px-6">
 
+        <Reveal>
 
-              <p>
-                When I started Haneulz Corner, I didn't know
-                much about coding or how websites were created.
-              </p>
+          <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
+            Behind the website
+          </p>
 
 
-              <p>
-                I learned by trying, making mistakes, fixing
-                problems, and slowly understanding how
-                everything worked.
-              </p>
+          <h2 className="mt-4 font-serif-display text-5xl md:text-6xl">
+            The Coding Journey
+          </h2>
+
+        </Reveal>
 
 
-              <p>
-                There were moments when pages broke, designs
-                didn't work, and I had no idea what went wrong.
-              </p>
+        <div className="mt-10 grid gap-6 md:grid-cols-3">
+
+          {journey.map((item,index)=>(
+
+            <Reveal key={item.title} delay={index * 0.1}>
+
+              <div className="glass h-full rounded-[2rem] p-8">
+
+                <div className="grid h-12 w-12 place-items-center rounded-full bg-[color:var(--pink)]">
+
+                  <item.icon size={22}/>
+
+                </div>
 
 
-              <p className="font-serif-display text-2xl text-[color:var(--ink)]">
-                But every small improvement became part of
-                building this little corner.
-              </p>
+                <h3 className="mt-6 font-serif-display text-2xl">
+                  {item.title}
+                </h3>
 
 
-              <p>
-                This website is not just a collection of pages.
-                It is also a reminder of something I learned
-                because I cared enough to create it.
-              </p>
+                <p className="mt-4 leading-relaxed text-[color:var(--ink-soft)]">
+                  {item.text}
+                </p>
 
-            </div>
+              </div>
 
-          </div>
+            </Reveal>
 
-        </section>
-      </Reveal>
+          ))}
+
+        </div>
+
+      </section>
 
 
-      {/* Made by Hansum */}
-      <Reveal>
-        <section className="mx-auto mt-20 max-w-4xl">
 
-          <div className="rounded-[2.5rem] bg-[color:var(--pink)] p-10 text-center md:p-14">
 
-            <h2 className="font-serif-display text-4xl">
+
+
+
+
+      {/* PURPOSE */}
+      <section className="mx-auto mt-24 max-w-6xl px-6">
+
+        <Reveal>
+
+          <div className="rounded-[3rem] bg-[color:var(--pink)] p-10 md:p-16">
+
+            <h2 className="font-serif-display text-5xl md:text-6xl">
               Made by a Hansum,
               <br />
               for Hansums
             </h2>
 
 
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-8">
-              Haneulz Corner was created as a small passion
-              project for fans who want a place to discover,
-              revisit, and appreciate the creativity within
-              the community.
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed">
+              This website is a passion project created to celebrate
+              the creativity, stories, and love within the HANEULZ
+              community.
             </p>
+
 
           </div>
 
-        </section>
-      </Reveal>
+        </Reveal>
+
+      </section>
 
 
-      {/* What is inside */}
-      <Reveal>
-        <section className="mx-auto mt-20 max-w-5xl">
 
-          <h2 className="text-center font-serif-display text-5xl">
-            What You Can Find Here
+
+
+
+
+
+      {/* FEATURES */}
+      <section className="mx-auto mt-24 max-w-6xl px-6">
+
+        <Reveal>
+
+          <h2 className="font-serif-display text-5xl md:text-6xl">
+            Inside Haneulz Corner
           </h2>
 
-
-          <div className="mt-10 grid gap-6 md:grid-cols-2">
-
-            {[
-              {
-                title: "AU Library",
-                text: "A collection of alternate universes and stories shared by talented creators."
-              },
-              {
-                title: "Variety Corner",
-                text: "A place to revisit HANEULZ moments, appearances, and memories."
-              },
-              {
-                title: "Playlists",
-                text: "Music collections that remind fans of special moments."
-              },
-              {
-                title: "Community",
-                text: "A space that celebrates the creativity and passion of Hansums."
-              }
-            ].map((item) => (
-
-              <div
-                key={item.title}
-                className="glass rounded-[2rem] p-8"
-              >
-
-                <h3 className="font-serif-display text-2xl">
-                  {item.title}
-                </h3>
+        </Reveal>
 
 
-                <p className="mt-4 leading-7 text-[color:var(--ink-soft)]">
-                  {item.text}
-                </p>
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+
+          {features.map((item,index)=>(
+
+            <Reveal key={item.title} delay={index*0.08}>
+
+              <div className="glass rounded-[2rem] p-8 flex gap-5">
+
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[color:var(--blue)]">
+
+                  <item.icon size={22}/>
+
+                </div>
+
+
+                <div>
+
+                  <h3 className="font-serif-display text-2xl">
+                    {item.title}
+                  </h3>
+
+
+                  <p className="mt-3 leading-relaxed text-[color:var(--ink-soft)]">
+                    {item.text}
+                  </p>
+
+                </div>
 
               </div>
 
-            ))}
+            </Reveal>
 
-          </div>
+          ))}
 
-        </section>
-      </Reveal>
+        </div>
 
-
-      {/* Community Note */}
-      <Reveal>
-        <section className="mx-auto mt-20 max-w-4xl">
-
-          <div className="glass rounded-[2.5rem] p-8 md:p-12">
-
-            <h2 className="font-serif-display text-4xl">
-              A Note From This Corner
-            </h2>
-
-
-            <div className="mt-6 space-y-5 leading-8 text-[color:var(--ink-soft)]">
-
-              <p>
-                Haneulz Corner is a fan-made directory created
-                to organize and appreciate the amazing creativity
-                within the HANEULZ community.
-              </p>
-
-
-              <p>
-                All AUs, fan edits, playlists, videos, artwork,
-                and other featured content belong to their
-                respective creators.
-              </p>
-
-
-              <p>
-                This website exists only to help fans discover,
-                revisit, and support the wonderful works shared
-                by the community.
-              </p>
-
-            </div>
-
-          </div>
-
-        </section>
-      </Reveal>
+      </section>
 
 
 
-      {/* Ending */}
-      <Reveal>
-        <section className="mx-auto mt-24 max-w-3xl text-center">
+
+
+
+
+      {/* END */}
+      <section className="mx-auto mt-28 max-w-4xl px-6 text-center">
+
+        <Reveal>
 
           <p className="font-serif-display text-3xl italic leading-relaxed">
             Made with lots of love,
             late-night ideas,
-            and a few too many bookmarks.
+            and a determination to create something meaningful.
           </p>
 
 
-          <p className="mt-6 text-xl">
+          <p className="mt-6 text-lg">
             — K
           </p>
 
-        </section>
-      </Reveal>
+        </Reveal>
+
+      </section>
 
 
-    </main>
+      <Footer />
+
+    </div>
   );
 }
