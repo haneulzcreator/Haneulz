@@ -15,7 +15,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AboutWebsite from "./pages/AboutWebsite";
 import OurLittleCorner from "./pages/OurLittleCorner";
-
+import GameRoom from "./pages/GameRoom";
 
 function ScrollTop() {
   const { pathname } = useLocation();
@@ -43,7 +43,8 @@ function Shell() {
   <Route path="/about-haneulz" element={<AboutWebsite />} />
   <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminDashboard />} />
-      </Routes>
+  <Route path="/games" element={<GameRoom />} />
+  </Routes>
     </>
   );
 }
