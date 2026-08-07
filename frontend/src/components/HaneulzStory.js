@@ -1,323 +1,396 @@
 import { Reveal } from "./Reveal";
-import {
-  Sparkles,
-  Heart,
-  Quote,
-} from "lucide-react";
-
-
-const sections = [
-  {
-    title: "The Meaning Behind HANEULZ",
-    image: "/images/haneulz/meaning.jpg",
-    content: `
-HANEULZ came from the combination of Han and Jaeyel
-(the pronunciation of JL's name).
-
-The name also resembles "Haneul (하늘)",
-which means sky in Korean.
-
-A name that represents two voices,
-two artists, and a connection that continues
-to grow through music and memories.
-`,
-  },
-
-  {
-    title: "Hansum",
-    image: "/images/haneulz/hansum.jpg",
-    content: `
-Hansum is the fandom name connected to HANEULZ.
-
-It came from the combination of Han's fandom name
-and JL's nickname, DimSUM.
+import { Cloud, Sparkles, Heart } from "lucide-react";
 
-The word also resembles a Korean expression
-meaning a sigh or a deep breath,
-representing comfort, emotions, and the moments
-shared between HANEULZ and the fans.
-`,
-  },
 
+export default function HaneulzStory() {
 
-  {
-    title: "How Their Story Began",
-    image: "/images/haneulz/universe-league.jpg",
-    content: `
-Their journey started from the survival show
-Universe League.
+  return (
 
-JL (Jay Lawrence Gaspar) captured attention
-with his performance of "One and Only" by BoyNextDoor.
+    <Reveal>
 
-His stable vocals, bright energy,
-stage presence, and dancing made him stand out.
-He was also known as the trainee chosen by
-three mentors during the drafting process.
+      <article className="mx-auto max-w-5xl">
 
-Han (Park Han) entered with his own charm
-through the performance of "Siren".
 
-His mysterious aura, powerful vocals,
-and detailed dancing showed his strength
-as a performer.
+        {/* TITLE */}
 
-From their first stages, both showed the talent
-and potential that made people hope to see them
-perform together.
-`,
-  },
+        <div className="text-center">
 
+          <Cloud
+            className="mx-auto mb-5"
+            size={34}
+          />
 
-  {
-    title: "First Impression",
-    image: "/images/haneulz/first-impression.jpg",
-    content: `
-When Han was asked about his first impression of JL,
-he shared a memorable moment:
+          <h2 className="font-serif-display text-6xl md:text-7xl">
+            HANEULZ
+          </h2>
 
-"Jay L had accidentally come to the Siren practice room,
-and his bewildered expression was hilarious ㅋㅋ"
+          <p className="mt-4 text-lg text-[color:var(--ink-soft)]">
+            the story of two voices that found each other
+          </p>
 
-JL had entered the wrong practice room,
-thinking it was the One and Only team.
+        </div>
 
-A small funny moment that became one of the early
-memories connected to HANEULZ.
-`,
-  },
 
 
-  {
-    title: "The Little Prince",
-    image: "/images/haneulz/little-prince.jpg",
-    content: `
-December 27, 2024.
+        {/* HERO IMAGE */}
 
-The Little Prince duet became one of the most
-memorable moments of their journey.
+        <div className="mt-12 overflow-hidden rounded-[3rem] bg-white/40">
 
-Their voices blended naturally,
-showing their harmony and musical chemistry.
+          <div className="flex h-[420px] items-center justify-center text-sm text-[color:var(--ink-soft)]">
 
-Instead of competing against each other,
-their voices supported one another,
-creating a performance that many people remembered.
-`,
-  },
+            Admin Image Upload Area
 
+          </div>
 
-  {
-    title: "AHOF Chapter",
-    image: "/images/haneulz/ahof.jpg",
-    content: `
-On July 1, 2025, Han and JL officially debuted
-together as members of AHOF (아홉).
+        </div>
 
-A new chapter began as they continued their journey
-with their members Steven, Jeongwoo, Woongki,
-Shuaibo, Chih En, Juwon, and Daisuke.
 
-Their story continued from Universe League
-to standing together on the same stage.
-`,
-  },
 
-];
 
 
+        {/* STORY */}
 
-export default function HaneulzStory(){
+        <div className="mt-16 space-y-16">
 
-return (
 
-<div className="space-y-10">
 
+          <StorySection
+            title="HANEULZ"
+            icon={<Cloud size={22}/>}
+          >
 
-{/* HEADER */}
+            HANEULZ is a name created from Han and Jaeyel,
+            the pronunciation of JL's name. It also carries
+            the meaning of 하늘 (haneul), which means "sky"
+            in Korean.
 
-<Reveal>
+            <br /><br />
 
-<div className="glass rounded-[3rem] overflow-hidden">
+            A name that started from two artists, two voices,
+            and a journey that slowly became something special.
 
+          </StorySection>
 
-<img
-src="/images/haneulz/hero.jpg"
-alt="HANEULZ"
-className="h-[400px] w-full object-cover"
-/>
 
 
-<div className="p-8 md:p-12">
 
 
-<p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
-A story between two voices
-</p>
+          <ImagePlaceholder />
 
 
-<h1 className="mt-4 font-serif-display text-6xl">
-☁ HANEULZ
-</h1>
 
 
-<p className="mt-6 max-w-3xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
 
-A collection of memories, performances,
-interviews, and moments that tell the story
-of HANEULZ.
+          <StorySection
+            title="Where It All Started"
+            icon={<Sparkles size={22}/>}
+          >
 
-</p>
+            Before HANEULZ existed, Han and JL were two
+            trainees chasing the same dream through Universe
+            League.
 
+            <br /><br />
 
-</div>
+            JL first caught attention through his performance
+            of "One and Only" by BOYNEXTDOOR. His stable
+            vocals, bright energy, dancing, and stage presence
+            showed the potential of an artist who could capture
+            attention on stage.
 
+            <br /><br />
 
-</div>
+            During the drafting episodes, JL became known as
+            the "three pick" after being chosen by three mentors,
+            showing the strong impression he left during the
+            competition.
 
-</Reveal>
+            <br /><br />
 
+            Han showed another side of himself through
+            "Siren." His mysterious aura, powerful vocals,
+            and detailed dancing created a performance that
+            showed his unique color as an artist.
 
+          </StorySection>
 
 
 
-{/* STORY SECTIONS */}
 
 
-{sections.map((section,index)=>(
+          <ImagePlaceholder />
 
-<Reveal key={section.title} delay={index * 0.05}>
 
 
-<div className="glass rounded-[3rem] overflow-hidden">
 
 
-<img
-src={section.image}
-alt={section.title}
-className="h-72 w-full object-cover"
-/>
+          <StorySection
+            title="The First Impression"
+          >
 
+            One of Han's first memories of JL was actually
+            a funny one.
 
+            <br /><br />
 
-<div className="p-8 md:p-10">
+            When JL accidentally entered the Siren practice
+            room, Han remembered his confused expression
+            when he opened the door.
 
+            <br /><br />
 
-<div className="flex items-center gap-3">
+            "Eugh? This isn't One and Only team?"
 
+            <br /><br />
 
-<Sparkles size={20}/>
+            A small mistake during their trainee days became
+            one of the earliest memories between them.
 
+          </StorySection>
 
-<h2 className="font-serif-display text-4xl">
 
-{section.title}
 
-</h2>
 
 
-</div>
+          <ImagePlaceholder />
 
 
 
-<p className="mt-6 whitespace-pre-line text-lg leading-8 text-[color:var(--ink-soft)]">
 
-{section.content}
 
-</p>
+          <StorySection
+            title="The Little Prince"
+            icon={<Heart size={22}/>}
+          >
 
+            December 27, 2024 became one of the most
+            memorable moments for HANEULZ.
 
-</div>
+            <br /><br />
 
+            The Little Prince duet finally brought their
+            voices together on one stage.
 
-</div>
+            <br /><br />
 
+            Their vocals blended naturally, showing two
+            different voices supporting each other instead
+            of competing.
 
-</Reveal>
+            <br /><br />
 
+            It became a performance that showed their
+            chemistry and the reason many people continued
+            to treasure their journey.
 
-))}
+          </StorySection>
 
 
 
 
 
-{/* QUOTES */}
+          <ImagePlaceholder />
 
 
-<Reveal>
 
 
-<div className="rounded-[3rem] bg-[color:var(--pink)] p-10">
 
+          <StorySection
+            title="Debut As AHOF"
+          >
 
-<div className="flex items-center gap-3">
+            On July 1, 2025, Han and JL officially debuted
+            together as members of AHOF (아홉).
 
-<Quote size={22}/>
+            <br /><br />
 
-<h2 className="font-serif-display text-4xl">
+            After their journey through Universe League,
+            seeing them finally stand on the same stage
+            became a new beginning.
 
-Their Words
+            <br /><br />
 
-</h2>
+            Together with Steven, Jeongwoo, Woongki,
+            Shuaibo, Chih En, Juwon, and Daisuke,
+            they started a new chapter with the debut album
+            "Who We Are" and the title track
+            "그곳에서 다시 만나기로 해 (Rendezvous)."
 
-</div>
+          </StorySection>
 
 
 
-<p className="mt-6 text-lg leading-8">
 
-❝ Small words, messages, and interview moments
-saved from their journey. ❞
 
-</p>
+          <ImagePlaceholder />
 
 
-</div>
 
 
-</Reveal>
 
+          <StorySection
+            title="After Debut Moments"
+          >
 
+            After debut, their little moments continued.
 
+            <br /><br />
 
+            Han shared how much he enjoyed singing with JL
+            because of his harmonization and beautiful high
+            notes.
 
-{/* END */}
+            <br /><br />
 
+            Their practice room was rarely quiet because
+            they were always singing together.
 
-<Reveal>
+            <br /><br />
 
+            From random duets, shared food, funny moments,
+            unexpected photos, and small conversations,
+            these simple memories became part of what made
+            HANEULZ special.
 
-<div className="py-10 text-center">
+            <br /><br />
 
+            One memorable moment was when Han said:
 
-<Heart className="mx-auto"/>
+            <br /><br />
 
+            "Haneulz is JL and me, right?"
 
-<h2 className="mt-5 font-serif-display text-4xl">
+            <br /><br />
 
-A story still being written
+            A simple sentence that showed how meaningful
+            the name had become to both of them.
 
-</h2>
+          </StorySection>
 
 
-<p className="mt-4 text-[color:var(--ink-soft)]">
 
-More memories will continue to be added
-as their journey continues.
 
-</p>
 
+          <ImagePlaceholder />
 
-</div>
 
 
-</Reveal>
 
 
+          <StorySection
+            title="Hansum"
+          >
 
-</div>
+            Hansum is the community name connected to
+            HANEULZ.
 
-);
+            <br /><br />
+
+            The name comes from Han's fandom connection,
+            Park Ha-dan, and JL's nickname, DimSUM.
+
+            <br /><br />
+
+            Hansum also means a sigh or a deep breath in
+            Korean, representing comfort, memories, and
+            moments shared together.
+
+          </StorySection>
+
+
+
+
+
+          <StorySection
+            title="Why HANEULZ"
+          >
+
+            HANEULZ is not only about one performance
+            or one moment.
+
+            <br /><br />
+
+            It is about two artists who started from
+            different places and slowly created memories
+            together.
+
+            <br /><br />
+
+            From Universe League, The Little Prince,
+            and their debut as AHOF, their story continues.
+
+            <br /><br />
+
+            This little corner exists to keep those stories,
+            memories, and moments together.
+
+          </StorySection>
+
+
+        </div>
+
+
+      </article>
+
+
+    </Reveal>
+
+  );
+
+}
+
+
+
+
+
+function StorySection({title, icon, children}) {
+
+  return (
+
+    <section>
+
+      <div className="flex items-center justify-center gap-3 text-center">
+
+        {icon}
+
+        <h3 className="font-serif-display text-4xl md:text-5xl">
+          {title}
+        </h3>
+
+      </div>
+
+
+      <p className="mx-auto mt-8 max-w-4xl text-lg leading-9 text-[color:var(--ink-soft)]">
+
+        {children}
+
+      </p>
+
+
+    </section>
+
+  );
+
+}
+
+
+
+
+
+function ImagePlaceholder(){
+
+  return (
+
+    <div className="overflow-hidden rounded-[3rem] bg-white/40">
+
+      <div className="flex h-[360px] items-center justify-center text-sm text-[color:var(--ink-soft)]">
+
+        Admin Image Upload Area
+
+      </div>
+
+    </div>
+
+  );
 
 }
