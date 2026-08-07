@@ -13,19 +13,14 @@ import {
 
 const playlists = [
   {
-    title: "HANEULZ Playlist",
+    title: "Hansum Playlist",
     description:
-      "Songs that feel like memories, comfort, and the little moments that remind us of HANEULZ.",
+      "Songs that feel like HANEULZ moments, comfort, and memories shared with Hansums.",
   },
   {
-    title: "JL's Playlist",
+    title: "Han Playlist",
     description:
-      "A collection of songs that match JL's energy, warmth, and bright moments.",
-  },
-  {
-    title: "Han's Playlist",
-    description:
-      "A softer corner filled with songs that carry Han's calm and emotional charm.",
+      "A softer collection of songs that match Han's calm, emotional, and warm energy.",
   },
 ];
 
@@ -40,13 +35,13 @@ const games = [
   {
     title: "Memory Game",
     description:
-      "Match the memories and moments hidden inside the corner.",
-    status: "Coming Soon",
+      "Match the memories and little moments hidden inside the corner.",
+    status: "Play Now",
   },
   {
     title: "Fan Challenge",
     description:
-      "Small challenges made for Hansums to enjoy.",
+      "Small challenges made for Hansums to enjoy together.",
     status: "Coming Soon",
   },
 ];
@@ -56,17 +51,20 @@ export default function OurLittleCorner() {
 
   const [openGame, setOpenGame] = useState(null);
 
+
   return (
+
     <div className="pt-32">
 
 
       {/* HERO */}
+
       <section className="mx-auto max-w-6xl px-6">
 
         <Reveal>
 
           <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
-            A hidden space inside Haneulz
+            A hidden space inside HANEULZ
           </p>
 
 
@@ -90,9 +88,8 @@ export default function OurLittleCorner() {
 
 
 
+      {/* SPOTIFY CORNER */}
 
-
-      {/* PLAYLIST SHELF */}
       <section className="mx-auto mt-24 max-w-6xl px-6">
 
         <Reveal>
@@ -103,7 +100,9 @@ export default function OurLittleCorner() {
             <div className="flex items-center gap-4">
 
               <div className="grid h-12 w-12 place-items-center rounded-full bg-[#1DB954] text-white">
+
                 <Music2 size={22}/>
+
               </div>
 
 
@@ -113,11 +112,13 @@ export default function OurLittleCorner() {
                   Music Shelf
                 </p>
 
+
                 <h2 className="font-serif-display text-5xl">
                   Spotify Corner
                 </h2>
 
               </div>
+
 
             </div>
 
@@ -125,17 +126,20 @@ export default function OurLittleCorner() {
 
 
 
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
+            <div className="mt-10 grid gap-6 md:grid-cols-2">
 
 
               {playlists.map((item,index)=>(
 
-                <Reveal key={item.title} delay={index*0.1}>
+                <Reveal
+                  key={item.title}
+                  delay={index * 0.1}
+                >
 
                   <div className="group rounded-[2rem] border border-[color:var(--line)] bg-white/40 p-7 transition hover:-translate-y-2">
 
 
-                    <h3 className="font-serif-display text-2xl">
+                    <h3 className="font-serif-display text-3xl">
                       {item.title}
                     </h3>
 
@@ -149,12 +153,16 @@ export default function OurLittleCorner() {
                     <button
                       className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest"
                     >
+
                       Listen
+
                       <ArrowUpRight size={14}/>
+
                     </button>
 
 
                   </div>
+
 
                 </Reveal>
 
@@ -165,6 +173,7 @@ export default function OurLittleCorner() {
 
 
           </div>
+
 
         </Reveal>
 
@@ -178,8 +187,8 @@ export default function OurLittleCorner() {
 
 
 
-
       {/* GAME ROOM */}
+
       <section className="mx-auto mt-24 max-w-6xl px-6">
 
 
@@ -206,9 +215,11 @@ export default function OurLittleCorner() {
                   Fun Zone
                 </p>
 
+
                 <h2 className="font-serif-display text-5xl">
                   Game Room
                 </h2>
+
 
               </div>
 
@@ -219,10 +230,12 @@ export default function OurLittleCorner() {
 
 
 
-
             <p className="mt-6 max-w-2xl text-lg leading-relaxed">
-              A little room for fun activities, quizzes,
-              and games created especially for Hansums.
+
+              A little room for fun activities,
+              quizzes, and games created especially
+              for Hansums.
+
             </p>
 
 
@@ -236,7 +249,11 @@ export default function OurLittleCorner() {
 
               {games.map((game,index)=>(
 
-                <Reveal key={game.title} delay={index*0.1}>
+
+                <Reveal
+                  key={game.title}
+                  delay={index * 0.1}
+                >
 
 
                   <div className="rounded-[2rem] bg-white/60 p-7 backdrop-blur">
@@ -250,6 +267,7 @@ export default function OurLittleCorner() {
                     </h3>
 
 
+
                     <p className="mt-3 text-sm leading-7">
                       {game.description}
                     </p>
@@ -257,15 +275,18 @@ export default function OurLittleCorner() {
 
 
                     <button
-  onClick={() => {
-    if(game.title === "Memory Game"){
-      setOpenGame("memory");
-    }
-  }}
-  className="mt-6 inline-block rounded-full border border-black/10 px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition"
->
-  {game.title === "Memory Game" ? "Play Now" : game.status}
-</button>
+                      onClick={() => {
+                        if(game.title === "Memory Game"){
+                          setOpenGame("memory");
+                        }
+                      }}
+
+                      className="mt-6 inline-block rounded-full border border-black/10 px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition"
+                    >
+
+                      {game.status}
+
+                    </button>
 
 
                   </div>
@@ -277,9 +298,7 @@ export default function OurLittleCorner() {
               ))}
 
 
-
             </div>
-
 
 
           </div>
@@ -297,15 +316,19 @@ export default function OurLittleCorner() {
 
 
 
+      {/* FINAL MESSAGE */}
 
-      {/* LITTLE NOTE */}
       <section className="mx-auto mt-24 max-w-4xl px-6 text-center">
 
 
         <Reveal>
 
 
-          <Heart className="mx-auto" size={25}/>
+          <Heart
+            className="mx-auto"
+            size={25}
+          />
+
 
 
           <h2 className="mt-6 font-serif-display text-4xl">
@@ -315,15 +338,11 @@ export default function OurLittleCorner() {
 
 
           <p className="mt-5 text-lg leading-relaxed text-[color:var(--ink-soft)]">
+
             Because sometimes the smallest things —
             a song, a game, or a saved memory —
-            become the things we remember the most.
-          </p>
+            become the moments we keep forever.
 
-
-
-          <p className="mt-8">
-            — K
           </p>
 
 
@@ -333,14 +352,24 @@ export default function OurLittleCorner() {
       </section>
 
 
-{openGame === "memory" && (
-  <MemoryMatch
-    onClose={() => setOpenGame(null)}
-  />
-)}
+
+
+
+      {openGame === "memory" && (
+
+        <MemoryMatch
+          onClose={() => setOpenGame(null)}
+        />
+
+      )}
+
+
 
       <Footer />
 
+
     </div>
+
   );
+
 }
