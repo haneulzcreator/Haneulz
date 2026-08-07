@@ -4,11 +4,8 @@ import { Cloud, Sparkles, Heart } from "lucide-react";
 
 export default function HaneulzStory() {
 
-  return (
-
-    <Reveal>
-
-      <article className="mx-auto max-w-5xl">
+ return (
+    <article className="mx-auto max-w-5xl">
 
 
         {/* TITLE */}
