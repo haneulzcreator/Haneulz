@@ -181,7 +181,113 @@ export default function OurLittleCorner() {
 
 
 
-            {activeTab === "haneulz" && (
+           {activeTab === "haneulz" && (
+
+<div>
+
+<h2 className="font-serif-display text-5xl">
+☁ HANEULZ
+</h2>
+
+
+<p className="mt-5 text-lg text-[color:var(--ink-soft)]">
+A story written between two voices,
+filled with memories, moments, and the journey that brought HANEULZ together.
+</p>
+
+
+
+<div className="mt-10 grid gap-6 md:grid-cols-2">
+
+
+<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
+
+<h3 className="font-serif-display text-3xl">
+✦ How They Met
+</h3>
+
+<p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
+
+Their journey began from Universe League,
+where two talented voices slowly became
+a story that fans continued to treasure.
+
+</p>
+
+<button className="mt-5 text-xs uppercase tracking-widest">
+Read Story →
+</button>
+
+</div>
+
+
+
+
+<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
+
+<h3 className="font-serif-display text-3xl">
+✦ Interview Moments
+</h3>
+
+<p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
+
+A collection of meaningful conversations,
+fun moments, and memories from interviews.
+
+</p>
+
+<button className="mt-5 text-xs uppercase tracking-widest">
+View Moments →
+</button>
+
+</div>
+
+
+
+
+
+<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
+
+<h3 className="font-serif-display text-3xl">
+✦ Their Words For Each Other
+</h3>
+
+<p className="mt-4 text-sm italic leading-7">
+
+❝ Their words, thoughts,
+and messages saved here. ❞
+
+</p>
+
+</div>
+
+
+
+
+
+<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
+
+<h3 className="font-serif-display text-3xl">
+✦ Hansum + HANEULZ Story
+</h3>
+
+<p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
+
+The meaning behind HANEULZ,
+Hansums, and the community that continues
+to support their journey.
+
+</p>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+)}
 
               <div>
 
