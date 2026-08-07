@@ -44,7 +44,7 @@ const PLAYLISTS = [
       posts: [
         {
           image: "/images/jl.jpg",
-          url: "PASTE_JL_POST_LINK_HERE",
+          url: "https://x.com/ahof_official/status/2083567058072289705?s=61",
         },
       ],
     },
@@ -54,7 +54,7 @@ const PLAYLISTS = [
       posts: [
         {
           image: "/images/han.jpg",
-          url: "PASTE_HAN_POST_LINK_HERE",
+          url: "https://x.com/ahof_official/status/2084255874898604344?s=61",
         },
       ],
     },
@@ -64,7 +64,7 @@ const PLAYLISTS = [
       posts: [
         {
           image: "/images/haneulz.jpg",
-          url: "PASTE_HANEULZ_POST_LINK_HERE",
+          url: "https://x.com/_cloud1o/status/2044780872252227802?s=61",
         },
       ],
     },
