@@ -206,14 +206,14 @@ export default function Variety() {
 
            {/* HANEULZ POSTS PLAYLIST */}
 <Reveal>
-  <div className="mt-24 flex flex-col gap-8 md:flex-row md:items-center">
+  <div className="mt-16 flex flex-col gap-8 md:flex-row md:items-center">
 
     <button
       onClick={() => {
         setOpenPlaylist(PLAYLISTS[0]);
         setActiveSection(PLAYLISTS[0].videos[0]);
       }}
-      className="group relative w-full overflow-hidden rounded-[2.5rem] md:w-1/2"
+      className="group relative w-full max-w-md overflow-hidden rounded-[2rem] md:w-[40%]"
     >
       <img
         src={PLAYLISTS[0].thumbnail}
@@ -250,13 +250,25 @@ export default function Variety() {
 </Reveal> 
 
                 <Reveal>
-          <div className="mt-24 rounded-[2.75rem] border border-[color:var(--line)] bg-white/40 p-10 backdrop-blur-md">
+      <div
+  className="
+    mt-24 
+    rounded-[2.75rem]
+    border border-[color:var(--line)]
+    bg-gradient-to-br 
+    from-pink-100/70
+    via-white/70
+    to-blue-100/70
+    p-10
+    backdrop-blur-md
+  "
+>
 
             <p className="text-xs uppercase tracking-[0.35em] text-[color:var(--blue-deep)]">
               NOW, THE WHOLE GROUP
             </p>
 
-            <h2 className="mt-4 font-serif-display text-5xl md:text-7xl">
+          <h2 className="mt-4 font-serif-display text-4xl md:text-6xl">
               Beyond the duets — all of AHOF
             </h2>
 
