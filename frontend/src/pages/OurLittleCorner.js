@@ -2,25 +2,53 @@ import { useState } from "react";
 import MemoryMatch from "../Game/MemoryMatch";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
+
 import {
   Music2,
   Gamepad2,
-  ArrowUpRight,
+  Cloud,
+  UserRound,
+  Palette,
+  Mail,
   Sparkles,
-  Heart,
 } from "lucide-react";
 
 
-const playlists = [
+const tabs = [
   {
-    title: "Hansum Playlist",
-    description:
-      "Songs that feel like HANEULZ moments, comfort, and memories shared with Hansums.",
+    id: "haneulz",
+    name: "☁ HANEULZ",
+    icon: Cloud,
   },
   {
-    title: "Han Playlist",
-    description:
-      "A softer collection of songs that match Han's calm, emotional, and warm energy.",
+    id: "jl",
+    name: "JL Corner",
+    icon: UserRound,
+  },
+  {
+    id: "han",
+    name: "Han Corner",
+    icon: UserRound,
+  },
+  {
+    id: "spotify",
+    name: "Spotify Corner",
+    icon: Music2,
+  },
+  {
+    id: "games",
+    name: "Game Room",
+    icon: Gamepad2,
+  },
+  {
+    id: "gallery",
+    name: "Fan Art Gallery",
+    icon: Palette,
+  },
+  {
+    id: "letters",
+    name: "Letter To HANEULZ",
+    icon: Mail,
   },
 ];
 
@@ -49,6 +77,7 @@ const games = [
 
 export default function OurLittleCorner() {
 
+  const [activeTab, setActiveTab] = useState("haneulz");
   const [openGame, setOpenGame] = useState(null);
 
 
@@ -76,9 +105,10 @@ export default function OurLittleCorner() {
 
 
           <p className="mt-8 max-w-2xl text-xl leading-relaxed text-[color:var(--ink-soft)]">
-            A small place where playlists, games,
-            memories, and little fan moments stay together.
+            A small place where stories, memories,
+            playlists, games, and fan moments stay together.
           </p>
+
 
         </Reveal>
 
@@ -86,90 +116,45 @@ export default function OurLittleCorner() {
 
 
 
+      {/* TABS */}
 
-
-      {/* SPOTIFY CORNER */}
-
-      <section className="mx-auto mt-24 max-w-6xl px-6">
+      <section className="mx-auto mt-16 max-w-6xl px-6">
 
         <Reveal>
 
-          <div className="glass rounded-[3rem] p-8 md:p-12">
+          <div className="flex flex-wrap justify-center gap-3">
 
 
-            <div className="flex items-center gap-4">
+            {tabs.map((tab)=>{
 
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-[#1DB954] text-white">
-
-                <Music2 size={22}/>
-
-              </div>
+              const Icon = tab.icon;
 
 
-              <div>
+              return (
 
-                <p className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
-                  Music Shelf
-                </p>
+                <button
 
+                  key={tab.id}
 
-                <h2 className="font-serif-display text-5xl">
-                  Spotify Corner
-                </h2>
+                  onClick={()=>setActiveTab(tab.id)}
 
-              </div>
+                  className={`flex items-center gap-2 rounded-full px-5 py-3 text-sm transition ${
+                    activeTab === tab.id
+                    ? "bg-pink-200"
+                    : "bg-white/50 hover:bg-white"
+                  }`}
 
-
-            </div>
-
-
-
-
-
-            <div className="mt-10 grid gap-6 md:grid-cols-2">
-
-
-              {playlists.map((item,index)=>(
-
-                <Reveal
-                  key={item.title}
-                  delay={index * 0.1}
                 >
 
-                  <div className="group rounded-[2rem] border border-[color:var(--line)] bg-white/40 p-7 transition hover:-translate-y-2">
+                  <Icon size={16}/>
 
+                  {tab.name}
 
-                    <h3 className="font-serif-display text-3xl">
-                      {item.title}
-                    </h3>
+                </button>
 
+              )
 
-                    <p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
-                      {item.description}
-                    </p>
-
-
-
-                    <button
-                      className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest"
-                    >
-
-                      Listen
-
-                      <ArrowUpRight size={14}/>
-
-                    </button>
-
-
-                  </div>
-
-
-                </Reveal>
-
-              ))}
-
-
-            </div>
+            })}
 
 
           </div>
@@ -184,36 +169,180 @@ export default function OurLittleCorner() {
 
 
 
+      {/* CONTENT AREA */}
 
-
-
-      {/* GAME ROOM */}
-
-      <section className="mx-auto mt-24 max-w-6xl px-6">
+      <section className="mx-auto mt-20 max-w-6xl px-6">
 
 
         <Reveal>
 
 
-          <div className="rounded-[3rem] bg-[color:var(--pink)] p-8 md:p-12">
+          <div className="glass rounded-[3rem] p-10 md:p-12">
 
 
-            <div className="flex items-center gap-4">
 
-
-              <div className="grid h-12 w-12 place-items-center rounded-full bg-white/60">
-
-                <Gamepad2 size={22}/>
-
-              </div>
-
-
+            {activeTab === "haneulz" && (
 
               <div>
 
-                <p className="text-xs uppercase tracking-widest">
-                  Fun Zone
+                <h2 className="font-serif-display text-5xl">
+                  ☁ HANEULZ
+                </h2>
+
+
+                <p className="mt-5 text-lg text-[color:var(--ink-soft)]">
+                  A little story about two voices,
+                  their journey, and the community that grew with them.
                 </p>
+
+
+                <div className="mt-10 grid gap-5 md:grid-cols-2">
+
+
+                  {[
+                    "How They Met",
+                    "Interview Moments",
+                    "Their Words For Each Other",
+                    "Hansum + HANEULZ Story",
+                  ].map((item)=>(
+
+                    <div
+                      key={item}
+                      className="rounded-[2rem] bg-white/40 p-6"
+                    >
+
+                      <h3 className="font-serif-display text-2xl">
+                        ✦ {item}
+                      </h3>
+
+                    </div>
+
+                  ))}
+
+
+                </div>
+
+
+              </div>
+
+            )}
+
+
+
+
+
+
+            {activeTab === "jl" && (
+
+              <div>
+
+                <h2 className="font-serif-display text-5xl">
+                  JL Corner
+                </h2>
+
+
+                <div className="mt-8 space-y-5">
+
+                  <p>
+                    ✦ Interests
+                  </p>
+
+                  <p>
+                    ✦ Hobbies
+                  </p>
+
+                  <p>
+                    ✦ Fun Facts
+                  </p>
+
+                  <p>
+                    ✦ Favorite Things
+                  </p>
+
+                </div>
+
+
+              </div>
+
+            )}
+
+
+
+
+
+
+            {activeTab === "han" && (
+
+              <div>
+
+                <h2 className="font-serif-display text-5xl">
+                  Han Corner
+                </h2>
+
+
+                <div className="mt-8 space-y-5">
+
+                  <p>
+                    ✦ Interests
+                  </p>
+
+                  <p>
+                    ✦ Hobbies
+                  </p>
+
+                  <p>
+                    ✦ Fun Facts
+                  </p>
+
+                  <p>
+                    ✦ Favorite Things
+                  </p>
+
+                  <p>
+                    ✦ Movie Recommendations
+                  </p>
+
+
+                </div>
+
+
+              </div>
+
+            )}
+
+
+
+
+
+
+
+            {activeTab === "spotify" && (
+
+              <div>
+
+                <h2 className="font-serif-display text-5xl">
+                  Spotify Corner
+                </h2>
+
+
+                <p className="mt-5 text-[color:var(--ink-soft)]">
+                  Playlist cards will be added here.
+                </p>
+
+
+              </div>
+
+            )}
+
+
+
+
+
+
+
+            {activeTab === "games" && (
+
+              <div>
 
 
                 <h2 className="font-serif-display text-5xl">
@@ -221,129 +350,116 @@ export default function OurLittleCorner() {
                 </h2>
 
 
-              </div>
+
+                <div className="mt-10 grid gap-6 md:grid-cols-3">
 
 
-            </div>
+                  {games.map((game)=>(
 
 
-
-
-
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed">
-
-              A little room for fun activities,
-              quizzes, and games created especially
-              for Hansums.
-
-            </p>
-
-
-
-
-
-
-
-            <div className="mt-10 grid gap-6 md:grid-cols-3">
-
-
-              {games.map((game,index)=>(
-
-
-                <Reveal
-                  key={game.title}
-                  delay={index * 0.1}
-                >
-
-
-                  <div className="rounded-[2rem] bg-white/60 p-7 backdrop-blur">
-
-
-                    <Sparkles size={20}/>
-
-
-                    <h3 className="mt-5 font-serif-display text-2xl">
-                      {game.title}
-                    </h3>
-
-
-
-                    <p className="mt-3 text-sm leading-7">
-                      {game.description}
-                    </p>
-
-
-
-                    <button
-                      onClick={() => {
-                        if(game.title === "Memory Game"){
-                          setOpenGame("memory");
-                        }
-                      }}
-
-                      className="mt-6 inline-block rounded-full border border-black/10 px-4 py-2 text-xs uppercase tracking-widest hover:bg-white transition"
+                    <div
+                      key={game.title}
+                      className="rounded-[2rem] bg-white/50 p-7"
                     >
 
-                      {game.status}
-
-                    </button>
+                      <Sparkles size={20}/>
 
 
-                  </div>
+                      <h3 className="mt-5 font-serif-display text-2xl">
+                        {game.title}
+                      </h3>
 
 
-                </Reveal>
+                      <p className="mt-3 text-sm">
+                        {game.description}
+                      </p>
 
 
-              ))}
+                      <button
+
+                        onClick={()=>{
+
+                          if(game.title === "Memory Game"){
+                            setOpenGame("memory");
+                          }
+
+                        }}
+
+                        className="mt-6 rounded-full border px-4 py-2 text-xs uppercase tracking-widest"
+
+                      >
+
+                        {game.status}
+
+                      </button>
 
 
-            </div>
+                    </div>
+
+
+                  ))}
+
+
+                </div>
+
+
+              </div>
+
+            )}
+
+
+
+
+
+
+
+
+            {activeTab === "gallery" && (
+
+              <div>
+
+                <h2 className="font-serif-display text-5xl">
+                  Fan Art Gallery
+                </h2>
+
+
+                <p className="mt-5 text-[color:var(--ink-soft)]">
+                  Fan artworks will be displayed here.
+                </p>
+
+
+              </div>
+
+            )}
+
+
+
+
+
+
+
+
+            {activeTab === "letters" && (
+
+              <div>
+
+                <h2 className="font-serif-display text-5xl">
+                  Letter To HANEULZ
+                </h2>
+
+
+                <p className="mt-5 text-[color:var(--ink-soft)]">
+                  A place where Hansums can leave messages and letters.
+                </p>
+
+
+              </div>
+
+            )}
+
 
 
           </div>
-
-
-        </Reveal>
-
-
-      </section>
-
-
-
-
-
-
-
-
-      {/* FINAL MESSAGE */}
-
-      <section className="mx-auto mt-24 max-w-4xl px-6 text-center">
-
-
-        <Reveal>
-
-
-          <Heart
-            className="mx-auto"
-            size={25}
-          />
-
-
-
-          <h2 className="mt-6 font-serif-display text-4xl">
-            A Corner Made For Memories
-          </h2>
-
-
-
-          <p className="mt-5 text-lg leading-relaxed text-[color:var(--ink-soft)]">
-
-            Because sometimes the smallest things —
-            a song, a game, or a saved memory —
-            become the moments we keep forever.
-
-          </p>
 
 
         </Reveal>
@@ -358,7 +474,7 @@ export default function OurLittleCorner() {
       {openGame === "memory" && (
 
         <MemoryMatch
-          onClose={() => setOpenGame(null)}
+          onClose={()=>setOpenGame(null)}
         />
 
       )}
