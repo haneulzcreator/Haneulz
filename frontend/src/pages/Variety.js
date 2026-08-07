@@ -33,50 +33,44 @@ const DUETS = [
 ];
 
 const PLAYLISTS = [
-  {
-    name: "📸 HANEULZ ☁️",
-    thumbnail: REAL.ahofGroup,
-    description:
-      "Yence posts, Han posts, HANEULZ DC updates and fan moments.",
-    videos: [
-      {
-        category: "🦌 Yence Posts",
-        posts: [
-          {
-            image: "/images/yence1.jpg",
-            url: "https://x.com/",
-          },
-          {
-            image: "/images/yence2.jpg",
-            url: "https://instagram.com/",
-          },
-        ],
-      },
-      {
-        category: "🐈‍⬛ Han Posts",
-        posts: [
-          {
-            image: "/images/han1.jpg",
-            url: "https://x.com/",
-          },
-          {
-            image: "/images/han2.jpg",
-            url: "https://instagram.com/",
-          },
-        ],
-      },
-      {
-        category: "🎬 HANEULZ DC",
-        posts: [
-          {
-            image: "/images/dc1.jpg",
-            url: "https://x.com/",
-          },
-        ],
-      },
-    ],
-  },
-  {
+ {
+  name: "📸 HANEULZ ☁️",
+  thumbnail: "/images/haneulz.jpg",
+  description:
+    "JL posts, Han posts, HANEULZ updates and fan moments.",
+  videos: [
+    {
+      category: "🦌 JL Posts",
+      posts: [
+        {
+          image: "/images/jl.jpg",
+          url: "PASTE_JL_POST_LINK_HERE",
+        },
+      ],
+    },
+
+    {
+      category: "🐈 Han Posts",
+      posts: [
+        {
+          image: "/images/han.jpg",
+          url: "PASTE_HAN_POST_LINK_HERE",
+        },
+      ],
+    },
+
+    {
+      category: "☁️ HANEULZ Posts",
+      posts: [
+        {
+          image: "/images/haneulz.jpg",
+          url: "PASTE_HANEULZ_POST_LINK_HERE",
+        },
+      ],
+    },
+  ],
+},
+  
     name: "AHOF's First Anniversary",
     url: "https://youtube.com/",
     thumbnail:
