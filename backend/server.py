@@ -255,6 +255,17 @@ class Game(BaseModel):
     category: str = "quiz"
     created_at: str = Field(default_factory=now_iso)
     updated_at: str = Field(default_factory=now_iso)
+
+
+# =========================
+# MEMORY GAME CARDS
+# =========================
+
+class MemoryCard(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    image: str
+    created_at: str = Field(default_factory=now_iso)
     
 # =========================
 # ADMIN AUTH CHECK
@@ -1032,6 +1043,69 @@ async def admin_delete_game(
 
     return {"ok": True}
 
+@api_router.delete("/admin/games/{game_id}")
+async def admin_delete_game(
+    game_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.games.delete_one(
+        {"id": game_id}
+    )
+
+    return {"ok": True}
+
+# =========================
+# MEMORY GAME ROUTES
+# =========================
+
+@api_router.get("/memory-cards")
+async def get_memory_cards():
+
+    cards = await db.memory_cards.find(
+        {},
+        {"_id": 0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return cards
+
+
+@api_router.post("/admin/memory-cards")
+async def admin_add_memory_card(
+    title: str = Form(...),
+    image: UploadFile = File(...),
+    admin: dict = Depends(get_current_admin)
+):
+
+    image_url = await save_image(image)
+
+    card = MemoryCard(
+        title=title,
+        image=image_url
+    )
+
+    await db.memory_cards.insert_one(
+        card.model_dump()
+    )
+
+    return card
+
+
+@api_router.delete("/admin/memory-cards/{card_id}")
+async def admin_delete_memory_card(
+    card_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.memory_cards.delete_one(
+        {"id": card_id}
+    )
+
+    return {"ok": True}
+    
 # =========================
 # SITE SETTINGS ROUTES
 # =========================
