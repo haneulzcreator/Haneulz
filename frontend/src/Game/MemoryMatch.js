@@ -309,14 +309,6 @@ bg-white
 />
 
 
-
-<p className="mt-3 font-serif-display text-lg">
-
-{card.title}
-
-</p>
-
-
 </div>
 
 
