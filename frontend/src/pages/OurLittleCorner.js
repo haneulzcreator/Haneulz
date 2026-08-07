@@ -6,79 +6,58 @@ import Footer from "../components/Footer";
 import {
   Music2,
   Gamepad2,
-  Cloud,
-  UserRound,
   Palette,
   Mail,
+  Cloud,
+  UserRound,
+  Heart,
   Sparkles,
 } from "lucide-react";
-
-
-const tabs = [
-  {
-    id: "haneulz",
-    name: "☁ HANEULZ",
-    icon: Cloud,
-  },
-  {
-    id: "jl",
-    name: "JL Corner",
-    icon: UserRound,
-  },
-  {
-    id: "han",
-    name: "Han Corner",
-    icon: UserRound,
-  },
-  {
-    id: "spotify",
-    name: "Spotify Corner",
-    icon: Music2,
-  },
-  {
-    id: "games",
-    name: "Game Room",
-    icon: Gamepad2,
-  },
-  {
-    id: "gallery",
-    name: "Fan Art Gallery",
-    icon: Palette,
-  },
-  {
-    id: "letters",
-    name: "Letter To HANEULZ",
-    icon: Mail,
-  },
-];
-
-
-const games = [
-  {
-    title: "HANEULZ Quiz",
-    description:
-      "How well do you know HANEULZ? Test your knowledge with fun fan questions.",
-    status: "Coming Soon",
-  },
-  {
-    title: "Memory Game",
-    description:
-      "Match the memories and little moments hidden inside the corner.",
-    status: "Play Now",
-  },
-  {
-    title: "Fan Challenge",
-    description:
-      "Small challenges made for Hansums to enjoy together.",
-    status: "Coming Soon",
-  },
-];
 
 
 export default function OurLittleCorner() {
 
   const [activeTab, setActiveTab] = useState("haneulz");
   const [openGame, setOpenGame] = useState(null);
+
+
+  const tabs = [
+    {
+      id: "haneulz",
+      name: "☁ HANEULZ",
+      icon: Cloud,
+    },
+    {
+      id: "jl",
+      name: "JL",
+      icon: UserRound,
+    },
+    {
+      id: "han",
+      name: "Han",
+      icon: UserRound,
+    },
+    {
+      id: "spotify",
+      name: "Spotify",
+      icon: Music2,
+    },
+    {
+      id: "games",
+      name: "Games",
+      icon: Gamepad2,
+    },
+    {
+      id: "gallery",
+      name: "Gallery",
+      icon: Palette,
+    },
+    {
+      id: "letters",
+      name: "Letters",
+      icon: Mail,
+    },
+  ];
 
 
   return (
@@ -105,8 +84,11 @@ export default function OurLittleCorner() {
 
 
           <p className="mt-8 max-w-2xl text-xl leading-relaxed text-[color:var(--ink-soft)]">
-            A small place where stories, memories,
-            playlists, games, and fan moments stay together.
+
+            A small archive of stories,
+            memories, music, and moments
+            created with love.
+
           </p>
 
 
@@ -116,11 +98,15 @@ export default function OurLittleCorner() {
 
 
 
+
+
       {/* TABS */}
 
       <section className="mx-auto mt-16 max-w-6xl px-6">
 
-        <Reveal>
+
+        <div className="glass rounded-[2rem] p-4">
+
 
           <div className="flex flex-wrap justify-center gap-3">
 
@@ -136,13 +122,17 @@ export default function OurLittleCorner() {
 
                   key={tab.id}
 
-                  onClick={()=>setActiveTab(tab.id)}
+                  onClick={() => setActiveTab(tab.id)}
 
-                  className={`flex items-center gap-2 rounded-full px-5 py-3 text-sm transition ${
+                  className={`flex items-center gap-2 rounded-full px-5 py-3 text-sm transition
+
+                  ${
                     activeTab === tab.id
-                    ? "bg-pink-200"
+                    ? "bg-black text-white"
                     : "bg-white/50 hover:bg-white"
-                  }`}
+                  }
+
+                  `}
 
                 >
 
@@ -152,7 +142,7 @@ export default function OurLittleCorner() {
 
                 </button>
 
-              )
+              );
 
             })}
 
@@ -160,10 +150,12 @@ export default function OurLittleCorner() {
           </div>
 
 
-        </Reveal>
+        </div>
 
 
       </section>
+
+
 
 
 
@@ -171,241 +163,78 @@ export default function OurLittleCorner() {
 
       {/* CONTENT AREA */}
 
-      <section className="mx-auto mt-20 max-w-6xl px-6">
+      <section className="mx-auto mt-16 max-w-6xl px-6">
 
 
-        <Reveal>
+        {activeTab === "haneulz" && (
 
+          <Reveal>
 
-          <div className="glass rounded-[3rem] p-10 md:p-12">
+            <div className="glass rounded-[3rem] p-8 md:p-12">
 
 
+              <h2 className="font-serif-display text-5xl">
+                ☁ HANEULZ
+              </h2>
 
-           {activeTab === "haneulz" && (
 
-<div>
+              <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
 
-<h2 className="font-serif-display text-5xl">
-☁ HANEULZ
-</h2>
+                A story written through two voices,
+                shared memories, and the journey
+                that brought HANEULZ together.
 
+              </p>
 
-<p className="mt-5 text-lg text-[color:var(--ink-soft)]">
-A story written between two voices,
-filled with memories, moments, and the journey that brought HANEULZ together.
-</p>
 
 
+              <div className="mt-10 grid gap-6 md:grid-cols-2">
 
-<div className="mt-10 grid gap-6 md:grid-cols-2">
 
+                <div className="rounded-[2rem] border border-[color:var(--line)] p-6">
 
-<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
+                  <Sparkles size={20}/>
 
-<h3 className="font-serif-display text-3xl">
-✦ How They Met
-</h3>
+                  <h3 className="mt-4 font-serif-display text-3xl">
 
-<p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
+                    The Beginning
 
-Their journey began from Universe League,
-where two talented voices slowly became
-a story that fans continued to treasure.
+                  </h3>
 
-</p>
 
-<button className="mt-5 text-xs uppercase tracking-widest">
-Read Story →
-</button>
+                  <p className="mt-3 leading-7 text-sm">
 
-</div>
+                    Their journey began from Universe League,
+                    where two talented voices slowly became
+                    a story that fans continued to treasure.
 
-
-
-
-<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
-
-<h3 className="font-serif-display text-3xl">
-✦ Interview Moments
-</h3>
-
-<p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
-
-A collection of meaningful conversations,
-fun moments, and memories from interviews.
-
-</p>
-
-<button className="mt-5 text-xs uppercase tracking-widest">
-View Moments →
-</button>
-
-</div>
-
-
-
-
-
-<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
-
-<h3 className="font-serif-display text-3xl">
-✦ Their Words For Each Other
-</h3>
-
-<p className="mt-4 text-sm italic leading-7">
-
-❝ Their words, thoughts,
-and messages saved here. ❞
-
-</p>
-
-</div>
-
-
-
-
-
-<div className="rounded-[2rem] bg-white/40 p-7 backdrop-blur">
-
-<h3 className="font-serif-display text-3xl">
-✦ Hansum + HANEULZ Story
-</h3>
-
-<p className="mt-4 text-sm leading-7 text-[color:var(--ink-soft)]">
-
-The meaning behind HANEULZ,
-Hansums, and the community that continues
-to support their journey.
-
-</p>
-
-</div>
-
-
-</div>
-
-
-</div>
-
-)}
-
-              <div>
-
-                <h2 className="font-serif-display text-5xl">
-                  ☁ HANEULZ
-                </h2>
-
-
-                <p className="mt-5 text-lg text-[color:var(--ink-soft)]">
-                  A little story about two voices,
-                  their journey, and the community that grew with them.
-                </p>
-
-
-                <div className="mt-10 grid gap-5 md:grid-cols-2">
-
-
-                  {[
-                    "How They Met",
-                    "Interview Moments",
-                    "Their Words For Each Other",
-                    "Hansum + HANEULZ Story",
-                  ].map((item)=>(
-
-                    <div
-                      key={item}
-                      className="rounded-[2rem] bg-white/40 p-6"
-                    >
-
-                      <h3 className="font-serif-display text-2xl">
-                        ✦ {item}
-                      </h3>
-
-                    </div>
-
-                  ))}
+                  </p>
 
 
                 </div>
 
 
-              </div>
-
-            )}
 
 
 
+                <div className="rounded-[2rem] border border-[color:var(--line)] p-6">
+
+                  <Heart size={20}/>
 
 
+                  <h3 className="mt-4 font-serif-display text-3xl">
 
-            {activeTab === "jl" && (
+                    Memories
 
-              <div>
-
-                <h2 className="font-serif-display text-5xl">
-                  JL Corner
-                </h2>
+                  </h3>
 
 
-                <div className="mt-8 space-y-5">
+                  <p className="mt-3 leading-7 text-sm">
 
-                  <p>
-                    ✦ Interests
-                  </p>
+                    A collection of performances,
+                    interviews, and moments that shaped
+                    the story of HANEULZ.
 
-                  <p>
-                    ✦ Hobbies
-                  </p>
-
-                  <p>
-                    ✦ Fun Facts
-                  </p>
-
-                  <p>
-                    ✦ Favorite Things
-                  </p>
-
-                </div>
-
-
-              </div>
-
-            )}
-
-
-
-
-
-
-            {activeTab === "han" && (
-
-              <div>
-
-                <h2 className="font-serif-display text-5xl">
-                  Han Corner
-                </h2>
-
-
-                <div className="mt-8 space-y-5">
-
-                  <p>
-                    ✦ Interests
-                  </p>
-
-                  <p>
-                    ✦ Hobbies
-                  </p>
-
-                  <p>
-                    ✦ Fun Facts
-                  </p>
-
-                  <p>
-                    ✦ Favorite Things
-                  </p>
-
-                  <p>
-                    ✦ Movie Recommendations
                   </p>
 
 
@@ -414,164 +243,96 @@ to support their journey.
 
               </div>
 
-            )}
 
+            </div>
 
 
+          </Reveal>
 
+        )}
 
 
 
-            {activeTab === "spotify" && (
 
-              <div>
 
-                <h2 className="font-serif-display text-5xl">
-                  Spotify Corner
-                </h2>
+        {activeTab === "jl" && (
 
+          <Placeholder title="JL Corner" />
 
-                <p className="mt-5 text-[color:var(--ink-soft)]">
-                  Playlist cards will be added here.
-                </p>
+        )}
 
 
-              </div>
 
-            )}
+        {activeTab === "han" && (
 
+          <Placeholder title="Han Corner" />
 
+        )}
 
 
 
+        {activeTab === "spotify" && (
 
+          <Placeholder title="Spotify Corner" />
 
-            {activeTab === "games" && (
+        )}
 
-              <div>
 
 
-                <h2 className="font-serif-display text-5xl">
-                  Game Room
-                </h2>
+        {activeTab === "games" && (
 
+          <Reveal>
 
+            <div className="rounded-[3rem] bg-[color:var(--pink)] p-10">
 
-                <div className="mt-10 grid gap-6 md:grid-cols-3">
 
+              <h2 className="font-serif-display text-5xl">
 
-                  {games.map((game)=>(
+                Game Room
 
+              </h2>
 
-                    <div
-                      key={game.title}
-                      className="rounded-[2rem] bg-white/50 p-7"
-                    >
 
-                      <Sparkles size={20}/>
+              <button
 
+                onClick={() => setOpenGame("memory")}
 
-                      <h3 className="mt-5 font-serif-display text-2xl">
-                        {game.title}
-                      </h3>
+                className="mt-8 rounded-full bg-white px-6 py-3 text-sm"
 
+              >
 
-                      <p className="mt-3 text-sm">
-                        {game.description}
-                      </p>
+                Play Memory Game
 
+              </button>
 
-                      <button
 
-                        onClick={()=>{
+            </div>
 
-                          if(game.title === "Memory Game"){
-                            setOpenGame("memory");
-                          }
 
-                        }}
+          </Reveal>
 
-                        className="mt-6 rounded-full border px-4 py-2 text-xs uppercase tracking-widest"
+        )}
 
-                      >
 
-                        {game.status}
 
-                      </button>
+        {activeTab === "gallery" && (
 
+          <Placeholder title="Fan Art Gallery" />
 
-                    </div>
+        )}
 
 
-                  ))}
 
+        {activeTab === "letters" && (
 
-                </div>
+          <Placeholder title="Letter To HANEULZ" />
 
+        )}
 
-              </div>
-
-            )}
-
-
-
-
-
-
-
-
-            {activeTab === "gallery" && (
-
-              <div>
-
-                <h2 className="font-serif-display text-5xl">
-                  Fan Art Gallery
-                </h2>
-
-
-                <p className="mt-5 text-[color:var(--ink-soft)]">
-                  Fan artworks will be displayed here.
-                </p>
-
-
-              </div>
-
-            )}
-
-
-
-
-
-
-
-
-            {activeTab === "letters" && (
-
-              <div>
-
-                <h2 className="font-serif-display text-5xl">
-                  Letter To HANEULZ
-                </h2>
-
-
-                <p className="mt-5 text-[color:var(--ink-soft)]">
-                  A place where Hansums can leave messages and letters.
-                </p>
-
-
-              </div>
-
-            )}
-
-
-
-          </div>
-
-
-        </Reveal>
 
 
       </section>
+
 
 
 
@@ -580,10 +341,14 @@ to support their journey.
       {openGame === "memory" && (
 
         <MemoryMatch
-          onClose={()=>setOpenGame(null)}
+
+          onClose={() => setOpenGame(null)}
+
         />
 
       )}
+
+
 
 
 
@@ -591,6 +356,42 @@ to support their journey.
 
 
     </div>
+
+  );
+
+}
+
+
+
+
+
+function Placeholder({title}){
+
+  return (
+
+    <Reveal>
+
+      <div className="glass rounded-[3rem] p-12 text-center">
+
+
+        <h2 className="font-serif-display text-5xl">
+
+          {title}
+
+        </h2>
+
+
+        <p className="mt-5 text-[color:var(--ink-soft)]">
+
+          Coming soon...
+
+        </p>
+
+
+      </div>
+
+
+    </Reveal>
 
   );
 
