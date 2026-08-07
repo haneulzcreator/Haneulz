@@ -302,11 +302,11 @@ bg-white
 >
 
 
-<div className="text-5xl">
-
-{card.icon}
-
-</div>
+<img
+  src={card.image}
+  alt={card.title}
+  className="h-32 w-32 rounded-2xl object-cover"
+/>
 
 
 
