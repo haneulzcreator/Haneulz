@@ -18,7 +18,7 @@ export default function Admin() {
   // SECTION 1 STATES: NEW POST / VARIETY SUBMISSION
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [sourceUrl, setSourceUrl] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -26,6 +26,10 @@ export default function Admin() {
   const [postStatus, setPostStatus] = useState(null);
   const fileInputRef = useRef(null);
 
+// MEMORY GAME STATES
+const [memoryTitle, setMemoryTitle] = useState("");
+const [memoryImage, setMemoryImage] = useState(null);
+  
   // SECTION 2 STATES: PENDING AU SUBMISSIONS & MODAL + SEARCH/FILTER
   const [pendingAus, setPendingAus] = useState([]);
   const [loadingPending, setLoadingPending] = useState(true);
@@ -55,7 +59,7 @@ export default function Admin() {
   const [statusMessage, setStatusMessage] = useState(null);
 
   // Auto-calculated YouTube Thumbnail preview
-  const autoYoutubeThumbnail = getYouTubeThumbnail(youtubeUrl);
+  const autoYoutubeThumbnail = getYouTubeThumbnail(sourceUrl);
 
   const showAuNotification = (type, text) => {
     setAuActionStatus({ type, text });
@@ -111,15 +115,15 @@ export default function Admin() {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("youtubeUrl", youtubeUrl);
-      if (imageFile) formData.append("image", imageFile);
+      formData.append("sourceUrl", sourceUrl);
+      if (imageFile) {formData.append("image", imageFile);} else if (autoYoutubeThumbnail) {formData.append("thumbnailUrl", autoYoutubeThumbnail);}
 
       await api.post("/admin/posts", formData);
 
       setPostStatus({ type: "success", text: "Post published successfully! 🌸" });
       setTitle("");
       setDescription("");
-      setYoutubeUrl("");
+      setSourceUrl("");
       setImageFile(null);
       setPreviewUrl(null);
     } catch (err) {
@@ -167,8 +171,37 @@ export default function Admin() {
     }
   };
 
-  // Handler for Saving Site Content Settings
-  const handleSaveSettings = async (e) => {
+// MEMORY GAME UPLOAD
+const handleAddMemoryCard = async (e) => {
+  e.preventDefault();
+
+  if (!memoryImage) {
+    alert("Please select an image");
+    return;
+  }
+
+  const formData = new FormData();
+
+  formData.append("title", memoryTitle);
+  formData.append("image", memoryImage);
+
+  try {
+    await api.post("/admin/memory-cards", formData);
+
+    alert("Memory card added ☁️💗");
+
+    setMemoryTitle("");
+    setMemoryImage(null);
+
+  } catch (err) {
+    console.error(err);
+    alert("Failed adding card");
+  }
+};
+
+
+// Handler for Saving Site Content Settings
+const handleSaveSettings = async (e) => {
     e.preventDefault();
     setSavingSettings(true);
     setStatusMessage(null);
@@ -222,15 +255,18 @@ export default function Admin() {
           </div>
 
           <div style={{ marginBottom: "16px" }}>
-            <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>YouTube Video Link</label>
-            <input
-              type="text"
-              placeholder="https://youtu.be/xxxxx, shorts, or watch link"
-              value={youtubeUrl}
-              onChange={(e) => setYoutubeUrl(e.target.value)}
-              style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
-            />
-          </div>
+  <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>
+    Source Link 🔗
+  </label>
+
+  <input
+    type="text"
+    placeholder="https://original-website.com/post"
+    value={sourceUrl}
+    onChange={(e) => setSourceUrl(e.target.value)}
+    style={{ width: "100%", padding: "8px 12px", borderRadius: "6px", border: "1px solid #f48fb1", boxSizing: "border-box" }}
+  />
+</div>
 
           {/* Live Auto Thumbnail Preview */}
           {autoYoutubeThumbnail && (
@@ -263,6 +299,73 @@ export default function Admin() {
         </form>
       </section>
 
+{/* MEMORY GAME SECTION */}
+<section style={{ 
+  marginBottom: "40px", 
+  padding: "20px", 
+  border: "1px solid #f8bbd0", 
+  borderRadius: "12px", 
+  background: "#fff" 
+}}>
+  <h2 style={{ color: "#d81b60", marginTop: 0 }}>
+    Add Memory Game Card 🧩
+  </h2>
+
+  <form onSubmit={handleAddMemoryCard}>
+
+    <div style={{ marginBottom: "16px" }}>
+      <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>
+        Card Title
+      </label>
+
+      <input
+        type="text"
+        required
+        placeholder="Example: Zhang Hao"
+        value={memoryTitle}
+        onChange={(e) => setMemoryTitle(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "8px 12px",
+          borderRadius: "6px",
+          border: "1px solid #f48fb1"
+        }}
+      />
+    </div>
+
+
+    <div style={{ marginBottom: "16px" }}>
+      <label style={{ fontWeight: "bold", display: "block", marginBottom: "6px" }}>
+        Card Image
+      </label>
+
+      <input
+        type="file"
+        accept="image/*"
+        required
+        onChange={(e) => setMemoryImage(e.target.files[0])}
+      />
+    </div>
+
+
+    <button
+      type="submit"
+      style={{
+        padding: "10px 20px",
+        backgroundColor:"#d81b60",
+        color:"#fff",
+        border:"none",
+        borderRadius:"8px",
+        fontWeight:"bold",
+        cursor:"pointer"
+      }}
+    >
+      Add Memory Card ☁️
+    </button>
+
+  </form>
+</section>
+      
       {/* SECTION 2: PENDING AUs WITH SEARCH & FILTER */}
       <section style={{ marginBottom: "40px", padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff5f8" }}>
         <h2 style={{ color: "#d81b60", marginTop: 0 }}>
@@ -329,7 +432,14 @@ export default function Admin() {
       </section>
 
       {/* SECTION 3: SITE CONTENT SETTINGS */}
-      <section style={{ padding: "20px", border: "1px solid #f8bbd0", borderRadius: "12px", background: "#fff" }}>
+   <section 
+  style={{ 
+    padding: "20px", 
+    border: "1px solid #f8bbd0", 
+    borderRadius: "12px", 
+    background: "linear-gradient(135deg, #fff5f8, #f8f6ff)" 
+  }}
+>
         <h2 style={{ color: "#d81b60", marginTop: 0 }}>Website Content Settings 📝</h2>
         {statusMessage && (
           <div style={{ padding: "10px", marginBottom: "16px", borderRadius: "8px", fontWeight: "bold", backgroundColor: statusMessage.type === "success" ? "#E8F5E9" : "#FFEBEE", color: statusMessage.type === "success" ? "#2E7D32" : "#C62828" }}>
