@@ -2,6 +2,7 @@ import { useState } from "react";
 import MemoryMatch from "../Game/MemoryMatch";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
+import HaneulzStory from "../components/HaneulzStory";
 
 import {
   Music2,
@@ -24,7 +25,7 @@ export default function OurLittleCorner() {
   const tabs = [
     {
       id: "haneulz",
-      name: "☁ HANEULZ",
+      name: "HANEULZ",
       icon: Cloud,
     },
     {
@@ -165,92 +166,11 @@ export default function OurLittleCorner() {
 
       <section className="mx-auto mt-16 max-w-6xl px-6">
 
+{activeTab === "haneulz" && (
 
-        {activeTab === "haneulz" && (
+  <HaneulzStory />
 
-          <Reveal>
-
-            <div className="glass rounded-[3rem] p-8 md:p-12">
-
-
-              <h2 className="font-serif-display text-5xl">
-                ☁ HANEULZ
-              </h2>
-
-
-              <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[color:var(--ink-soft)]">
-
-                A story written through two voices,
-                shared memories, and the journey
-                that brought HANEULZ together.
-
-              </p>
-
-
-
-              <div className="mt-10 grid gap-6 md:grid-cols-2">
-
-
-                <div className="rounded-[2rem] border border-[color:var(--line)] p-6">
-
-                  <Sparkles size={20}/>
-
-                  <h3 className="mt-4 font-serif-display text-3xl">
-
-                    The Beginning
-
-                  </h3>
-
-
-                  <p className="mt-3 leading-7 text-sm">
-
-                    Their journey began from Universe League,
-                    where two talented voices slowly became
-                    a story that fans continued to treasure.
-
-                  </p>
-
-
-                </div>
-
-
-
-
-
-                <div className="rounded-[2rem] border border-[color:var(--line)] p-6">
-
-                  <Heart size={20}/>
-
-
-                  <h3 className="mt-4 font-serif-display text-3xl">
-
-                    Memories
-
-                  </h3>
-
-
-                  <p className="mt-3 leading-7 text-sm">
-
-                    A collection of performances,
-                    interviews, and moments that shaped
-                    the story of HANEULZ.
-
-                  </p>
-
-
-                </div>
-
-
-              </div>
-
-
-            </div>
-
-
-          </Reveal>
-
-        )}
-
+)}
 
 
 
