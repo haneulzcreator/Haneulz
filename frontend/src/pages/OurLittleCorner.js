@@ -3,6 +3,7 @@ import MemoryMatch from "../Game/MemoryMatch";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
 import HaneulzStory from "../components/HaneulzStory";
+import JLStory from "../components/JLStory";
 
 import {
   Music2,
@@ -175,11 +176,9 @@ export default function OurLittleCorner() {
 
 
 
-        {activeTab === "jl" && (
-
-          <Placeholder title="JL Corner" />
-
-        )}
+       {activeTab === "jl" && (
+  <JLStory />
+)}
 
 
 
