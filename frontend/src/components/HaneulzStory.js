@@ -3,7 +3,6 @@ import {
   Cloud,
   Sparkles,
   Heart,
-  Star,
   Camera,
 } from "lucide-react";
 
@@ -12,50 +11,48 @@ export default function HaneulzStory() {
     <Reveal>
       <article className="relative mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] bg-[#fbf5f9] px-5 py-10 shadow-[0_20px_70px_rgba(100,65,90,0.08)] sm:px-8 sm:py-12 md:px-12 md:py-14">
 
-        {/* SOFT BACKGROUND DECOR */}
-        <div className="pointer-events-none absolute left-[-35px] top-20 opacity-30">
-          <Cloud size={75} strokeWidth={1} className="text-[#c9a9c1]" />
+        {/* BACKGROUND DECOR */}
+        <div className="pointer-events-none absolute left-[-25px] top-20 opacity-25">
+          <Cloud size={70} strokeWidth={1} className="text-[#c9a9c1]" />
         </div>
 
-        <div className="pointer-events-none absolute right-[-20px] top-48 opacity-25">
-          <Sparkles size={70} strokeWidth={1} className="text-[#d5a9bd]" />
+        <div className="pointer-events-none absolute right-[-15px] top-44 opacity-20">
+          <Sparkles size={65} strokeWidth={1} className="text-[#d5a9bd]" />
         </div>
 
-        <div className="pointer-events-none absolute bottom-80 left-[-15px] opacity-20">
-          <Heart size={55} strokeWidth={1} className="text-[#c993ad]" />
-        </div>
-
-        <div className="pointer-events-none absolute bottom-32 right-[-10px] opacity-25">
-          <Star size={60} strokeWidth={1} className="text-[#b99ab4]" />
+        <div className="pointer-events-none absolute bottom-72 left-[-10px] opacity-20">
+          <Heart size={50} strokeWidth={1} className="text-[#c993ad]" />
         </div>
 
 
-        {/* PAGE TITLE */}
+        {/* TITLE */}
         <header className="relative text-center">
+
           <div className="mb-4 flex justify-center gap-3 text-[#b496ad]">
             <Cloud size={20} strokeWidth={1.4} />
             <Sparkles size={17} strokeWidth={1.4} />
             <Heart size={18} strokeWidth={1.4} />
           </div>
 
-          <h2 className="font-serif-display text-6xl font-medium tracking-tight text-[#4c3c49] sm:text-7xl md:text-8xl">
+          <h2 className="font-serif-display text-6xl font-medium text-[#4c3c49] sm:text-7xl md:text-8xl">
             HANEULZ
           </h2>
 
           <p className="mx-auto mt-4 max-w-md text-sm leading-6 tracking-wide text-[#927e8d] sm:text-base">
             the story of two voices that found each other
           </p>
+
         </header>
 
 
-        {/* MAIN HANEULZ IMAGE */}
+        {/* MAIN IMAGE */}
         <AdminImage
           label="HANEULZ"
-          className="relative mt-9 h-[230px] sm:h-[300px] md:h-[350px]"
+          className="mt-9 h-[230px] sm:h-[300px] md:h-[350px]"
         />
 
 
-        {/* STORY */}
+        {/* CONTENT */}
         <div className="relative mt-10 space-y-10 sm:mt-12 sm:space-y-12">
 
 
@@ -96,7 +93,7 @@ export default function HaneulzStory() {
           />
 
 
-          {/* HAN PARAGRAPH */}
+          {/* HAN */}
           <StoryText>
             Then came Han with “Siren.” His whole vibe was completely
             different. He had that mysterious aura when he walked onto the
@@ -194,34 +191,36 @@ export default function HaneulzStory() {
           </StorySection>
 
 
-          {/* LITTLE MOMENTS IMAGE */}
+          {/* MOMENTS IMAGE */}
           <AdminImage
             label="HANEULZ MOMENTS"
             className="h-[210px] sm:h-[280px] md:h-[320px]"
           />
 
 
-          {/* QUOTE */}
-          <div className="relative mx-auto max-w-2xl px-4 py-6 text-center">
-            <div className="absolute left-1/2 top-0 h-px w-20 -translate-x-1/2 bg-[#dec9d8]" />
+          {/* HIGHLIGHTED QUOTE */}
+          <div className="mx-auto max-w-2xl px-4 py-7 text-center">
 
-            <div className="pt-4">
-              <div className="mb-4 flex justify-center text-[#b394ad]">
-                <Cloud size={21} strokeWidth={1.4} />
-              </div>
+            <div className="mx-auto mb-5 h-px w-16 bg-[#dec9d8]" />
 
-              <p className="font-serif-display text-2xl leading-relaxed text-[#51414e] sm:text-3xl md:text-4xl">
-                “Haneulz is JL and me, right?”
-              </p>
+            <Cloud
+              className="mx-auto mb-4 text-[#b394ad]"
+              size={22}
+              strokeWidth={1.4}
+            />
 
-              <div className="mt-4 flex justify-center gap-2 text-[#b99bad]">
-                <Sparkles size={13} />
-                <Heart size={14} />
-                <Sparkles size={13} />
-              </div>
+            <p className="font-serif-display text-2xl leading-relaxed text-[#51414e] sm:text-3xl md:text-4xl">
+              “Haneulz is JL and me, right?”
+            </p>
+
+            <div className="mt-5 flex justify-center gap-2 text-[#b99bad]">
+              <Sparkles size={13} />
+              <Heart size={14} />
+              <Sparkles size={13} />
             </div>
 
-            <div className="absolute bottom-0 left-1/2 h-px w-20 -translate-x-1/2 bg-[#dec9d8]" />
+            <div className="mx-auto mt-6 h-px w-16 bg-[#dec9d8]" />
+
           </div>
 
 
@@ -258,10 +257,7 @@ export default function HaneulzStory() {
 
 
           {/* WHY HANEULZ */}
-          <StorySection
-            title="WHY HANEULZ"
-            icon={<Star size={19} strokeWidth={1.5} />}
-          >
+          <StorySection title="WHY HANEULZ">
             I don’t think HANEULZ can really be summed up by one performance
             or one funny interaction. It started with two trainees who didn’t
             even know that they were going to end up together. One accidentally
@@ -282,7 +278,7 @@ export default function HaneulzStory() {
           </StorySection>
 
 
-          {/* SMALL ENDING DECOR */}
+          {/* END */}
           <div className="flex justify-center gap-3 pt-2 text-[#b99bad]">
             <Cloud size={16} strokeWidth={1.3} />
             <Heart size={17} strokeWidth={1.3} />
@@ -296,22 +292,14 @@ export default function HaneulzStory() {
 }
 
 
-/* ----------------------------- */
-/* STORY TEXT */
-/* ----------------------------- */
-
 function StoryText({ children }) {
   return (
-    <p className="mx-auto max-w-3xl text-[15px] leading-8 text-[#766675] sm:text-base sm:leading-8">
+    <p className="mx-auto max-w-3xl text-[15px] leading-8 text-[#766675] sm:text-base">
       {children}
     </p>
   );
 }
 
-
-/* ----------------------------- */
-/* STORY SECTION */
-/* ----------------------------- */
 
 function StorySection({ title, icon, children }) {
   return (
@@ -328,7 +316,7 @@ function StorySection({ title, icon, children }) {
         </h3>
       </div>
 
-      <p className="mx-auto mt-5 max-w-3xl text-[15px] leading-8 text-[#766675] sm:mt-6 sm:text-base sm:leading-8">
+      <p className="mx-auto mt-5 max-w-3xl text-[15px] leading-8 text-[#766675] sm:mt-6 sm:text-base">
         {children}
       </p>
     </section>
@@ -336,19 +324,17 @@ function StorySection({ title, icon, children }) {
 }
 
 
-/* ----------------------------- */
-/* ADMIN IMAGE PLACEHOLDER */
-/* ----------------------------- */
-
 function AdminImage({ label, className = "" }) {
   return (
     <div
-      className={`group relative mx-auto w-full rotate-[-0.4deg] overflow-hidden rounded-[1.8rem] border-[8px] border-white bg-[#f0e5ed] shadow-[0_12px_35px_rgba(90,60,85,0.10)] ${className}`}
+      className={`group relative mx-auto w-full overflow-hidden rounded-[1.8rem] border-[8px] border-white bg-[#f0e5ed] shadow-[0_12px_35px_rgba(90,60,85,0.10)] ${className}`}
     >
-      {/* Decorative tape */}
+
+      {/* TAPE */}
       <div className="absolute left-1/2 top-[-5px] z-10 h-7 w-24 -translate-x-1/2 rotate-[-2deg] bg-[#ead9df]/80 shadow-sm" />
 
       <div className="flex h-full w-full flex-col items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.8),transparent_30%),linear-gradient(135deg,#f7edf3,#eee2ec)] px-6 text-center">
+
         <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/70 text-[#b397ad] shadow-sm">
           <Camera size={21} strokeWidth={1.4} />
         </div>
@@ -364,6 +350,7 @@ function AdminImage({ label, className = "" }) {
         <p className="mt-1 text-xs text-[#a18f9d]">
           Image can be added or edited by admin
         </p>
+
       </div>
     </div>
   );
