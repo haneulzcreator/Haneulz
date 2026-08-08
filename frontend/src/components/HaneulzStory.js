@@ -2,7 +2,9 @@ import { Cloud, Sparkles, Heart } from "lucide-react";
 export default function HaneulzStory() {
   return (
     <article className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-[2rem] bg-[#eee2df] text-[#40383f] shadow-[0_24px_80px_rgba(58,45,57,0.2)] sm:rounded-[2.5rem] lg:rounded-[3rem]">
-      {/* ================= BACKGROUND ================= */}
+      {/* =====================================================
+          BACKGROUND
+      ===================================================== */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-40 top-0 h-[420px] w-[420px] rounded-full bg-[#c982a5]/35 blur-[100px]" />
         <div className="absolute -right-40 top-[500px] h-[500px] w-[500px] rounded-full bg-[#8e79b5]/32 blur-[110px]" />
@@ -32,7 +34,9 @@ export default function HaneulzStory() {
           ♡
         </div>
       </div>
-      {/* ================= COVER ================= */}
+      {/* =====================================================
+          COVER
+      ===================================================== */}
       <section className="relative min-h-[520px] px-5 py-14 sm:min-h-[600px] sm:px-8 sm:py-20 md:px-12 lg:min-h-[650px] lg:px-16">
         <div
           className="absolute left-6 top-7 rotate-[-6deg] text-xs tracking-[0.1em] text-[#765d70] sm:left-10 sm:top-10 sm:text-sm"
@@ -99,7 +103,9 @@ export default function HaneulzStory() {
           </div>
         </div>
       </section>
-      {/* ================= COVER IMAGE ================= */}
+      {/* =====================================================
+          COVER IMAGE
+      ===================================================== */}
       <div className="px-4 pb-0 sm:px-7 md:px-10 lg:px-12">
         <ImagePlaceholder
           label="HANEULZ"
@@ -107,8 +113,10 @@ export default function HaneulzStory() {
           rotate="-1deg"
         />
       </div>
-      {/* ================= HANEULZ ================= */}
-      <section className="relative px-6 pb-8 pt-0 sm:px-8 sm:pb-10 md:px-16 lg:px-24">
+      {/* =====================================================
+          HANEULZ
+      ===================================================== */}
+      <section className="relative px-6 pb-8 pt-4 sm:px-8 sm:pb-10 sm:pt-5 md:px-16 lg:px-24">
         <SectionHeader
           number="01"
           title="HANEULZ"
@@ -125,7 +133,9 @@ export default function HaneulzStory() {
           </StoryParagraph>
         </div>
       </section>
-      {/* ================= WHERE IT STARTED ================= */}
+      {/* =====================================================
+          WHERE IT STARTED
+      ===================================================== */}
       <section className="relative px-6 pb-7 pt-0 sm:px-8 sm:pb-9 md:px-16 lg:px-24">
         <SectionHeader
           number="02"
@@ -151,15 +161,19 @@ export default function HaneulzStory() {
           </StoryParagraph>
         </div>
       </section>
-      {/* ================= HAN IMAGE ================= */}
+      {/* =====================================================
+          HAN IMAGE
+      ===================================================== */}
       <div className="px-6 pb-0 pt-0 sm:px-10 md:px-20 lg:px-32">
         <ImagePlaceholder
           label="HAN · SIREN"
           rotate="2deg"
         />
       </div>
-      {/* ================= HAN PARAGRAPH ================= */}
-      <section className="relative px-6 pb-8 pt-0 sm:px-8 sm:pb-10 md:px-20 lg:px-32">
+      {/* =====================================================
+          HAN
+      ===================================================== */}
+      <section className="relative px-6 pb-8 pt-4 sm:px-8 sm:pb-10 sm:pt-5 md:px-20 lg:px-32">
         <StoryParagraph>
           Then came Han with “Siren.” His whole vibe was completely different.
           He had that mysterious aura when he walked onto the stage, and then
@@ -170,7 +184,9 @@ export default function HaneulzStory() {
           attention to him.
         </StoryParagraph>
       </section>
-      {/* ================= FIRST IMPRESSION ================= */}
+      {/* =====================================================
+          FIRST IMPRESSION
+      ===================================================== */}
       <section className="relative mx-4 my-4 rounded-[2rem] border border-white/55 bg-[#f7e9e7]/48 px-6 py-7 sm:mx-6 sm:my-6 sm:rounded-[2.5rem] sm:px-9 sm:py-9 md:mx-10 md:px-14 lg:mx-16">
         <SectionHeader
           number="03"
@@ -191,15 +207,19 @@ export default function HaneulzStory() {
           </StoryParagraph>
         </div>
       </section>
-      {/* ================= LITTLE PRINCE IMAGE ================= */}
+      {/* =====================================================
+          LITTLE PRINCE IMAGE
+      ===================================================== */}
       <div className="px-6 pb-0 pt-0 sm:px-10 md:px-16 lg:px-24">
         <ImagePlaceholder
           label="THE LITTLE PRINCE · 12.27.2024"
           rotate="-2deg"
         />
       </div>
-      {/* ================= LITTLE PRINCE ================= */}
-      <section className="relative px-6 pb-8 pt-0 sm:px-8 sm:pb-10 md:px-16 lg:px-24">
+      {/* =====================================================
+          LITTLE PRINCE
+      ===================================================== */}
+      <section className="relative px-6 pb-8 pt-4 sm:px-8 sm:pb-10 sm:pt-5 md:px-16 lg:px-24">
         <SectionHeader
           number="04"
           title="The Little Prince"
@@ -232,7 +252,9 @@ export default function HaneulzStory() {
           </StoryParagraph>
         </div>
       </section>
-      {/* ================= NEW CHAPTER ================= */}
+      {/* =====================================================
+          NEW CHAPTER
+      ===================================================== */}
       <section className="relative mx-4 my-6 overflow-hidden rounded-[2.4rem] bg-[#4b414d] px-6 py-9 text-[#faf2ed] shadow-[0_18px_55px_rgba(58,47,59,0.22)] sm:mx-6 sm:my-8 sm:rounded-[3rem] sm:px-9 sm:py-12 md:mx-10 md:px-14 lg:mx-16 lg:px-20 lg:py-14">
         <div className="absolute -right-8 -top-16 text-[130px] font-bold tracking-[-0.08em] text-white/[0.035] sm:text-[190px] lg:text-[240px]">
           AHOF
@@ -260,7 +282,7 @@ export default function HaneulzStory() {
               rotate="1deg"
             />
           </div>
-          <div className="mt-3 max-w-4xl sm:mt-4">
+          <div className="mt-4 max-w-4xl">
             <StoryParagraph dark>
               After everything that happened during Universe League, Han and JL
               eventually debuted together as members of AHOF on July 1, 2025.
@@ -282,7 +304,9 @@ export default function HaneulzStory() {
           </div>
         </div>
       </section>
-      {/* ================= LITTLE THINGS HEADER ================= */}
+      {/* =====================================================
+          LITTLE THINGS HEADER
+      ===================================================== */}
       <section className="relative px-6 pb-3 pt-9 sm:px-8 sm:pb-4 sm:pt-11 md:px-16 lg:px-24">
         <SectionHeader
           number="06"
@@ -297,7 +321,7 @@ export default function HaneulzStory() {
         />
       </div>
       {/* LITTLE THINGS TEXT */}
-      <section className="px-6 pb-7 pt-0 sm:px-8 sm:pb-9 md:px-20 lg:px-32">
+      <section className="px-6 pb-7 pt-4 sm:px-8 sm:pb-9 sm:pt-5 md:px-20 lg:px-32">
         <StoryParagraph>
           One of the things that always makes me smile is how often Han and JL
           end up singing together. Han has talked about how JL is good at
@@ -326,53 +350,88 @@ export default function HaneulzStory() {
           notes were beautiful.
         </StoryParagraph>
       </section>
-      {/* ================= FEATURED QUOTE ================= */}
-      <section className="relative mx-4 my-5 overflow-hidden rounded-[2.5rem] border border-[#c89db5]/60 bg-[#ded0e3]/75 px-5 py-12 text-center shadow-[0_14px_45px_rgba(91,69,91,0.13)] sm:mx-7 sm:my-8 sm:rounded-[3rem] sm:px-8 sm:py-16 md:mx-12 lg:mx-20">
-        <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#c47fa2]/25 blur-[75px] sm:h-80 sm:w-80" />
+      {/* =====================================================
+          FEATURED QUOTE
+      ===================================================== */}
+      <section className="relative mx-4 my-7 overflow-hidden rounded-[2.5rem] border border-[#b88da8]/70 bg-[#d4c3da]/90 px-6 py-12 shadow-[0_18px_55px_rgba(74,55,77,0.18)] sm:mx-7 sm:my-9 sm:rounded-[3rem] sm:px-10 sm:py-16 md:mx-12 lg:mx-20">
+        {/* soft glow */}
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[260px] w-[260px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e9b7cb]/35 blur-[75px] sm:h-[380px] sm:w-[380px]" />
+        {/* corner lines */}
+        <div className="absolute left-5 top-5 h-12 w-12 border-l border-t border-[#9d7794]/45 sm:left-7 sm:top-7 sm:h-16 sm:w-16" />
+        <div className="absolute bottom-5 right-5 h-12 w-12 border-b border-r border-[#9d7794]/45 sm:bottom-7 sm:right-7 sm:h-16 sm:w-16" />
+        {/* oversized quote */}
         <div
-          className="absolute -left-1 top-[-35px] text-[190px] leading-none text-[#a77a9c]/20 sm:-left-3 sm:top-[-55px] sm:text-[260px]"
-          style={{ fontFamily: "Georgia, serif" }}
+          className="pointer-events-none absolute left-1 top-[-8px] select-none text-[145px] leading-none text-[#8d6488]/25 sm:left-3 sm:top-[-20px] sm:text-[210px]"
+          style={{
+            fontFamily: "Georgia, serif",
+          }}
         >
           “
         </div>
         <div
-          className="absolute -right-2 bottom-[-105px] rotate-180 text-[190px] leading-none text-[#a77a9c]/20 sm:-right-4 sm:bottom-[-140px] sm:text-[260px]"
-          style={{ fontFamily: "Georgia, serif" }}
+          className="pointer-events-none absolute bottom-[-115px] right-0 rotate-180 select-none text-[145px] leading-none text-[#8d6488]/25 sm:bottom-[-165px] sm:right-2 sm:text-[210px]"
+          style={{
+            fontFamily: "Georgia, serif",
+          }}
         >
           “
         </div>
-        <div className="relative">
-          <div className="mb-7 flex items-center justify-center gap-3">
-            <span className="h-px w-8 bg-[#a97898] sm:w-12" />
-            <span className="text-[9px] uppercase tracking-[0.35em] text-[#755d73] sm:text-[10px] sm:tracking-[0.45em]">
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
+          {/* label */}
+          <div className="mb-7 flex items-center justify-center gap-3 sm:mb-9">
+            <span className="h-px w-7 bg-[#9c708f] sm:w-12" />
+            <span
+              className="text-[8px] uppercase tracking-[0.48em] text-[#72586f] sm:text-[9px] sm:tracking-[0.65em]"
+              style={{
+                fontFamily: "Arial, sans-serif",
+              }}
+            >
               a little moment
             </span>
-            <span className="h-px w-8 bg-[#a97898] sm:w-12" />
+            <span className="h-px w-7 bg-[#9c708f] sm:w-12" />
           </div>
+          {/* MAIN QUOTE */}
           <blockquote
-            className="mx-auto max-w-4xl text-[2.25rem] leading-[1.12] tracking-[0.045em] text-[#433943] sm:text-4xl md:text-5xl lg:text-[4.2rem]"
+            className="mx-auto max-w-3xl text-[2.25rem] leading-[1.15] tracking-[0.065em] text-[#403640] sm:text-4xl sm:leading-[1.16] md:text-5xl lg:text-[4.25rem]"
             style={{
               fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
             }}
           >
             “Haneulz is JL and me, right?”
           </blockquote>
-          <div className="mx-auto mt-8 flex items-center justify-center gap-3 sm:mt-9">
-            <span className="h-px w-6 bg-[#ad7897] sm:w-10" />
+          {/* DIVIDER */}
+          <div className="mx-auto my-7 flex items-center justify-center gap-3 sm:my-9">
+            <span className="h-px w-10 bg-[#9f7694]/70 sm:w-16" />
+            <span className="text-[11px] text-[#806080]">
+              ✦
+            </span>
+            <span className="h-px w-10 bg-[#9f7694]/70 sm:w-16" />
+          </div>
+          {/* ATTRIBUTION */}
+          <div className="flex flex-col items-center">
             <span
-              className="text-[11px] uppercase tracking-[0.5em] text-[#765e74] sm:text-xs sm:tracking-[0.6em]"
+              className="text-[19px] tracking-[0.08em] text-[#5d4a59] sm:text-[22px]"
               style={{
                 fontFamily: "'Comic Sans MS', cursive",
               }}
             >
               — Han
             </span>
-            <span className="h-px w-6 bg-[#ad7897] sm:w-10" />
+            <span
+              className="mt-2 text-[7px] uppercase tracking-[0.5em] text-[#8c7185] sm:text-[8px] sm:tracking-[0.65em]"
+              style={{
+                fontFamily: "Arial, sans-serif",
+              }}
+            >
+              and that was enough
+            </span>
           </div>
         </div>
       </section>
-      {/* ================= AFTER QUOTE ================= */}
-      <section className="px-6 pb-8 pt-0 sm:px-8 sm:pb-10 md:px-20 lg:px-32">
+      {/* =====================================================
+          AFTER QUOTE
+      ===================================================== */}
+      <section className="px-6 pb-8 pt-4 sm:px-8 sm:pb-10 sm:pt-5 md:px-20 lg:px-32">
         <StoryParagraph>
           YES. THAT. Because at that point HANEULZ wasn't just something fans
           were calling them. They knew the name too.
@@ -388,7 +447,9 @@ export default function HaneulzStory() {
           It's all these tiny moments in between.
         </StoryParagraph>
       </section>
-      {/* ================= HANSUM ================= */}
+      {/* =====================================================
+          HANSUM
+      ===================================================== */}
       <section className="relative mx-4 my-6 overflow-hidden rounded-[2.4rem] border border-white/55 bg-[#d9d0e2]/80 px-6 py-9 sm:mx-6 sm:my-8 sm:rounded-[3rem] sm:px-9 sm:py-11 md:mx-10 md:px-14 lg:mx-20 lg:px-20">
         <div className="absolute right-6 top-6 text-[#80699c]/25">
           <Heart size={42} strokeWidth={1} />
@@ -411,7 +472,9 @@ export default function HaneulzStory() {
           </StoryParagraph>
         </div>
       </section>
-      {/* ================= FINAL IMAGE ================= */}
+      {/* =====================================================
+          FINAL IMAGE
+      ===================================================== */}
       <div className="px-5 pb-0 pt-0 sm:px-8 md:px-20 lg:px-28">
         <ImagePlaceholder
           label="HANEULZ · ALWAYS"
@@ -419,8 +482,10 @@ export default function HaneulzStory() {
           rotate="-1deg"
         />
       </div>
-      {/* ================= WHY HANEULZ ================= */}
-      <section className="relative px-6 pb-10 pt-0 sm:px-8 sm:pb-13 md:px-16 lg:px-24">
+      {/* =====================================================
+          WHY HANEULZ
+      ===================================================== */}
+      <section className="relative px-6 pb-10 pt-4 sm:px-8 sm:pb-13 sm:pt-5 md:px-16 lg:px-24">
         <SectionHeader
           number="08"
           title="Why HANEULZ"
@@ -467,7 +532,9 @@ export default function HaneulzStory() {
           </div>
         </div>
       </section>
-      {/* ================= FOOTER ================= */}
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
       <div className="flex items-center justify-center gap-4 pb-8 pt-1 sm:gap-5 sm:pb-11">
         <span className="h-px w-10 bg-[#b97999] sm:w-16" />
         <Cloud
@@ -480,16 +547,18 @@ export default function HaneulzStory() {
     </article>
   );
 }
-/* ===============================================================
+/* =============================================================
    SECTION HEADER
-================================================================ */
+============================================================= */
 function SectionHeader({ number, title, icon }) {
   return (
     <div className="min-w-0">
       <div className="flex items-center gap-2 sm:gap-3">
         <span
           className="shrink-0 text-[8px] tracking-[0.5em] text-[#806477] sm:text-[9px] sm:tracking-[0.6em]"
-          style={{ fontFamily: "Arial, sans-serif" }}
+          style={{
+            fontFamily: "Arial, sans-serif",
+          }}
         >
           {number}
         </span>
@@ -515,14 +584,16 @@ function SectionHeader({ number, title, icon }) {
     </div>
   );
 }
-/* ===============================================================
+/* =============================================================
    STORY PARAGRAPH
-================================================================ */
+============================================================= */
 function StoryParagraph({ children, dark = false }) {
   return (
     <p
       className={`mb-3 text-[16px] leading-[1.7] tracking-[0.055em] sm:mb-3.5 sm:text-[17px] sm:leading-[1.76] md:text-[18px] md:leading-[1.8] ${
-        dark ? "text-[#ded4db]" : "text-[#615861]"
+        dark
+          ? "text-[#ded4db]"
+          : "text-[#615861]"
       }`}
       style={{
         fontFamily: "'Cormorant Garamond', Georgia, serif",
@@ -532,12 +603,12 @@ function StoryParagraph({ children, dark = false }) {
     </p>
   );
 }
-/* ===============================================================
-   IMAGE PLACEHOLDER
-   IMPORTANT:
-   The old version used min-height, which caused the large empty
-   spaces. This version uses aspect-ratio instead.
-================================================================ */
+/* =============================================================
+   ADMIN IMAGE PLACEHOLDER
+   Admin can later replace the placeholder content with the actual
+   image source.
+   aspect-ratio prevents the huge blank space that happened before.
+============================================================= */
 function ImagePlaceholder({
   label,
   large = false,
@@ -555,9 +626,9 @@ function ImagePlaceholder({
     >
       {/* tape */}
       <div className="absolute left-1/2 top-[-7px] z-20 h-7 w-20 -translate-x-1/2 rotate-[-2deg] bg-[#dbc99b]/75 shadow-sm sm:top-[-9px] sm:h-8 sm:w-28" />
-      {/* shadow */}
+      {/* image shadow */}
       <div className="absolute inset-2 rounded-[1.8rem] bg-[#594b5b]/20 blur-md sm:rounded-[2.5rem]" />
-      {/* IMAGE FRAME */}
+      {/* frame */}
       <div
         className={`relative w-full overflow-hidden rounded-[1.8rem] border-[6px] shadow-[0_16px_40px_rgba(63,49,64,0.18)] sm:rounded-[2.5rem] sm:border-[8px] sm:shadow-[0_20px_50px_rgba(63,49,64,0.2)] ${
           large || group
@@ -577,7 +648,7 @@ function ImagePlaceholder({
               : "bg-gradient-to-br from-[#cf8da9] via-[#9e8dbb] to-[#75aeb8]"
           }`}
         />
-        {/* texture */}
+        {/* subtle texture */}
         <div
           className="absolute inset-0 opacity-[0.13]"
           style={{
@@ -586,7 +657,7 @@ function ImagePlaceholder({
             backgroundSize: "15px 15px",
           }}
         />
-        {/* placeholder content */}
+        {/* placeholder label */}
         <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-10">
           <div className="text-center">
             <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-full border border-white/65 bg-white/20 sm:mb-4 sm:h-14 sm:w-14">
@@ -598,7 +669,9 @@ function ImagePlaceholder({
             </div>
             <p
               className="text-[8px] uppercase tracking-[0.5em] text-white/90 sm:text-[10px] sm:tracking-[0.7em]"
-              style={{ fontFamily: "Arial, sans-serif" }}
+              style={{
+                fontFamily: "Arial, sans-serif",
+              }}
             >
               {label}
             </p>
