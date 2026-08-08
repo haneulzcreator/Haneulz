@@ -1,170 +1,153 @@
-import { Cloud, Sparkles, Heart, Star } from "lucide-react";
+import { Reveal } from "./Reveal";
+import {
+  Cloud,
+  Sparkles,
+  Heart,
+  Star,
+  Camera,
+} from "lucide-react";
 
 export default function HaneulzStory() {
   return (
-    <article className="relative mx-auto w-full max-w-4xl overflow-hidden rounded-[2.5rem] bg-[#fff9fc] px-5 py-10 shadow-[0_20px_80px_rgba(80,40,70,0.08)] sm:px-8 md:px-12 md:py-14">
+    <Reveal>
+      <article className="relative mx-auto max-w-4xl overflow-hidden rounded-[2.5rem] bg-[#fbf5f9] px-5 py-10 shadow-[0_20px_70px_rgba(100,65,90,0.08)] sm:px-8 sm:py-12 md:px-12 md:py-14">
 
-      {/* soft decorative background */}
-      <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#f4e8f3] opacity-70 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-[#e9f3f4] opacity-70 blur-3xl" />
+        {/* SOFT BACKGROUND DECOR */}
+        <div className="pointer-events-none absolute left-[-35px] top-20 opacity-30">
+          <Cloud size={75} strokeWidth={1} className="text-[#c9a9c1]" />
+        </div>
 
-      <div className="relative">
+        <div className="pointer-events-none absolute right-[-20px] top-48 opacity-25">
+          <Sparkles size={70} strokeWidth={1} className="text-[#d5a9bd]" />
+        </div>
 
-        {/* TITLE */}
-        <header className="text-center">
-          <div className="mx-auto mb-5 flex items-center justify-center gap-3 text-[#8d7187]">
-            <span className="h-px w-10 bg-[#d9c5d5]" />
-            <Cloud size={24} strokeWidth={1.5} />
-            <span className="h-px w-10 bg-[#d9c5d5]" />
+        <div className="pointer-events-none absolute bottom-80 left-[-15px] opacity-20">
+          <Heart size={55} strokeWidth={1} className="text-[#c993ad]" />
+        </div>
+
+        <div className="pointer-events-none absolute bottom-32 right-[-10px] opacity-25">
+          <Star size={60} strokeWidth={1} className="text-[#b99ab4]" />
+        </div>
+
+
+        {/* PAGE TITLE */}
+        <header className="relative text-center">
+          <div className="mb-4 flex justify-center gap-3 text-[#b496ad]">
+            <Cloud size={20} strokeWidth={1.4} />
+            <Sparkles size={17} strokeWidth={1.4} />
+            <Heart size={18} strokeWidth={1.4} />
           </div>
 
-          <h2 className="font-serif-display text-5xl font-medium tracking-tight text-[#29222a] sm:text-6xl md:text-7xl">
+          <h2 className="font-serif-display text-6xl font-medium tracking-tight text-[#4c3c49] sm:text-7xl md:text-8xl">
             HANEULZ
           </h2>
 
-          <p className="mx-auto mt-4 max-w-xl text-base leading-7 text-[#8a7b87] sm:text-lg">
+          <p className="mx-auto mt-4 max-w-md text-sm leading-6 tracking-wide text-[#927e8d] sm:text-base">
             the story of two voices that found each other
           </p>
         </header>
 
 
-        {/* HERO IMAGE — ADMIN EDITABLE */}
+        {/* MAIN HANEULZ IMAGE */}
         <AdminImage
           label="HANEULZ"
-          className="mt-10 h-[250px] sm:h-[340px] md:h-[390px]"
+          className="relative mt-9 h-[230px] sm:h-[300px] md:h-[350px]"
         />
 
 
         {/* STORY */}
-        <div className="mt-12 space-y-12 md:mt-14 md:space-y-14">
+        <div className="relative mt-10 space-y-10 sm:mt-12 sm:space-y-12">
+
 
           {/* INTRO */}
-          <StorySection
-            title="HANEULZ"
-            icon={<Cloud size={20} strokeWidth={1.5} />}
-          >
+          <StoryText>
             HANEULZ is a name that came from Han and Jaeyel, the pronunciation
             of JL’s name, and it also happens to sound like haneul (하늘), which
             means sky in Korean. I honestly think it fits them so well because
             it started from just their names, but somehow it became this little
             name that holds so many memories from Universe League until now.
-
-          </StorySection>
+          </StoryText>
 
 
           {/* WHERE IT ALL STARTED */}
           <StorySection
             title="WHERE IT ALL STARTED"
-            icon={<Sparkles size={20} strokeWidth={1.5} />}
+            icon={<Sparkles size={19} strokeWidth={1.5} />}
           >
             Before HANEULZ was even a thing, Han and JL were just two trainees
-            trying to make it through Universe League. They didn’t start out as
-            some inseparable pair or anything like that. They had their own
+            trying to make it through Universe League. They didn’t start out
+            as some inseparable pair or anything like that. They had their own
             stages, their own teams, and their own moments, and that’s actually
-            what makes their story so fun to look back on.
-
-            <br /><br />
-
-            JL first showed up with “One and Only” by BOYNEXTDOOR and immediately
-            had that kind of stage presence where you just end up watching him.
-            His vocals were stable, his dancing was eye-catching, and of course
-            that smile was there too. During one of the drafting episodes, he
-            became known as the “three pick” because three mentors chose him.
-            Like… three. ㅋㅋㅋㅋ It really showed how much of an impression he
-            was already making.
+            what makes their story so fun to look back on. JL first showed up
+            with “One and Only” by BOYNEXTDOOR and immediately had that kind of
+            stage presence where you just end up watching him. His vocals were
+            stable, his dancing was eye-catching, and of course that smile was
+            there too. During one of the drafting episodes, he became known as
+            the “three pick” because three mentors chose him. Like… three.
+            ㅋㅋㅋㅋ It really showed how much of an impression he was already
+            making.
           </StorySection>
 
 
-          {/* JL IMAGE — ADMIN EDITABLE */}
+          {/* JL IMAGE */}
           <AdminImage
             label="JL"
-            className="h-[230px] sm:h-[300px] md:h-[340px]"
+            className="h-[210px] sm:h-[280px] md:h-[320px]"
           />
 
 
-          {/* HAN PARAGRAPH — NO EXTRA HAN HEADING */}
+          {/* HAN PARAGRAPH */}
           <StoryText>
-            Then came Han with “Siren.” His whole vibe was completely different.
-            He had that mysterious aura when he walked onto the stage, and then
-            once he started singing, you could really hear how strong his voice
-            was. His dancing was sharp and detailed too, and he didn’t hold
-            himself back during the performance. It was one of those stages where
-            you could immediately understand why people were paying attention to
-            him.
+            Then came Han with “Siren.” His whole vibe was completely
+            different. He had that mysterious aura when he walked onto the
+            stage, and then once he started singing, you could really hear
+            how strong his voice was. His dancing was sharp and detailed too,
+            and he didn’t hold himself back during the performance. It was one
+            of those stages where you could immediately understand why people
+            were paying attention to him.
           </StoryText>
 
 
           {/* FIRST IMPRESSION */}
           <StorySection title="THE FIRST IMPRESSION">
             And then there’s the funniest part because one of Han’s first
-            impressions of JL wasn’t some dramatic first meeting.
-
-            <br /><br />
-
-            JL literally entered the wrong practice room. ㅋㅋㅋㅋ
-
-            <br /><br />
-
-            He opened the door to the Siren practice room looking completely
-            confused and went, “Eugh? This isn’t One and Only team?” before
-            realizing he was in the wrong room and leaving. Han remembered how
-            funny his expression was, and honestly, that is such a HANEULZ way
-            for their story to start.
+            impressions of JL wasn’t some dramatic first meeting. JL literally
+            entered the wrong practice room. ㅋㅋㅋㅋ He opened the door to the
+            Siren practice room looking completely confused and went, “Eugh?
+            This isn’t One and Only team?” before realizing he was in the wrong
+            room and leaving. Han remembered how funny his expression was, and
+            honestly, that is such a HANEULZ way for their story to start.
           </StorySection>
-
-
-          {/* IMAGE */}
-          <AdminImage
-            label="First Impression"
-            className="h-[230px] sm:h-[300px] md:h-[340px]"
-          />
 
 
           {/* LITTLE PRINCE */}
           <StorySection
             title="THE LITTLE PRINCE"
-            icon={<Heart size={20} strokeWidth={1.5} />}
+            icon={<Heart size={19} strokeWidth={1.5} />}
           >
-            Then December 27, 2024 happened.
-
-            <br /><br />
-
-            The Little Prince.
-
-            <br /><br />
-
-            After seeing Han and JL doing their own thing throughout the
-            competition, they finally got to sing together. And honestly, what
-            else am I supposed to say except… their voices sounded so good
-            together.
-
-            <br /><br />
-
-            Han’s voice and JL’s voice have their own colors, but they didn’t
-            fight each other. They actually fit together really naturally. Their
-            harmonies made the whole performance feel so much fuller, and it was
-            one of those stages where you could just sit there and listen without
-            thinking about anything else.
-
-            <br /><br />
-
-            Even the trainees watching them reacted to it, with some of them
-            saying they got goosebumps. And I completely understand why because
-            hearing those two voices together for the first time was just… yeah.
-            HANEULZ.
-
-            <br /><br />
-
-            That performance became such an important part of their story because
-            it was one of the first times we really got to see what happens when
-            Han and JL share the same stage instead of watching them separately.
+            Then December 27, 2024 happened. The Little Prince. After seeing
+            Han and JL doing their own thing throughout the competition, they
+            finally got to sing together. And honestly, what else am I supposed
+            to say except… their voices sounded so good together. Han’s voice
+            and JL’s voice have their own colors, but they didn’t fight each
+            other. They actually fit together really naturally. Their
+            harmonies made the whole performance feel so much fuller, and it
+            was one of those stages where you could just sit there and listen
+            without thinking about anything else. Even the trainees watching
+            them reacted to it, with some of them saying they got goosebumps.
+            And I completely understand why because hearing those two voices
+            together for the first time was just… yeah. HANEULZ. That
+            performance became such an important part of their story because
+            it was one of the first times we really got to see what happens
+            when Han and JL share the same stage instead of watching them
+            separately.
           </StorySection>
 
 
-          {/* IMAGE */}
+          {/* LITTLE PRINCE IMAGE */}
           <AdminImage
-            label="The Little Prince"
-            className="h-[230px] sm:h-[300px] md:h-[340px]"
+            label="THE LITTLE PRINCE"
+            className="h-[210px] sm:h-[280px] md:h-[320px]"
           />
 
 
@@ -172,36 +155,22 @@ export default function HaneulzStory() {
           <StorySection title="AND THEN THEY DEBUTED TOGETHER">
             After everything that happened during Universe League, Han and JL
             eventually debuted together as members of AHOF on July 1, 2025.
-
-            <br /><br />
-
             And honestly, this is probably one of my favorite parts of their
             whole story because after watching them go through the competition,
             seeing them actually end up in the same group felt so satisfying.
             Like finally??? They are actually going to be on the same stages
-            now???
-
-            <br /><br />
-
-            Together with Steven, Jeongwoo, Woongki, Shuaibo, Chih En, Juwon,
-            and Daisuke, they started this new chapter with AHOF’s debut album
-            Who We Are and the title track “그곳에서 다시 만나기로 해
-            (Rendezvous).”
-
-            <br /><br />
-
-            And of course, HANEULZ didn’t just disappear after debut.
-
-            <br /><br />
-
-            If anything, we started getting even more little moments.
+            now??? Together with Steven, Jeongwoo, Woongki, Shuaibo, Chih En,
+            Juwon, and Daisuke, they started this new chapter with AHOF’s debut
+            album Who We Are and the title track “그곳에서 다시 만나기로 해
+            (Rendezvous).” And of course, HANEULZ didn’t just disappear after
+            debut. If anything, we started getting even more little moments.
           </StorySection>
 
 
-          {/* IMAGE */}
+          {/* DEBUT IMAGE */}
           <AdminImage
-            label="AHOF Debut"
-            className="h-[230px] sm:h-[300px] md:h-[340px]"
+            label="AHOF / DEBUT"
+            className="h-[210px] sm:h-[280px] md:h-[320px]"
           />
 
 
@@ -211,222 +180,190 @@ export default function HaneulzStory() {
             JL end up singing together. Han has talked about how JL is good at
             harmonizing and how beautiful his high notes are, and there have
             been so many moments where the two of them just casually start
-            singing together like it’s the most normal thing in the world.
-
-            <br /><br />
-
-            Han even joked about how the practice room is basically never quiet
+            singing together like it’s the most normal thing in the world. Han
+            even joked about how the practice room is basically never quiet
             because he and JL are always singing. And honestly, I can believe
-            it. ㅋㅋㅋㅋ
-
-            <br /><br />
-
-            There are also all those random little moments that don’t necessarily
-            look important on their own but somehow become the things you
-            remember.
-
-            <br /><br />
-
-            JL giving Han jelly. Han eating it. Them sharing food. The random
-            photos. Han lying on JL because he was tired and JL suddenly taking
-            a picture. Their random duets. Calling each other by their nicknames.
-            Those little “Hani hyung~” moments. The way they can turn literally
-            nothing into a whole interaction.
-
-            <br /><br />
-
-            There was even the mafia game moment where Han talked about JL always
-            saving him when he was about to die and how he thought it was better
-            doing it with JL because JL was good at harmonizing and his high notes
-            were beautiful.
-
-            <br /><br />
-
-            And then there was that moment when Han basically went,
-
-            <br /><br />
-
-            “Haneulz is JL and me, right?”
-
-            <br /><br />
-
-            YES. THAT.
-
-            <br /><br />
-
-            Because at that point HANEULZ wasn’t just something fans were calling
-            them. They knew the name too.
-
-            <br /><br />
-
-            There are so many little things like this that I could honestly keep
-            going forever. Sometimes they’re singing, sometimes they’re joking
-            around, sometimes they’re just sitting together, and sometimes it’s
-            literally just one sentence that somehow ends up being memorable.
-
-            <br /><br />
-
-            That’s what I like about HANEULZ. It’s not only the big performances.
-            It’s all these tiny moments in between.
+            it. ㅋㅋㅋㅋ There are also all those random little moments that
+            don’t necessarily look important on their own but somehow become
+            the things you remember. JL giving Han jelly, them sharing food,
+            the random photos, Han lying on JL because he was tired and JL
+            suddenly taking a picture, their random duets, calling each other
+            by their nicknames, and those little “Hani hyung~” moments. The
+            way they can turn literally nothing into a whole interaction is so
+            HANEULZ.
           </StorySection>
 
 
-          {/* IMAGE */}
+          {/* LITTLE MOMENTS IMAGE */}
           <AdminImage
-            label="HANEULZ Moments"
-            className="h-[230px] sm:h-[300px] md:h-[340px]"
+            label="HANEULZ MOMENTS"
+            className="h-[210px] sm:h-[280px] md:h-[320px]"
           />
+
+
+          {/* QUOTE */}
+          <div className="relative mx-auto max-w-2xl px-4 py-6 text-center">
+            <div className="absolute left-1/2 top-0 h-px w-20 -translate-x-1/2 bg-[#dec9d8]" />
+
+            <div className="pt-4">
+              <div className="mb-4 flex justify-center text-[#b394ad]">
+                <Cloud size={21} strokeWidth={1.4} />
+              </div>
+
+              <p className="font-serif-display text-2xl leading-relaxed text-[#51414e] sm:text-3xl md:text-4xl">
+                “Haneulz is JL and me, right?”
+              </p>
+
+              <div className="mt-4 flex justify-center gap-2 text-[#b99bad]">
+                <Sparkles size={13} />
+                <Heart size={14} />
+                <Sparkles size={13} />
+              </div>
+            </div>
+
+            <div className="absolute bottom-0 left-1/2 h-px w-20 -translate-x-1/2 bg-[#dec9d8]" />
+          </div>
+
+
+          {/* AFTER QUOTE */}
+          <StoryText>
+            Because at that point HANEULZ wasn’t just something fans were
+            calling them. They knew the name too. There are so many little
+            things like this that I could honestly keep going forever.
+            Sometimes they’re singing, sometimes they’re joking around,
+            sometimes they’re just sitting together, and sometimes it’s
+            literally just one sentence that somehow ends up being memorable.
+            That’s what I like about HANEULZ. It’s not only the big
+            performances. It’s all these tiny moments in between.
+          </StoryText>
 
 
           {/* HANSUM */}
           <StorySection title="HANSUM">
-            And then there’s Hansum.
-
-            <br /><br />
-
-            Hansum comes from Han’s fandom name, Park Ha-dan, and JL’s nickname,
-            DimSUM. It also connects to the Korean word 한숨, which means a sigh
-            or a deep breath.
-
-            <br /><br />
-
-            I actually really like that meaning because this whole little corner
-            is kind of like that too. A place where you can just breathe for a
-            second, look back at the memories, replay the performances, save the
-            funny moments, and just enjoy being here.
+            And then there’s Hansum. Hansum comes from Han’s fandom name, Park
+            Ha-dan, and JL’s nickname, DimSUM. It also connects to the Korean
+            word 한숨, which means a sigh or a deep breath. I actually really
+            like that meaning because this whole little corner is kind of like
+            that too. A place where you can just breathe for a second, look
+            back at the memories, replay the performances, save the funny
+            moments, and just enjoy being here.
           </StorySection>
+
+
+          {/* HANSUM IMAGE */}
+          <AdminImage
+            label="HANSUM"
+            className="h-[190px] sm:h-[250px] md:h-[290px]"
+          />
 
 
           {/* WHY HANEULZ */}
           <StorySection
             title="WHY HANEULZ"
-            icon={<Star size={20} strokeWidth={1.5} />}
+            icon={<Star size={19} strokeWidth={1.5} />}
           >
-            I don’t think HANEULZ can really be summed up by one performance or
-            one funny interaction.
-
-            <br /><br />
-
-            It started with two trainees who didn’t even know that they were going
-            to end up together. One accidentally walked into the wrong practice
-            room. They eventually sang The Little Prince together. Then somehow,
-            after everything, they debuted in the same group.
-
-            <br /><br />
-
-            And now there are all these little memories in between.
-
-            <br /><br />
-
-            The singing. The harmonies. The jokes. The food. The random photos.
-            The lives. The practice room chaos. The “Hani hyung” moments. The
-            “Jeyelie” moments. The times they randomly start singing together.
-            All of those tiny things that probably felt ordinary when they
-            happened but became memories that people kept coming back to.
-
-            <br /><br />
-
-            That’s what this corner is for.
-
-            <br /><br />
-
-            Not to make their story sound bigger or more dramatic than it is,
-            but just to keep the moments that made HANEULZ feel like HANEULZ in
-            one place.
-
-            <br /><br />
-
-            And honestly, I’m just really happy that after everything, Han and JL
-            got to debut together and keep making these memories.
-
-            <br /><br />
-
-            So… welcome to the little HANEULZ corner. ♡
+            I don’t think HANEULZ can really be summed up by one performance
+            or one funny interaction. It started with two trainees who didn’t
+            even know that they were going to end up together. One accidentally
+            walked into the wrong practice room, they eventually sang The
+            Little Prince together, and then somehow, after everything, they
+            debuted in the same group. And now there are all these little
+            memories in between. The singing, the harmonies, the jokes, the
+            food, the random photos, the lives, the practice room chaos, the
+            “Hani hyung” moments, the “Jeyelie” moments, and the times they
+            randomly start singing together. All of those tiny things probably
+            felt ordinary when they happened but became memories that people
+            kept coming back to. That’s what this corner is for. Not to make
+            their story sound bigger or more dramatic than it is, but just to
+            keep the moments that made HANEULZ feel like HANEULZ in one place.
+            And honestly, I’m just really happy that after everything, Han and
+            JL got to debut together and keep making these memories. So…
+            welcome to the little HANEULZ corner. ♡
           </StorySection>
 
 
-          {/* FINAL IMAGE */}
-          <AdminImage
-            label="HANEULZ"
-            className="mt-2 h-[250px] sm:h-[320px] md:h-[360px]"
-          />
+          {/* SMALL ENDING DECOR */}
+          <div className="flex justify-center gap-3 pt-2 text-[#b99bad]">
+            <Cloud size={16} strokeWidth={1.3} />
+            <Heart size={17} strokeWidth={1.3} />
+            <Sparkles size={15} strokeWidth={1.3} />
+          </div>
 
         </div>
-      </div>
-    </article>
+      </article>
+    </Reveal>
   );
 }
 
 
-/* -----------------------------
-   STORY SECTION
------------------------------ */
-
-function StorySection({ title, icon, children }) {
-  return (
-    <section className="text-center">
-
-      <div className="flex items-center justify-center gap-2.5 text-[#725b70]">
-        {icon}
-
-        <h3 className="font-serif-display text-3xl font-medium tracking-tight sm:text-4xl md:text-[2.7rem]">
-          {title}
-        </h3>
-      </div>
-
-      <StoryText>
-        {children}
-      </StoryText>
-
-    </section>
-  );
-}
-
-
-/* -----------------------------
-   PARAGRAPH
------------------------------ */
+/* ----------------------------- */
+/* STORY TEXT */
+/* ----------------------------- */
 
 function StoryText({ children }) {
   return (
-    <p className="mx-auto mt-6 max-w-3xl text-center text-[15px] leading-8 text-[#716570] sm:text-base sm:leading-8 md:text-[17px] md:leading-9">
+    <p className="mx-auto max-w-3xl text-[15px] leading-8 text-[#766675] sm:text-base sm:leading-8">
       {children}
     </p>
   );
 }
 
 
-/* -----------------------------
-   ADMIN IMAGE PLACEHOLDER
-   Admin can replace the image
-   source later.
------------------------------ */
+/* ----------------------------- */
+/* STORY SECTION */
+/* ----------------------------- */
+
+function StorySection({ title, icon, children }) {
+  return (
+    <section>
+      <div className="flex items-center justify-center gap-2.5 text-center">
+        {icon && (
+          <span className="text-[#ae91a8]">
+            {icon}
+          </span>
+        )}
+
+        <h3 className="font-serif-display text-3xl font-medium tracking-tight text-[#4d3d4a] sm:text-4xl md:text-5xl">
+          {title}
+        </h3>
+      </div>
+
+      <p className="mx-auto mt-5 max-w-3xl text-[15px] leading-8 text-[#766675] sm:mt-6 sm:text-base sm:leading-8">
+        {children}
+      </p>
+    </section>
+  );
+}
+
+
+/* ----------------------------- */
+/* ADMIN IMAGE PLACEHOLDER */
+/* ----------------------------- */
 
 function AdminImage({ label, className = "" }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-[2rem] border border-[#eadde7] bg-gradient-to-br from-[#f5edf4] via-[#fffafa] to-[#edf5f5] shadow-[0_12px_35px_rgba(80,50,75,0.06)] ${className}`}
+      className={`group relative mx-auto w-full rotate-[-0.4deg] overflow-hidden rounded-[1.8rem] border-[8px] border-white bg-[#f0e5ed] shadow-[0_12px_35px_rgba(90,60,85,0.10)] ${className}`}
     >
-      {/* decorative shapes */}
-      <div className="absolute -left-10 -top-10 h-28 w-28 rounded-full bg-[#ead9e8] opacity-50 blur-2xl" />
-      <div className="absolute -bottom-10 -right-10 h-28 w-28 rounded-full bg-[#dcecee] opacity-50 blur-2xl" />
+      {/* Decorative tape */}
+      <div className="absolute left-1/2 top-[-5px] z-10 h-7 w-24 -translate-x-1/2 rotate-[-2deg] bg-[#ead9df]/80 shadow-sm" />
 
-      <div className="relative flex h-full flex-col items-center justify-center px-6 text-center">
-
-        <div className="mb-4 flex items-center gap-3 text-[#aa8fa6]">
-          <span className="h-px w-8 bg-[#d8c4d4]" />
-          <Cloud size={21} strokeWidth={1.4} />
-          <span className="h-px w-8 bg-[#d8c4d4]" />
+      <div className="flex h-full w-full flex-col items-center justify-center bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.8),transparent_30%),linear-gradient(135deg,#f7edf3,#eee2ec)] px-6 text-center">
+        <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-white/70 text-[#b397ad] shadow-sm">
+          <Camera size={21} strokeWidth={1.4} />
         </div>
 
-        <p className="text-xs uppercase tracking-[0.25em] text-[#9b8997]">
+        <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-[#a18c9c]">
+          Admin Image
+        </p>
+
+        <p className="mt-2 font-serif-display text-xl text-[#695466]">
           {label}
         </p>
 
-        <p className="mt-2 text-sm text-[#9b8997]">
-          Admin image placeholder
+        <p className="mt-1 text-xs text-[#a18f9d]">
+          Image can be added or edited by admin
         </p>
-
       </div>
     </div>
   );
