@@ -3,40 +3,42 @@ import { Cloud, Sparkles, Heart } from "lucide-react";
 export default function HaneulzStory() {
   return (
     <Reveal>
-      <article className="mx-auto w-full max-w-4xl px-4 pb-24 sm:px-6">
-        {/* INTRO */}
-        <header className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#fff4f8] via-[#f8f4ff] to-[#eef8ff] px-6 py-14 text-center shadow-[0_20px_70px_rgba(120,90,130,0.10)] sm:px-12 sm:py-20">
-          <div className="absolute -left-12 -top-12 h-32 w-32 rounded-full bg-[#ffd9e8]/60 blur-2xl" />
-          <div className="absolute -bottom-16 -right-10 h-40 w-40 rounded-full bg-[#dcd5ff]/60 blur-3xl" />
+      <article className="mx-auto w-full max-w-4xl px-5 pb-20">
+        {/* TOP */}
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-pink-100 via-purple-50 to-blue-50 px-6 py-14 text-center shadow-sm">
+          <div className="absolute -left-10 -top-10 h-28 w-28 rounded-full bg-pink-200/50 blur-2xl" />
+          <div className="absolute -bottom-10 -right-10 h-32 w-32 rounded-full bg-purple-200/50 blur-2xl" />
           <div className="relative">
             <Cloud
-              size={28}
+              size={27}
               strokeWidth={1.5}
-              className="mx-auto mb-7 text-[#8f7898]"
+              className="mx-auto mb-6 text-purple-400"
             />
-            <p className="text-[11px] uppercase tracking-[0.42em] text-[#9a829b]">
+            <p className="text-[10px] uppercase tracking-[0.5em] text-purple-400">
               a little archive
             </p>
-            <h2 className="mt-5 font-serif-display text-6xl font-medium tracking-[0.04em] text-[#302735] sm:text-7xl">
+            <h2
+              className="mt-4 text-6xl font-semibold tracking-[0.12em] text-gray-800 md:text-7xl"
+              style={{ fontFamily: "Georgia, serif" }}
+            >
               HANEULZ
             </h2>
-            <div className="mx-auto mt-7 h-px w-16 bg-[#c7a9bd]" />
-            <p className="mx-auto mt-7 max-w-xl font-serif-display text-lg italic leading-8 tracking-[0.02em] text-[#746576]">
+            <div className="mx-auto mt-6 h-px w-12 bg-purple-300" />
+            <p
+              className="mx-auto mt-6 max-w-lg text-lg italic leading-8 tracking-wide text-gray-500"
+              style={{ fontFamily: "Georgia, serif" }}
+            >
               the story of two voices that found each other
             </p>
           </div>
-        </header>
+        </div>
         {/* HERO IMAGE */}
-        <StoryImage
-          label="HANEULZ"
-          className="mt-8"
-        />
-        {/* STORY */}
-        <div className="mt-10 space-y-10 sm:mt-12 sm:space-y-12">
+        <ImagePlaceholder label="HANEULZ" className="mt-7" />
+        <div className="mt-9 space-y-8">
           {/* HANEULZ */}
           <StorySection
             title="HANEULZ"
-            icon={<Cloud size={20} strokeWidth={1.5} />}
+            icon={<Cloud size={19} strokeWidth={1.5} />}
           >
             <p>
               HANEULZ is a name that came from Han and Jaeyel, the pronunciation
@@ -50,7 +52,7 @@ export default function HaneulzStory() {
           {/* WHERE IT ALL STARTED */}
           <StorySection
             title="Where It All Started"
-            icon={<Sparkles size={20} strokeWidth={1.5} />}
+            icon={<Sparkles size={19} strokeWidth={1.5} />}
           >
             <p>
               Before HANEULZ was even a thing, Han and JL were just two trainees
@@ -70,8 +72,8 @@ export default function HaneulzStory() {
             </p>
           </StorySection>
           {/* HAN IMAGE */}
-          <StoryImage label="HAN • SIREN" />
-          {/* HAN PARAGRAPH — NO EXTRA HAN HEADER */}
+          <ImagePlaceholder label="HAN • SIREN" />
+          {/* HAN PARAGRAPH */}
           <StoryText>
             <p>
               Then came Han with “Siren.” His whole vibe was completely different.
@@ -96,10 +98,10 @@ export default function HaneulzStory() {
             </p>
           </StorySection>
           {/* LITTLE PRINCE */}
-          <StoryImage label="THE LITTLE PRINCE" />
+          <ImagePlaceholder label="THE LITTLE PRINCE" />
           <StorySection
             title="The Little Prince"
-            icon={<Heart size={20} strokeWidth={1.5} />}
+            icon={<Heart size={19} strokeWidth={1.5} />}
           >
             <p>
               Then December 27, 2024 happened. The Little Prince. After seeing Han
@@ -147,7 +149,7 @@ export default function HaneulzStory() {
               anything, we started getting even more little moments.
             </p>
           </StorySection>
-          {/* LITTLE THINGS */}
+          {/* LITTLE THINGS HEADER */}
           <StorySection title="The Little Things">
             <p>
               One of the things that always makes me smile is how often Han and
@@ -177,17 +179,17 @@ export default function HaneulzStory() {
               notes were beautiful.
             </p>
           </StorySection>
-          {/* LITTLE THINGS IMAGE — DIRECTLY AFTER HEADER/SECTION */}
-          <StoryImage label="HANEULZ • LITTLE MOMENTS" />
+          {/* LITTLE THINGS IMAGE */}
+          <ImagePlaceholder label="HANEULZ • LITTLE MOMENTS" />
           {/* QUOTE */}
-          <div className="relative rounded-[2.5rem] bg-gradient-to-br from-[#fff7fa] to-[#f3efff] px-7 py-12 text-center shadow-[0_18px_60px_rgba(130,100,140,0.09)] sm:px-14 sm:py-14">
-            <div className="absolute left-5 top-5 text-3xl font-serif-display text-[#d8b7ca]">
-              “
-            </div>
-            <blockquote className="font-serif-display text-2xl leading-relaxed tracking-[0.02em] text-[#403542] sm:text-3xl">
+          <div className="rounded-[2rem] bg-gradient-to-r from-pink-50 to-purple-50 px-7 py-10 text-center shadow-sm">
+            <p
+              className="text-2xl leading-relaxed tracking-wide text-gray-700 md:text-3xl"
+              style={{ fontFamily: "Georgia, serif" }}
+            >
               “Haneulz is JL and me, right?”
-            </blockquote>
-            <p className="mt-5 text-xs uppercase tracking-[0.28em] text-[#917b91]">
+            </p>
+            <p className="mt-4 text-xs uppercase tracking-[0.35em] text-purple-400">
               — Han
             </p>
           </div>
@@ -222,7 +224,7 @@ export default function HaneulzStory() {
             </p>
           </StorySection>
           {/* FINAL IMAGE */}
-          <StoryImage label="HANEULZ" />
+          <ImagePlaceholder label="HANEULZ" />
           {/* WHY HANEULZ */}
           <StorySection title="Why HANEULZ">
             <p>
@@ -249,7 +251,10 @@ export default function HaneulzStory() {
               And honestly, I'm just really happy that after everything, Han and JL
               got to debut together and keep making these memories.
             </p>
-            <p className="font-serif-display text-xl italic text-[#675467]">
+            <p
+              className="text-center text-lg italic tracking-wide text-purple-500"
+              style={{ fontFamily: "Georgia, serif" }}
+            >
               So… welcome to the little HANEULZ corner. ♡
             </p>
           </StorySection>
@@ -258,26 +263,22 @@ export default function HaneulzStory() {
     </Reveal>
   );
 }
-/* -------------------------------------------------------
-   IMAGE PLACEHOLDER
-   Admin can replace the image later.
-------------------------------------------------------- */
-function StoryImage({ label, className = "" }) {
+/* IMAGE PLACEHOLDER */
+function ImagePlaceholder({ label, className = "" }) {
   return (
     <div
-      className={`group relative overflow-hidden rounded-[2rem] border border-white/70 bg-gradient-to-br from-[#f8e8f0] via-[#f3eef9] to-[#e9f3f7] shadow-[0_15px_45px_rgba(110,85,120,0.10)] ${className}`}
+      className={`relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-pink-100 via-purple-50 to-blue-50 shadow-sm ${className}`}
     >
-      <div className="absolute inset-0 opacity-50">
-        <div className="absolute left-[12%] top-[20%] h-20 w-20 rounded-full bg-[#ffd8e8] blur-2xl" />
-        <div className="absolute bottom-[15%] right-[15%] h-24 w-24 rounded-full bg-[#dcd4ff] blur-2xl" />
-      </div>
-      <div className="relative flex min-h-[240px] items-center justify-center px-6 py-16 sm:min-h-[300px]">
+      <div className="flex min-h-[250px] items-center justify-center p-8">
         <div className="text-center">
-          <p className="text-[10px] uppercase tracking-[0.38em] text-[#8f7891]">
+          <p className="text-[10px] uppercase tracking-[0.45em] text-purple-400">
             {label}
           </p>
-          <div className="mx-auto mt-5 h-px w-10 bg-[#bfa4b8]" />
-          <p className="mt-5 font-serif-display text-lg italic tracking-[0.04em] text-[#766477]">
+          <div className="mx-auto mt-4 h-px w-10 bg-purple-300" />
+          <p
+            className="mt-4 text-sm italic tracking-wide text-gray-400"
+            style={{ fontFamily: "Georgia, serif" }}
+          >
             admin image goes here
           </p>
         </div>
@@ -285,35 +286,34 @@ function StoryImage({ label, className = "" }) {
     </div>
   );
 }
-/* -------------------------------------------------------
-   SECTION WITH HEADING
-------------------------------------------------------- */
+/* SECTION */
 function StorySection({ title, icon, children }) {
   return (
-    <section className="rounded-[2rem] border border-white/70 bg-white/55 px-6 py-8 shadow-[0_12px_40px_rgba(100,80,110,0.05)] backdrop-blur-sm sm:px-9 sm:py-9">
+    <section className="rounded-[2rem] bg-white/60 px-6 py-8 shadow-sm backdrop-blur-sm sm:px-8">
       <div className="flex items-center justify-center gap-3 text-center">
         {icon && (
-          <span className="text-[#967e95]">
+          <span className="text-purple-400">
             {icon}
           </span>
         )}
-        <h3 className="font-serif-display text-3xl tracking-[0.035em] text-[#403441] sm:text-4xl">
+        <h3
+          className="text-3xl tracking-[0.06em] text-gray-800 sm:text-4xl"
+          style={{ fontFamily: "Georgia, serif" }}
+        >
           {title}
         </h3>
       </div>
-      <div className="mx-auto mt-5 h-px w-10 bg-[#cdb5c6]" />
-      <div className="mx-auto mt-6 max-w-3xl space-y-5 text-[16px] leading-8 tracking-[0.012em] text-[#756878] sm:text-[17px] sm:leading-[1.85]">
+      <div className="mx-auto mt-4 h-px w-9 bg-pink-300" />
+      <div className="mx-auto mt-6 max-w-3xl space-y-5 text-[16px] leading-8 tracking-[0.018em] text-gray-600 sm:text-[17px]">
         {children}
       </div>
     </section>
   );
 }
-/* -------------------------------------------------------
-   PLAIN STORY TEXT
-------------------------------------------------------- */
+/* NORMAL TEXT */
 function StoryText({ children }) {
   return (
-    <div className="mx-auto max-w-3xl space-y-5 px-3 text-[16px] leading-8 tracking-[0.012em] text-[#756878] sm:text-[17px] sm:leading-[1.85]">
+    <div className="mx-auto max-w-3xl space-y-5 px-3 text-[16px] leading-8 tracking-[0.018em] text-gray-600 sm:text-[17px]">
       {children}
     </div>
   );
