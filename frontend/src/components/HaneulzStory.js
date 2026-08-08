@@ -29,13 +29,9 @@ export default function HaneulzStory() {
           </div>
         </div>
 
-        <div className="mx-auto mt-12 max-w-3xl">
+        <div className="mx-auto mt-10 max-w-3xl">
 
-          <h3 className="text-center font-serif-display text-4xl md:text-5xl">
-            HANEULZ
-          </h3>
-
-          <p className="mt-6 text-base leading-8 text-[color:var(--ink-soft)]">
+  <p className="text-base leading-8 text-[color:var(--ink-soft)]">
             HANEULZ is a name that came from Han and Jaeyel,
             the pronunciation of JL's name, and it also happens
             to sound like haneul (하늘), which means sky in Korean.
