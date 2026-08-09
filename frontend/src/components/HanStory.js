@@ -569,773 +569,350 @@ export default function HanStory() {
             className="min-h-[270px] md:col-span-5 md:mt-16"
             background="#e7e0ee"
             number="02"
-            title="INTERESTS"
-            value={profile.interests}
-          />
-          <FeatureCard
-            className="min-h-[250px] md:col-span-4 md:-mt-8"
-            background="#edf3f8"
-            number="03"
-            title="MBTI"
-            value={profile.mbti}
-          />
-          <FeatureCard
-            className="min-h-[300px] md:col-span-8"
-            background="#dfeaf3"
-            number="04"
-            title="MORE"
-            value="Add anything else you want people to know about Han."
-          />
-        </div>
-      </section>
-      {/* =====================================================
-          FAVORITES
-          ===================================================== */}
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
-        <SectionLabel
-          number="05"
-          title="FAVORITES"
-        />
-        <div className="relative rounded-[3rem] bg-[#e3edf6] p-8 sm:p-12 md:p-16">
-          <div className="absolute right-8 top-8">
-            <Star
-              size={28}
-              strokeWidth={1}
-              className="rotate-12 text-[#728aa0]"
-            />
-          </div>
-          <p
-            className="text-2xl text-[#718ba2]"
-            style={{
-              fontFamily:
-                "'Caveat', cursive",
-            }}
-          >
-            Han's favorites
-          </p>
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <FavoriteCard
-              label="MUSIC"
-              value={profile.favorites}
-            />
-            <FavoriteCard
-              label="FOOD"
-              value="Add later"
-            />
-            <FavoriteCard
-              label="COLOR"
-              value="Add later"
-            />
-            <FavoriteCard
-              label="OTHER"
-              value="Add later"
-            />
-          </div>
-        </div>
-      </section>
-      {/* =====================================================
-          FUN FACTS
-          ===================================================== */}
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
-        <SectionLabel
-          number="06"
-          title="FUN FACTS"
-        />
-        <div className="grid gap-14 lg:grid-cols-[0.55fr_1.45fr]">
-          <div>
+        import { useEffect, useState } from "react";
+import { Film, Heart, Sparkles, Cat } from "lucide-react";
+import { Reveal } from "./Reveal";
+
+const BACKEND_URL = (
+  process.env.REACT_APP_BACKEND_URL || ""
+).replace(/\/$/, "");
+
+const API = `${BACKEND_URL}/api`;
+
+export default function HanStory() {
+  const [movies, setMovies] = useState([]);
+  const [loadingMovies, setLoadingMovies] = useState(true);
+
+  useEffect(() => {
+    const loadMovies = async () => {
+      try {
+        const response = await fetch(`${API}/han/movies`);
+
+        if (!response.ok) {
+          throw new Error("Failed to load Han's movie recommendations");
+        }
+
+        const data = await response.json();
+        setMovies(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Failed to load Han movies:", error);
+        setMovies([]);
+      } finally {
+        setLoadingMovies(false);
+      }
+    };
+
+    loadMovies();
+  }, []);
+
+  return (
+    <div className="space-y-10">
+
+      {/* =========================
+          HAN HERO
+      ========================= */}
+
+      <Reveal>
+        <section
+          className="
+            relative
+            overflow-hidden
+            rounded-[3rem]
+            border
+            border-blue-200/50
+            bg-gradient-to-br
+            from-blue-50
+            via-white
+            to-slate-100
+            p-8
+            md:p-14
+          "
+        >
+
+          {/* Decorative circles */}
+
+          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-200/30 blur-3xl" />
+
+          <div className="pointer-events-none absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-slate-300/20 blur-3xl" />
+
+          <div className="relative">
+
+            <div className="flex items-center gap-3 text-blue-500">
+
+              <Cat size={20} />
+
+              <span className="text-xs font-medium uppercase tracking-[0.3em]">
+                Han
+              </span>
+
+            </div>
+
+
             <h2
               className="
-                text-8xl
-                leading-[0.76]
-                tracking-[-0.07em]
-                text-[#3d4956]
-                sm:text-[9rem]
+                mt-6
+                font-serif-display
+                text-5xl
+                font-medium
+                leading-tight
+                text-slate-900
+                md:text-7xl
               "
-              style={{
-                fontFamily:
-                  "'Bodoni 72', Didot, Georgia, serif",
-              }}
             >
-              LITTLE
+              Han's
               <br />
-              FACTS
-              <br />
-              <span className="text-[#7890a5]">
-                HAN
-              </span>
+              little corner
             </h2>
-            <div className="mt-8 text-[#71889c]">
-              <span
-                className="text-3xl"
-                style={{
-                  fontFamily:
-                    "'Caveat', cursive",
-                }}
-              >
-                ᵔᴗᵔ
-              </span>
-            </div>
-          </div>
-          <div>
-            {facts.map((fact, index) => (
-              <div
-                key={index}
-                className="
-                  group
-                  flex
-                  items-start
-                  gap-5
-                  border-t
-                  border-[#c7d2dc]
-                  py-7
-                "
-              >
-                <span className="pt-1 font-mono text-[8px] tracking-[0.25em] text-[#7891a6]">
-                  {String(index + 1).padStart(
-                    2,
-                    "0"
-                  )}
-                </span>
-                <p
-                  className="
-                    text-2xl
-                    leading-8
-                    text-[#5f6b77]
-                  "
-                  style={{
-                    fontFamily:
-                      "'Cormorant Garamond', Georgia, serif",
-                  }}
-                >
-                  {fact}
-                </p>
-                <ArrowUpRight
-                  size={14}
-                  strokeWidth={1}
-                  className="
-                    ml-auto
-                    mt-1
-                    shrink-0
-                    text-[#7891a5]
-                    opacity-0
-                    transition
-                    group-hover:opacity-100
-                  "
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      {/* =====================================================
-          PHOTO ARCHIVE
-          ===================================================== */}
-      <section
-        id="han-photo-archive"
-        className="relative px-5 py-28 sm:px-10 md:px-16 lg:px-24"
-      >
-        <SectionLabel
-          number="07"
-          title="PHOTO ARCHIVE"
-        />
-        <div className="flex flex-col justify-between gap-7 sm:flex-row sm:items-end">
-          <div>
-            <div className="flex items-center gap-3">
-              <Camera
-                size={17}
-                strokeWidth={1}
-                className="text-[#718aa0]"
-              />
-              <span
-                className="text-xl text-[#718ba1]"
-                style={{
-                  fontFamily:
-                    "'Caveat', cursive",
-                }}
-              >
-                Han photos
-              </span>
-            </div>
-            <h2
-              className="
-                mt-2
-                text-7xl
-                leading-[0.75]
-                tracking-[-0.07em]
-                text-[#3d4956]
-                sm:text-9xl
-              "
-              style={{
-                fontFamily:
-                  "'Bodoni 72', Didot, Georgia, serif",
-              }}
-            >
-              ARCHIVE
-            </h2>
-          </div>
-          <div className="max-w-xs">
-            <p
-              className="
-                text-lg
-                leading-7
-                text-[#7b8792]
-              "
-              style={{
-                fontFamily:
-                  "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              The newest photo goes first.
-              Open the archive to keep
-              exploring.
+
+
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-500">
+              A tiny collection of things that feel a little like Han —
+              quiet moments, favorite things, and little pieces of his world.
             </p>
-          </div>
-        </div>
-        {/* ===================================================
-            INITIAL 25 PHOTOS
-            =================================================== */}
-        {!showArchive ? (
-          <>
-            <div className="mt-14 grid grid-cols-6 gap-2 sm:gap-3">
-              {photos
-                .slice(0, PHOTOS_PER_PAGE)
-                .map((photo, index) => (
-                  <ArchivePhoto
-                    key={index}
-                    photo={photo}
-                    index={index}
-                  />
-                ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                setShowArchive(true);
-                setCurrentPage(1);
-              }}
-              className="
-                mx-auto
-                mt-12
-                flex
-                items-center
-                gap-3
-                rounded-full
-                bg-[#465767]
-                px-8
-                py-3
-                text-[8px]
-                uppercase
-                tracking-[0.4em]
-                text-white
-                transition
-                hover:-translate-y-1
-                hover:bg-[#526679]
-              "
-            >
-              Load More
-              <ArrowUpRight
-                size={13}
-                strokeWidth={1}
-              />
-            </button>
-          </>
-        ) : (
-          <>
-            {/* =================================================
-                PAGINATED ARCHIVE
-                ================================================= */}
-            <div className="mt-14 grid grid-cols-6 gap-2 sm:gap-3">
-              {visiblePhotos.map(
-                (photo, index) => {
-                  const actualIndex =
-                    (currentPage - 1) *
-                      PHOTOS_PER_PAGE +
-                    index;
-                  return (
-                    <ArchivePhoto
-                      key={actualIndex}
-                      photo={photo}
-                      index={actualIndex}
-                    />
-                  );
-                }
-              )}
-            </div>
-            {/* =================================================
-                PAGE NUMBERS
-                ================================================= */}
-            <div className="mt-14 flex flex-wrap items-center justify-center gap-2">
-              {Array.from(
-                {
-                  length: totalPages,
-                },
-                (_, index) => index + 1
-              ).map((page) => (
-                <button
-                  key={page}
-                  type="button"
-                  onClick={() =>
-                    goToPage(page)
-                  }
-                  className={`
-                    flex
-                    h-9
-                    min-w-9
-                    items-center
-                    justify-center
-                    rounded-full
-                    px-3
-                    font-mono
-                    text-[8px]
-                    tracking-[0.15em]
-                    transition
-                    ${
-                      currentPage === page
-                        ? "bg-[#465767] text-white"
-                        : "bg-white/65 text-[#71808c] hover:bg-[#dce8f2]"
-                    }
-                  `}
-                >
-                  {page}
-                </button>
-              ))}
-            </div>
-            {/* =================================================
-                ARCHIVE FOOTER
-                ================================================= */}
-            <div className="mt-8 flex flex-col items-center gap-5">
-              <span
-                className="text-xl text-[#718ba1]"
-                style={{
-                  fontFamily:
-                    "'Caveat', cursive",
-                }}
-              >
-                Page {currentPage} ♡
+
+
+            <div className="mt-8 flex flex-wrap gap-3">
+
+              <span className="rounded-full bg-blue-100 px-4 py-2 text-xs text-blue-600">
+                soft blue
               </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setShowArchive(false);
-                  setCurrentPage(1);
-                }}
-                className="
-                  text-[8px]
-                  uppercase
-                  tracking-[0.4em]
-                  text-[#89949e]
-                  underline
-                  underline-offset-4
-                "
-              >
-                Close Archive
-              </button>
+
+              <span className="rounded-full bg-slate-100 px-4 py-2 text-xs text-slate-600">
+                quiet energy
+              </span>
+
+              <span className="rounded-full bg-white px-4 py-2 text-xs text-slate-600 shadow-sm">
+                🐈‍⬛
+              </span>
+
             </div>
-          </>
-        )}
-      </section>
-      {/* =====================================================
-          END
-          ===================================================== */}
-      <section className="relative px-6 pb-28 pt-14 text-center sm:px-10">
-        <div className="mx-auto flex max-w-sm items-center gap-4">
-          <span className="h-px flex-1 bg-[#c8d3dc]" />
-          <Heart
-            size={15}
-            strokeWidth={1}
-            className="text-[#7d96aa]"
-          />
-          <span className="h-px flex-1 bg-[#c8d3dc]" />
-        </div>
-        <h2
-          className="
-            mt-10
-            text-8xl
-            tracking-[-0.08em]
-            text-[#3d4956]
-            sm:text-[11rem]
-          "
-          style={{
-            fontFamily:
-              "'Bodoni 72', Didot, Georgia, serif",
-          }}
-        >
-          HAN
-        </h2>
-        <p
-          className="mt-2 text-2xl text-[#718ba1]"
-          style={{
-            fontFamily:
-              "'Caveat', cursive",
-          }}
-        >
-          a little page for Han ♡
-        </p>
-        <div
-          className="mt-8 select-none text-[#71889c]"
-          style={{
-            fontFamily:
-              "Georgia, serif",
-          }}
-        >
-          ୨୧ ♡ /ᐠ｡ꞈ｡ᐟ\ ♡ ୨୧
-        </div>
-      </section>
-    </main>
-  );
-}
-/* =============================================================
-   SECTION LABEL
-============================================================= */
-function SectionLabel({ number, title }) {
-  return (
-    <div className="mb-14 flex items-center gap-4">
-      <span className="font-mono text-[8px] tracking-[0.3em] text-[#7890a4]">
-        {number}
-      </span>
-      <span className="h-px w-12 bg-[#c4d0da]" />
-      <span className="font-mono text-[7px] uppercase tracking-[0.5em] text-[#89949e]">
-        {title}
-      </span>
-    </div>
-  );
-}
-/* =============================================================
-   QUICK ITEM
-============================================================= */
-function QuickItem({ label, value }) {
-  return (
-    <div className="border-l border-[#c4d0da] pl-4">
-      <p className="font-mono text-[7px] tracking-[0.35em] text-[#7e92a2]">
-        {label}
-      </p>
-      <p
-        className="mt-3 text-xl leading-6 text-[#5c6976]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
-        {value}
-      </p>
-    </div>
-  );
-}
-/* =============================================================
-   TAG
-============================================================= */
-function Tag({ text }) {
-  return (
-    <span className="rounded-full border border-[#bdcbd6] bg-white/45 px-5 py-2 font-mono text-[7px] tracking-[0.18em] text-[#71808d]">
-      {text}
-    </span>
-  );
-}
-/* =============================================================
-   FEATURE CARD
-============================================================= */
-function FeatureCard({
-  background,
-  number,
-  title,
-  value,
-  className = "",
-  large = false,
-}) {
-  return (
-    <div
-      className={`
-        group
-        relative
-        overflow-hidden
-        rounded-[2.6rem]
-        p-8
-        shadow-[0_18px_45px_rgba(65,75,85,0.06)]
-        transition
-        duration-300
-        hover:-translate-y-2
-        sm:p-10
-        ${className}
-      `}
-      style={{
-        backgroundColor:
-          background,
-      }}
-    >
-      <span
-        className="
-          absolute
-          -right-4
-          -top-12
-          text-[12rem]
-          leading-none
-          text-black/[0.035]
-        "
-        style={{
-          fontFamily:
-            "'Bodoni 72', Didot, Georgia, serif",
-        }}
-      >
-        {number}
-      </span>
-      <div className="relative">
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-[8px] tracking-[0.35em] text-[#738391]">
-            {number}
-          </span>
-          <Sparkles
-            size={16}
-            strokeWidth={1}
-            className="text-[#738391]/70"
-          />
-        </div>
-        <h3
-          className={`
-            mt-10
-            text-[#536170]
-            ${
-              large
-                ? "text-5xl sm:text-6xl"
-                : "text-4xl"
-            }
-          `}
-          style={{
-            fontFamily:
-              "'Cormorant Garamond', Georgia, serif",
-          }}
-        >
-          {title}
-        </h3>
-        <p
-          className="
-            mt-8
-            max-w-lg
-            text-xl
-            leading-8
-            text-[#687582]
-          "
-          style={{
-            fontFamily:
-              "'Cormorant Garamond', Georgia, serif",
-          }}
-        >
-          {value}
-        </p>
-      </div>
-    </div>
-  );
-}
-/* =============================================================
-   FAVORITE CARD
-============================================================= */
-function FavoriteCard({ label, value }) {
-  return (
-    <div className="rounded-[1.7rem] bg-white/45 p-6 backdrop-blur-sm">
-      <p className="font-mono text-[7px] tracking-[0.4em] text-[#8293a0]">
-        {label}
-      </p>
-      <p
-        className="mt-5 text-2xl text-[#5f6d79]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
-        {value}
-      </p>
-    </div>
-  );
-}
-/* =============================================================
-   PHOTO PLACEHOLDER
-============================================================= */
-function PhotoPlaceholder({
-  className = "",
-  large = false,
-}) {
-  return (
-    <div
-      className={`
-        relative
-        overflow-hidden
-        rounded-[2.5rem]
-        bg-[#e2ebf3]
-        ${
-          large
-            ? "aspect-[4/3]"
-            : "aspect-[4/5]"
-        }
-        ${className}
-      `}
-    >
-      <div className="absolute inset-0 bg-gradient-to-br from-[#dceaf5] via-[#e7e0ee] to-[#d8e9f3]" />
-      <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-white/70 blur-[70px]" />
-      <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-[#d5e7f3]/70 blur-[70px]" />
-      <div
-        className="absolute inset-0 opacity-[0.08]"
-        style={{
-          backgroundImage:
-            "radial-gradient(#667583 0.6px, transparent 0.6px)",
-          backgroundSize: "20px 20px",
-        }}
-      />
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/55">
-          <Camera
-            size={22}
-            strokeWidth={1}
-            className="text-[#71808d]"
-          />
-        </div>
-        <span className="mt-5 font-mono text-[7px] tracking-[0.4em] text-[#71808d]">
-          HAN PHOTO
-        </span>
-        <span
-          className="mt-2 text-xl text-[#7890a4]"
-          style={{
-            fontFamily:
-              "'Caveat', cursive",
-          }}
-        >
-          ♡
-        </span>
-      </div>
-    </div>
-  );
-}
-/* =============================================================
-   ARCHIVE PHOTO
-   Clicking the image opens the original post.
-============================================================= */
-function ArchivePhoto({ photo, index }) {
-  const colors = [
-    ["#dceaf5", "#e6e0ee"],
-    ["#e1edf6", "#d8e8f2"],
-    ["#e8e0ed", "#dceaf5"],
-    ["#edf3f8", "#dce8f2"],
-    ["#d9e9f3", "#e7e0ed"],
-    ["#e4eef6", "#dce8f1"],
-  ];
-  const pair =
-    colors[index % colors.length];
-  const isLarge =
-    index === 0 ||
-    index === 4 ||
-    index === 8 ||
-    index === 13 ||
-    index === 18 ||
-    index === 23;
-  const content = (
-    <div
-      className={`
-        group
-        relative
-        overflow-hidden
-        rounded-[1rem]
-        sm:rounded-[1.5rem]
-        ${
-          isLarge
-            ? "col-span-4 row-span-2 aspect-square"
-            : "col-span-2 aspect-square"
-        }
-      `}
-      style={{
-        background:
-          `linear-gradient(135deg, ${pair[0]}, ${pair[1]})`,
-      }}
-    >
-      {photo.src ? (
-        <img
-          src={photo.src}
-          alt={photo.alt}
-          className="
-            h-full
-            w-full
-            object-cover
-            transition
-            duration-500
-            group-hover:scale-105
-          "
-        />
-      ) : (
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <Camera
-            size={isLarge ? 24 : 16}
-            strokeWidth={1}
+
+          </div>
+
+        </section>
+      </Reveal>
+
+
+      {/* =========================
+          LITTLE INTRO
+      ========================= */}
+
+      <Reveal>
+
+        <section className="grid gap-6 md:grid-cols-[1.1fr_0.9fr]">
+
+          <div className="glass rounded-[2.5rem] p-8 md:p-10">
+
+            <div className="flex items-center gap-2 text-blue-500">
+
+              <Sparkles size={18} />
+
+              <span className="text-xs uppercase tracking-[0.25em]">
+                a little about han
+              </span>
+
+            </div>
+
+
+            <h3 className="mt-5 font-serif-display text-4xl text-slate-900">
+              quiet, but never boring.
+            </h3>
+
+
+            <p className="mt-5 leading-8 text-[color:var(--ink-soft)]">
+              There's something about Han that feels calm and a little
+              mysterious. Like a black cat sitting quietly in the corner,
+              watching everything before deciding whether to join in.
+            </p>
+
+
+            <p className="mt-4 leading-8 text-[color:var(--ink-soft)]">
+              This little space is for the softer details — the things he
+              likes, the moments that remind us of him, and the tiny pieces
+              that make Han feel like Han.
+            </p>
+
+          </div>
+
+
+          <div
             className="
-              text-[#667583]/40
-              transition
-              duration-300
-              group-hover:scale-110
+              rounded-[2.5rem]
+              bg-blue-50
+              p-8
+              md:p-10
             "
-          />
-          <span
-            className="mt-2 text-sm text-[#71899d]/60"
-            style={{
-              fontFamily:
-                "'Caveat', cursive",
-            }}
           >
-            ♡
-          </span>
+
+            <Heart
+              size={24}
+              className="text-blue-400"
+            />
+
+            <p className="mt-6 font-serif-display text-3xl leading-snug text-slate-800">
+              "a little blue corner for our quiet cat."
+            </p>
+
+            <p className="mt-6 text-sm text-slate-500">
+              made with love ♡
+            </p>
+
+          </div>
+
+        </section>
+
+      </Reveal>
+
+
+      {/* =========================
+          MOVIE RECOMMENDATIONS
+      ========================= */}
+
+      <Reveal>
+
+        <section
+          className="
+            overflow-hidden
+            rounded-[2.75rem]
+            border
+            border-blue-100
+            bg-white
+            p-8
+            md:p-10
+          "
+        >
+
+          <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+
+            <div>
+
+              <div className="flex items-center gap-2 text-blue-500">
+
+                <Film size={19} />
+
+                <span className="text-xs uppercase tracking-[0.28em]">
+                  han's picks
+                </span>
+
+              </div>
+
+
+              <h3 className="mt-4 font-serif-display text-4xl text-slate-900 md:text-5xl">
+                Movies he'd recommend
+              </h3>
+
+
+              <p className="mt-3 max-w-xl text-[color:var(--ink-soft)]">
+                A little list of movies from Han's corner.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div className="mt-8">
+
+            {loadingMovies ? (
+
+              <div className="rounded-3xl bg-blue-50 p-8 text-center text-sm text-slate-500">
+                loading Han's picks...
+              </div>
+
+            ) : movies.length === 0 ? (
+
+              <div className="rounded-3xl bg-blue-50 p-8 text-center">
+
+                <Film
+                  size={24}
+                  className="mx-auto text-blue-400"
+                />
+
+                <p className="mt-4 text-sm text-slate-500">
+                  No movie recommendations yet ♡
+                </p>
+
+              </div>
+
+            ) : (
+
+              <div className="grid gap-3 sm:grid-cols-2">
+
+                {movies.map((movie, index) => (
+
+                  <div
+                    key={movie.id || index}
+                    className="
+                      group
+                      flex
+                      items-center
+                      gap-4
+                      rounded-2xl
+                      border
+                      border-blue-100
+                      bg-blue-50/50
+                      px-5
+                      py-4
+                      transition
+                      hover:-translate-y-0.5
+                      hover:bg-blue-50
+                    "
+                  >
+
+                    <span
+                      className="
+                        flex
+                        h-9
+                        w-9
+                        shrink-0
+                        items-center
+                        justify-center
+                        rounded-full
+                        bg-white
+                        text-xs
+                        text-blue-500
+                        shadow-sm
+                      "
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+
+                    <span className="font-medium text-slate-800">
+                      {movie.title}
+                    </span>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            )}
+
+          </div>
+
+        </section>
+
+      </Reveal>
+
+
+      {/* =========================
+          LITTLE FOOTNOTE
+      ========================= */}
+
+      <Reveal>
+
+        <div className="pb-4 text-center">
+
+          <p className="text-sm text-slate-400">
+            a few little things from Han's world 🐈‍⬛
+          </p>
+
         </div>
-      )}
-      {/* Hover overlay */}
-      <div
-        className="
-          absolute
-          inset-0
-          flex
-          items-center
-          justify-center
-          bg-black/0
-          transition
-          duration-300
-          group-hover:bg-black/10
-        "
-      >
-        {photo.src &&
-          photo.postUrl && (
-            <span
-              className="
-                rounded-full
-                bg-white/85
-                px-4
-                py-2
-                font-mono
-                text-[6px]
-                uppercase
-                tracking-[0.3em]
-                text-[#596875]
-                opacity-0
-                transition
-                group-hover:opacity-100
-              "
-            >
-              Original post ↗
-            </span>
-          )}
-      </div>
-      <span className="absolute bottom-2 left-2 rounded-full bg-white/65 px-2 py-1 font-mono text-[6px] text-[#61707d]">
-        {String(index + 1).padStart(
-          2,
-          "0"
-        )}
-      </span>
+
+      </Reveal>
+
     </div>
   );
-  /* Entire image is clickable when postUrl exists. */
-  if (photo.postUrl) {
-    return (
-      <a
-        href={photo.postUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Open original post for ${photo.alt}`}
-      >
-        {content}
-      </a>
-    );
-  }
-  return content;
 }
