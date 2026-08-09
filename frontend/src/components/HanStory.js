@@ -2,34 +2,10 @@ import { useEffect, useState } from "react";
 import { Film, Heart, Sparkles, Cat } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || "").replace(/\/$/, "");
-const API = `${BACKEND_URL}/api`;
 
 export default function HanStory() {
-  const [movies, setMovies] = useState([]);
-  const [loadingMovies, setLoadingMovies] = useState(true);
-
-  useEffect(() => {
-    async function loadMovies() {
-      try {
-        const response = await fetch(`${API}/han/movies`);
-
-        if (!response.ok) {
-          throw new Error("Failed to load movies");
-        }
-
-        const data = await response.json();
-        setMovies(Array.isArray(data) ? data : []);
-      } catch (error) {
-        console.error("Failed to load Han's movies:", error);
-        setMovies([]);
-      } finally {
-        setLoadingMovies(false);
-      }
-    }
-
-    loadMovies();
-  }, []);
+const [movies] = useState([]);
+const loadingMovies = false;
 
   return (
     <div className="space-y-10">
