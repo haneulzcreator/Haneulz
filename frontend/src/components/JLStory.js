@@ -1,398 +1,452 @@
 import React, { useState } from "react";
-import { Camera, Heart, Sparkles, ArrowDown, Plus } from "lucide-react";
-export default function JLPage() {
-  const [showAllPhotos, setShowAllPhotos] = useState(false);
+import {
+  Camera,
+  Heart,
+  Sparkles,
+  Plus,
+  ArrowDown,
+  Star,
+} from "lucide-react";
+export default function JLStory() {
+  const [showAll, setShowAll] = useState(false);
   const [visiblePhotos, setVisiblePhotos] = useState(9);
+  // Temporary preview data.
+  // Later, these can come from your admin system.
   const photos = Array.from({ length: 27 }, (_, index) => ({
     id: index + 1,
-    label: `JL PHOTO ${String(index + 1).padStart(2, "0")}`,
   }));
-  const displayedPhotos = showAllPhotos
+  const visible = showAll
     ? photos.slice(0, visiblePhotos)
     : photos.slice(0, 9);
   return (
-    <main className="min-h-screen bg-[#eee3df] px-2 py-2 text-[#40383e] sm:px-4 sm:py-4">
-      {/* =====================================================
-          BACKGROUND
-      ===================================================== */}
-      <div className="pointer-events-none fixed inset-0 -z-0 overflow-hidden">
-        <div className="absolute -left-40 -top-20 h-[420px] w-[420px] rounded-full bg-[#e7b7c5]/30 blur-[110px]" />
-        <div className="absolute -right-40 top-[650px] h-[460px] w-[460px] rounded-full bg-[#c5b9d7]/25 blur-[120px]" />
-        <div className="absolute -left-48 top-[1500px] h-[500px] w-[500px] rounded-full bg-[#b7d0d0]/24 blur-[130px]" />
-        <div className="absolute -right-40 top-[2700px] h-[500px] w-[500px] rounded-full bg-[#dfb6c6]/22 blur-[130px]" />
+    <div className="relative overflow-hidden rounded-[2.5rem] bg-[#f8eee9] text-[#413a40] shadow-[0_25px_80px_rgba(75,53,66,0.12)]">
+      {/* BACKGROUND DECOR */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-28 top-20 h-72 w-72 rounded-full bg-[#e7a9bd]/25 blur-[90px]" />
+        <div className="absolute -right-32 top-[700px] h-80 w-80 rounded-full bg-[#aaa2d0]/25 blur-[100px]" />
+        <div className="absolute -left-32 top-[1500px] h-96 w-96 rounded-full bg-[#9fc7c8]/20 blur-[110px]" />
+        <div className="absolute right-[-150px] top-[2400px] h-96 w-96 rounded-full bg-[#e8b1bd]/25 blur-[110px]" />
       </div>
-      <article className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-[2rem] bg-[#f6eee9]/90 shadow-[0_25px_90px_rgba(67,52,62,0.15)] backdrop-blur-[2px] sm:rounded-[2.5rem] lg:rounded-[3rem]">
-        {/* =====================================================
-            COVER
-        ===================================================== */}
-        <section className="relative flex min-h-[620px] items-center justify-center overflow-hidden px-6 py-16 sm:min-h-[700px] sm:px-10 md:min-h-[760px]">
-          <div className="absolute left-7 top-8 rotate-[-5deg] text-[9px] uppercase tracking-[0.4em] text-[#856779] sm:left-12 sm:top-12 sm:text-[10px]">
-            personal archive
+      {/* =====================================================
+          INTRO
+      ===================================================== */}
+      <section className="relative min-h-[650px] px-6 py-16 sm:px-10 sm:py-20 md:min-h-[720px] md:px-16 lg:px-24">
+        <div className="absolute left-6 top-8 rotate-[-4deg] text-[8px] uppercase tracking-[0.5em] text-[#8b6b7d] sm:left-10">
+          another little corner
+        </div>
+        <div className="absolute right-6 top-8 text-[8px] uppercase tracking-[0.5em] text-[#8b6b7d] sm:right-10">
+          JL / 01
+        </div>
+        {/* giant background letters */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 select-none text-[230px] font-bold leading-none tracking-[-0.14em] text-[#d7b7c5]/20 sm:text-[330px] md:text-[430px]"
+          style={{
+            fontFamily: "Georgia, serif",
+          }}
+        >
+          JL
+        </div>
+        <div className="relative z-10 flex min-h-[570px] flex-col justify-center">
+          <div className="mb-7 flex items-center gap-3">
+            <span className="h-px w-10 bg-[#b97999]" />
+            <Sparkles
+              size={15}
+              strokeWidth={1.2}
+              className="text-[#756697]"
+            />
+            <span className="text-[8px] uppercase tracking-[0.45em] text-[#806477]">
+              getting to know him
+            </span>
           </div>
-          <div className="absolute right-7 top-9 text-[8px] uppercase tracking-[0.55em] text-[#806c7b] sm:right-12 sm:top-12 sm:text-[10px]">
-            JL / 01
-          </div>
-          {/* giant background initials */}
-          <div
-            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[190px] font-bold tracking-[-0.12em] text-white/45 sm:text-[280px] md:text-[360px]"
-            style={{ fontFamily: "Georgia, serif" }}
+          <h1
+            className="max-w-4xl text-[5rem] leading-[0.82] tracking-[0.045em] sm:text-[7rem] md:text-[9rem] lg:text-[11rem]"
+            style={{
+              fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
+            }}
           >
             JL
-          </div>
-          <div className="relative z-10 w-full text-center">
-            <div className="mb-7 flex items-center justify-center gap-3">
-              <span className="h-px w-10 bg-[#b97b98] sm:w-16" />
-              <Sparkles
-                size={18}
-                strokeWidth={1}
-                className="text-[#8170a0]"
-              />
-              <span className="h-px w-10 bg-[#b97b98] sm:w-16" />
-            </div>
-            <p className="text-[9px] uppercase tracking-[0.75em] text-[#806577] sm:text-[10px] sm:tracking-[0.9em]">
-              JAEYEL
-            </p>
-            <h1
-              className="mt-5 text-[5rem] leading-[0.8] tracking-[0.035em] text-[#40373e] sm:text-[7rem] md:text-[9rem] lg:text-[11rem]"
-              style={{
-                fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
-              }}
-            >
-              JL
-            </h1>
-            <div className="mx-auto mt-9 flex items-center justify-center gap-3">
-              <span className="h-px w-8 bg-[#b97b98]" />
-              <span className="text-sm text-[#8270a0]">✦</span>
-              <span className="h-px w-14 bg-[#b97b98]" />
-            </div>
-            <p
-              className="mx-auto mt-7 max-w-[340px] text-[18px] leading-7 tracking-[0.075em] text-[#665b63] sm:max-w-lg sm:text-xl sm:leading-8"
+          </h1>
+          <div className="mt-7 flex flex-wrap items-center gap-x-4 gap-y-2">
+            <span
+              className="text-xl tracking-[0.08em] text-[#645660] sm:text-2xl"
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
               }}
             >
-              a little corner dedicated to JL
-            </p>
-            <div
-              className="mx-auto mt-9 inline-block rotate-[-2deg] border border-[#c596ac] bg-[#fff8f3]/80 px-5 py-2.5 text-[10px] tracking-[0.12em] text-[#765d6d] shadow-[5px_6px_0_rgba(115,82,104,0.08)]"
-              style={{ fontFamily: "'Comic Sans MS', cursive" }}
-            >
-              saved here, just because ♡
-            </div>
-          </div>
-          <div className="absolute bottom-9 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-[#897281]">
-            <span className="text-[7px] uppercase tracking-[0.5em]">
-              scroll
+              Jay Lawrence Gaspar
             </span>
-            <ArrowDown size={15} strokeWidth={1} />
-          </div>
-        </section>
-        {/* =====================================================
-            INTRO IMAGE
-        ===================================================== */}
-        <div className="px-5 sm:px-8 md:px-12 lg:px-16">
-          <ImagePlaceholder
-            label="JL"
-            large
-            rotate="-1deg"
-          />
-        </div>
-        {/* =====================================================
-            ABOUT JL
-        ===================================================== */}
-        <section className="px-6 pb-8 pt-6 sm:px-9 sm:pb-10 sm:pt-8 md:px-16 lg:px-24">
-          <SectionHeader
-            number="01"
-            title="About JL"
-            icon={<Heart size={17} strokeWidth={1.2} />}
-          />
-          <div className="mt-6 max-w-4xl">
-            <StoryParagraph>
-              JL, whose name is Jaeyel, is the kind of person who can quietly
-              become one of the most memorable people in a room. There's this
-              calmness to him, but once he's on stage or around the people he's
-              comfortable with, you get to see so many different sides of him.
-            </StoryParagraph>
-            <StoryParagraph>
-              From his dancing and vocals to the little expressions he makes
-              without even realizing it, there's always something about JL that
-              makes you want to keep watching. And then there's the smile.
-              Obviously, we have to mention the smile.
-            </StoryParagraph>
-            <StoryParagraph>
-              This page is basically a little collection of those things —
-              the moments, details, and memories that make JL feel like JL.
-            </StoryParagraph>
-          </div>
-        </section>
-        {/* =====================================================
-            PROFILE CARD
-        ===================================================== */}
-        <section className="mx-5 my-5 sm:mx-8 sm:my-7 md:mx-12 lg:mx-16">
-          <div className="relative overflow-hidden rounded-[2rem] border border-[#d6c3ca] bg-[#fff8f3]/65 px-6 py-8 shadow-[0_12px_35px_rgba(82,61,76,0.08)] sm:rounded-[2.5rem] sm:px-9 sm:py-10 md:px-14">
-            <div className="absolute -right-10 -top-10 text-[130px] tracking-[-0.1em] text-[#c9a9bb]/15">
-              JL
-            </div>
-            <p className="text-[8px] uppercase tracking-[0.65em] text-[#8a6b7d]">
-              little profile
-            </p>
-            <div className="relative mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              <InfoItem title="Name" value="Jaeyel" />
-              <InfoItem title="Nickname" value="JL" />
-              <InfoItem title="Known For" value="HANEULZ" />
-              <InfoItem title="Home" value="AHOF" />
-            </div>
-          </div>
-        </section>
-        {/* =====================================================
-            LITTLE THINGS
-        ===================================================== */}
-        <section className="px-6 pb-9 pt-7 sm:px-9 sm:pb-11 sm:pt-9 md:px-16 lg:px-24">
-          <SectionHeader
-            number="02"
-            title="The Little Things"
-            icon={<Sparkles size={17} strokeWidth={1.2} />}
-          />
-          <div className="mt-6 max-w-4xl">
-            <StoryParagraph>
-              JL has so many tiny habits and details that make him easy to
-              recognize. The way he reacts when something surprises him. The
-              little expressions he makes. The way his smile appears when he's
-              genuinely having fun.
-            </StoryParagraph>
-            <StoryParagraph>
-              He's also someone who seems to have a naturally playful side,
-              especially around the people he's close to. Sometimes it's a
-              joke, sometimes it's teasing, and sometimes it's just him doing
-              something completely random.
-            </StoryParagraph>
-            <StoryParagraph>
-              And honestly, those tiny things are usually the moments that end
-              up becoming the most memorable.
-            </StoryParagraph>
-          </div>
-        </section>
-        {/* =====================================================
-            QUOTE
-        ===================================================== */}
-        <section className="relative mx-5 my-7 sm:mx-8 sm:my-9 md:mx-14 lg:mx-20">
-          <div className="absolute inset-x-2 top-3 bottom-[-7px] rotate-[1deg] rounded-[2rem] bg-[#d8c4d8]/45 sm:rounded-[2.5rem]" />
-          <div className="absolute inset-x-1 top-1 bottom-[-3px] rotate-[-1deg] rounded-[2rem] bg-[#e9c2cf]/45 sm:rounded-[2.5rem]" />
-          <div className="relative rounded-[2rem] border border-[#c49aac]/55 bg-[#fff5f0] px-6 py-11 text-center shadow-[0_15px_45px_rgba(80,59,76,0.1)] sm:rounded-[2.5rem] sm:px-10 sm:py-14 md:px-16">
-            <span className="absolute left-6 top-5 text-5xl text-[#b47d99]/30 sm:left-9 sm:top-6">
-              “
-            </span>
-            <span className="absolute bottom-[-10px] right-7 text-7xl text-[#a78bac]/20 sm:right-12 sm:text-9xl">
-              ”
-            </span>
-            <p className="mb-6 text-[8px] uppercase tracking-[0.65em] text-[#886c7c]">
-              a little JL thought
-            </p>
-            <blockquote
-              className="mx-auto max-w-3xl text-[2.2rem] leading-[1.13] tracking-[0.055em] text-[#433940] sm:text-4xl md:text-5xl"
-              style={{
-                fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
-              }}
-            >
-              Some moments are small,
-              <br />
-              but they're still worth keeping.
-            </blockquote>
-            <div className="mx-auto mt-8 h-px w-16 bg-[#ba849e]" />
-          </div>
-        </section>
-        {/* =====================================================
-            PHOTO ARCHIVE HEADER
-        ===================================================== */}
-        <section className="px-6 pb-4 pt-9 sm:px-9 sm:pb-5 sm:pt-11 md:px-16 lg:px-24">
-          <div className="flex items-end justify-between gap-5">
-            <div className="min-w-0">
-              <SectionHeader
-                number="03"
-                title="Photo Archive"
-                icon={<Camera size={17} strokeWidth={1.2} />}
-              />
-            </div>
-            {/* ADMIN BUTTON */}
-            <button
-              type="button"
-              className="hidden shrink-0 items-center gap-2 rounded-full border border-[#c59aae] bg-[#fff7f2] px-4 py-2 text-[8px] uppercase tracking-[0.3em] text-[#765c6d] transition hover:bg-[#f5e2e6] sm:flex"
-            >
-              <Plus size={12} strokeWidth={1.5} />
-              Add Photo
-            </button>
-          </div>
-          <div className="mt-5 flex items-center justify-between gap-4 sm:mt-6">
-            <p
-              className="max-w-md text-[15px] leading-6 tracking-[0.05em] text-[#766a71] sm:text-base"
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              A growing collection of JL moments, saved one picture at a time.
-            </p>
-            <span className="shrink-0 text-[8px] uppercase tracking-[0.35em] text-[#9a7d8d]">
-              {photos.length} photos
+            <span className="text-[#b97999]">·</span>
+            <span className="text-[9px] uppercase tracking-[0.4em] text-[#856679]">
+              Yence · Jaeyel
             </span>
           </div>
-        </section>
-        {/* =====================================================
-            MOBILE ADMIN BUTTON
-        ===================================================== */}
-        <div className="px-6 pb-4 sm:hidden">
-          <button
-            type="button"
-            className="flex w-full items-center justify-center gap-2 rounded-full border border-[#c59aae] bg-[#fff7f2] px-4 py-3 text-[8px] uppercase tracking-[0.3em] text-[#765c6d]"
+          <p
+            className="mt-8 max-w-xl text-[18px] leading-8 tracking-[0.055em] text-[#6d6169] sm:text-xl"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+            }}
           >
-            <Plus size={12} strokeWidth={1.5} />
-            Admin · Add Photo
-          </button>
-        </div>
-        {/* =====================================================
-            3 × 3 PHOTO GRID
-        ===================================================== */}
-        <section className="px-5 sm:px-8 md:px-12 lg:px-16">
-          <div className="grid grid-cols-3 gap-1.5 overflow-hidden rounded-[1.3rem] bg-[#d9cbd0] p-1.5 sm:gap-2 sm:rounded-[2rem] sm:p-2">
-            {displayedPhotos.map((photo) => (
-              <PhotoTile
-                key={photo.id}
-                number={photo.id}
-              />
-            ))}
+            A little space for the things that make JL,
+            well... JL.
+          </p>
+          <div className="mt-9 flex flex-wrap gap-3">
+            <span className="rotate-[-2deg] rounded-sm bg-[#fff8ed] px-4 py-2 text-[8px] uppercase tracking-[0.25em] shadow-[3px_4px_0_rgba(103,75,91,0.08)]">
+              JL
+            </span>
+            <span className="rotate-[2deg] rounded-sm bg-[#ead7e3] px-4 py-2 text-[8px] uppercase tracking-[0.25em] shadow-[3px_4px_0_rgba(103,75,91,0.08)]">
+              Yence
+            </span>
+            <span className="rotate-[-1deg] rounded-sm bg-[#dce9e7] px-4 py-2 text-[8px] uppercase tracking-[0.25em] shadow-[3px_4px_0_rgba(103,75,91,0.08)]">
+              Jaeyel
+            </span>
           </div>
-        </section>
-        {/* =====================================================
-            VIEW ALL / LOAD MORE
-        ===================================================== */}
-        <section className="px-6 pb-10 pt-5 text-center sm:px-9 sm:pb-12 sm:pt-6">
-          {!showAllPhotos ? (
+        </div>
+        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-[#8b7180]">
+          <span className="text-[7px] uppercase tracking-[0.5em]">
+            keep scrolling
+          </span>
+          <ArrowDown size={14} strokeWidth={1} />
+        </div>
+      </section>
+      {/* =====================================================
+          HERO IMAGE
+      ===================================================== */}
+      <section className="relative px-5 sm:px-9 md:px-14 lg:px-20">
+        <ImagePlaceholder
+          label="JL"
+          large
+          rotation="-1deg"
+        />
+      </section>
+      {/* =====================================================
+          WHO IS JL
+      ===================================================== */}
+      <section className="relative px-6 pb-10 pt-10 sm:px-10 sm:pt-14 md:px-16 lg:px-24">
+        <SectionTitle
+          number="01"
+          title="Who is JL?"
+        />
+        <div className="mt-7 max-w-4xl">
+          <Paragraph>
+            Jay Lawrence Gaspar, known as JL, is someone whose personality
+            cannot really be captured in just one sentence. There are the
+            obvious things people notice first, but then there are all the
+            smaller details that make him feel familiar.
+          </Paragraph>
+          <Paragraph>
+            This little corner is for those details. The hobbies, favorites,
+            random facts, little habits, and moments that make you understand
+            the person behind the name JL.
+          </Paragraph>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <MiniNote text="Jay Lawrence Gaspar" rotate="-2deg" />
+          <MiniNote text="JL" rotate="2deg" />
+          <MiniNote text="Yence" rotate="-1deg" />
+          <MiniNote text="Jaeyel" rotate="3deg" />
+        </div>
+      </section>
+      {/* =====================================================
+          GETTING TO KNOW JL
+      ===================================================== */}
+      <section className="relative px-6 py-10 sm:px-10 sm:py-14 md:px-16 lg:px-24">
+        <SectionTitle
+          number="02"
+          title="Getting To Know JL"
+        />
+        <p
+          className="mt-5 max-w-2xl text-[16px] leading-7 tracking-[0.05em] text-[#756971] sm:text-lg"
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+          }}
+        >
+          More than just a name — a collection of the little things we know
+          about him.
+        </p>
+        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <InfoCard
+            label="FULL NAME"
+            value="Jay Lawrence Gaspar"
+            type="cream"
+          />
+          <InfoCard
+            label="KNOWN AS"
+            value="JL"
+            type="pink"
+          />
+          <InfoCard
+            label="NICKNAMES"
+            value="Yence · Jaeyel"
+            type="blue"
+          />
+          <InfoCard
+            label="HOBBIES"
+            value="Add later"
+            type="purple"
+          />
+          <InfoCard
+            label="LIKES"
+            value="Add later"
+            type="green"
+          />
+          <InfoCard
+            label="FAVORITES"
+            value="Add later"
+            type="yellow"
+          />
+        </div>
+      </section>
+      {/* =====================================================
+          MORE ABOUT HIM
+      ===================================================== */}
+      <section className="relative px-6 py-10 sm:px-10 sm:py-14 md:px-16 lg:px-24">
+        <div className="relative overflow-hidden rounded-[2rem] border border-[#d5bdc8] bg-[#fff7f1]/75 p-7 sm:rounded-[2.5rem] sm:p-10 md:p-14">
+          <div className="absolute -right-8 -top-8 text-[130px] font-bold tracking-[-0.12em] text-[#d6b5c5]/20">
+            JL
+          </div>
+          <div className="relative">
+            <div className="flex items-center gap-3">
+              <Heart
+                size={16}
+                strokeWidth={1.2}
+                className="text-[#b56f8d]"
+              />
+              <p className="text-[8px] uppercase tracking-[0.55em] text-[#87697b]">
+                more about him
+              </p>
+            </div>
+            <h3
+              className="mt-4 text-4xl tracking-[0.06em] text-[#433a40] sm:text-5xl"
+              style={{
+                fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
+              }}
+            >
+              The little details.
+            </h3>
+            <div className="mt-6 max-w-3xl">
+              <Paragraph>
+                This section can grow with the archive. Hobbies, interests,
+                favorite things, habits, personality traits, funny facts —
+                anything that feels like something worth knowing about JL.
+              </Paragraph>
+              <Paragraph>
+                Instead of having to redesign this page whenever something new
+                is added, these details can eventually be managed through the
+                admin side of HANEULZ.
+              </Paragraph>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* =====================================================
+          LITTLE THINGS
+      ===================================================== */}
+      <section className="relative px-6 py-10 sm:px-10 sm:py-14 md:px-16 lg:px-24">
+        <SectionTitle
+          number="03"
+          title="The Little Things"
+        />
+        <div className="mt-8 grid gap-7 md:grid-cols-[1.05fr_0.95fr] md:items-center">
+          <ImagePlaceholder
+            label="A JL MOMENT"
+            rotation="2deg"
+          />
+          <div className="md:pl-4">
+            <Paragraph>
+              Sometimes the smallest things end up being the most memorable.
+              A reaction, a smile, a random habit, or something that only
+              becomes noticeable after you've seen it a hundred times.
+            </Paragraph>
+            <Paragraph>
+              This section can become a collection of those tiny JL moments —
+              the things that don't necessarily need a whole story, but still
+              deserve a place here.
+            </Paragraph>
+          </div>
+        </div>
+      </section>
+      {/* =====================================================
+          FAVORITES / INTERESTS
+      ===================================================== */}
+      <section className="relative px-6 py-10 sm:px-10 sm:py-14 md:px-16 lg:px-24">
+        <SectionTitle
+          number="04"
+          title="A Few More Things"
+        />
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <LargeNote
+            icon={<Star size={17} strokeWidth={1.2} />}
+            title="Hobbies"
+            text="This can be filled in from the admin panel."
+            rotation="-1deg"
+          />
+          <LargeNote
+            icon={<Heart size={17} strokeWidth={1.2} />}
+            title="Favorite Things"
+            text="Favorite food, music, colors, games, or anything else."
+            rotation="1deg"
+          />
+          <LargeNote
+            icon={<Sparkles size={17} strokeWidth={1.2} />}
+            title="Random Facts"
+            text="The fun little details that don't fit anywhere else."
+            rotation="1deg"
+          />
+          <LargeNote
+            icon={<Plus size={17} strokeWidth={1.2} />}
+            title="More"
+            text="This section can grow whenever you want."
+            rotation="-2deg"
+          />
+        </div>
+      </section>
+      {/* =====================================================
+          PHOTO ARCHIVE
+      ===================================================== */}
+      <section className="relative px-5 pb-8 pt-12 sm:px-9 sm:pb-10 sm:pt-16 md:px-14 lg:px-20">
+        <div className="flex items-end justify-between gap-5">
+          <SectionTitle
+            number="05"
+            title="Photo Archive"
+          />
+          <div className="hidden shrink-0 items-center gap-2 rounded-full border border-[#c49bad] bg-[#fff8f3] px-4 py-2 text-[7px] uppercase tracking-[0.35em] text-[#795e70] sm:flex">
+            <Camera size={11} strokeWidth={1.2} />
+            Admin
+          </div>
+        </div>
+        <div className="mt-6 flex items-end justify-between gap-4">
+          <p
+            className="max-w-md text-[16px] leading-7 tracking-[0.05em] text-[#746870] sm:text-lg"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+            }}
+          >
+            Little moments, saved here one picture at a time.
+          </p>
+          <span className="shrink-0 text-[7px] uppercase tracking-[0.4em] text-[#9a7b8a]">
+            {photos.length} photos
+          </span>
+        </div>
+        <div className="mt-7 grid grid-cols-3 gap-1.5 overflow-hidden rounded-[1.5rem] bg-[#d4c5ca] p-1.5 sm:gap-2 sm:rounded-[2rem] sm:p-2">
+          {visible.map((photo) => (
+            <PhotoTile
+              key={photo.id}
+              number={photo.id}
+            />
+          ))}
+        </div>
+        <div className="flex justify-center pt-7">
+          {!showAll ? (
             <button
               type="button"
-              onClick={() => setShowAllPhotos(true)}
-              className="group inline-flex items-center gap-3 border-b border-[#aa7e91] pb-2 text-[9px] uppercase tracking-[0.45em] text-[#765d6c] transition hover:text-[#b16e8c]"
+              onClick={() => setShowAll(true)}
+              className="group flex items-center gap-3 border-b border-[#a8778d] pb-2 text-[8px] uppercase tracking-[0.45em] text-[#775c6d]"
             >
               View All Photos
               <ArrowDown
-                size={13}
-                strokeWidth={1.2}
+                size={12}
+                strokeWidth={1}
                 className="transition group-hover:translate-y-1"
               />
             </button>
           ) : (
-            <div className="flex flex-col items-center gap-5">
+            <div className="flex flex-col items-center gap-4">
               {visiblePhotos < photos.length && (
                 <button
                   type="button"
                   onClick={() =>
-                    setVisiblePhotos((current) =>
-                      Math.min(current + 9, photos.length)
+                    setVisiblePhotos((value) =>
+                      Math.min(value + 9, photos.length)
                     )
                   }
-                  className="rounded-full border border-[#b98ba0] bg-[#fff7f2] px-6 py-3 text-[8px] uppercase tracking-[0.4em] text-[#765c6d] transition hover:bg-[#f4dfe5]"
+                  className="rounded-full border border-[#bb8da0] bg-[#fff8f3] px-6 py-3 text-[8px] uppercase tracking-[0.4em] text-[#765c6d] transition hover:bg-[#f4dce3]"
                 >
                   Load More Photos
                 </button>
               )}
               {visiblePhotos >= photos.length && (
-                <p className="text-[8px] uppercase tracking-[0.45em] text-[#9a7b8b]">
-                  you've reached the end ♡
+                <p className="text-[7px] uppercase tracking-[0.4em] text-[#98798a]">
+                  you've reached the end
                 </p>
               )}
               <button
                 type="button"
                 onClick={() => {
-                  setShowAllPhotos(false);
+                  setShowAll(false);
                   setVisiblePhotos(9);
                 }}
-                className="text-[8px] uppercase tracking-[0.35em] text-[#967487] underline underline-offset-4"
+                className="text-[7px] uppercase tracking-[0.35em] text-[#957183] underline underline-offset-4"
               >
                 Show Less
               </button>
             </div>
           )}
-        </section>
-        {/* =====================================================
-            FINAL NOTE
-        ===================================================== */}
-        <section className="relative mx-5 mb-8 overflow-hidden rounded-[2rem] border border-[#d4c4ca] bg-[#fff7f2]/75 px-6 py-10 text-center sm:mx-8 sm:mb-10 sm:rounded-[2.5rem] sm:px-10 sm:py-12 md:mx-12 lg:mx-16">
-          <div className="absolute -right-8 -top-8 text-[120px] text-[#c9a8b9]/10">
-            JL
-          </div>
-          <p className="relative text-[8px] uppercase tracking-[0.65em] text-[#8b6d7c]">
-            one more thing
-          </p>
-          <h2
-            className="relative mt-4 text-4xl tracking-[0.055em] text-[#423940] sm:text-5xl"
-            style={{
-              fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
-            }}
-          >
-            Keep the little moments.
-          </h2>
-          <p
-            className="relative mx-auto mt-5 max-w-xl text-[16px] leading-7 tracking-[0.06em] text-[#70646c] sm:text-lg sm:leading-8"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            Because sometimes those are the ones you remember the longest.
-          </p>
-        </section>
-        {/* =====================================================
-            FOOTER
-        ===================================================== */}
-        <div className="flex items-center justify-center gap-4 pb-10 pt-1 sm:gap-5 sm:pb-12">
-          <span className="h-px w-10 bg-[#b97999] sm:w-16" />
-          <Sparkles
-            size={14}
-            strokeWidth={1}
-            className="text-[#7c6a99]"
-          />
-          <span className="h-px w-10 bg-[#b97999] sm:w-16" />
         </div>
-      </article>
-    </main>
+      </section>
+      {/* =====================================================
+          END
+      ===================================================== */}
+      <section className="relative px-6 pb-16 pt-12 text-center sm:px-10 sm:pb-20">
+        <div className="mx-auto flex max-w-xl items-center justify-center gap-4">
+          <span className="h-px flex-1 bg-[#c89eb0]" />
+          <Sparkles
+            size={15}
+            strokeWidth={1}
+            className="text-[#77689b]"
+          />
+          <span className="h-px flex-1 bg-[#c89eb0]" />
+        </div>
+        <h3
+          className="mt-9 text-4xl tracking-[0.06em] text-[#463c43] sm:text-5xl"
+          style={{
+            fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
+          }}
+        >
+          More to come.
+        </h3>
+        <p
+          className="mx-auto mt-4 max-w-md text-[16px] leading-7 tracking-[0.05em] text-[#776a72]"
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+          }}
+        >
+          Because there will always be another little thing worth saving.
+        </p>
+      </section>
+    </div>
   );
 }
 /* =============================================================
-   SECTION HEADER
+   SECTION TITLE
 ============================================================= */
-function SectionHeader({ number, title, icon }) {
+function SectionTitle({ number, title }) {
   return (
     <div>
-      <div className="flex items-center gap-2 sm:gap-3">
-        <span className="text-[8px] tracking-[0.55em] text-[#806477] sm:text-[9px] sm:tracking-[0.65em]">
+      <div className="flex items-center gap-3">
+        <span className="text-[8px] tracking-[0.55em] text-[#806477]">
           {number}
         </span>
-        <span className="h-px w-6 bg-[#b97999] sm:w-9" />
-        {icon && (
-          <span className="text-[#77639a]">
-            {icon}
-          </span>
-        )}
+        <span className="h-px w-8 bg-[#b97999]" />
+        <span className="h-px w-14 bg-[#d0a9ba]" />
       </div>
       <h2
-        className="mt-3 text-[2.15rem] leading-[1.04] tracking-[0.075em] text-[#423943] sm:mt-4 sm:text-4xl md:text-5xl lg:text-6xl"
+        className="mt-3 text-[2.3rem] leading-none tracking-[0.065em] text-[#423940] sm:text-4xl md:text-5xl"
         style={{
           fontFamily: "'Bodoni 72', 'Didot', Georgia, serif",
         }}
       >
         {title}
       </h2>
-      <div className="mt-4 flex items-center gap-2 sm:mt-5">
-        <span className="h-[2px] w-6 bg-[#b97999] sm:w-9" />
-        <span className="h-px w-12 bg-[#c7a5b7] sm:w-20" />
-      </div>
     </div>
   );
 }
 /* =============================================================
-   STORY PARAGRAPH
+   PARAGRAPH
 ============================================================= */
-function StoryParagraph({ children }) {
+function Paragraph({ children }) {
   return (
     <p
-      className="mb-3 text-[16px] leading-[1.7] tracking-[0.06em] text-[#615861] sm:mb-3.5 sm:text-[17px] sm:leading-[1.76] md:text-[18px] md:leading-[1.8]"
+      className="mb-3 text-[16px] leading-[1.75] tracking-[0.055em] text-[#675d64] sm:mb-4 sm:text-[17px] sm:leading-[1.8]"
       style={{
         fontFamily: "'Cormorant Garamond', Georgia, serif",
       }}
@@ -402,21 +456,74 @@ function StoryParagraph({ children }) {
   );
 }
 /* =============================================================
-   PROFILE ITEM
+   INFO CARD
 ============================================================= */
-function InfoItem({ title, value }) {
+function InfoCard({ label, value, type }) {
+  const backgrounds = {
+    cream: "bg-[#fff7e9]",
+    pink: "bg-[#f1d9e1]",
+    blue: "bg-[#dce9e8]",
+    purple: "bg-[#e4deed]",
+    green: "bg-[#dce9df]",
+    yellow: "bg-[#f2e8c9]",
+  };
   return (
-    <div className="border-l border-[#cdaabc] pl-4">
-      <p className="text-[7px] uppercase tracking-[0.5em] text-[#98798a]">
-        {title}
+    <div
+      className={`min-h-[150px] rounded-[1.5rem] border border-white/70 p-6 shadow-[4px_6px_0_rgba(78,58,73,0.06)] ${backgrounds[type]}`}
+    >
+      <p className="text-[7px] uppercase tracking-[0.5em] text-[#806779]">
+        {label}
       </p>
       <p
-        className="mt-2 text-xl tracking-[0.04em] text-[#4b4148]"
+        className="mt-5 text-2xl tracking-[0.045em] text-[#4a4047]"
         style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
         }}
       >
         {value}
+      </p>
+    </div>
+  );
+}
+/* =============================================================
+   SMALL NOTE
+============================================================= */
+function MiniNote({ text, rotate }) {
+  return (
+    <span
+      className="rounded-sm bg-[#fff8ed] px-4 py-2 text-[8px] uppercase tracking-[0.25em] text-[#725c69] shadow-[3px_4px_0_rgba(90,66,82,0.08)]"
+      style={{
+        transform: `rotate(${rotate})`,
+      }}
+    >
+      {text}
+    </span>
+  );
+}
+/* =============================================================
+   LARGE NOTE
+============================================================= */
+function LargeNote({ icon, title, text, rotation }) {
+  return (
+    <div
+      className="rounded-[1.8rem] border border-white/70 bg-[#fff7f1]/75 p-7 shadow-[5px_7px_0_rgba(86,62,79,0.06)]"
+      style={{
+        transform: `rotate(${rotation})`,
+      }}
+    >
+      <div className="flex items-center gap-3 text-[#80627a]">
+        {icon}
+        <p className="text-[8px] uppercase tracking-[0.45em]">
+          {title}
+        </p>
+      </div>
+      <p
+        className="mt-5 text-[17px] leading-7 tracking-[0.045em] text-[#6c6068]"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+        }}
+      >
+        {text}
       </p>
     </div>
   );
@@ -428,29 +535,29 @@ function PhotoTile({ number }) {
   return (
     <button
       type="button"
-      className="group relative aspect-square overflow-hidden bg-[#cdbbc4] text-left"
+      className="group relative aspect-square overflow-hidden bg-[#c8b6c0]"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-[#cf8faa] via-[#a493b8] to-[#75a8b1] transition duration-500 group-hover:scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#d291aa] via-[#a79abc] to-[#7caeb0] transition duration-500 group-hover:scale-105" />
       <div
         className="absolute inset-0 opacity-[0.12]"
         style={{
           backgroundImage:
-            "radial-gradient(#ffffff 1px, transparent 1px)",
+            "radial-gradient(#fff 1px, transparent 1px)",
           backgroundSize: "12px 12px",
         }}
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/60 bg-white/15 sm:h-11 sm:w-11">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/15">
           <Camera
-            size={15}
+            size={17}
             strokeWidth={1}
-            className="text-white/85 sm:size-[18px]"
+            className="text-white/85"
           />
         </div>
       </div>
-      <div className="absolute bottom-2 left-2 text-[6px] uppercase tracking-[0.2em] text-white/80 sm:bottom-3 sm:left-3 sm:text-[7px]">
+      <span className="absolute bottom-2 left-2 text-[6px] uppercase tracking-[0.25em] text-white/80">
         JL · {String(number).padStart(2, "0")}
-      </div>
+      </span>
     </button>
   );
 }
@@ -460,48 +567,49 @@ function PhotoTile({ number }) {
 function ImagePlaceholder({
   label,
   large = false,
-  rotate = "0deg",
+  rotation = "0deg",
 }) {
   return (
     <div
-      className="relative w-full"
+      className="relative"
       style={{
-        transform: `rotate(${rotate})`,
-        marginBottom: "-5px",
+        transform: `rotate(${rotation})`,
       }}
     >
-      <div className="absolute left-1/2 top-[-8px] z-20 h-7 w-20 -translate-x-1/2 rotate-[-2deg] bg-[#dbc99b]/75 shadow-sm sm:h-8 sm:w-28" />
-      <div className="absolute inset-2 rounded-[1.8rem] bg-[#594b5b]/15 blur-md sm:rounded-[2.5rem]" />
+      <div className="absolute left-1/2 top-[-8px] z-20 h-7 w-24 -translate-x-1/2 rotate-[-2deg] bg-[#dbc99c]/75 shadow-sm sm:h-8 sm:w-32" />
+      <div className="absolute inset-2 rounded-[2rem] bg-[#594b5b]/15 blur-md" />
       <div
-        className={`relative w-full overflow-hidden rounded-[1.8rem] border-[6px] border-[#fffaf5] bg-[#d9cdcf] shadow-[0_16px_40px_rgba(63,49,64,0.14)] sm:rounded-[2.5rem] sm:border-[8px] ${
+        className={`relative overflow-hidden rounded-[2rem] border-[7px] border-[#fffaf6] bg-[#d3c6ca] shadow-[0_18px_45px_rgba(64,48,62,0.15)] sm:rounded-[2.5rem] sm:border-[9px] ${
           large ? "aspect-[16/9]" : "aspect-[4/3]"
         }`}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#d28eaa] via-[#a08fbc] to-[#77adb7]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#cf8eaa] via-[#a295bd] to-[#78adb0]" />
         <div
           className="absolute inset-0 opacity-[0.11]"
           style={{
             backgroundImage:
-              "radial-gradient(#ffffff 1px, transparent 1px)",
-            backgroundSize: "15px 15px",
+              "radial-gradient(#fff 1px, transparent 1px)",
+            backgroundSize: "14px 14px",
           }}
         />
-        <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-10">
-          <div className="text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-white/65 bg-white/20 sm:h-14 sm:w-14">
+        <div className="absolute inset-0 flex items-center justify-center text-center">
+          <div>
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-white/65 bg-white/20 sm:h-14 sm:w-14">
               <Camera
-                size={22}
+                size={21}
                 strokeWidth={1}
-                className="text-white/85"
+                className="text-white/90"
               />
             </div>
-            <p className="text-[8px] uppercase tracking-[0.55em] text-white/90 sm:text-[10px] sm:tracking-[0.7em]">
+            <p className="mt-4 text-[8px] uppercase tracking-[0.6em] text-white/90 sm:text-[9px]">
               {label}
             </p>
-            <div className="mx-auto mt-4 h-px w-12 bg-white/60" />
+            <div className="mx-auto mt-3 h-px w-10 bg-white/60" />
             <p
-              className="mt-3 text-xs tracking-[0.05em] text-white/75 sm:text-sm"
-              style={{ fontFamily: "'Comic Sans MS', cursive" }}
+              className="mt-3 text-xs text-white/75"
+              style={{
+                fontFamily: "'Comic Sans MS', cursive",
+              }}
             >
               admin image goes here
             </p>
