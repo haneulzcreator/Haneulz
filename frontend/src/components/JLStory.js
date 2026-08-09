@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  ArrowDown,
   ArrowUpRight,
   Camera,
   Heart,
@@ -11,6 +10,10 @@ import {
 export default function JLStory() {
   const [showArchive, setShowArchive] = useState(false);
   const [photoLimit, setPhotoLimit] = useState(9);
+
+  /* =========================================================
+     JL INFORMATION
+  ========================================================= */
 
   const profile = {
     fullName: "Jay Lawrence Gaspar",
@@ -32,72 +35,162 @@ export default function JLStory() {
     "Add another detail whenever you want.",
   ];
 
-  /*
-   * PHOTO ARCHIVE
-   *
-   * Put the ORIGINAL POST URL in postUrl.
-   *
-   * Example:
-   * {
-   *   src: "/images/jl01.jpg",
-   *   postUrl: "https://twitter.com/...",
-   *   alt: "JL photo"
-   * }
-   *
-   * Clicking the photo opens the original post.
-   */
+  /* =========================================================
+     PHOTO ARCHIVE
+
+     NEWEST PHOTO = FIRST ITEM
+
+     Add the ORIGINAL POST URL to originalPost.
+     Clicking a photo opens the original post.
+  ========================================================= */
 
   const photos = [
-    { src: "", postUrl: "", alt: "JL photo 01" },
-    { src: "", postUrl: "", alt: "JL photo 02" },
-    { src: "", postUrl: "", alt: "JL photo 03" },
-    { src: "", postUrl: "", alt: "JL photo 04" },
-    { src: "", postUrl: "", alt: "JL photo 05" },
-    { src: "", postUrl: "", alt: "JL photo 06" },
-    { src: "", postUrl: "", alt: "JL photo 07" },
-    { src: "", postUrl: "", alt: "JL photo 08" },
-    { src: "", postUrl: "", alt: "JL photo 09" },
-    { src: "", postUrl: "", alt: "JL photo 10" },
-    { src: "", postUrl: "", alt: "JL photo 11" },
-    { src: "", postUrl: "", alt: "JL photo 12" },
-    { src: "", postUrl: "", alt: "JL photo 13" },
-    { src: "", postUrl: "", alt: "JL photo 14" },
-    { src: "", postUrl: "", alt: "JL photo 15" },
-    { src: "", postUrl: "", alt: "JL photo 16" },
-    { src: "", postUrl: "", alt: "JL photo 17" },
-    { src: "", postUrl: "", alt: "JL photo 18" },
-    { src: "", postUrl: "", alt: "JL photo 19" },
-    { src: "", postUrl: "", alt: "JL photo 20" },
-    { src: "", postUrl: "", alt: "JL photo 21" },
-    { src: "", postUrl: "", alt: "JL photo 22" },
-    { src: "", postUrl: "", alt: "JL photo 23" },
-    { src: "", postUrl: "", alt: "JL photo 24" },
+    {
+      src: "",
+      alt: "JL photo 01",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 02",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 03",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 04",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 05",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 06",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 07",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 08",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 09",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 10",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 11",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 12",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 13",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 14",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 15",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 16",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 17",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 18",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 19",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 20",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 21",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 22",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 23",
+      originalPost: "",
+    },
+    {
+      src: "",
+      alt: "JL photo 24",
+      originalPost: "",
+    },
   ];
 
   return (
-    <main className="relative overflow-hidden rounded-[3rem] bg-[#f7f1e9] text-[#403943]">
+    <main className="relative overflow-hidden rounded-[2.5rem] bg-[#f6efe8] text-[#51464c]">
 
       {/* =====================================================
-          BACKGROUND TEXTURE
+          PAPER TEXTURE + BACKGROUND
       ===================================================== */}
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
 
-        <div className="absolute -left-40 -top-40 h-[560px] w-[560px] rounded-full bg-[#dce9f5]/80 blur-[120px]" />
+        <div className="absolute -left-32 -top-32 h-[420px] w-[420px] rounded-full bg-[#e7c9d3]/55 blur-[100px]" />
 
-        <div className="absolute -right-48 top-[15%] h-[600px] w-[600px] rounded-full bg-[#ead9eb]/70 blur-[130px]" />
+        <div className="absolute -right-40 top-[20%] h-[500px] w-[500px] rounded-full bg-[#d8d1e8]/55 blur-[110px]" />
 
-        <div className="absolute -left-48 top-[45%] h-[620px] w-[620px] rounded-full bg-[#f2d9df]/70 blur-[130px]" />
+        <div className="absolute -left-40 top-[48%] h-[500px] w-[500px] rounded-full bg-[#c9dfe0]/45 blur-[120px]" />
 
-        <div className="absolute -right-48 top-[75%] h-[600px] w-[600px] rounded-full bg-[#f5e6bd]/70 blur-[130px]" />
+        <div className="absolute -right-40 top-[75%] h-[500px] w-[500px] rounded-full bg-[#ead8b7]/40 blur-[110px]" />
 
         {/* paper grain */}
         <div
-          className="absolute inset-0 opacity-[0.09]"
+          className="absolute inset-0 opacity-[0.08]"
           style={{
             backgroundImage: `
-              radial-gradient(#554c58 0.5px, transparent 0.5px),
-              radial-gradient(#554c58 0.4px, transparent 0.4px)
+              radial-gradient(#62565c 0.5px, transparent 0.5px),
+              radial-gradient(#62565c 0.4px, transparent 0.4px)
             `,
             backgroundPosition: "0 0, 8px 8px",
             backgroundSize: "16px 16px",
@@ -105,9 +198,32 @@ export default function JLStory() {
         />
 
         {/* hand-drawn lines */}
-        <div className="absolute left-[8%] top-[20%] h-36 w-px rotate-[19deg] bg-[#917b88]/30" />
-        <div className="absolute right-[8%] top-[34%] h-44 w-px rotate-[-25deg] bg-[#917b88]/25" />
-        <div className="absolute left-[11%] top-[70%] h-32 w-px rotate-[-18deg] bg-[#917b88]/25" />
+        <div className="absolute left-[8%] top-[13%] h-24 w-px rotate-[24deg] bg-[#9e7e89]/30" />
+
+        <div className="absolute right-[9%] top-[38%] h-32 w-px rotate-[-28deg] bg-[#9e7e89]/25" />
+
+        <div className="absolute left-[12%] top-[73%] h-28 w-px rotate-[-18deg] bg-[#8ba4a4]/25" />
+
+      </div>
+
+
+      {/* =====================================================
+          TOP SCRAPBOOK LABEL
+      ===================================================== */}
+
+      <div className="relative px-5 pt-5 sm:px-8 sm:pt-8">
+
+        <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-[#cbb4bd] bg-[#fffaf5]/75 px-4 py-2 shadow-[3px_4px_0_rgba(90,70,75,0.07)]">
+
+          <span className="font-mono text-[7px] uppercase tracking-[0.4em] text-[#927482]">
+            HANEULZ ARCHIVE
+          </span>
+
+          <span className="font-mono text-[7px] uppercase tracking-[0.35em] text-[#aaa0a4]">
+            JL FILE · 001
+          </span>
+
+        </div>
 
       </div>
 
@@ -116,84 +232,42 @@ export default function JLStory() {
           COVER
       ===================================================== */}
 
-      <section className="relative min-h-[780px] px-6 pb-24 pt-8 sm:px-10 md:px-16 lg:px-24">
+      <section className="relative px-5 pb-20 pt-12 sm:px-8 sm:pb-28 sm:pt-16 lg:px-16">
 
-        <div className="flex items-center justify-between">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
 
-          <div className="flex items-center gap-3">
-
-            <span className="font-mono text-[8px] tracking-[0.45em] text-[#a77e91]">
-              HANEULZ
-            </span>
-
-            <span className="h-px w-8 bg-[#cdb4c2]" />
-
-            <span className="font-mono text-[7px] tracking-[0.4em] text-[#98909a]">
-              JL / ARCHIVE
-            </span>
-
-          </div>
-
-          <span className="font-mono text-[8px] tracking-[0.3em] text-[#9d949f]">
-            01 / 05
-          </span>
-
-        </div>
-
-
-        {/* giant JL */}
-
-        <div className="relative mt-20">
-
-          <span
-            className="pointer-events-none absolute -left-10 -top-24 select-none text-[15rem] font-black leading-none tracking-[-0.2em] text-[#d7cddd]/45 sm:text-[22rem] md:text-[30rem]"
-            style={{ fontFamily: "Arial Black, sans-serif" }}
-          >
-            J
-          </span>
-
-          <span
-            className="pointer-events-none absolute right-[-4%] top-[10%] select-none text-[9rem] font-black leading-none text-[#efd8df]/50 sm:text-[14rem]"
-            style={{ fontFamily: "Arial Black, sans-serif" }}
-          >
-            L
-          </span>
-
+          {/* LEFT */}
 
           <div className="relative z-10">
 
-            <div className="flex items-center gap-3">
-
-              <span
-                className="text-xl text-[#a4748a]"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                known as
+            <div
+              className="inline-block -rotate-3 rounded-sm bg-[#f4d9a8] px-4 py-2 shadow-[4px_5px_0_rgba(91,70,67,0.08)]"
+              style={{
+                fontFamily: "'Comic Sans MS', cursive",
+              }}
+            >
+              <span className="text-sm text-[#675653]">
+                little JL archive
               </span>
-
-              <span className="h-px w-10 bg-[#bd9aab]" />
-
-              <span className="font-mono text-[7px] tracking-[0.35em] text-[#958b96]">
-                JL
-              </span>
-
             </div>
 
+            <p className="mt-7 font-mono text-[8px] uppercase tracking-[0.5em] text-[#a07889]">
+              known as
+            </p>
 
             <h1
-              className="mt-2 text-[8rem] leading-[0.7] tracking-[-0.09em] text-[#403a4a] sm:text-[11rem] md:text-[15rem] lg:text-[18rem]"
+              className="mt-2 text-[7rem] leading-[0.72] tracking-[-0.08em] text-[#493e45] sm:text-[9rem] md:text-[11rem]"
               style={{
-                fontFamily: "'Bodoni 72', 'Bodoni MT', Didot, Georgia, serif",
+                fontFamily: "'Bodoni 72', Didot, Georgia, serif",
               }}
             >
               JL
             </h1>
 
-
-            <div className="mt-12">
+            <div className="mt-7 rotate-[-1deg]">
 
               <p
-                className="text-3xl text-[#514a59] sm:text-4xl"
+                className="text-3xl text-[#5d5159] sm:text-4xl"
                 style={{
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                 }}
@@ -202,92 +276,75 @@ export default function JLStory() {
               </p>
 
               <p
-                className="mt-1 text-2xl text-[#a4778c]"
-                style={{ fontFamily: "'Caveat', cursive" }}
+                className="mt-1 text-2xl text-[#a57488]"
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                }}
               >
                 Yence · Jaeyel
               </p>
 
             </div>
 
-          </div>
+            <p
+              className="mt-7 max-w-md text-lg leading-7 text-[#766970]"
+              style={{
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+              }}
+            >
+              a tiny collection of photos, facts, memories,
+              and everything that makes JL, JL.
+            </p>
 
+            <div className="mt-8 flex flex-wrap gap-2">
 
-          {/* =================================================
-              MAIN PHOTO + CHARACTER DOODLES
-          ================================================= */}
+              <MiniStamp text="JL" />
 
-          <div className="relative z-20 mt-16 ml-auto w-[94%] max-w-[600px] sm:w-[70%]">
+              <MiniStamp text="YENCE" />
 
-            <div className="absolute -inset-3 rotate-[3deg] rounded-[2.5rem] bg-[#e7d8ed]" />
-            <div className="absolute -inset-3 -rotate-[2deg] rounded-[2.5rem] bg-[#f2d9df]" />
-
-            <PhotoPlaceholder large className="relative" />
-
-            {/* DEER DOODLE */}
-
-            <DeerDoodle className="absolute -bottom-12 -left-16 hidden sm:block" />
-
-            {/* RACCOON DOODLE */}
-
-            <RaccoonDoodle className="absolute -right-16 -top-20 hidden sm:block" />
-
-
-            <div className="absolute -bottom-7 left-8 rotate-[-6deg] rounded-full bg-[#fff0ca] px-6 py-3 shadow-[0_15px_35px_rgba(70,55,70,0.1)]">
-
-              <span
-                className="text-xl text-[#6b606d]"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                Yence ♡
-              </span>
+              <MiniStamp text="JAEYEL" />
 
             </div>
 
           </div>
 
-        </div>
 
+          {/* RIGHT PHOTO */}
 
-        <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2">
+          <div className="relative mx-auto w-full max-w-[540px]">
 
-          <span className="font-mono text-[7px] uppercase tracking-[0.5em] text-[#9e969f]">
-            discover JL
-          </span>
+            <div className="absolute -left-4 top-8 h-full w-full rotate-[-5deg] rounded-[2rem] bg-[#d8cde6]" />
 
-          <ArrowDown
-            size={14}
-            strokeWidth={1}
-            className="text-[#ad8598]"
-          />
+            <div className="absolute -right-3 -top-4 h-full w-full rotate-[4deg] rounded-[2rem] bg-[#e8c7d2]" />
 
-        </div>
+            <div className="relative rotate-[1.5deg] rounded-[1.7rem] border-[8px] border-[#fffaf3] bg-[#fffaf3] p-2 shadow-[0_20px_50px_rgba(72,56,64,0.16)]">
 
-      </section>
+              <PhotoPlaceholder large />
 
+              <div className="absolute -bottom-7 -right-4 rotate-[-5deg] rounded-md bg-[#fff0c9] px-5 py-3 shadow-[3px_4px_0_rgba(70,55,55,0.1)]">
 
-      {/* =====================================================
-          QUICK LOOK
-      ===================================================== */}
+                <span
+                  className="text-xl text-[#6d5c5e]"
+                  style={{
+                    fontFamily: "'Caveat', cursive",
+                  }}
+                >
+                  Yence ♡
+                </span>
 
-      <section className="relative px-6 py-24 sm:px-10 md:px-16 lg:px-24">
+              </div>
 
-        <SectionLabel number="02" title="QUICK LOOK" />
+              <div className="absolute -left-5 -top-7 rotate-[-8deg] rounded-sm bg-[#e4d6c0] px-4 py-2 shadow-sm">
 
-        <div className="relative overflow-hidden rounded-[2.8rem] border border-[#d7c8d0] bg-[#eee6f3] p-7 shadow-[0_20px_60px_rgba(70,55,70,0.07)] sm:p-10">
+                <span className="font-mono text-[7px] uppercase tracking-[0.3em] text-[#77686a]">
+                  treasured
+                </span>
 
-          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#fff1cf]/70 blur-[70px]" />
+              </div>
 
-          <div className="absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-[#f4dce5]/70 blur-[70px]" />
+            </div>
 
-          <div className="relative grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
-
-            <QuickItem label="KNOWN AS" value="JL" />
-            <QuickItem label="NICKNAME" value="Yence" />
-            <QuickItem label="ALSO" value="Jaeyel" />
-            <QuickItem label="BIRTHDAY" value={profile.birthday} />
-            <QuickItem label="NATIONALITY" value={profile.nationality} />
-            <QuickItem label="MBTI" value={profile.mbti} />
+            <DeerRaccoonDrawing className="absolute -bottom-14 -left-12 w-44 sm:-left-16 sm:w-52" />
 
           </div>
 
@@ -297,49 +354,136 @@ export default function JLStory() {
 
 
       {/* =====================================================
-          ABOUT
+          QUICK FACTS
       ===================================================== */}
 
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
+      <section className="relative px-5 py-16 sm:px-8 sm:py-20 lg:px-16">
 
-        <SectionLabel number="03" title="ABOUT JL" />
+        <div className="mx-auto max-w-6xl">
 
-        <div className="grid items-center gap-16 lg:grid-cols-[0.85fr_1.15fr]">
+          <ScrapHeader
+            number="01"
+            title="a little bit about JL"
+            subtitle="the important stuff ♡"
+          />
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+            <FactCard
+              label="KNOWN AS"
+              value={profile.knownAs}
+              color="#ead6df"
+              doodle="♡"
+            />
+
+            <FactCard
+              label="NICKNAMES"
+              value={profile.nicknames}
+              color="#dce6f0"
+              doodle="✦"
+            />
+
+            <FactCard
+              label="BIRTHDAY"
+              value={profile.birthday}
+              color="#f2e4bf"
+              doodle="☆"
+            />
+
+            <FactCard
+              label="NATIONALITY"
+              value={profile.nationality}
+              color="#d9e7df"
+              doodle="○"
+            />
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          ABOUT JL
+      ===================================================== */}
+
+      <section className="relative px-5 py-16 sm:px-8 sm:py-20 lg:px-16">
+
+        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr]">
 
           <div className="relative">
 
-            <div className="absolute -left-5 -top-5 h-20 w-20 rounded-full bg-[#f5dce5]" />
+            <div className="absolute -left-4 -top-5 rotate-[-8deg] rounded-sm bg-[#e8c6d1] px-4 py-2 shadow-sm">
 
-            <div className="relative overflow-hidden rounded-[2.5rem]">
+              <span
+                className="text-lg text-[#715a64]"
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                }}
+              >
+                hello, JL!
+              </span>
+
+            </div>
+
+            <div className="rotate-[2deg] rounded-[1.8rem] border-[7px] border-[#fffaf5] bg-[#fffaf5] p-2 shadow-[0_15px_40px_rgba(70,55,65,0.12)]">
 
               <PhotoPlaceholder />
 
             </div>
 
-            <DeerDoodle className="absolute -bottom-12 -right-16 hidden md:block" />
+            <RaccoonDrawing className="absolute -bottom-10 -right-8 w-36" />
 
           </div>
 
 
-          <div>
+          <div className="relative">
 
-            <p
-              className="text-2xl leading-9 text-[#655d69] sm:text-3xl sm:leading-10"
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              This is where you can write a proper introduction about JL —
-              who he is, what makes him memorable, and anything you want
-              people visiting the HANEULZ archive to know about him.
-            </p>
+            <ScrapHeader
+              number="02"
+              title="who is JL?"
+              subtitle="insert your favorite JL facts here"
+            />
 
-            <div className="mt-12 flex flex-wrap gap-3">
+            <div className="mt-7 rounded-[1.7rem] border border-[#d2c0c6] bg-[#fffaf5]/75 p-7 shadow-[5px_6px_0_rgba(90,70,75,0.05)] sm:p-9">
 
-              <Tag text="JL" />
-              <Tag text="Yence" />
-              <Tag text="Jaeyel" />
-              <Tag text="Jay Lawrence Gaspar" />
+              <p
+                className="text-xl leading-8 text-[#665b62] sm:text-2xl sm:leading-9"
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                }}
+              >
+                This is where you can write a proper introduction
+                about JL — who he is, what makes him memorable,
+                and anything you want people visiting the HANEULZ
+                archive to know about him.
+              </p>
+
+              <div className="mt-7 flex flex-wrap gap-2">
+
+                <Tag text="JL" />
+
+                <Tag text="Yence" />
+
+                <Tag text="Jaeyel" />
+
+                <Tag text="Jay Lawrence Gaspar" />
+
+              </div>
+
+            </div>
+
+            <div className="mt-6 rotate-[1deg] rounded-sm bg-[#f4e5bb] px-5 py-4 shadow-[3px_4px_0_rgba(70,55,50,0.07)]">
+
+              <p
+                className="text-lg text-[#665957]"
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                }}
+              >
+                note to self: add more JL lore here later ♡
+              </p>
 
             </div>
 
@@ -351,49 +495,92 @@ export default function JLStory() {
 
 
       {/* =====================================================
-          HOBBIES + MBTI
+          DEER + RACCOON BREAK
       ===================================================== */}
 
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
+      <section className="relative px-5 py-12 sm:px-8">
 
-        <SectionLabel number="04" title="LITTLE THINGS ABOUT JL" />
+        <div className="mx-auto flex max-w-4xl items-center justify-center">
 
-        <div className="grid gap-6 md:grid-cols-12">
+          <div className="h-px flex-1 bg-[#cdb9c1]" />
 
-          <FeatureCard
-            className="min-h-[350px] md:col-span-7"
-            background="#dce9f7"
-            number="01"
-            title="HOBBIES"
-            value={profile.hobbies}
-            large
-          />
+          <div className="mx-6 flex items-end gap-3">
 
-          <FeatureCard
-            className="min-h-[270px] md:col-span-5 md:mt-16"
-            background="#eadcf2"
-            number="02"
-            title="INTERESTS"
-            value={profile.interests}
-          />
+            <DeerMini />
 
-          {/* MBTI INSTEAD OF PERSONALITY */}
+            <span
+              className="mb-4 text-xl text-[#987484]"
+              style={{
+                fontFamily: "'Caveat', cursive",
+              }}
+            >
+              JL corner
+            </span>
 
-          <FeatureCard
-            className="min-h-[250px] md:col-span-4 md:-mt-8"
-            background="#fff0ca"
+            <RaccoonMini />
+
+          </div>
+
+          <div className="h-px flex-1 bg-[#cdb9c1]" />
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          HOBBIES + INTERESTS
+      ===================================================== */}
+
+      <section className="relative px-5 py-16 sm:px-8 sm:py-20 lg:px-16">
+
+        <div className="mx-auto max-w-6xl">
+
+          <ScrapHeader
             number="03"
-            title="MBTI"
-            value={profile.mbti}
+            title="things JL likes"
+            subtitle="hobbies · interests · mbti"
           />
 
-          <FeatureCard
-            className="min-h-[300px] md:col-span-8"
-            background="#f3dce5"
-            number="04"
-            title="MORE"
-            value="Add anything else you want people to know about JL."
-          />
+          <div className="mt-9 grid gap-5 md:grid-cols-12">
+
+            <ScrapCard
+              className="md:col-span-7"
+              color="#dce8f3"
+              number="01"
+              title="HOBBIES"
+              value={profile.hobbies}
+              tape="blue"
+            />
+
+            <ScrapCard
+              className="md:col-span-5 md:mt-10"
+              color="#e8ddef"
+              number="02"
+              title="INTERESTS"
+              value={profile.interests}
+              tape="pink"
+            />
+
+            <ScrapCard
+              className="md:col-span-5 md:-mt-5"
+              color="#f3e5bd"
+              number="03"
+              title="MBTI"
+              value={profile.mbti}
+              tape="yellow"
+            />
+
+            <ScrapCard
+              className="md:col-span-7"
+              color="#dce9df"
+              number="04"
+              title="FAVORITES"
+              value={profile.favorites}
+              tape="green"
+            />
+
+          </div>
 
         </div>
 
@@ -404,31 +591,41 @@ export default function JLStory() {
           FAVORITES
       ===================================================== */}
 
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
+      <section className="relative px-5 py-16 sm:px-8 sm:py-20 lg:px-16">
 
-        <SectionLabel number="05" title="FAVORITES" />
+        <div className="mx-auto max-w-6xl">
 
-        <div className="relative rounded-[3rem] border border-[#d8cad8] bg-[#e8e1f1] p-8 sm:p-12 md:p-16">
-
-          <Star
-            size={28}
-            strokeWidth={1}
-            className="absolute right-8 top-8 rotate-12 text-[#a98396]"
+          <ScrapHeader
+            number="04"
+            title="JL's favorites"
+            subtitle="fill this page with all the good stuff"
           />
 
-          <p
-            className="text-2xl text-[#a1758b]"
-            style={{ fontFamily: "'Caveat', cursive" }}
-          >
-            JL's favorites
-          </p>
+          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <FavoriteCard
+              label="MUSIC"
+              value="Add later"
+              rotate="-2deg"
+            />
 
-            <FavoriteCard label="MUSIC" value="Add later" />
-            <FavoriteCard label="FOOD" value="Add later" />
-            <FavoriteCard label="COLOR" value="Add later" />
-            <FavoriteCard label="OTHER" value="Add later" />
+            <FavoriteCard
+              label="FOOD"
+              value="Add later"
+              rotate="1deg"
+            />
+
+            <FavoriteCard
+              label="COLOR"
+              value="Add later"
+              rotate="-1deg"
+            />
+
+            <FavoriteCard
+              label="OTHER"
+              value="Add later"
+              rotate="2deg"
+            />
 
           </div>
 
@@ -441,49 +638,36 @@ export default function JLStory() {
           FUN FACTS
       ===================================================== */}
 
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
+      <section className="relative px-5 py-16 sm:px-8 sm:py-20 lg:px-16">
 
-        <SectionLabel number="06" title="FUN FACTS" />
+        <div className="mx-auto max-w-6xl">
 
-        <div className="grid gap-14 lg:grid-cols-[0.55fr_1.45fr]">
+          <ScrapHeader
+            number="05"
+            title="JL facts"
+            subtitle="things you probably want to remember"
+          />
 
-          <div className="relative">
-
-            <h2
-              className="text-8xl leading-[0.76] tracking-[-0.07em] text-[#403a4a] sm:text-[9rem]"
-              style={{
-                fontFamily: "'Bodoni 72', Didot, Georgia, serif",
-              }}
-            >
-              FACTS
-              <br />
-              ABOUT
-              <br />
-              <span className="text-[#aa7d93]">
-                JL
-              </span>
-            </h2>
-
-            <RaccoonDoodle className="mt-8 hidden lg:block" />
-
-          </div>
-
-
-          <div>
+          <div className="mt-8 rounded-[2rem] border border-[#d1bec6] bg-[#fffaf5]/75 p-5 shadow-[6px_7px_0_rgba(80,60,65,0.05)] sm:p-8">
 
             {facts.map((fact, index) => (
 
               <div
                 key={index}
-                className="group flex items-start gap-5 border-t border-[#cec2cc] py-7"
+                className="relative flex items-start gap-4 border-b border-dashed border-[#d4c3c8] py-6 last:border-0"
               >
 
-                <span className="pt-1 font-mono text-[8px] tracking-[0.25em] text-[#ae8498]">
-                  {String(index + 1).padStart(2, "0")}
+                <span
+                  className="flex h-8 w-8 shrink-0 rotate-[-4deg] items-center justify-center rounded-full bg-[#ead3dc] text-xs text-[#765d68]"
+                  style={{
+                    fontFamily: "'Caveat', cursive",
+                  }}
+                >
+                  {index + 1}
                 </span>
 
                 <p
-                  className="text-2xl leading-8 text-[#615a68]"
+                  className="pt-1 text-xl leading-7 text-[#665c63] sm:text-2xl"
                   style={{
                     fontFamily: "'Cormorant Garamond', Georgia, serif",
                   }}
@@ -491,10 +675,10 @@ export default function JLStory() {
                   {fact}
                 </p>
 
-                <ArrowUpRight
+                <Sparkles
                   size={14}
                   strokeWidth={1}
-                  className="ml-auto mt-1 shrink-0 text-[#ad899b] opacity-0 transition group-hover:opacity-100"
+                  className="ml-auto mt-2 shrink-0 text-[#a77d8d]"
                 />
 
               </div>
@@ -512,174 +696,172 @@ export default function JLStory() {
           PHOTO ARCHIVE
       ===================================================== */}
 
-      <section className="relative px-5 py-28 sm:px-10 md:px-16 lg:px-24">
+      <section className="relative px-5 py-16 sm:px-8 sm:py-20 lg:px-16">
 
-        <SectionLabel number="07" title="PHOTO ARCHIVE" />
+        <div className="mx-auto max-w-6xl">
 
-        <div className="flex flex-col justify-between gap-7 sm:flex-row sm:items-end">
+          <ScrapHeader
+            number="06"
+            title="JL photo wall"
+            subtitle="newest memories first · click a photo to visit the original post"
+          />
 
-          <div>
+          <div className="relative mt-10">
 
-            <div className="flex items-center gap-3">
-
-              <Camera
-                size={17}
-                strokeWidth={1}
-                className="text-[#a67e91]"
-              />
+            <div className="absolute -right-2 -top-5 rotate-[4deg] rounded-sm bg-[#f3dfaa] px-4 py-2 shadow-sm">
 
               <span
-                className="text-xl text-[#a1758b]"
-                style={{ fontFamily: "'Caveat', cursive" }}
+                className="text-sm text-[#6f5c5b]"
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                }}
               >
-                JL photos
+                don't lose these ♡
               </span>
 
             </div>
 
-            <h2
-              className="mt-2 text-7xl leading-[0.75] tracking-[-0.07em] text-[#403a4a] sm:text-9xl"
-              style={{
-                fontFamily: "'Bodoni 72', Didot, Georgia, serif",
-              }}
-            >
-              ARCHIVE
-            </h2>
+
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-5">
+
+              {photos
+                .slice(0, showArchive ? photoLimit : 9)
+                .map((photo, index) => (
+                  <ArchivePhoto
+                    key={index}
+                    photo={photo}
+                    index={index}
+                  />
+                ))}
+
+            </div>
 
           </div>
 
-          <p
-            className="max-w-xs text-lg leading-7 text-[#817985]"
-            style={{
-              fontFamily: "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            Tap any photo to visit the original post.
-            Newest photos are always placed first.
-          </p>
 
-        </div>
-
-
-        <div className="mt-14 grid grid-cols-6 gap-2 sm:gap-3">
-
-          {photos
-            .slice(0, showArchive ? photoLimit : 9)
-            .map((photo, index) => (
-              <ArchivePhoto
-                key={index}
-                photo={photo}
-                index={index}
-              />
-            ))}
-
-        </div>
-
-
-        {!showArchive ? (
-
-          <button
-            type="button"
-            onClick={() => setShowArchive(true)}
-            className="mx-auto mt-12 flex items-center gap-3 rounded-full bg-[#413a4d] px-8 py-3 text-[8px] uppercase tracking-[0.4em] text-white transition hover:-translate-y-1 hover:bg-[#51485c]"
-          >
-            View Full Archive
-
-            <ArrowUpRight size={13} strokeWidth={1} />
-
-          </button>
-
-        ) : (
-
-          <div className="mt-12 flex flex-col items-center gap-5">
-
-            {photoLimit < photos.length && (
-
-              <button
-                type="button"
-                onClick={() =>
-                  setPhotoLimit((current) =>
-                    Math.min(current + 9, photos.length)
-                  )
-                }
-                className="rounded-full bg-[#eadcf2] px-8 py-3 text-[8px] uppercase tracking-[0.4em] text-[#625969] transition hover:bg-[#e1d1eb]"
-              >
-                Load More
-              </button>
-
-            )}
-
-            {photoLimit >= photos.length && (
-
-              <span
-                className="text-xl text-[#a1768c]"
-                style={{ fontFamily: "'Caveat', cursive" }}
-              >
-                End of archive ♡
-              </span>
-
-            )}
+          {!showArchive ? (
 
             <button
               type="button"
-              onClick={() => {
-                setShowArchive(false);
-                setPhotoLimit(9);
-              }}
-              className="text-[8px] uppercase tracking-[0.4em] text-[#9c939e] underline underline-offset-4"
+              onClick={() => setShowArchive(true)}
+              className="mx-auto mt-12 flex items-center gap-3 rounded-full border border-[#c2adb7] bg-[#fffaf5] px-7 py-3 font-mono text-[7px] uppercase tracking-[0.35em] text-[#725d68] shadow-[3px_4px_0_rgba(80,60,65,0.07)] transition hover:-translate-y-1"
             >
-              Close Archive
+              open full archive
+
+              <ArrowUpRight
+                size={13}
+                strokeWidth={1}
+              />
+
             </button>
 
-          </div>
+          ) : (
 
-        )}
+            <div className="mt-12 flex flex-col items-center gap-5">
+
+              {photoLimit < photos.length && (
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setPhotoLimit((current) =>
+                      Math.min(current + 9, photos.length)
+                    )
+                  }
+                  className="rounded-full bg-[#e5d9ec] px-7 py-3 font-mono text-[7px] uppercase tracking-[0.35em] text-[#685b6b] transition hover:bg-[#dccde5]"
+                >
+                  load more
+                </button>
+
+              )}
+
+              {photoLimit >= photos.length && (
+
+                <span
+                  className="text-xl text-[#9c7485]"
+                  style={{
+                    fontFamily: "'Caveat', cursive",
+                  }}
+                >
+                  you've reached the end ♡
+                </span>
+
+              )}
+
+              <button
+                type="button"
+                onClick={() => {
+                  setShowArchive(false);
+                  setPhotoLimit(9);
+                }}
+                className="font-mono text-[7px] uppercase tracking-[0.35em] text-[#9c9096] underline underline-offset-4"
+              >
+                close archive
+              </button>
+
+            </div>
+
+          )}
+
+        </div>
 
       </section>
 
 
       {/* =====================================================
-          END
+          FINAL NOTE
       ===================================================== */}
 
-      <section className="relative px-6 pb-28 pt-14 text-center sm:px-10">
+      <section className="relative px-5 pb-20 pt-12 text-center sm:px-8 sm:pb-28">
 
-        <div className="mx-auto flex max-w-sm items-center gap-4">
+        <div className="mx-auto max-w-2xl">
 
-          <span className="h-px flex-1 bg-[#cec2cc]" />
+          <div className="flex items-center justify-center gap-4">
 
-          <Heart
-            size={15}
-            strokeWidth={1}
-            className="text-[#b5899e]"
-          />
+            <span className="h-px w-16 bg-[#cbb7c0]" />
 
-          <span className="h-px flex-1 bg-[#cec2cc]" />
+            <Star
+              size={15}
+              strokeWidth={1}
+              className="rotate-12 text-[#a77a8c]"
+            />
 
-        </div>
+            <span className="h-px w-16 bg-[#cbb7c0]" />
 
+          </div>
 
-        <h2
-          className="mt-10 text-8xl tracking-[-0.08em] text-[#403a4b] sm:text-[11rem]"
-          style={{
-            fontFamily: "'Bodoni 72', Didot, Georgia, serif",
-          }}
-        >
-          JL
-        </h2>
+          <h2
+            className="mt-8 text-7xl tracking-[-0.07em] text-[#493e45] sm:text-9xl"
+            style={{
+              fontFamily: "'Bodoni 72', Didot, Georgia, serif",
+            }}
+          >
+            JL
+          </h2>
 
-        <p
-          className="mt-2 text-2xl text-[#a1768c]"
-          style={{ fontFamily: "'Caveat', cursive" }}
-        >
-          Yence · Jaeyel
-        </p>
+          <p
+            className="mt-2 text-2xl text-[#a27588]"
+            style={{
+              fontFamily: "'Caveat', cursive",
+            }}
+          >
+            Yence · Jaeyel
+          </p>
 
-        <div className="mt-10 flex justify-center gap-10">
+          <p
+            className="mx-auto mt-6 max-w-md text-lg leading-7 text-[#796d73]"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+            }}
+          >
+            a little page for a person worth remembering.
+          </p>
 
-          <DeerDoodle />
+          <div className="mt-10 flex justify-center">
 
-          <RaccoonDoodle />
+            <DeerRaccoonDrawing className="w-56" />
+
+          </div>
 
         </div>
 
@@ -691,21 +873,140 @@ export default function JLStory() {
 
 
 /* =============================================================
-   SECTION LABEL
+   SCRAPBOOK HEADER
 ============================================================= */
 
-function SectionLabel({ number, title }) {
+function ScrapHeader({ number, title, subtitle }) {
   return (
-    <div className="mb-14 flex items-center gap-4">
+    <div className="relative">
 
-      <span className="font-mono text-[8px] tracking-[0.3em] text-[#ad8296]">
+      <div className="flex items-center gap-3">
+
+        <span className="font-mono text-[7px] tracking-[0.35em] text-[#a77b8d]">
+          {number}
+        </span>
+
+        <span className="h-px w-10 bg-[#c8b1ba]" />
+
+        <span className="font-mono text-[7px] uppercase tracking-[0.35em] text-[#a1969b]">
+          HANEULZ / JL
+        </span>
+
+      </div>
+
+      <h2
+        className="mt-3 text-5xl leading-none tracking-[-0.025em] text-[#4d4249] sm:text-6xl md:text-7xl"
+        style={{
+          fontFamily: "'Bodoni 72', Didot, Georgia, serif",
+        }}
+      >
+        {title}
+      </h2>
+
+      <p
+        className="mt-3 text-lg text-[#9a7483]"
+        style={{
+          fontFamily: "'Caveat', cursive",
+        }}
+      >
+        {subtitle}
+      </p>
+
+    </div>
+  );
+}
+
+
+/* =============================================================
+   QUICK FACT CARD
+============================================================= */
+
+function FactCard({ label, value, color, doodle }) {
+  return (
+    <div
+      className="relative min-h-[150px] overflow-hidden rounded-[1.5rem] p-6 shadow-[4px_6px_0_rgba(75,58,65,0.06)]"
+      style={{
+        backgroundColor: color,
+      }}
+    >
+
+      <span
+        className="absolute right-5 top-4 rotate-12 text-2xl text-black/15"
+        style={{
+          fontFamily: "'Caveat', cursive",
+        }}
+      >
+        {doodle}
+      </span>
+
+      <p className="font-mono text-[7px] tracking-[0.35em] text-[#81727a]">
+        {label}
+      </p>
+
+      <p
+        className="mt-7 text-2xl text-[#5e5359]"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+        }}
+      >
+        {value}
+      </p>
+
+    </div>
+  );
+}
+
+
+/* =============================================================
+   SCRAP CARD
+============================================================= */
+
+function ScrapCard({
+  color,
+  number,
+  title,
+  value,
+  className = "",
+}) {
+  return (
+    <div
+      className={`relative min-h-[260px] overflow-hidden rounded-[2rem] p-7 shadow-[6px_8px_0_rgba(75,58,65,0.06)] sm:p-9 ${className}`}
+      style={{
+        backgroundColor: color,
+      }}
+    >
+
+      <div className="absolute right-5 top-5 h-8 w-16 rotate-[3deg] bg-white/25" />
+
+      <span className="font-mono text-[7px] tracking-[0.35em] text-[#80727a]">
         {number}
       </span>
 
-      <span className="h-px w-12 bg-[#cdbec9]" />
-
-      <span className="font-mono text-[7px] uppercase tracking-[0.5em] text-[#9e969f]">
+      <h3
+        className="mt-8 text-4xl text-[#5d5259]"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+        }}
+      >
         {title}
+      </h3>
+
+      <p
+        className="mt-6 max-w-lg text-xl leading-8 text-[#71666d]"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+        }}
+      >
+        {value}
+      </p>
+
+      <span
+        className="absolute bottom-5 right-7 rotate-[-6deg] text-xl text-[#8f7480]/45"
+        style={{
+          fontFamily: "'Caveat', cursive",
+        }}
+      >
+        little note
       </span>
 
     </div>
@@ -714,19 +1015,24 @@ function SectionLabel({ number, title }) {
 
 
 /* =============================================================
-   QUICK ITEM
+   FAVORITE CARD
 ============================================================= */
 
-function QuickItem({ label, value }) {
+function FavoriteCard({ label, value, rotate }) {
   return (
-    <div className="border-l border-[#c9bbc6] pl-4">
+    <div
+      className="rounded-[1.4rem] border border-[#d0bdc5] bg-[#fffaf5]/80 p-6 shadow-[4px_5px_0_rgba(75,58,65,0.05)]"
+      style={{
+        transform: `rotate(${rotate})`,
+      }}
+    >
 
-      <p className="font-mono text-[7px] tracking-[0.35em] text-[#9d8492]">
+      <p className="font-mono text-[7px] tracking-[0.35em] text-[#9b7d89]">
         {label}
       </p>
 
       <p
-        className="mt-3 text-xl leading-6 text-[#5d5665]"
+        className="mt-5 text-2xl text-[#63575f]"
         style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
         }}
@@ -745,7 +1051,7 @@ function QuickItem({ label, value }) {
 
 function Tag({ text }) {
   return (
-    <span className="rounded-full border border-[#cbb8c4] bg-white/40 px-5 py-2 font-mono text-[7px] tracking-[0.18em] text-[#7e707c]">
+    <span className="rounded-full border border-[#cdb9c2] bg-[#fffaf5]/70 px-4 py-2 font-mono text-[7px] tracking-[0.18em] text-[#806e77]">
       {text}
     </span>
   );
@@ -753,97 +1059,14 @@ function Tag({ text }) {
 
 
 /* =============================================================
-   FEATURE CARD
+   MINI STAMP
 ============================================================= */
 
-function FeatureCard({
-  background,
-  number,
-  title,
-  value,
-  className = "",
-  large = false,
-}) {
+function MiniStamp({ text }) {
   return (
-    <div
-      className={`group relative overflow-hidden rounded-[2.6rem] p-8 shadow-[0_18px_45px_rgba(65,55,75,0.06)] transition duration-300 hover:-translate-y-2 sm:p-10 ${className}`}
-      style={{ backgroundColor: background }}
-    >
-
-      <span
-        className="absolute -right-4 -top-12 text-[12rem] leading-none text-black/[0.035]"
-        style={{
-          fontFamily: "'Bodoni 72', Didot, Georgia, serif",
-        }}
-      >
-        {number}
-      </span>
-
-      <div className="relative">
-
-        <div className="flex items-center justify-between">
-
-          <span className="font-mono text-[8px] tracking-[0.35em] text-[#827681]">
-            {number}
-          </span>
-
-          <Sparkles
-            size={16}
-            strokeWidth={1}
-            className="text-[#827681]/70"
-          />
-
-        </div>
-
-        <h3
-          className={`mt-10 text-[#5b5463] ${
-            large ? "text-5xl sm:text-6xl" : "text-4xl"
-          }`}
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-          }}
-        >
-          {title}
-        </h3>
-
-        <p
-          className="mt-8 max-w-lg text-xl leading-8 text-[#6d6572]"
-          style={{
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-          }}
-        >
-          {value}
-        </p>
-
-      </div>
-
-    </div>
-  );
-}
-
-
-/* =============================================================
-   FAVORITE CARD
-============================================================= */
-
-function FavoriteCard({ label, value }) {
-  return (
-    <div className="rounded-[1.7rem] bg-white/45 p-6 backdrop-blur-sm">
-
-      <p className="font-mono text-[7px] tracking-[0.4em] text-[#9d8b98]">
-        {label}
-      </p>
-
-      <p
-        className="mt-5 text-2xl text-[#5f5867]"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
-        {value}
-      </p>
-
-    </div>
+    <span className="rotate-[-2deg] rounded-sm border border-[#c29baa] bg-[#fff7f2] px-3 py-2 font-mono text-[7px] tracking-[0.25em] text-[#856875]">
+      {text}
+    </span>
   );
 }
 
@@ -852,46 +1075,52 @@ function FavoriteCard({ label, value }) {
    PHOTO PLACEHOLDER
 ============================================================= */
 
-function PhotoPlaceholder({
-  className = "",
-  large = false,
-}) {
+function PhotoPlaceholder({ large = false }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-[2.5rem] bg-[#e9e2e9] ${
+      className={`relative overflow-hidden rounded-[1.2rem] ${
         large ? "aspect-[4/3]" : "aspect-[4/5]"
-      } ${className}`}
+      }`}
     >
 
-      <div className="absolute inset-0 bg-gradient-to-br from-[#dce9f7] via-[#eadcf2] to-[#f3d9e3]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#d8e5f0] via-[#e9dcec] to-[#f1d5df]" />
 
-      <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-white/60 blur-[70px]" />
+      <div className="absolute -left-16 -top-16 h-56 w-56 rounded-full bg-white/55 blur-[60px]" />
 
-      <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-[#fff0ca]/70 blur-[70px]" />
+      <div className="absolute -bottom-16 -right-16 h-56 w-56 rounded-full bg-[#f6e5b9]/65 blur-[60px]" />
 
       <div
-        className="absolute inset-0 opacity-[0.1]"
+        className="absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage:
-            "radial-gradient(#756c78 0.6px, transparent 0.6px)",
-          backgroundSize: "20px 20px",
+            "radial-gradient(#635b63 0.6px, transparent 0.6px)",
+          backgroundSize: "15px 15px",
         }}
       />
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
 
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/50">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/45">
 
           <Camera
-            size={22}
+            size={21}
             strokeWidth={1}
-            className="text-[#817586]"
+            className="text-[#786d77]"
           />
 
         </div>
 
-        <span className="mt-5 font-mono text-[7px] tracking-[0.4em] text-[#817586]">
+        <span className="mt-4 font-mono text-[7px] tracking-[0.4em] text-[#786d77]">
           JL PHOTO
+        </span>
+
+        <span
+          className="mt-2 text-base text-[#82727c]"
+          style={{
+            fontFamily: "'Caveat', cursive",
+          }}
+        >
+          add photo here
         </span>
 
       </div>
@@ -902,364 +1131,623 @@ function PhotoPlaceholder({
 
 
 /* =============================================================
-   CLICKABLE PHOTO ARCHIVE
+   ARCHIVE PHOTO
 ============================================================= */
 
 function ArchivePhoto({ photo, index }) {
-
-  const colors = [
-    ["#dce9f7", "#eadcf2"],
-    ["#f3d9e3", "#fff0ca"],
-    ["#eadcf2", "#dcebdd"],
-    ["#fff0ca", "#dce9f7"],
-    ["#dcebdd", "#f3d9e3"],
-    ["#e7e1f2", "#eadcf2"],
+  const rotations = [
+    "-2deg",
+    "1deg",
+    "-1deg",
+    "2deg",
+    "-1.5deg",
+    "1.5deg",
   ];
 
-  const pair = colors[index % colors.length];
+  const rotation = rotations[index % rotations.length];
 
-  const isLarge =
-    index === 0 ||
-    index === 4 ||
-    index === 8 ||
-    index === 13 ||
-    index === 18;
+  const content = photo.src ? (
+    <img
+      src={photo.src}
+      alt={photo.alt}
+      className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+    />
+  ) : (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-[#dce8f2] via-[#e8ddef] to-[#f1d8df]">
 
-  const content = (
-    <div
-      className={`group relative h-full w-full overflow-hidden rounded-[1rem] sm:rounded-[1.5rem] ${
-        isLarge
-          ? "col-span-4 row-span-2 aspect-square"
-          : "col-span-2 aspect-square"
-      }`}
-      style={{
-        background: `linear-gradient(135deg, ${pair[0]}, ${pair[1]})`,
-      }}
-    >
+      <Camera
+        size={index % 3 === 0 ? 25 : 18}
+        strokeWidth={1}
+        className="text-[#766b79]/45"
+      />
 
-      {photo.src ? (
-
-        <img
-          src={photo.src}
-          alt={photo.alt}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-        />
-
-      ) : (
-
-        <div className="absolute inset-0 flex items-center justify-center">
-
-          <Camera
-            size={isLarge ? 24 : 16}
-            strokeWidth={1}
-            className="text-[#766b79]/45 transition duration-300 group-hover:scale-110"
-          />
-
-        </div>
-
-      )}
-
-      {/* hover overlay */}
-
-      <div className="absolute inset-0 flex items-center justify-center bg-[#403943]/0 transition duration-300 group-hover:bg-[#403943]/25">
-
-        <ArrowUpRight
-          size={22}
-          strokeWidth={1.2}
-          className="text-white opacity-0 drop-shadow-md transition duration-300 group-hover:opacity-100"
-        />
-
-      </div>
-
-      <span className="absolute bottom-2 left-2 rounded-full bg-white/60 px-2 py-1 font-mono text-[6px] text-[#6c6370]">
-        {String(index + 1).padStart(2, "0")}
+      <span
+        className="mt-3 text-sm text-[#82727c]"
+        style={{
+          fontFamily: "'Caveat', cursive",
+        }}
+      >
+        JL #{String(index + 1).padStart(2, "0")}
       </span>
 
     </div>
   );
 
-  /*
-   * If there is an original post URL, clicking opens it.
-   * If there isn't one yet, the photo behaves normally.
-   */
-
-  if (photo.postUrl) {
-    return (
-      <a
-        href={photo.postUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={
-          isLarge
-            ? "col-span-4 row-span-2 aspect-square"
-            : "col-span-2 aspect-square"
-        }
-        aria-label={`Open original post for ${photo.alt}`}
-      >
-        {content}
-      </a>
-    );
-  }
+  const hasOriginalPost = Boolean(photo.originalPost);
 
   return (
     <div
-      className={
-        isLarge
-          ? "col-span-4 row-span-2 aspect-square"
-          : "col-span-2 aspect-square"
-      }
+      className="group relative"
+      style={{
+        transform: `rotate(${rotation})`,
+      }}
     >
-      {content}
+
+      <div className="absolute -top-2 left-1/2 z-10 h-5 w-14 -translate-x-1/2 rotate-[-3deg] bg-[#dbc99d]/65" />
+
+      {hasOriginalPost ? (
+        <a
+          href={photo.originalPost}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open original post for ${photo.alt}`}
+          className="relative block overflow-hidden rounded-[1.2rem] border-[6px] border-[#fffaf5] bg-[#fffaf5] p-1 shadow-[0_10px_25px_rgba(65,50,58,0.13)] transition duration-300 hover:-translate-y-2 hover:rotate-[-1deg] hover:shadow-[0_18px_35px_rgba(65,50,58,0.18)]"
+        >
+
+          <div className="relative aspect-square overflow-hidden rounded-[0.8rem]">
+            {content}
+          </div>
+
+          <span className="absolute bottom-3 right-3 rounded-full bg-[#fffaf5]/85 px-2 py-1 font-mono text-[6px] text-[#766974]">
+            original ↗
+          </span>
+
+        </a>
+      ) : (
+        <div className="relative overflow-hidden rounded-[1.2rem] border-[6px] border-[#fffaf5] bg-[#fffaf5] p-1 shadow-[0_10px_25px_rgba(65,50,58,0.13)]">
+
+          <div className="relative aspect-square overflow-hidden rounded-[0.8rem]">
+            {content}
+          </div>
+
+          <span className="absolute bottom-3 right-3 rounded-full bg-[#fffaf5]/80 px-2 py-1 font-mono text-[6px] text-[#766974]">
+            add link
+          </span>
+
+        </div>
+      )}
+
+      <span
+        className="absolute -bottom-5 left-2 rotate-[-4deg] text-sm text-[#8c727d]"
+        style={{
+          fontFamily: "'Caveat', cursive",
+        }}
+      >
+        #{String(index + 1).padStart(2, "0")}
+      </span>
+
     </div>
   );
 }
 
 
 /* =============================================================
-   CUTE DEER DOODLE
+   CUTE DEER + RACCOON DRAWING
 ============================================================= */
 
-function DeerDoodle({ className = "" }) {
+function DeerRaccoonDrawing({ className = "" }) {
   return (
-    <div
-      className={`relative h-32 w-32 ${className}`}
-      aria-label="cute deer doodle"
-    >
-
+    <div className={className}>
       <svg
-        viewBox="0 0 180 180"
-        className="h-full w-full overflow-visible"
-        fill="none"
+        viewBox="0 0 420 220"
+        className="h-auto w-full"
         xmlns="http://www.w3.org/2000/svg"
       >
+
+        {/* little ground */}
+        <path
+          d="M45 190 Q110 182 175 190 T315 188 T390 190"
+          fill="none"
+          stroke="#9b8189"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
+
+        {/* DEER */}
+
+        {/* ears */}
+        <path
+          d="M82 73 Q57 39 76 29 Q95 46 101 69"
+          fill="#c8949f"
+          stroke="#624f57"
+          strokeWidth="3"
+        />
+
+        <path
+          d="M123 68 Q142 34 158 42 Q158 62 135 78"
+          fill="#c8949f"
+          stroke="#624f57"
+          strokeWidth="3"
+        />
+
+        {/* deer head */}
+        <ellipse
+          cx="117"
+          cy="105"
+          rx="48"
+          ry="53"
+          fill="#d8ae91"
+          stroke="#624f57"
+          strokeWidth="3"
+        />
+
+        {/* deer face */}
+        <ellipse
+          cx="117"
+          cy="119"
+          rx="27"
+          ry="25"
+          fill="#efd5bd"
+        />
+
+        {/* eyes */}
+        <circle cx="99" cy="101" r="4" fill="#514249" />
+        <circle cx="135" cy="101" r="4" fill="#514249" />
+
+        {/* eye sparkle */}
+        <circle cx="100" cy="100" r="1.4" fill="white" />
+        <circle cx="136" cy="100" r="1.4" fill="white" />
+
+        {/* nose */}
+        <ellipse
+          cx="117"
+          cy="124"
+          rx="8"
+          ry="6"
+          fill="#6b515a"
+        />
+
+        {/* smile */}
+        <path
+          d="M117 129 Q112 136 106 132 M117 129 Q122 136 128 132"
+          fill="none"
+          stroke="#624f57"
+          strokeWidth="2"
+          strokeLinecap="round"
+        />
 
         {/* antlers */}
-
         <path
-          d="M55 49 C43 35 43 19 51 10 M51 27 L39 19 M51 34 L63 20"
-          stroke="#76636D"
-          strokeWidth="3"
+          d="M86 69 Q66 47 68 27 M70 40 L55 34 M71 49 L58 54"
+          fill="none"
+          stroke="#70585b"
+          strokeWidth="4"
           strokeLinecap="round"
         />
 
         <path
-          d="M125 49 C137 35 137 19 129 10 M129 27 L141 19 M129 34 L117 20"
-          stroke="#76636D"
-          strokeWidth="3"
+          d="M147 70 Q168 47 166 28 M164 41 L178 34 M163 51 L177 56"
+          fill="none"
+          stroke="#70585b"
+          strokeWidth="4"
           strokeLinecap="round"
         />
 
-        {/* ears */}
-
-        <path
-          d="M58 52 C35 42 22 49 27 67 C33 78 47 76 61 68"
-          fill="#E9C9D3"
-          stroke="#76636D"
-          strokeWidth="3"
-        />
-
-        <path
-          d="M122 52 C145 42 158 49 153 67 C147 78 133 76 119 68"
-          fill="#E9C9D3"
-          stroke="#76636D"
-          strokeWidth="3"
-        />
-
-        {/* head */}
-
+        {/* deer body */}
         <ellipse
-          cx="90"
-          cy="82"
-          rx="48"
-          ry="50"
-          fill="#D9B79A"
-          stroke="#76636D"
+          cx="117"
+          cy="171"
+          rx="43"
+          ry="28"
+          fill="#d8ae91"
+          stroke="#624f57"
           strokeWidth="3"
         />
 
-        {/* forehead tuft */}
+        {/* little legs */}
+        <path
+          d="M92 187 L90 204 M108 191 L107 206 M137 190 L138 205"
+          fill="none"
+          stroke="#624f57"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+
+        {/* RACCOON */}
+
+        {/* tail */}
+        <path
+          d="M296 171 Q350 132 380 166 Q398 190 369 200 Q339 209 313 187"
+          fill="#9a8d99"
+          stroke="#554c58"
+          strokeWidth="3"
+        />
 
         <path
-          d="M78 39 C84 27 91 32 95 41 C102 30 108 34 107 45"
-          fill="#C79F7D"
-          stroke="#76636D"
+          d="M330 160 Q351 174 370 166"
+          fill="none"
+          stroke="#635966"
+          strokeWidth="8"
+        />
+
+        <path
+          d="M318 177 Q341 189 361 183"
+          fill="none"
+          stroke="#635966"
+          strokeWidth="8"
+        />
+
+        {/* raccoon ears */}
+        <path
+          d="M253 76 L263 43 L282 67"
+          fill="#8e8190"
+          stroke="#554c58"
           strokeWidth="3"
-          strokeLinecap="round"
+        />
+
+        <path
+          d="M313 66 L332 43 L335 78"
+          fill="#8e8190"
+          stroke="#554c58"
+          strokeWidth="3"
+        />
+
+        {/* raccoon head */}
+        <ellipse
+          cx="294"
+          cy="105"
+          rx="48"
+          ry="47"
+          fill="#9d909d"
+          stroke="#554c58"
+          strokeWidth="3"
+        />
+
+        {/* face mask */}
+        <path
+          d="M249 101 Q271 76 294 94 Q317 76 339 101 Q318 119 294 115 Q270 119 249 101"
+          fill="#625a67"
         />
 
         {/* eyes */}
-
-        <circle cx="72" cy="82" r="4" fill="#403943" />
-        <circle cx="108" cy="82" r="4" fill="#403943" />
-
-        {/* cheeks */}
-
-        <circle cx="59" cy="96" r="7" fill="#E6A9B8" opacity="0.55" />
-        <circle cx="121" cy="96" r="7" fill="#E6A9B8" opacity="0.55" />
+        <circle cx="274" cy="100" r="5" fill="#fffaf5" />
+        <circle cx="314" cy="100" r="5" fill="#fffaf5" />
+        <circle cx="274" cy="101" r="2.5" fill="#403942" />
+        <circle cx="314" cy="101" r="2.5" fill="#403942" />
 
         {/* muzzle */}
-
         <ellipse
-          cx="90"
-          cy="101"
-          rx="19"
-          ry="14"
-          fill="#EBD4C0"
+          cx="294"
+          cy="119"
+          rx="23"
+          ry="18"
+          fill="#d7c9ce"
         />
 
         {/* nose */}
-
-        <path
-          d="M85 98 Q90 94 95 98 Q92 104 90 104 Q88 104 85 98Z"
-          fill="#6B5961"
+        <ellipse
+          cx="294"
+          cy="116"
+          rx="7"
+          ry="5"
+          fill="#4f454e"
         />
 
         {/* smile */}
-
         <path
-          d="M90 104 C87 110 82 110 80 107 M90 104 C93 110 98 110 100 107"
-          stroke="#76636D"
-          strokeWidth="2.5"
+          d="M294 121 Q288 128 283 124 M294 121 Q300 128 305 124"
+          fill="none"
+          stroke="#554c58"
+          strokeWidth="2"
           strokeLinecap="round"
         />
 
-        {/* tiny heart */}
+        {/* raccoon body */}
+        <ellipse
+          cx="294"
+          cy="171"
+          rx="45"
+          ry="28"
+          fill="#9d909d"
+          stroke="#554c58"
+          strokeWidth="3"
+        />
+
+        {/* arms */}
+        <path
+          d="M260 168 Q244 177 254 186"
+          fill="none"
+          stroke="#554c58"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
 
         <path
-          d="M137 118 C132 111 121 116 137 132 C153 116 142 111 137 118Z"
-          fill="#C987A2"
+          d="M328 168 Q345 177 336 187"
+          fill="none"
+          stroke="#554c58"
+          strokeWidth="5"
+          strokeLinecap="round"
+        />
+
+        {/* little heart */}
+        <path
+          d="M205 83 C198 74 184 81 191 92 L205 106 L219 92 C226 81 212 74 205 83Z"
+          fill="#d88fa7"
+          stroke="#70545f"
+          strokeWidth="2"
+        />
+
+        {/* stars */}
+        <path
+          d="M210 143 l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"
+          fill="#d6a9b8"
+        />
+
+        <path
+          d="M365 86 l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"
+          fill="#c7b5d7"
         />
 
       </svg>
-
     </div>
   );
 }
 
 
 /* =============================================================
-   CUTE RACCOON DOODLE
+   MINI DEER
 ============================================================= */
 
-function RaccoonDoodle({ className = "" }) {
+function DeerMini() {
   return (
-    <div
-      className={`relative h-32 w-32 ${className}`}
-      aria-label="cute raccoon doodle"
+    <svg
+      viewBox="0 0 80 80"
+      className="h-16 w-16"
+      xmlns="http://www.w3.org/2000/svg"
     >
+      <path
+        d="M24 30 Q12 10 24 8 Q34 18 36 30"
+        fill="#d5a991"
+        stroke="#624f57"
+        strokeWidth="2"
+      />
 
-      <svg
-        viewBox="0 0 180 180"
-        className="h-full w-full overflow-visible"
+      <path
+        d="M44 30 Q55 10 63 14 Q63 28 50 36"
+        fill="#d5a991"
+        stroke="#624f57"
+        strokeWidth="2"
+      />
+
+      <ellipse
+        cx="40"
+        cy="43"
+        rx="23"
+        ry="25"
+        fill="#d5a991"
+        stroke="#624f57"
+        strokeWidth="2"
+      />
+
+      <circle cx="32" cy="40" r="2.5" fill="#4f444b" />
+      <circle cx="48" cy="40" r="2.5" fill="#4f444b" />
+
+      <ellipse
+        cx="40"
+        cy="51"
+        rx="7"
+        ry="5"
+        fill="#6b515a"
+      />
+
+      <path
+        d="M40 56 Q35 61 31 57 M40 56 Q45 61 49 57"
         fill="none"
+        stroke="#624f57"
+        strokeWidth="1.5"
+      />
+
+      <path
+        d="M25 27 Q17 18 18 8 M19 16 L11 13 M19 21 L12 24"
+        fill="none"
+        stroke="#70585b"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+
+      <path
+        d="M55 28 Q63 18 62 9 M62 17 L69 13 M62 22 L69 25"
+        fill="none"
+        stroke="#70585b"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+
+/* =============================================================
+   MINI RACCOON
+============================================================= */
+
+function RaccoonMini() {
+  return (
+    <svg
+      viewBox="0 0 80 80"
+      className="h-16 w-16"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M21 29 L27 12 L36 27"
+        fill="#938692"
+        stroke="#554c58"
+        strokeWidth="2"
+      />
+
+      <path
+        d="M44 27 L55 12 L59 31"
+        fill="#938692"
+        stroke="#554c58"
+        strokeWidth="2"
+      />
+
+      <ellipse
+        cx="40"
+        cy="43"
+        rx="25"
+        ry="24"
+        fill="#9d909d"
+        stroke="#554c58"
+        strokeWidth="2"
+      />
+
+      <path
+        d="M17 41 Q28 29 40 38 Q52 29 63 41 Q51 52 40 48 Q29 52 17 41"
+        fill="#625a67"
+      />
+
+      <circle cx="30" cy="40" r="4" fill="#fffaf5" />
+      <circle cx="50" cy="40" r="4" fill="#fffaf5" />
+
+      <circle cx="30" cy="40" r="2" fill="#403942" />
+      <circle cx="50" cy="40" r="2" fill="#403942" />
+
+      <ellipse
+        cx="40"
+        cy="51"
+        rx="12"
+        ry="9"
+        fill="#d7c9ce"
+      />
+
+      <ellipse
+        cx="40"
+        cy="49"
+        rx="4"
+        ry="3"
+        fill="#4f454e"
+      />
+
+      <path
+        d="M40 53 Q36 58 33 55 M40 53 Q44 58 47 55"
+        fill="none"
+        stroke="#554c58"
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
+
+/* =============================================================
+   RACCOON DRAWING
+============================================================= */
+
+function RaccoonDrawing({ className = "" }) {
+  return (
+    <div className={className}>
+      <svg
+        viewBox="0 0 180 150"
+        className="h-auto w-full"
         xmlns="http://www.w3.org/2000/svg"
       >
 
-        {/* ears */}
-
         <path
-          d="M49 52 C34 34 20 37 26 58 C30 68 41 70 54 65"
-          fill="#9D939D"
-          stroke="#5F5660"
+          d="M120 111 Q158 84 169 106 Q175 126 151 133 Q130 137 115 121"
+          fill="#9b8f9d"
+          stroke="#554c58"
           strokeWidth="3"
         />
 
         <path
-          d="M131 52 C146 34 160 37 154 58 C150 68 139 70 126 65"
-          fill="#9D939D"
-          stroke="#5F5660"
+          d="M133 104 Q148 113 162 107"
+          fill="none"
+          stroke="#635966"
+          strokeWidth="7"
+        />
+
+        <path
+          d="M126 118 Q143 127 156 122"
+          fill="none"
+          stroke="#635966"
+          strokeWidth="7"
+        />
+
+        <path
+          d="M45 50 L52 22 L70 48"
+          fill="#948793"
+          stroke="#554c58"
           strokeWidth="3"
         />
 
-        {/* inner ears */}
-
         <path
-          d="M35 50 Q30 43 38 45"
-          stroke="#E8C9D4"
-          strokeWidth="4"
-          strokeLinecap="round"
+          d="M95 47 L115 22 L119 54"
+          fill="#948793"
+          stroke="#554c58"
+          strokeWidth="3"
         />
-
-        <path
-          d="M145 50 Q150 43 142 45"
-          stroke="#E8C9D4"
-          strokeWidth="4"
-          strokeLinecap="round"
-        />
-
-        {/* head */}
 
         <ellipse
-          cx="90"
-          cy="88"
-          rx="52"
+          cx="82"
+          cy="75"
+          rx="48"
           ry="48"
-          fill="#B7ADB5"
-          stroke="#5F5660"
+          fill="#9d909d"
+          stroke="#554c58"
           strokeWidth="3"
         />
 
-        {/* mask */}
-
         <path
-          d="M42 77 Q62 57 90 73 Q118 57 138 77 L132 103 Q110 115 90 101 Q70 115 48 103Z"
-          fill="#655D66"
+          d="M36 72 Q58 51 82 63 Q106 51 128 72 Q108 92 82 86 Q56 92 36 72"
+          fill="#625a67"
         />
 
-        {/* eyes */}
+        <circle cx="62" cy="70" r="5" fill="#fffaf5" />
+        <circle cx="102" cy="70" r="5" fill="#fffaf5" />
 
-        <ellipse cx="69" cy="83" rx="6" ry="5" fill="#FFF8F2" />
-        <ellipse cx="111" cy="83" rx="6" ry="5" fill="#FFF8F2" />
-
-        <circle cx="69" cy="83" r="2.5" fill="#403943" />
-        <circle cx="111" cy="83" r="2.5" fill="#403943" />
-
-        {/* muzzle */}
+        <circle cx="62" cy="70" r="2.5" fill="#403942" />
+        <circle cx="102" cy="70" r="2.5" fill="#403942" />
 
         <ellipse
-          cx="90"
-          cy="103"
+          cx="82"
+          cy="89"
           rx="23"
-          ry="17"
-          fill="#D8CED2"
+          ry="18"
+          fill="#d7c9ce"
         />
 
-        {/* nose */}
-
         <ellipse
-          cx="90"
-          cy="99"
+          cx="82"
+          cy="86"
           rx="7"
           ry="5"
-          fill="#403943"
+          fill="#4f454e"
         />
 
-        {/* smile */}
-
         <path
-          d="M90 104 Q84 111 79 107 M90 104 Q96 111 101 107"
-          stroke="#5F5660"
-          strokeWidth="2.5"
+          d="M82 91 Q76 99 70 94 M82 91 Q88 99 94 94"
+          fill="none"
+          stroke="#554c58"
+          strokeWidth="2"
           strokeLinecap="round"
         />
 
-        {/* cheek dots */}
-
-        <circle cx="57" cy="105" r="2" fill="#8B7D87" />
-        <circle cx="63" cy="109" r="2" fill="#8B7D87" />
-
-        <circle cx="123" cy="105" r="2" fill="#8B7D87" />
-        <circle cx="117" cy="109" r="2" fill="#8B7D87" />
-
-        {/* little heart */}
+        <path
+          d="M65 122 Q82 130 101 122"
+          fill="none"
+          stroke="#554c58"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
 
         <path
-          d="M143 119 C138 112 127 117 143 133 C159 117 148 112 143 119Z"
-          fill="#A77E91"
+          d="M18 56 l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"
+          fill="#d6a9b8"
         />
 
       </svg>
-
     </div>
   );
 }
