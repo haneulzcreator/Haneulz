@@ -16,7 +16,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AboutWebsite from "./pages/AboutWebsite";
 import OurLittleCorner from "./pages/OurLittleCorner";
 import GameRoom from "./pages/GameRoom";
-
+import HanStory from "./pages/HanStory";
 function ScrollTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -24,7 +24,6 @@ function ScrollTop() {
   }, [pathname]);
   return null;
 }
-
 function Shell() {
   const { pathname } = useLocation();
   const hideNav = pathname === "/admin/login";
@@ -34,26 +33,74 @@ function Shell() {
       <ScrollTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/aus" element={<AULibrary />} />
-        <Route path="/aus/:id" element={<AUDetail />} />
-        <Route path="/variety" element={<Variety />} />
-        <Route path="/submit" element={<Submit />} />
-  <Route path="/game" element={<GameRoom />} />
-  <Route path="/our-little-corner"  element={<OurLittleCorner />} />
-  <Route path="/about-haneulz" element={<AboutWebsite />} />
-  <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-  </Routes>
+        <Route
+          path="/about"
+          element={<About />}
+        />
+        <Route
+          path="/aus"
+          element={<AULibrary />}
+        />
+        <Route
+          path="/aus/:id"
+          element={<AUDetail />}
+        />
+        <Route
+          path="/variety"
+          element={<Variety />}
+        />
+        <Route
+          path="/submit"
+          element={<Submit />}
+        />
+        <Route
+          path="/game"
+          element={<GameRoom />}
+        />
+        <Route
+          path="/our-little-corner"
+          element={<OurLittleCorner />}
+        />
+        {/* =========================
+            HAN STORY
+        ========================= */}
+        <Route
+          path="/han"
+          element={<HanStory />}
+        />
+        <Route
+          path="/about-haneulz"
+          element={<AboutWebsite />}
+        />
+        {/* =========================
+            ADMIN
+        ========================= */}
+        <Route
+          path="/admin/login"
+          element={<AdminLogin />}
+        />
+        <Route
+          path="/admin"
+          element={<AdminDashboard />}
+        />
+      </Routes>
     </>
   );
 }
-
 function App() {
   return (
     <div className="App grain">
-      <Toaster position="top-center" richColors />
-      <ReactLenis root options={{ lerp: 0.08, smoothWheel: true }}>
+      <Toaster
+        position="top-center"
+        richColors
+      />
+      <ReactLenis
+        root
+        options={{
+          lerp: 0.08,
+          smoothWheel: true,
+        }}
+      >
         <AuthProvider>
           <BrowserRouter>
             <Shell />
@@ -63,5 +110,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
