@@ -16,7 +16,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AboutWebsite from "./pages/AboutWebsite";
 import OurLittleCorner from "./pages/OurLittleCorner";
 import GameRoom from "./pages/GameRoom";
-import HanStory from "./pages/HanStory";
+
 function ScrollTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -61,14 +61,7 @@ function Shell() {
           path="/our-little-corner"
           element={<OurLittleCorner />}
         />
-        {/* =========================
-            HAN STORY
-        ========================= */}
-        <Route
-          path="/han"
-          element={<HanStory />}
-        />
-        <Route
+   
           path="/about-haneulz"
           element={<AboutWebsite />}
         />
