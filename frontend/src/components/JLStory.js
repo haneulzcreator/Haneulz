@@ -12,12 +12,9 @@ export default function JLStory() {
   const [showArchive, setShowArchive] = useState(false);
   const [photoLimit, setPhotoLimit] = useState(9);
 
-  /*
-   * ============================================================
-   * JL INFORMATION
-   * Replace the "Add later" values with your information.
-   * ============================================================
-   */
+  /* =========================================================
+     JL INFORMATION
+     ========================================================= */
 
   const profile = {
     fullName: "Jay Lawrence Gaspar",
@@ -39,22 +36,29 @@ export default function JLStory() {
     "Add another detail whenever you want.",
   ];
 
-  /*
-   * ============================================================
-   * PHOTO ARCHIVE
-   *
-   * Later, replace these with your actual image paths.
-   *
-   * Example:
-   *
-   * {
-   *   src: "/images/jl/jl-01.jpg",
-   *   alt: "JL"
-   * }
-   *
-   * Newest photos should go FIRST.
-   * ============================================================
-   */
+  const timeline = [
+    {
+      year: "2024",
+      title: "THE BEGINNING",
+      text: "Add an important moment from this year.",
+    },
+    {
+      year: "2025",
+      title: "ANOTHER CHAPTER",
+      text: "Add an important moment from this year.",
+    },
+    {
+      year: "2026",
+      title: "CURRENT CHAPTER",
+      text: "Add the latest JL moments here.",
+    },
+  ];
+
+  /* =========================================================
+     PHOTO ARCHIVE
+
+     NEWEST PHOTO = FIRST ITEM
+     ========================================================= */
 
   const photos = [
     { src: "", alt: "JL photo 01" },
@@ -84,54 +88,60 @@ export default function JLStory() {
   ];
 
   return (
-    <main className="relative overflow-hidden rounded-[3rem] bg-[#fbf8f6] text-[#3d3948]">
+    <main className="relative overflow-hidden rounded-[3rem] bg-[#faf7f5] text-[#403b49]">
 
-      {/* ========================================================
-          BACKGROUND
-      ======================================================== */}
+      {/* =====================================================
+          DECORATIVE BACKGROUND
+      ===================================================== */}
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
 
-        <div className="absolute -left-[20%] -top-[8%] h-[520px] w-[520px] rounded-full bg-[#dfeaf8]/80 blur-[100px]" />
+        <div className="absolute -left-32 -top-20 h-[520px] w-[520px] rounded-full bg-[#d9e7f5] opacity-70 blur-[110px]" />
 
-        <div className="absolute -right-[20%] top-[13%] h-[560px] w-[560px] rounded-full bg-[#eadff2]/80 blur-[110px]" />
+        <div className="absolute -right-40 top-[12%] h-[550px] w-[550px] rounded-full bg-[#eadcf1] opacity-75 blur-[110px]" />
 
-        <div className="absolute -left-[25%] top-[43%] h-[650px] w-[650px] rounded-full bg-[#f5dfe8]/70 blur-[120px]" />
+        <div className="absolute -left-40 top-[40%] h-[600px] w-[600px] rounded-full bg-[#f4dce5] opacity-65 blur-[120px]" />
 
-        <div className="absolute -right-[20%] top-[67%] h-[600px] w-[600px] rounded-full bg-[#fff0ca]/65 blur-[110px]" />
+        <div className="absolute -right-40 top-[67%] h-[600px] w-[600px] rounded-full bg-[#f9edc9] opacity-65 blur-[120px]" />
 
-        <div className="absolute left-[20%] top-[88%] h-[500px] w-[500px] rounded-full bg-[#dcebdd]/60 blur-[120px]" />
+        <div className="absolute left-[15%] top-[87%] h-[500px] w-[500px] rounded-full bg-[#dcebdd] opacity-55 blur-[120px]" />
 
         <div
-          className="absolute inset-0 opacity-[0.09]"
+          className="absolute inset-0 opacity-[0.075]"
           style={{
             backgroundImage:
-              "radial-gradient(#756c78 0.55px, transparent 0.55px)",
-            backgroundSize: "18px 18px",
+              "radial-gradient(#5e5664 0.6px, transparent 0.6px)",
+            backgroundSize: "17px 17px",
           }}
         />
+
+        <div className="absolute left-[7%] top-[17%] h-32 w-px rotate-[18deg] bg-[#9e8797]/30" />
+
+        <div className="absolute right-[10%] top-[29%] h-40 w-px rotate-[-25deg] bg-[#9e8797]/25" />
+
+        <div className="absolute left-[9%] top-[71%] h-36 w-px rotate-[-22deg] bg-[#9e8797]/25" />
 
       </div>
 
 
-      {/* ========================================================
+      {/* =====================================================
           COVER
-      ======================================================== */}
+      ===================================================== */}
 
-      <section className="relative min-h-[820px] px-6 pb-24 pt-8 sm:px-10 md:px-16 lg:px-24">
+      <section className="relative min-h-[850px] px-6 pb-24 pt-8 sm:px-10 md:px-16 lg:px-24">
 
         <div className="flex items-center justify-between">
 
           <div className="flex items-center gap-3">
 
-            <span className="font-mono text-[8px] tracking-[0.4em] text-[#a17e91]">
+            <span className="font-mono text-[8px] tracking-[0.45em] text-[#a77e91]">
               HANEULZ
             </span>
 
-            <span className="h-px w-8 bg-[#c9acbb]" />
+            <span className="h-px w-8 bg-[#cdb4c2]" />
 
-            <span className="text-[7px] uppercase tracking-[0.45em] text-[#99919b]">
-              JL ARCHIVE
+            <span className="font-mono text-[7px] tracking-[0.4em] text-[#98909a]">
+              JL / PROFILE
             </span>
 
           </div>
@@ -145,10 +155,10 @@ export default function JLStory() {
 
         <div className="relative mt-24">
 
-          {/* giant background J */}
+          {/* giant background letters */}
 
           <span
-            className="pointer-events-none absolute -left-7 -top-24 select-none text-[14rem] font-black leading-none tracking-[-0.15em] text-[#d8cde0]/50 sm:text-[20rem] md:text-[27rem]"
+            className="pointer-events-none absolute -left-8 -top-28 select-none text-[15rem] font-black leading-none tracking-[-0.18em] text-[#d9cfe1]/45 sm:text-[21rem] md:text-[29rem]"
             style={{
               fontFamily: "Arial Black, sans-serif",
             }}
@@ -156,21 +166,40 @@ export default function JLStory() {
             J
           </span>
 
+          <span
+            className="pointer-events-none absolute right-[-5%] top-[10%] select-none text-[8rem] font-black leading-none tracking-[-0.15em] text-[#f0d9e2]/50 sm:text-[12rem]"
+            style={{
+              fontFamily: "Arial Black, sans-serif",
+            }}
+          >
+            L
+          </span>
+
 
           <div className="relative z-10">
 
-            <span
-              className="ml-2 text-xl text-[#a4778e]"
-              style={{
-                fontFamily: "'Caveat', cursive",
-              }}
-            >
-              known as
-            </span>
+            <div className="ml-2 flex items-center gap-3">
+
+              <span
+                className="text-xl text-[#a4748a]"
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                }}
+              >
+                known as
+              </span>
+
+              <span className="h-px w-10 bg-[#bd9aab]" />
+
+              <span className="font-mono text-[7px] tracking-[0.35em] text-[#958b96]">
+                JL
+              </span>
+
+            </div>
 
 
             <h1
-              className="mt-1 text-[8rem] leading-[0.7] tracking-[-0.08em] text-[#3f3949] sm:text-[11rem] md:text-[15rem] lg:text-[18rem]"
+              className="mt-2 text-[8rem] leading-[0.7] tracking-[-0.09em] text-[#403a4a] sm:text-[11rem] md:text-[15rem] lg:text-[18rem]"
               style={{
                 fontFamily:
                   "'Bodoni 72', 'Bodoni MT', Didot, Georgia, serif",
@@ -183,7 +212,7 @@ export default function JLStory() {
             <div className="mt-12 ml-2">
 
               <p
-                className="text-3xl tracking-[0.01em] text-[#514b5a] sm:text-4xl"
+                className="text-3xl tracking-[0.01em] text-[#514a59] sm:text-4xl"
                 style={{
                   fontFamily:
                     "'Cormorant Garamond', Georgia, serif",
@@ -192,9 +221,8 @@ export default function JLStory() {
                 Jay Lawrence Gaspar
               </p>
 
-
               <p
-                className="mt-1 text-2xl text-[#a3778e]"
+                className="mt-1 text-2xl text-[#a4778c]"
                 style={{
                   fontFamily: "'Caveat', cursive",
                 }}
@@ -207,38 +235,44 @@ export default function JLStory() {
           </div>
 
 
-          {/* hero photo */}
+          {/* MAIN PHOTO */}
 
-          <div className="relative z-20 mt-16 ml-auto w-[94%] max-w-[590px] sm:w-[70%]">
+          <div className="relative z-20 mt-16 ml-auto w-[94%] max-w-[600px] sm:w-[70%]">
 
             <div className="absolute -inset-3 rotate-[3deg] rounded-[2.5rem] bg-[#e8d9ef]" />
 
             <div className="absolute -inset-3 -rotate-[2deg] rounded-[2.5rem] bg-[#f3d8e2]" />
 
             <PhotoPlaceholder
-              className="relative"
               large
+              className="relative"
             />
 
-
-            <div className="absolute -bottom-6 -left-5 rotate-[-5deg] rounded-full bg-[#fff0ca] px-6 py-3 shadow-[0_12px_30px_rgba(80,60,80,0.08)]">
+            <div className="absolute -bottom-7 -left-5 rotate-[-6deg] rounded-full bg-[#fff0ca] px-6 py-3 shadow-[0_15px_35px_rgba(70,55,70,0.1)]">
 
               <span
-                className="text-xl text-[#6c616b]"
+                className="text-xl text-[#6b606d]"
                 style={{
                   fontFamily: "'Caveat', cursive",
                 }}
               >
-                JL
+                Yence ♡
               </span>
 
             </div>
 
+            <div className="absolute -right-4 -top-8 rotate-[8deg] rounded-full bg-white/70 px-4 py-2">
+
+              <span className="font-mono text-[7px] tracking-[0.3em] text-[#827782]">
+                JAeyel
+              </span>
+
+            </div>
 
             <Sparkles
-              size={30}
+              size={28}
               strokeWidth={1}
-              className="absolute -right-5 -top-7 rotate-12 text-[#b691a5]"
+              className="absolute -right-6 top-[40%] rotate-12 text-[#aa8497]"
             />
 
           </div>
@@ -248,8 +282,8 @@ export default function JLStory() {
 
         <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2">
 
-          <span className="text-[7px] uppercase tracking-[0.5em] text-[#9e969f]">
-            scroll
+          <span className="font-mono text-[7px] uppercase tracking-[0.5em] text-[#9e969f]">
+            discover JL
           </span>
 
           <ArrowDown
@@ -263,79 +297,347 @@ export default function JLStory() {
       </section>
 
 
-      {/* ========================================================
-          PROFILE
-      ======================================================== */}
+      {/* =====================================================
+          QUICK LOOK
+      ===================================================== */}
+
+      <section className="relative px-6 py-24 sm:px-10 md:px-16 lg:px-24">
+
+        <SectionLabel
+          number="02"
+          title="QUICK LOOK"
+        />
+
+
+        <div className="relative overflow-hidden rounded-[2.8rem] bg-[#eee6f3] p-7 sm:p-10">
+
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#fff1cf]/70 blur-[70px]" />
+
+          <div className="absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-[#f4dce5]/70 blur-[70px]" />
+
+
+          <div className="relative grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
+
+            <QuickItem
+              label="KNOWN AS"
+              value="JL"
+            />
+
+            <QuickItem
+              label="NICKNAME"
+              value="Yence"
+            />
+
+            <QuickItem
+              label="ALSO"
+              value="Jaeyel"
+            />
+
+            <QuickItem
+              label="BIRTHDAY"
+              value={profile.birthday}
+            />
+
+            <QuickItem
+              label="HOBBY"
+              value={profile.hobbies}
+            />
+
+            <QuickItem
+              label="INTEREST"
+              value={profile.interests}
+            />
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          ABOUT
+      ===================================================== */}
 
       <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
 
-        <SectionLabel number="02" title="PROFILE" />
+        <SectionLabel
+          number="03"
+          title="ABOUT JL"
+        />
 
 
-        <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr]">
+        <div className="grid items-center gap-16 lg:grid-cols-[0.85fr_1.15fr]">
+
+          <div className="relative">
+
+            <div className="absolute -left-5 -top-5 h-20 w-20 rounded-full bg-[#f5dce5]" />
+
+            <div className="relative overflow-hidden rounded-[2.5rem]">
+
+              <PhotoPlaceholder />
+
+            </div>
+
+            <div className="absolute -bottom-6 -right-5 rounded-full bg-[#dce9f7] px-6 py-3">
+
+              <span
+                className="text-xl text-[#5f6470]"
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                }}
+              >
+                Jay Lawrence
+              </span>
+
+            </div>
+
+          </div>
+
 
           <div>
 
-            <span
-              className="text-xl text-[#a4778e]"
+            <p
+              className="text-2xl leading-9 text-[#655d69] sm:text-3xl sm:leading-10"
               style={{
-                fontFamily: "'Caveat', cursive",
+                fontFamily:
+                  "'Cormorant Garamond', Georgia, serif",
               }}
             >
-              about JL
-            </span>
+              This is where you can write a proper introduction
+              about JL — who he is, what makes him memorable,
+              and anything you want people visiting the HANEULZ
+              archive to know about him.
+            </p>
 
+
+            <div className="mt-12 flex flex-wrap gap-3">
+
+              <Tag text="JL" />
+
+              <Tag text="Yence" />
+
+              <Tag text="Jaeyel" />
+
+              <Tag text="Jay Lawrence Gaspar" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          HOBBIES
+      ===================================================== */}
+
+      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
+
+        <SectionLabel
+          number="04"
+          title="HOBBIES & INTERESTS"
+        />
+
+
+        <div className="grid gap-6 md:grid-cols-12">
+
+          <FeatureCard
+            className="min-h-[350px] md:col-span-7"
+            background="#dce9f7"
+            number="01"
+            title="HOBBIES"
+            value={profile.hobbies}
+            large
+          />
+
+          <FeatureCard
+            className="min-h-[270px] md:col-span-5 md:mt-16"
+            background="#eadcf2"
+            number="02"
+            title="INTERESTS"
+            value={profile.interests}
+          />
+
+          <FeatureCard
+            className="min-h-[250px] md:col-span-4 md:-mt-8"
+            background="#fff0ca"
+            number="03"
+            title="PERSONALITY"
+            value={profile.personality}
+          />
+
+          <FeatureCard
+            className="min-h-[300px] md:col-span-8"
+            background="#f3dce5"
+            number="04"
+            title="MORE"
+            value="Add anything else you want people to know about JL."
+          />
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          FAVORITES
+      ===================================================== */}
+
+      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
+
+        <SectionLabel
+          number="05"
+          title="FAVORITES"
+        />
+
+
+        <div className="relative rounded-[3rem] bg-[#e8e1f1] p-8 sm:p-12 md:p-16">
+
+          <div className="absolute right-8 top-8">
+
+            <Star
+              size={28}
+              strokeWidth={1}
+              className="rotate-12 text-[#a98396]"
+            />
+
+          </div>
+
+
+          <p
+            className="text-2xl text-[#a1758b]"
+            style={{
+              fontFamily: "'Caveat', cursive",
+            }}
+          >
+            JL's favorites
+          </p>
+
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+            <FavoriteCard
+              label="MUSIC"
+              value="Add later"
+            />
+
+            <FavoriteCard
+              label="FOOD"
+              value="Add later"
+            />
+
+            <FavoriteCard
+              label="COLOR"
+              value="Add later"
+            />
+
+            <FavoriteCard
+              label="OTHER"
+              value="Add later"
+            />
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =====================================================
+          JOURNEY
+      ===================================================== */}
+
+      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
+
+        <SectionLabel
+          number="06"
+          title="JOURNEY"
+        />
+
+
+        <div className="grid gap-16 lg:grid-cols-[0.7fr_1.3fr]">
+
+          <div>
 
             <h2
-              className="mt-3 text-7xl leading-[0.78] tracking-[-0.05em] text-[#403a4b] sm:text-8xl"
+              className="text-8xl leading-[0.75] tracking-[-0.07em] text-[#403a49] sm:text-[9rem]"
               style={{
                 fontFamily:
                   "'Bodoni 72', Didot, Georgia, serif",
               }}
             >
-              JAY
+              HIS
               <br />
-              LAWRENCE
-              <br />
-              <span className="ml-8 text-[#aa7c92]">
-                GASPAR
+              <span className="ml-8 text-[#a97990]">
+                JOURNEY
               </span>
             </h2>
 
+
+            <p
+              className="mt-10 max-w-sm text-xl leading-8 text-[#7a717d]"
+              style={{
+                fontFamily:
+                  "'Cormorant Garamond', Georgia, serif",
+              }}
+            >
+              Important moments, milestones, and chapters can
+              live here as the archive grows.
+            </p>
+
           </div>
 
 
-          <div className="grid grid-cols-2 gap-x-7 gap-y-9 sm:grid-cols-3">
+          <div className="relative">
 
-            <InfoItem
-              label="FULL NAME"
-              value={profile.fullName}
-            />
+            <div className="absolute left-[27px] top-5 bottom-5 w-px bg-[#cbbbc7]" />
 
-            <InfoItem
-              label="KNOWN AS"
-              value={profile.knownAs}
-            />
+            <div className="space-y-12">
 
-            <InfoItem
-              label="NICKNAMES"
-              value={profile.nicknames}
-            />
+              {timeline.map((item, index) => (
 
-            <InfoItem
-              label="BIRTHDAY"
-              value={profile.birthday}
-            />
+                <div
+                  key={index}
+                  className="relative grid grid-cols-[56px_1fr] gap-6"
+                >
 
-            <InfoItem
-              label="NATIONALITY"
-              value={profile.nationality}
-            />
+                  <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[#faf7f5]">
 
-            <InfoItem
-              label="PERSONALITY"
-              value={profile.personality}
-            />
+                    <div className="h-3 w-3 rounded-full bg-[#b58ba0]" />
+
+                  </div>
+
+
+                  <div className="border-b border-[#d0c4cc] pb-10">
+
+                    <span className="font-mono text-[8px] tracking-[0.35em] text-[#a67d91]">
+                      {item.year}
+                    </span>
+
+                    <h3
+                      className="mt-3 text-3xl text-[#514a59]"
+                      style={{
+                        fontFamily:
+                          "'Cormorant Garamond', Georgia, serif",
+                      }}
+                    >
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-3 max-w-lg text-sm leading-7 text-[#7c747f]">
+                      {item.text}
+                    </p>
+
+                  </div>
+
+                </div>
+
+              ))}
+
+            </div>
 
           </div>
 
@@ -344,58 +646,16 @@ export default function JLStory() {
       </section>
 
 
-      {/* ========================================================
-          HOBBIES + INTERESTS
-      ======================================================== */}
-
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
-
-        <SectionLabel number="03" title="HOBBIES & INTERESTS" />
-
-
-        <div className="grid gap-8 md:grid-cols-12">
-
-          <FeaturePanel
-            className="md:col-span-7"
-            title="HOBBIES"
-            value={profile.hobbies}
-            color="#dce9f7"
-            tall
-          />
-
-          <FeaturePanel
-            className="md:col-span-5 md:mt-16"
-            title="INTERESTS"
-            value={profile.interests}
-            color="#eadcf2"
-          />
-
-          <FeaturePanel
-            className="md:col-span-4 md:-mt-8"
-            title="FAVORITES"
-            value={profile.favorites}
-            color="#fff0ca"
-          />
-
-          <FeaturePanel
-            className="md:col-span-8"
-            title="MORE"
-            value="Add any extra information you want to include here."
-            color="#f3dce5"
-          />
-
-        </div>
-
-      </section>
-
-
-      {/* ========================================================
+      {/* =====================================================
           FUN FACTS
-      ======================================================== */}
+      ===================================================== */}
 
       <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
 
-        <SectionLabel number="04" title="FUN FACTS" />
+        <SectionLabel
+          number="07"
+          title="FUN FACTS"
+        />
 
 
         <div className="grid gap-14 lg:grid-cols-[0.55fr_1.45fr]">
@@ -403,7 +663,7 @@ export default function JLStory() {
           <div>
 
             <h2
-              className="text-7xl leading-[0.78] tracking-[-0.05em] text-[#403a4b] sm:text-8xl"
+              className="text-8xl leading-[0.76] tracking-[-0.07em] text-[#403a4a] sm:text-[9rem]"
               style={{
                 fontFamily:
                   "'Bodoni 72', Didot, Georgia, serif",
@@ -413,7 +673,7 @@ export default function JLStory() {
               <br />
               ABOUT
               <br />
-              <span className="text-[#ac7d94]">
+              <span className="text-[#aa7d93]">
                 JL
               </span>
             </h2>
@@ -436,7 +696,7 @@ export default function JLStory() {
 
 
                 <p
-                  className="text-2xl leading-8 text-[#615a68] transition group-hover:text-[#3e3947]"
+                  className="text-2xl leading-8 text-[#615a68]"
                   style={{
                     fontFamily:
                       "'Cormorant Garamond', Georgia, serif",
@@ -463,90 +723,44 @@ export default function JLStory() {
       </section>
 
 
-      {/* ========================================================
-          FAVORITES
-      ======================================================== */}
-
-      <section className="relative px-6 py-28 sm:px-10 md:px-16 lg:px-24">
-
-        <SectionLabel number="05" title="FAVORITES" />
-
-
-        <div className="relative overflow-hidden rounded-[3rem] bg-[#e7e0f1] px-7 py-14 sm:px-12 md:px-16">
-
-          <div className="absolute -right-24 -top-28 h-72 w-72 rounded-full bg-[#fff0ca]/70 blur-[70px]" />
-
-          <div className="absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-[#f3dce5]/70 blur-[70px]" />
-
-
-          <div className="relative">
-
-            <p
-              className="text-xl text-[#a1768b]"
-              style={{
-                fontFamily: "'Caveat', cursive",
-              }}
-            >
-              things JL likes
-            </p>
-
-
-            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
-              <FavoriteBox
-                title="MUSIC"
-                value="Add later"
-              />
-
-              <FavoriteBox
-                title="FOOD"
-                value="Add later"
-              />
-
-              <FavoriteBox
-                title="COLOR"
-                value="Add later"
-              />
-
-              <FavoriteBox
-                title="OTHER"
-                value="Add later"
-              />
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* ========================================================
+      {/* =====================================================
           PHOTO ARCHIVE
-      ======================================================== */}
+      ===================================================== */}
 
       <section className="relative px-5 py-28 sm:px-10 md:px-16 lg:px-24">
 
-        <SectionLabel number="06" title="PHOTO ARCHIVE" />
+        <SectionLabel
+          number="08"
+          title="PHOTO ARCHIVE"
+        />
 
 
-        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <div className="flex flex-col justify-between gap-7 sm:flex-row sm:items-end">
 
           <div>
 
-            <p
-              className="text-xl text-[#a1768c]"
-              style={{
-                fontFamily: "'Caveat', cursive",
-              }}
-            >
-              JL photos
-            </p>
+            <div className="flex items-center gap-3">
+
+              <Camera
+                size={17}
+                strokeWidth={1}
+                className="text-[#a67e91]"
+              />
+
+              <span
+                className="text-xl text-[#a1758b]"
+                style={{
+                  fontFamily: "'Caveat', cursive",
+                }}
+              >
+                JL photos
+              </span>
+
+            </div>
 
 
             <h2
-              className="mt-2 text-7xl leading-[0.75] tracking-[-0.05em] text-[#403a4b] sm:text-9xl"
+              className="mt-2 text-7xl leading-[0.75] tracking-[-0.07em] text-[#403a4a] sm:text-9xl"
               style={{
                 fontFamily:
                   "'Bodoni 72', Didot, Georgia, serif",
@@ -567,7 +781,8 @@ export default function JLStory() {
                   "'Cormorant Garamond', Georgia, serif",
               }}
             >
-              New photos can always be placed at the top of the archive.
+              The newest photo goes first. Open the archive to
+              keep exploring.
             </p>
 
           </div>
@@ -580,13 +795,11 @@ export default function JLStory() {
           {photos
             .slice(0, showArchive ? photoLimit : 9)
             .map((photo, index) => (
-
               <ArchivePhoto
                 key={index}
                 photo={photo}
                 index={index}
               />
-
             ))}
 
         </div>
@@ -597,9 +810,9 @@ export default function JLStory() {
           <button
             type="button"
             onClick={() => setShowArchive(true)}
-            className="mx-auto mt-12 flex items-center gap-3 rounded-full bg-[#413a4d] px-8 py-3 text-[8px] uppercase tracking-[0.4em] text-white transition hover:-translate-y-1"
+            className="mx-auto mt-12 flex items-center gap-3 rounded-full bg-[#413a4d] px-8 py-3 text-[8px] uppercase tracking-[0.4em] text-white transition hover:-translate-y-1 hover:bg-[#51485c]"
           >
-            View Archive
+            View Full Archive
 
             <ArrowUpRight
               size={13}
@@ -621,7 +834,7 @@ export default function JLStory() {
                     Math.min(current + 9, photos.length)
                   )
                 }
-                className="rounded-full bg-[#eadcf2] px-8 py-3 text-[8px] uppercase tracking-[0.4em] text-[#625969]"
+                className="rounded-full bg-[#eadcf2] px-8 py-3 text-[8px] uppercase tracking-[0.4em] text-[#625969] transition hover:bg-[#e1d1eb]"
               >
                 Load More
               </button>
@@ -637,7 +850,7 @@ export default function JLStory() {
                   fontFamily: "'Caveat', cursive",
                 }}
               >
-                End of archive
+                End of archive ♡
               </span>
 
             )}
@@ -651,7 +864,7 @@ export default function JLStory() {
               }}
               className="text-[8px] uppercase tracking-[0.4em] text-[#9c939e] underline underline-offset-4"
             >
-              Close
+              Close Archive
             </button>
 
           </div>
@@ -661,11 +874,11 @@ export default function JLStory() {
       </section>
 
 
-      {/* ========================================================
+      {/* =====================================================
           END
-      ======================================================== */}
+      ===================================================== */}
 
-      <section className="relative px-6 pb-28 pt-12 text-center sm:px-10">
+      <section className="relative px-6 pb-28 pt-14 text-center sm:px-10">
 
         <div className="mx-auto flex max-w-sm items-center gap-4">
 
@@ -683,7 +896,7 @@ export default function JLStory() {
 
 
         <h2
-          className="mt-10 text-8xl tracking-[-0.08em] text-[#403a4b] sm:text-[10rem]"
+          className="mt-10 text-8xl tracking-[-0.08em] text-[#403a4b] sm:text-[11rem]"
           style={{
             fontFamily:
               "'Bodoni 72', Didot, Georgia, serif",
@@ -709,9 +922,9 @@ export default function JLStory() {
 }
 
 
-/* ==============================================================
-   SECTION LABEL
-============================================================== */
+/* =============================================================
+   COMPONENTS
+============================================================= */
 
 function SectionLabel({ number, title }) {
   return (
@@ -723,7 +936,7 @@ function SectionLabel({ number, title }) {
 
       <span className="h-px w-12 bg-[#cdbec9]" />
 
-      <span className="text-[7px] uppercase tracking-[0.5em] text-[#9e969f]">
+      <span className="font-mono text-[7px] uppercase tracking-[0.5em] text-[#9e969f]">
         {title}
       </span>
 
@@ -732,20 +945,16 @@ function SectionLabel({ number, title }) {
 }
 
 
-/* ==============================================================
-   INFO ITEM
-============================================================== */
-
-function InfoItem({ label, value }) {
+function QuickItem({ label, value }) {
   return (
-    <div className="border-b border-[#cec2cc] pb-5">
+    <div className="border-l border-[#c9bbc6] pl-4">
 
-      <p className="font-mono text-[7px] tracking-[0.35em] text-[#a58c9a]">
+      <p className="font-mono text-[7px] tracking-[0.35em] text-[#9d8492]">
         {label}
       </p>
 
       <p
-        className="mt-3 text-xl leading-7 text-[#5d5665]"
+        className="mt-3 text-xl leading-6 text-[#5d5665]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -759,35 +968,39 @@ function InfoItem({ label, value }) {
 }
 
 
-/* ==============================================================
-   FEATURE PANEL
-============================================================== */
+function Tag({ text }) {
+  return (
+    <span className="rounded-full border border-[#cbb8c4] bg-white/40 px-5 py-2 font-mono text-[7px] tracking-[0.18em] text-[#7e707c]">
+      {text}
+    </span>
+  );
+}
 
-function FeaturePanel({
+
+function FeatureCard({
+  background,
+  number,
   title,
   value,
-  color,
   className = "",
-  tall = false,
+  large = false,
 }) {
   return (
     <div
-      className={`group relative overflow-hidden rounded-[2.5rem] p-8 shadow-[0_18px_45px_rgba(65,55,75,0.06)] transition duration-300 hover:-translate-y-2 ${
-        tall ? "min-h-[330px]" : "min-h-[230px]"
-      } ${className}`}
+      className={`group relative overflow-hidden rounded-[2.6rem] p-8 shadow-[0_18px_45px_rgba(65,55,75,0.06)] transition duration-300 hover:-translate-y-2 sm:p-10 ${className}`}
       style={{
-        backgroundColor: color,
+        backgroundColor: background,
       }}
     >
 
       <span
-        className="absolute -right-8 -top-10 text-[10rem] leading-none text-black/[0.035]"
+        className="absolute -right-4 -top-12 text-[12rem] leading-none text-black/[0.035]"
         style={{
           fontFamily:
             "'Bodoni 72', Didot, Georgia, serif",
         }}
       >
-        {title.charAt(0)}
+        {number}
       </span>
 
 
@@ -795,26 +1008,34 @@ function FeaturePanel({
 
         <div className="flex items-center justify-between">
 
-          <span
-            className="text-3xl text-[#625a68]"
-            style={{
-              fontFamily: "'Caveat', cursive",
-            }}
-          >
-            {title}
+          <span className="font-mono text-[8px] tracking-[0.35em] text-[#827681]">
+            {number}
           </span>
 
           <Sparkles
-            size={15}
+            size={16}
             strokeWidth={1}
-            className="text-[#776c78]/60"
+            className="text-[#827681]/70"
           />
 
         </div>
 
 
+        <h3
+          className={`mt-10 text-[#5b5463] ${
+            large ? "text-5xl sm:text-6xl" : "text-4xl"
+          }`}
+          style={{
+            fontFamily:
+              "'Cormorant Garamond', Georgia, serif",
+          }}
+        >
+          {title}
+        </h3>
+
+
         <p
-          className="mt-12 max-w-md text-2xl leading-8 text-[#625b69]"
+          className="mt-8 max-w-lg text-xl leading-8 text-[#6d6572]"
           style={{
             fontFamily:
               "'Cormorant Garamond', Georgia, serif",
@@ -830,16 +1051,12 @@ function FeaturePanel({
 }
 
 
-/* ==============================================================
-   FAVORITE BOX
-============================================================== */
-
-function FavoriteBox({ title, value }) {
+function FavoriteCard({ label, value }) {
   return (
     <div className="rounded-[1.7rem] bg-white/45 p-6 backdrop-blur-sm">
 
       <p className="font-mono text-[7px] tracking-[0.4em] text-[#9d8b98]">
-        {title}
+        {label}
       </p>
 
       <p
@@ -857,15 +1074,14 @@ function FavoriteBox({ title, value }) {
 }
 
 
-/* ==============================================================
-   PHOTO PLACEHOLDER
-============================================================== */
-
-function PhotoPlaceholder({ className = "", large = false }) {
+function PhotoPlaceholder({
+  className = "",
+  large = false,
+}) {
   return (
     <div
       className={`relative overflow-hidden rounded-[2.5rem] bg-[#e9e2e9] ${
-        large ? "aspect-[4/3]" : "aspect-square"
+        large ? "aspect-[4/3]" : "aspect-[4/5]"
       } ${className}`}
     >
 
@@ -875,7 +1091,6 @@ function PhotoPlaceholder({ className = "", large = false }) {
 
       <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-[#fff0ca]/70 blur-[70px]" />
 
-
       <div
         className="absolute inset-0 opacity-[0.1]"
         style={{
@@ -884,7 +1099,6 @@ function PhotoPlaceholder({ className = "", large = false }) {
           backgroundSize: "20px 20px",
         }}
       />
-
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
 
@@ -898,7 +1112,6 @@ function PhotoPlaceholder({ className = "", large = false }) {
 
         </div>
 
-
         <span className="mt-5 font-mono text-[7px] tracking-[0.4em] text-[#817586]">
           JL PHOTO
         </span>
@@ -909,10 +1122,6 @@ function PhotoPlaceholder({ className = "", large = false }) {
   );
 }
 
-
-/* ==============================================================
-   ARCHIVE PHOTO
-============================================================== */
 
 function ArchivePhoto({ photo, index }) {
   const colors = [
@@ -966,7 +1175,6 @@ function ArchivePhoto({ photo, index }) {
         </div>
 
       )}
-
 
       <span className="absolute bottom-2 left-2 rounded-full bg-white/60 px-2 py-1 font-mono text-[6px] text-[#6c6370]">
         {String(index + 1).padStart(2, "0")}
