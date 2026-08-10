@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Film, Heart, Sparkles, Cat } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-
 export default function HanStory() {
 const [movies] = useState([]);
 const loadingMovies = false;
