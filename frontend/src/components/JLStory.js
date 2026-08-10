@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { ArrowUpRight, Camera, Heart, Star } from "lucide-react";
+import { ArrowUpRight, Camera, Heart, Sparkles } from "lucide-react";
 
 const PHOTOS_PER_PAGE = 25;
 
@@ -21,24 +21,27 @@ const facts = [
   "Add another interesting fact here.",
   "Add a funny or memorable detail here.",
   "Add another fact about JL here.",
-  "Add another detail whenever you want.",
+  "Add another little detail whenever you want.",
 ];
 
 /*
-  ADD PHOTOS HERE
+============================================================
+JL PHOTO ARCHIVE
+============================================================
 
-  You can add as many as you want.
+Add your photos here.
 
-  src     = image URL
-  postUrl = original post URL
+Example:
 
-  Example:
+{
+  src: "https://your-image-url.com/photo.jpg",
+  alt: "JL photo",
+  postUrl: "https://x.com/..."
+}
 
-  {
-    src: "https://...",
-    alt: "JL photo",
-    postUrl: "https://..."
-  }
+postUrl is optional.
+If you don't have the original post link, leave it empty.
+============================================================
 */
 
 const photos = [
@@ -67,8 +70,11 @@ const photos = [
     alt: "JL photo 05",
     postUrl: "",
   },
-
-  // Add as many as you want...
+  {
+    src: "",
+    alt: "JL photo 06",
+    postUrl: "",
+  },
 ];
 
 export default function JLStory() {
@@ -103,39 +109,60 @@ export default function JLStory() {
   };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-gradient-to-b from-[#fff7fb] via-[#fdeef6] to-[#fff5f9] px-4 py-6 text-[#665765] sm:px-6">
+    <main className="min-h-screen overflow-hidden bg-gradient-to-b from-[#fff9fc] via-[#fdeff6] to-[#fff7fa] px-4 py-6 text-[#665765] sm:px-6">
+
       <div className="mx-auto max-w-5xl">
 
-        {/* TOP */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
+
         <header className="flex items-center justify-between px-2 py-3">
+
           <div>
-            <p className="font-mono text-[9px] tracking-[0.25em] text-[#aa8a9e]">
+            <p className="font-mono text-[9px] tracking-[0.28em] text-[#ad8b9f]">
               HANEULZ ARCHIVE
             </p>
 
-            <p className="mt-1 font-mono text-[8px] tracking-[0.2em] text-[#c2a9b7]">
+            <p className="mt-1 font-mono text-[8px] tracking-[0.22em] text-[#c5a8b8]">
               JL / 01
             </p>
           </div>
 
-          <span className="text-lg text-[#c49aae]">
+          <div className="text-xl text-[#c69aad]">
             ୨୧
-          </span>
+          </div>
+
         </header>
 
-        {/* HERO */}
-        <section className="relative mt-4 rounded-[2rem] bg-white/45 px-6 py-14 text-center shadow-[0_12px_40px_rgba(170,130,150,0.08)] backdrop-blur-sm sm:px-10">
 
-          <div className="absolute left-5 top-5 text-[#d3aebe]">
-            ♡୨୧
+        {/* =================================================
+            HERO
+        ================================================= */}
+
+        <section className="relative mt-4 overflow-hidden rounded-[2.5rem] border border-[#f0d9e4] bg-white/60 px-6 py-14 text-center shadow-[0_18px_55px_rgba(180,130,155,0.10)] backdrop-blur-md sm:px-10">
+
+          {/* soft decorations */}
+
+          <div className="pointer-events-none absolute left-6 top-6 text-sm text-[#d5aabd]">
+            ୨୧
           </div>
 
-          <div className="absolute right-5 top-5 text-[#d3aebe]">
-            ୨୧♡
+          <div className="pointer-events-none absolute right-6 top-6 text-sm text-[#d5aabd]">
+            ♡
           </div>
+
+          <div className="pointer-events-none absolute bottom-7 left-8 text-xs text-[#e1bdca]">
+            ✦
+          </div>
+
+          <div className="pointer-events-none absolute bottom-7 right-8 text-xs text-[#e1bdca]">
+            ୨୧
+          </div>
+
 
           <p
-            className="text-2xl text-[#a67d91]"
+            className="text-2xl text-[#a77d92]"
             style={{
               fontFamily: "'Comic Sans MS', cursive",
             }}
@@ -143,16 +170,19 @@ export default function JLStory() {
             ୨୧ a little page for Yence ୨୧
           </p>
 
-          <div className="mt-5 text-xl text-[#c193a8]">
-            ♡୨୧♡
+
+          <div className="mt-5 text-lg tracking-[0.3em] text-[#c293a7]">
+            ♡ ୨୧ ♡
           </div>
 
-          <p className="mt-8 font-mono text-[8px] uppercase tracking-[0.35em] text-[#b59ba9]">
+
+          <p className="mt-8 font-mono text-[8px] uppercase tracking-[0.4em] text-[#b79aaa]">
             known as
           </p>
 
+
           <h1
-            className="mt-2 text-7xl font-normal tracking-tight text-[#675462] sm:text-8xl"
+            className="mt-2 text-7xl font-normal tracking-tight text-[#665462] sm:text-8xl"
             style={{
               fontFamily:
                 "'Cormorant Garamond', Georgia, serif",
@@ -161,12 +191,14 @@ export default function JLStory() {
             JL
           </h1>
 
-          <div className="mt-4 text-xl text-[#b18498]">
+
+          <div className="mt-3 text-xl text-[#bc8fa3]">
             ♡
           </div>
 
+
           <p
-            className="mt-3 text-3xl text-[#675462]"
+            className="mt-3 text-3xl text-[#665462]"
             style={{
               fontFamily:
                 "'Cormorant Garamond', Georgia, serif",
@@ -175,8 +207,9 @@ export default function JLStory() {
             Jay Lawrence Gaspar
           </p>
 
+
           <p
-            className="mt-2 text-2xl text-[#a97c91]"
+            className="mt-2 text-2xl text-[#a97d91]"
             style={{
               fontFamily: "'Comic Sans MS', cursive",
             }}
@@ -184,38 +217,56 @@ export default function JLStory() {
             Yence · Jaeyel
           </p>
 
-          {/* CUTE PHOTO */}
+
+          {/* HERO PHOTO */}
+
           <div className="mx-auto mt-10 max-w-md">
-            <PhotoPlaceholder />
+            <PhotoPlaceholder
+              label="JL PHOTO"
+            />
           </div>
 
-          <div className="mt-6 text-2xl text-[#bd91a4]">
-            Yence ♡
-          </div>
 
           <p
-            className="mt-5 text-xl text-[#a88799]"
+            className="mt-5 text-xl text-[#a78395]"
             style={{
               fontFamily: "'Comic Sans MS', cursive",
             }}
           >
-            a tiny collection of things about JL
+            Yence ♡
           </p>
 
-          <div className="mt-5 text-xl text-[#c49aae]">
+
+          <p
+            className="mx-auto mt-4 max-w-lg text-lg leading-8 text-[#917986]"
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', Georgia, serif",
+            }}
+          >
+            a tiny collection of things about JL —
+            little moments, favorite things, and pieces
+            of the person behind Yence.
+          </p>
+
+
+          <div className="mt-6 text-xl text-[#c69aaa]">
             ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
           </div>
 
-          {/* DEER */}
-          <CuteDeer />
         </section>
 
-        {/* QUICK LOOK */}
-        <section className="mt-8 rounded-[2rem] bg-white/40 px-6 py-10 shadow-[0_10px_35px_rgba(170,130,150,0.06)] backdrop-blur-sm sm:px-10">
+
+        {/* =================================================
+            QUICK LOOK
+        ================================================= */}
+
+        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
 
           <SectionTitle>
             ୨୧ a quick look ୨୧
           </SectionTitle>
+
 
           <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
 
@@ -250,20 +301,30 @@ export default function JLStory() {
             />
 
           </div>
+
         </section>
 
-        {/* ABOUT */}
-        <section className="mt-8 rounded-[2rem] bg-white/40 px-6 py-10 shadow-[0_10px_35px_rgba(170,130,150,0.06)] backdrop-blur-sm sm:px-10">
+
+        {/* =================================================
+            ABOUT JL
+        ================================================= */}
+
+        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
 
           <SectionTitle>
             ♡ about JL ♡
           </SectionTitle>
 
+
           <div className="mt-8 grid gap-8 md:grid-cols-2 md:items-center">
 
-            <PhotoPlaceholder />
+            <PhotoPlaceholder
+              label="A LITTLE PHOTO OF JL"
+            />
+
 
             <div>
+
               <p
                 className="text-2xl leading-9 text-[#756271]"
                 style={{
@@ -271,28 +332,59 @@ export default function JLStory() {
                     "'Cormorant Garamond', Georgia, serif",
                 }}
               >
-                This is where you can write a little
-                introduction about JL, Yence, and
-                everything you want people visiting
-                this little HANEULZ corner to know.
+                This is a little space for everything
+                that makes JL feel like JL — his
+                personality, little habits, memorable
+                moments, and the things that make
+                people smile.
               </p>
 
+
+              <p
+                className="mt-5 text-lg leading-8 text-[#9a7f8d]"
+                style={{
+                  fontFamily:
+                    "'Cormorant Garamond', Georgia, serif",
+                }}
+              >
+                Add your own little story about Yence
+                here whenever you're ready.
+              </p>
+
+
               <div className="mt-6 flex flex-wrap gap-2">
-                <CuteTag>JL</CuteTag>
-                <CuteTag>Yence</CuteTag>
-                <CuteTag>Jaeyel</CuteTag>
+
+                <CuteTag>
+                  JL
+                </CuteTag>
+
+                <CuteTag>
+                  Yence
+                </CuteTag>
+
+                <CuteTag>
+                  Jaeyel
+                </CuteTag>
+
               </div>
+
             </div>
 
           </div>
+
         </section>
 
-        {/* HOBBIES */}
-        <section className="mt-8 rounded-[2rem] bg-white/40 px-6 py-10 shadow-[0_10px_35px_rgba(170,130,150,0.06)] backdrop-blur-sm sm:px-10">
+
+        {/* =================================================
+            HOBBIES & INTERESTS
+        ================================================= */}
+
+        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
 
           <SectionTitle>
             ୨୧ hobbies & interests ୨୧
           </SectionTitle>
+
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
 
@@ -317,25 +409,34 @@ export default function JLStory() {
             />
 
           </div>
+
         </section>
 
-        {/* FUN FACTS */}
-        <section className="mt-8 rounded-[2rem] bg-white/40 px-6 py-10 shadow-[0_10px_35px_rgba(170,130,150,0.06)] backdrop-blur-sm sm:px-10">
+
+        {/* =================================================
+            FUN FACTS
+        ================================================= */}
+
+        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
 
           <SectionTitle>
-            ♡ fun facts about JL ♡
+            ♡ little things about JL ♡
           </SectionTitle>
+
 
           <div className="mt-8">
 
             {facts.map((fact, index) => (
+
               <div
                 key={index}
                 className="flex gap-4 border-b border-[#ead6df] py-5 last:border-b-0"
               >
+
                 <span className="shrink-0 text-[#bd91a5]">
                   ୨୧
                 </span>
+
 
                 <p
                   className="text-xl leading-8 text-[#756271]"
@@ -346,30 +447,53 @@ export default function JLStory() {
                 >
                   {fact}
                 </p>
+
               </div>
+
             ))}
 
           </div>
+
         </section>
 
-        {/* PHOTO ARCHIVE */}
+
+        {/* =================================================
+            PHOTO ARCHIVE
+        ================================================= */}
+
         <section
           id="jl-photo-archive"
-          className="mt-8 rounded-[2rem] bg-white/40 px-5 py-10 shadow-[0_10px_35px_rgba(170,130,150,0.06)] backdrop-blur-sm sm:px-8"
+          className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-5 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-8"
         >
 
           <SectionTitle>
             ୨୧ JL photos ୨୧
           </SectionTitle>
 
+
           <div className="mt-2 text-center">
-            <span className="text-lg text-[#b58a9d]">
+
+            <span
+              className="text-lg text-[#b58a9d]"
+              style={{
+                fontFamily:
+                  "'Cormorant Garamond', Georgia, serif",
+              }}
+            >
               ♡ a tiny photo collection ♡
             </span>
+
           </div>
 
-          {!showArchive ? (
+
+          {photos.length === 0 ? (
+
+            <EmptyPhotoState />
+
+          ) : !showArchive ? (
+
             <>
+
               <PhotoGrid
                 photos={photos.slice(
                   0,
@@ -378,25 +502,35 @@ export default function JLStory() {
                 startIndex={0}
               />
 
+
               {photos.length > PHOTOS_PER_PAGE && (
+
                 <button
                   type="button"
                   onClick={() => {
                     setShowArchive(true);
                     setCurrentPage(1);
                   }}
-                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border border-[#d8bbc8] bg-white/60 px-7 py-3 text-[9px] uppercase tracking-[0.25em] text-[#896e7d] transition hover:bg-white hover:shadow-md"
+                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border border-[#d8bbc8] bg-white/70 px-7 py-3 text-[9px] uppercase tracking-[0.25em] text-[#896e7d] transition hover:bg-white hover:shadow-md"
                 >
+
                   load more ♡
+
                   <ArrowUpRight
                     size={13}
                     strokeWidth={1}
                   />
+
                 </button>
+
               )}
+
             </>
+
           ) : (
+
             <>
+
               <PhotoGrid
                 photos={visiblePhotos}
                 startIndex={
@@ -405,29 +539,36 @@ export default function JLStory() {
                 }
               />
 
+
               <div className="mt-10 flex flex-wrap justify-center gap-2">
 
                 {Array.from(
                   { length: totalPages },
                   (_, index) => index + 1
                 ).map((page) => (
+
                   <button
                     key={page}
                     type="button"
-                    onClick={() => goToPage(page)}
+                    onClick={() =>
+                      goToPage(page)
+                    }
                     className={`h-9 min-w-9 rounded-full px-3 text-xs transition ${
                       currentPage === page
                         ? "bg-[#b98da1] text-white"
-                        : "bg-white/60 text-[#987c8b] hover:bg-[#f5e1ea]"
+                        : "bg-white/70 text-[#987c8b] hover:bg-[#f5e1ea]"
                     }`}
                   >
                     {page}
                   </button>
+
                 ))}
 
               </div>
 
+
               <div className="mt-6 text-center">
+
                 <button
                   type="button"
                   onClick={() => {
@@ -438,49 +579,70 @@ export default function JLStory() {
                 >
                   close archive
                 </button>
+
               </div>
+
             </>
+
           )}
+
         </section>
 
-        {/* END */}
+
+        {/* =================================================
+            LITTLE ENDING
+        ================================================= */}
+
         <footer className="px-4 py-16 text-center">
 
-          <div className="text-2xl text-[#c092a5]">
-            ♡ ୨୧ ♡
+          <div className="text-2xl tracking-[0.2em] text-[#c092a5]">
+            ♡ ୨୧ ✦
           </div>
 
+
           <p
-            className="mt-4 text-2xl text-[#9f778a]"
+            className="mt-5 text-2xl text-[#9f778a]"
             style={{
               fontFamily:
                 "'Comic Sans MS', cursive",
             }}
           >
-            made with love for Yence
+            made with love for Yence ♡
           </p>
 
+
           <p className="mt-3 text-sm text-[#b49aa8]">
-            Yence · Jaeyel ♡
+            JL · Yence · Jaeyel
+          </p>
+
+
+          <p className="mt-5 text-xs tracking-[0.15em] text-[#ceb5c1]">
+            one little page in the HANEULZ archive
           </p>
 
         </footer>
 
       </div>
+
     </main>
   );
 }
 
+
 /* ============================================================
-   SMALL COMPONENTS
+   SECTION TITLE
 ============================================================ */
 
 function SectionTitle({ children }) {
+
   return (
+
     <div className="text-center">
+
       <div className="text-sm text-[#c092a5]">
         ୨୧
       </div>
+
 
       <h2
         className="mt-1 text-4xl text-[#715d6b]"
@@ -492,19 +654,31 @@ function SectionTitle({ children }) {
         {children}
       </h2>
 
+
       <div className="mt-2 text-sm text-[#c092a5]">
         ♡
       </div>
+
     </div>
+
   );
 }
 
+
+/* ============================================================
+   INFO CARD
+============================================================ */
+
 function InfoCard({ label, value }) {
+
   return (
-    <div className="rounded-[1.4rem] border border-[#ead6df] bg-[#fffafd]/70 p-5 text-center">
+
+    <div className="rounded-[1.4rem] border border-[#ead6df] bg-[#fffafd]/80 p-5 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
+
       <p className="font-mono text-[7px] tracking-[0.25em] text-[#ad91a0]">
         {label}
       </p>
+
 
       <p
         className="mt-3 text-xl text-[#725f6c]"
@@ -515,30 +689,54 @@ function InfoCard({ label, value }) {
       >
         {value}
       </p>
+
     </div>
+
   );
 }
+
+
+/* ============================================================
+   TAG
+============================================================ */
 
 function CuteTag({ children }) {
+
   return (
-    <span className="rounded-full border border-[#dec5d0] bg-[#fffafd]/80 px-4 py-2 text-sm text-[#98798a]">
-      ୨୧ {children} ♡
+
+    <span className="rounded-full border border-[#e8cbd7] bg-[#fff8fb] px-4 py-2 text-xs text-[#98788a]">
+      {children} ♡
     </span>
+
   );
+
 }
 
+
+/* ============================================================
+   SOFT CARD
+============================================================ */
+
 function SoftCard({ title, value }) {
+
   return (
-    <div className="rounded-[1.7rem] bg-[#fffafd]/70 p-6">
-      <p
-        className="text-xl text-[#a2788c]"
-        style={{
-          fontFamily:
-            "'Comic Sans MS', cursive",
-        }}
-      >
-        {title}
-      </p>
+
+    <div className="rounded-[1.6rem] border border-[#ead6df] bg-[#fffafd]/75 p-6">
+
+      <div className="flex items-center gap-2">
+
+        <Heart
+          size={14}
+          strokeWidth={1.5}
+          className="text-[#c092a5]"
+        />
+
+        <p className="font-mono text-[8px] uppercase tracking-[0.25em] text-[#ad91a0]">
+          {title}
+        </p>
+
+      </div>
+
 
       <p
         className="mt-4 text-xl leading-8 text-[#756271]"
@@ -549,152 +747,198 @@ function SoftCard({ title, value }) {
       >
         {value}
       </p>
+
     </div>
+
   );
+
 }
+
+
+/* ============================================================
+   PHOTO PLACEHOLDER
+============================================================ */
+
+function PhotoPlaceholder({ label = "JL PHOTO" }) {
+
+  return (
+
+    <div className="group relative overflow-hidden rounded-[2rem] border border-[#ead6df] bg-[#fffafd]">
+
+      <div className="aspect-[4/5] w-full bg-gradient-to-br from-[#fffafd] via-[#fceff5] to-[#f6e2eb]">
+
+        <div className="flex h-full flex-col items-center justify-center px-6 text-center">
+
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/80 text-[#c092a5] shadow-sm">
+
+            <Camera
+              size={21}
+              strokeWidth={1.3}
+            />
+
+          </div>
+
+
+          <p className="mt-5 font-mono text-[8px] uppercase tracking-[0.25em] text-[#ad91a0]">
+            {label}
+          </p>
+
+
+          <p
+            className="mt-2 text-lg text-[#b28b9d]"
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', Georgia, serif",
+            }}
+          >
+            photo goes here ♡
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  );
+
+}
+
 
 /* ============================================================
    PHOTO GRID
 ============================================================ */
 
-function PhotoGrid({ photos, startIndex }) {
+function PhotoGrid({ photos, startIndex = 0 }) {
+
+  const validPhotos = photos.filter(
+    (photo) => photo && photo.src
+  );
+
+
+  if (validPhotos.length === 0) {
+
+    return <EmptyPhotoState />;
+
+  }
+
+
   return (
-    <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5">
-      {photos.map((photo, index) => (
-        <ArchivePhoto
-          key={`${startIndex}-${index}`}
+
+    <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+
+      {validPhotos.map((photo, index) => (
+
+        <PhotoCard
+          key={`${photo.src}-${index}`}
           photo={photo}
           index={startIndex + index}
         />
+
       ))}
+
     </div>
+
   );
+
 }
 
-function ArchivePhoto({ photo, index }) {
-  const image = (
-    <div className="group relative aspect-square overflow-hidden rounded-[1.3rem] border border-[#ead5df] bg-[#f8eaf0]">
 
-      {photo.src ? (
+/* ============================================================
+   PHOTO CARD
+============================================================ */
+
+function PhotoCard({ photo, index }) {
+
+  const content = (
+
+    <div className="group relative overflow-hidden rounded-[1.4rem] border border-[#ead6df] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+
+      <div className="aspect-square overflow-hidden">
+
         <img
           src={photo.src}
-          alt={photo.alt}
+          alt={
+            photo.alt ||
+            `JL photo ${index + 1}`
+          }
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          loading="lazy"
         />
-      ) : (
-        <div className="flex h-full flex-col items-center justify-center text-[#bd9aaa]">
-          <Camera
-            size={20}
-            strokeWidth={1}
-          />
 
-          <span className="mt-2 text-[7px] tracking-[0.15em]">
-            JL PHOTO
-          </span>
-        </div>
-      )}
+      </div>
 
-      {photo.src && photo.postUrl && (
-        <div className="absolute inset-0 flex items-center justify-center bg-[#6d5361]/0 transition group-hover:bg-[#6d5361]/15">
-          <span className="rounded-full bg-white/85 px-3 py-2 text-[7px] tracking-[0.15em] text-[#765f6c] opacity-0 transition group-hover:opacity-100">
-            ORIGINAL POST ↗
-          </span>
-        </div>
-      )}
 
-      <span className="absolute bottom-2 left-2 rounded-full bg-white/75 px-2 py-1 text-[7px] text-[#866f7d]">
-        {String(index + 1).padStart(2, "0")}
-      </span>
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent px-3 pb-3 pt-10 opacity-0 transition group-hover:opacity-100">
+
+        <p className="text-right text-[10px] text-white">
+          ୨୧
+        </p>
+
+      </div>
 
     </div>
+
   );
 
-  if (photo.src && photo.postUrl) {
+
+  if (photo.postUrl) {
+
     return (
+
       <a
         href={photo.postUrl}
         target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Open original post for ${photo.alt}`}
+        rel="noreferrer"
       >
-        {image}
+        {content}
       </a>
+
     );
+
   }
 
-  return image;
+
+  return content;
+
 }
 
-/* ============================================================
-   PLACEHOLDER
-============================================================ */
-
-function PhotoPlaceholder() {
-  return (
-    <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-[#ead5df] bg-gradient-to-br from-[#f8e7ef] via-[#f5eaf5] to-[#f8eee3]">
-
-      <div className="absolute left-8 top-8 text-xl text-white/80">
-        ♡
-      </div>
-
-      <div className="absolute right-8 top-10 text-lg text-white/70">
-        ୨୧
-      </div>
-
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/55">
-          <Camera
-            size={22}
-            strokeWidth={1}
-            className="text-[#9d7e8d]"
-          />
-        </div>
-
-        <span className="mt-4 text-[8px] tracking-[0.3em] text-[#9c7d8c]">
-          JL PHOTO
-        </span>
-
-        <span className="mt-3 text-lg text-[#bd91a5]">
-          ♡
-        </span>
-
-      </div>
-    </div>
-  );
-}
 
 /* ============================================================
-   CUTE DEER
+   EMPTY PHOTO STATE
 ============================================================ */
 
-function CuteDeer() {
+function EmptyPhotoState() {
+
   return (
-    <div className="absolute bottom-6 left-6 text-[#b6879a]">
 
-      <div className="relative text-center">
+    <div className="mt-8 rounded-[2rem] border border-dashed border-[#dfc3cf] bg-[#fffafd]/70 px-6 py-12 text-center">
 
-        <div className="absolute -left-2 -top-4 text-xs">
-          ♡
-        </div>
+      <Camera
+        size={25}
+        strokeWidth={1.2}
+        className="mx-auto text-[#c092a5]"
+      />
 
-        <div
-          className="text-[44px] leading-none"
-          aria-label="cute deer"
-        >
-          ૮ • ﻌ • ა
-        </div>
 
-        <div className="mt-[-3px] text-[28px] leading-none">
-          ୨♡୧
-        </div>
+      <p
+        className="mt-4 text-xl text-[#9d7e8d]"
+        style={{
+          fontFamily:
+            "'Cormorant Garamond', Georgia, serif",
+        }}
+      >
+        the photo collection is waiting ♡
+      </p>
 
-        <div className="mt-1 text-[9px] tracking-widest">
-          ᐢ. .ᐢ
-        </div>
 
-      </div>
+      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#b49aa8]">
+        Add JL photos to the photo archive whenever
+        you're ready.
+      </p>
 
     </div>
+
   );
+
 }
