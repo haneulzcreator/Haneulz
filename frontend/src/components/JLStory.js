@@ -4,7 +4,7 @@ import {
   Camera,
   Heart,
   Sparkles,
-  TreePine,
+  Flower2,
 } from "lucide-react";
 
 const PHOTOS_PER_PAGE = 25;
@@ -24,10 +24,10 @@ const profile = {
 
 const facts = [
   "Add JL's first fun fact here.",
-  "Add another interesting fact here.",
+  "Add another interesting fact about JL here.",
   "Add a funny or memorable detail here.",
-  "Add another fact about JL here.",
-  "Add another little detail whenever you want.",
+  "Add another little JL fact here.",
+  "Add another detail whenever you want.",
 ];
 
 /*
@@ -35,7 +35,9 @@ const facts = [
 JL PHOTO ARCHIVE
 ============================================================
 
-Add photos like this:
+Add photos here.
+
+Example:
 
 {
   src: "https://your-image-url.com/photo.jpg",
@@ -92,10 +94,7 @@ export default function JLStory() {
   const visiblePhotos = useMemo(() => {
     const start = (currentPage - 1) * PHOTOS_PER_PAGE;
 
-    return photos.slice(
-      start,
-      start + PHOTOS_PER_PAGE
-    );
+    return photos.slice(start, start + PHOTOS_PER_PAGE);
   }, [currentPage]);
 
   const goToPage = (page) => {
@@ -112,29 +111,28 @@ export default function JLStory() {
   };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-gradient-to-b from-[#fffafd] via-[#fff0f6] to-[#fff8fb] px-4 py-6 text-[#665765] sm:px-6">
+    <main className="min-h-screen overflow-hidden bg-[#fff5fa] px-4 py-6 text-[#665463] sm:px-6">
 
       <div className="mx-auto max-w-5xl">
 
         {/* =================================================
-            HEADER
+            SCRAPBOOK HEADER
         ================================================= */}
 
         <header className="flex items-center justify-between px-2 py-3">
 
           <div>
-            <p className="font-mono text-[9px] tracking-[0.28em] text-[#b4879d]">
-              HANEULZ ARCHIVE
+            <p className="font-mono text-[9px] tracking-[0.28em] text-[#a56f89]">
+              HANEULZ SCRAPBOOK
             </p>
 
-            <p className="mt-1 font-mono text-[8px] tracking-[0.22em] text-[#d1adbe]">
-              JL / 01
+            <p className="mt-1 font-mono text-[8px] tracking-[0.22em] text-[#c39aaa]">
+              JL / YENCE / 01
             </p>
           </div>
 
-          <div className="flex items-center gap-2 text-[#cf9db2]">
-            <span className="text-sm">🦌</span>
-            <span className="text-xl">୨୧</span>
+          <div className="text-xl text-[#d58da8]">
+            ♡ ୨୧ ♡
           </div>
 
         </header>
@@ -144,46 +142,49 @@ export default function JLStory() {
             HERO
         ================================================= */}
 
-        <section className="relative mt-4 overflow-hidden rounded-[2.5rem] border border-[#f1d6e2] bg-white/65 px-6 py-14 text-center shadow-[0_18px_55px_rgba(180,130,155,0.10)] backdrop-blur-md sm:px-10">
+        <section className="relative mt-4 overflow-hidden rounded-[2.5rem] border-2 border-[#edcad9] bg-[#fffafd] px-6 py-14 shadow-[6px_7px_0_rgba(221,167,190,0.22)] sm:px-10">
 
-          {/* decorations */}
+          {/* scrapbook decorations */}
 
-          <div className="pointer-events-none absolute left-6 top-6 text-sm text-[#d9adbf]">
+          <div className="pointer-events-none absolute left-6 top-6 rotate-[-8deg] rounded-lg bg-[#fde6ef] px-3 py-2 text-sm text-[#c47f9b] shadow-sm">
             ୨୧
           </div>
 
-          <div className="pointer-events-none absolute right-7 top-6 text-sm text-[#d9adbf]">
+          <div className="pointer-events-none absolute right-7 top-7 rotate-[8deg] rounded-lg bg-[#fff0f6] px-3 py-2 text-sm text-[#ce8ba4] shadow-sm">
             ♡
           </div>
 
-          <div className="pointer-events-none absolute bottom-7 left-8 text-xs text-[#e5c0cf]">
+          <div className="pointer-events-none absolute bottom-8 left-8 rotate-[-5deg] text-sm text-[#e0a9bd]">
             ✦
           </div>
 
-          <div className="pointer-events-none absolute bottom-7 right-8 text-xs text-[#e5c0cf]">
-            ୨୧
+          <div className="pointer-events-none absolute bottom-8 right-8 rotate-[6deg] text-sm text-[#d99ab1]">
+            ♡
           </div>
 
 
-          <div className="flex justify-center">
-            <span className="rounded-full border border-[#edcfdb] bg-[#fff8fb] px-4 py-2 font-mono text-[8px] uppercase tracking-[0.3em] text-[#ad8196]">
-              a little page for Yence ♡
-            </span>
-          </div>
+          <p
+            className="text-2xl text-[#a96f88]"
+            style={{
+              fontFamily: "'Comic Sans MS', cursive",
+            }}
+          >
+            ୨୧ a little page for Yence ୨୧
+          </p>
 
 
-          <div className="mt-5 text-lg tracking-[0.3em] text-[#c995aa]">
+          <div className="mt-5 text-lg tracking-[0.3em] text-[#d58ca7]">
             ♡ ୨୧ ♡
           </div>
 
 
-          <p className="mt-8 font-mono text-[8px] uppercase tracking-[0.4em] text-[#b894a5]">
+          <p className="mt-8 font-mono text-[8px] uppercase tracking-[0.4em] text-[#b58499]">
             known as
           </p>
 
 
           <h1
-            className="mt-2 text-7xl font-normal tracking-tight text-[#665462] sm:text-8xl"
+            className="mt-2 text-7xl font-normal tracking-tight text-[#604e5b] sm:text-8xl"
             style={{
               fontFamily:
                 "'Cormorant Garamond', Georgia, serif",
@@ -193,7 +194,7 @@ export default function JLStory() {
           </h1>
 
 
-          <div className="mt-3 text-xl text-[#c18fa5]">
+          <div className="mt-3 text-xl text-[#d58da8]">
             ♡
           </div>
 
@@ -210,7 +211,7 @@ export default function JLStory() {
 
 
           <p
-            className="mt-2 text-2xl text-[#a97c91]"
+            className="mt-2 text-2xl text-[#a66e87]"
             style={{
               fontFamily: "'Comic Sans MS', cursive",
             }}
@@ -222,36 +223,36 @@ export default function JLStory() {
           {/* HERO PHOTO */}
 
           <div className="mx-auto mt-10 max-w-md">
+
             <PhotoPlaceholder label="JL PHOTO" />
-          </div>
 
-
-          <div className="mt-6 flex justify-center">
-            <div className="flex items-center gap-2 rounded-full bg-[#fff7fa] px-5 py-2 text-sm text-[#b48699]">
-              <span>🦌</span>
-              <span>soft little Yence</span>
-              <Heart
-                size={13}
-                fill="currentColor"
-              />
-            </div>
           </div>
 
 
           <p
-            className="mx-auto mt-6 max-w-lg text-lg leading-8 text-[#917986]"
+            className="mt-5 text-xl text-[#b47790]"
+            style={{
+              fontFamily: "'Comic Sans MS', cursive",
+            }}
+          >
+            Yence ♡
+          </p>
+
+
+          <p
+            className="mx-auto mt-4 max-w-lg text-lg leading-8 text-[#806b77]"
             style={{
               fontFamily:
                 "'Cormorant Garamond', Georgia, serif",
             }}
           >
             a tiny collection of things about JL —
-            little moments, favorite things, and pieces
-            of the person behind Yence.
+            little moments, favorite things, memories,
+            and pieces of the person behind Yence.
           </p>
 
 
-          <div className="mt-6 text-xl text-[#c69aaa]">
+          <div className="mt-6 text-xl text-[#d18ba5]">
             ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
           </div>
 
@@ -262,7 +263,7 @@ export default function JLStory() {
             QUICK LOOK
         ================================================= */}
 
-        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
+        <section className="mt-8 rotate-[-0.3deg] rounded-[2rem] border-2 border-[#efd2df] bg-[#fffafd] px-6 py-10 shadow-[5px_6px_0_rgba(225,177,195,0.18)] sm:px-10">
 
           <SectionTitle>
             ୨୧ a quick look ୨୧
@@ -310,7 +311,7 @@ export default function JLStory() {
             ABOUT JL
         ================================================= */}
 
-        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
+        <section className="mt-8 rounded-[2rem] border-2 border-[#efd2df] bg-[#fff8fc] px-6 py-10 shadow-[5px_6px_0_rgba(225,177,195,0.16)] sm:px-10">
 
           <SectionTitle>
             ♡ about JL ♡
@@ -327,7 +328,7 @@ export default function JLStory() {
             <div>
 
               <p
-                className="text-2xl leading-9 text-[#756271]"
+                className="text-2xl leading-9 text-[#695766]"
                 style={{
                   fontFamily:
                     "'Cormorant Garamond', Georgia, serif",
@@ -336,13 +337,13 @@ export default function JLStory() {
                 This is a little space for everything
                 that makes JL feel like JL — his
                 personality, little habits, memorable
-                moments, and the things that make
+                moments, and the tiny things that make
                 people smile.
               </p>
 
 
               <p
-                className="mt-5 text-lg leading-8 text-[#9a7f8d]"
+                className="mt-5 text-lg leading-8 text-[#927b88]"
                 style={{
                   fontFamily:
                     "'Cormorant Garamond', Georgia, serif",
@@ -355,21 +356,13 @@ export default function JLStory() {
 
               <div className="mt-6 flex flex-wrap gap-2">
 
-                <CuteTag>
-                  JL
-                </CuteTag>
+                <CuteTag>JL</CuteTag>
 
-                <CuteTag>
-                  Yence
-                </CuteTag>
+                <CuteTag>Yence</CuteTag>
 
-                <CuteTag>
-                  Jaeyel
-                </CuteTag>
+                <CuteTag>Jaeyel</CuteTag>
 
-                <CuteTag>
-                  🦌
-                </CuteTag>
+                <CuteTag>♡</CuteTag>
 
               </div>
 
@@ -384,7 +377,7 @@ export default function JLStory() {
             HOBBIES & INTERESTS
         ================================================= */}
 
-        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
+        <section className="mt-8 rotate-[0.25deg] rounded-[2rem] border-2 border-[#efd2df] bg-[#fffafd] px-6 py-10 shadow-[5px_6px_0_rgba(225,177,195,0.15)] sm:px-10">
 
           <SectionTitle>
             ୨୧ hobbies & interests ୨୧
@@ -422,7 +415,7 @@ export default function JLStory() {
             FUN FACTS
         ================================================= */}
 
-        <section className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-6 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-10">
+        <section className="mt-8 rounded-[2rem] border-2 border-[#efd2df] bg-[#fff8fc] px-6 py-10 shadow-[5px_6px_0_rgba(225,177,195,0.15)] sm:px-10">
 
           <SectionTitle>
             ♡ little things about JL ♡
@@ -435,16 +428,16 @@ export default function JLStory() {
 
               <div
                 key={index}
-                className="flex gap-4 border-b border-[#ead6df] py-5 last:border-b-0"
+                className="flex gap-4 border-b border-[#edd7e1] py-5 last:border-b-0"
               >
 
-                <span className="shrink-0 text-[#bd91a5]">
+                <span className="shrink-0 text-[#d18aa5]">
                   ୨୧
                 </span>
 
 
                 <p
-                  className="text-xl leading-8 text-[#756271]"
+                  className="text-xl leading-8 text-[#6e5b68]"
                   style={{
                     fontFamily:
                       "'Cormorant Garamond', Georgia, serif",
@@ -468,7 +461,7 @@ export default function JLStory() {
 
         <section
           id="jl-photo-archive"
-          className="mt-8 rounded-[2.25rem] border border-[#f0dce5] bg-white/55 px-5 py-10 shadow-[0_12px_40px_rgba(180,130,155,0.07)] backdrop-blur-md sm:px-8"
+          className="mt-8 rounded-[2rem] border-2 border-[#efd2df] bg-[#fffafd] px-5 py-10 shadow-[5px_6px_0_rgba(225,177,195,0.16)] sm:px-8"
         >
 
           <SectionTitle>
@@ -479,7 +472,7 @@ export default function JLStory() {
           <div className="mt-2 text-center">
 
             <span
-              className="text-lg text-[#b58a9d]"
+              className="text-lg text-[#a9788b]"
               style={{
                 fontFamily:
                   "'Cormorant Garamond', Georgia, serif",
@@ -516,7 +509,7 @@ export default function JLStory() {
                     setShowArchive(true);
                     setCurrentPage(1);
                   }}
-                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border border-[#d8bbc8] bg-white/70 px-7 py-3 text-[9px] uppercase tracking-[0.25em] text-[#896e7d] transition hover:bg-white hover:shadow-md"
+                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border border-[#d9b6c6] bg-[#fff4f9] px-7 py-3 text-[9px] uppercase tracking-[0.25em] text-[#8f697b] transition hover:bg-white hover:shadow-md"
                 >
 
                   load more ♡
@@ -560,8 +553,8 @@ export default function JLStory() {
                     }
                     className={`h-9 min-w-9 rounded-full px-3 text-xs transition ${
                       currentPage === page
-                        ? "bg-[#b98da1] text-white"
-                        : "bg-white/70 text-[#987c8b] hover:bg-[#f5e1ea]"
+                        ? "bg-[#c486a0] text-white"
+                        : "bg-[#fff4f8] text-[#906e7e] hover:bg-[#f7e1ea]"
                     }`}
                   >
                     {page}
@@ -580,7 +573,7 @@ export default function JLStory() {
                     setShowArchive(false);
                     setCurrentPage(1);
                   }}
-                  className="text-[9px] uppercase tracking-[0.3em] text-[#ad91a0] underline underline-offset-4"
+                  className="text-[9px] uppercase tracking-[0.3em] text-[#a17d8e] underline underline-offset-4"
                 >
                   close archive
                 </button>
@@ -595,21 +588,18 @@ export default function JLStory() {
 
 
         {/* =================================================
-            LITTLE ENDING
+            ENDING
         ================================================= */}
 
         <footer className="px-4 py-16 text-center">
 
-          <div className="flex justify-center gap-3 text-2xl tracking-[0.2em] text-[#c092a5]">
-            <span>♡</span>
-            <span>🦌</span>
-            <span>୨୧</span>
-            <span>✦</span>
+          <div className="text-2xl tracking-[0.2em] text-[#d08ca5]">
+            ♡ ୨୧ ✦
           </div>
 
 
           <p
-            className="mt-5 text-2xl text-[#9f778a]"
+            className="mt-5 text-2xl text-[#a66f87]"
             style={{
               fontFamily:
                 "'Comic Sans MS', cursive",
@@ -619,13 +609,13 @@ export default function JLStory() {
           </p>
 
 
-          <p className="mt-3 text-sm text-[#b49aa8]">
+          <p className="mt-3 text-sm text-[#a58a96]">
             JL · Yence · Jaeyel
           </p>
 
 
-          <p className="mt-5 text-xs tracking-[0.15em] text-[#ceb5c1]">
-            one little page in the HANEULZ archive
+          <p className="mt-5 text-xs tracking-[0.15em] text-[#c6aab6]">
+            one little page in the HANEULZ scrapbook
           </p>
 
         </footer>
@@ -642,18 +632,15 @@ export default function JLStory() {
 ============================================================ */
 
 function SectionTitle({ children }) {
-
   return (
-
     <div className="text-center">
 
-      <div className="text-sm text-[#c092a5]">
+      <div className="text-sm text-[#d18ca6]">
         ୨୧
       </div>
 
-
       <h2
-        className="mt-1 text-4xl text-[#715d6b]"
+        className="mt-1 text-4xl text-[#705b68]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -662,13 +649,11 @@ function SectionTitle({ children }) {
         {children}
       </h2>
 
-
-      <div className="mt-2 text-sm text-[#c092a5]">
+      <div className="mt-2 text-sm text-[#d18ca6]">
         ♡
       </div>
 
     </div>
-
   );
 }
 
@@ -678,18 +663,15 @@ function SectionTitle({ children }) {
 ============================================================ */
 
 function InfoCard({ label, value }) {
-
   return (
+    <div className="rounded-[1.4rem] border border-[#ead1dd] bg-[#fffafd] p-5 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
 
-    <div className="rounded-[1.4rem] border border-[#ead6df] bg-[#fffafd]/80 p-5 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
-
-      <p className="font-mono text-[7px] tracking-[0.25em] text-[#ad91a0]">
+      <p className="font-mono text-[7px] tracking-[0.25em] text-[#a78593]">
         {label}
       </p>
 
-
       <p
-        className="mt-3 text-xl text-[#725f6c]"
+        className="mt-3 text-xl text-[#705e69]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -699,25 +681,20 @@ function InfoCard({ label, value }) {
       </p>
 
     </div>
-
   );
 }
 
 
 /* ============================================================
-   TAG
+   CUTE TAG
 ============================================================ */
 
 function CuteTag({ children }) {
-
   return (
-
-    <span className="rounded-full border border-[#e8cbd7] bg-[#fff8fb] px-4 py-2 text-xs text-[#98788a]">
+    <span className="rounded-full border border-[#e6c5d3] bg-[#fff4f9] px-4 py-2 text-xs text-[#967287]">
       {children} ♡
     </span>
-
   );
-
 }
 
 
@@ -726,28 +703,25 @@ function CuteTag({ children }) {
 ============================================================ */
 
 function SoftCard({ title, value }) {
-
   return (
-
-    <div className="rounded-[1.6rem] border border-[#ead6df] bg-[#fffafd]/75 p-6">
+    <div className="rounded-[1.6rem] border border-[#ead1dd] bg-[#fffafd] p-6">
 
       <div className="flex items-center gap-2">
 
         <Heart
           size={14}
           strokeWidth={1.5}
-          className="text-[#c092a5]"
+          className="text-[#d08ba5]"
         />
 
-        <p className="font-mono text-[8px] uppercase tracking-[0.25em] text-[#ad91a0]">
+        <p className="font-mono text-[8px] uppercase tracking-[0.25em] text-[#a78593]">
           {title}
         </p>
 
       </div>
 
-
       <p
-        className="mt-4 text-xl leading-8 text-[#756271]"
+        className="mt-4 text-xl leading-8 text-[#715e6b]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -757,9 +731,7 @@ function SoftCard({ title, value }) {
       </p>
 
     </div>
-
   );
-
 }
 
 
@@ -770,36 +742,28 @@ function SoftCard({ title, value }) {
 function PhotoPlaceholder({
   label = "JL PHOTO",
 }) {
-
   return (
+    <div className="group relative overflow-hidden rounded-[2rem] border-2 border-[#ead0dc] bg-[#fffafd]">
 
-    <div className="group relative overflow-hidden rounded-[2rem] border border-[#ead6df] bg-[#fffafd]">
-
-      <div className="aspect-[4/5] w-full bg-gradient-to-br from-[#fffafd] via-[#fceff5] to-[#f5dfe9]">
+      <div className="aspect-[4/5] w-full bg-gradient-to-br from-[#fffafd] via-[#fcecf4] to-[#f4dce7]">
 
         <div className="flex h-full flex-col items-center justify-center px-6 text-center">
 
-          <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-white/85 text-[#c092a5] shadow-sm">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/85 text-[#d08ba5] shadow-sm">
 
             <Camera
               size={21}
               strokeWidth={1.3}
             />
 
-            <span className="absolute -right-1 -top-1 text-xs">
-              ♡
-            </span>
-
           </div>
 
-
-          <p className="mt-5 font-mono text-[8px] uppercase tracking-[0.25em] text-[#ad91a0]">
+          <p className="mt-5 font-mono text-[8px] uppercase tracking-[0.25em] text-[#a78593]">
             {label}
           </p>
 
-
           <p
-            className="mt-2 text-lg text-[#b28b9d]"
+            className="mt-2 text-lg text-[#b47f94]"
             style={{
               fontFamily:
                 "'Cormorant Garamond', Georgia, serif",
@@ -808,19 +772,12 @@ function PhotoPlaceholder({
             photo goes here ♡
           </p>
 
-
-          <div className="mt-3 text-xs text-[#d1a9b9]">
-            🦌 ✦
-          </div>
-
         </div>
 
       </div>
 
     </div>
-
   );
-
 }
 
 
@@ -832,37 +789,27 @@ function PhotoGrid({
   photos,
   startIndex = 0,
 }) {
-
   const validPhotos = photos.filter(
     (photo) => photo && photo.src
   );
 
-
   if (validPhotos.length === 0) {
-
     return <EmptyPhotoState />;
-
   }
 
-
   return (
-
     <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
 
       {validPhotos.map((photo, index) => (
-
         <PhotoCard
           key={`${photo.src}-${index}`}
           photo={photo}
           index={startIndex + index}
         />
-
       ))}
 
     </div>
-
   );
-
 }
 
 
@@ -874,10 +821,8 @@ function PhotoCard({
   photo,
   index,
 }) {
-
   const content = (
-
-    <div className="group relative overflow-hidden rounded-[1.4rem] border border-[#ead6df] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+    <div className="group relative overflow-hidden rounded-[1.4rem] border-2 border-[#ead1dd] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:rotate-[0.5deg] hover:shadow-lg">
 
       <div className="aspect-square overflow-hidden">
 
@@ -893,25 +838,19 @@ function PhotoCard({
 
       </div>
 
-
       <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent px-3 pb-3 pt-10 opacity-0 transition group-hover:opacity-100">
 
-        <div className="flex justify-end gap-1 text-white">
-          <span>♡</span>
-          <span>୨୧</span>
-        </div>
+        <p className="text-right text-[10px] text-white">
+          ୨୧
+        </p>
 
       </div>
 
     </div>
-
   );
 
-
   if (photo.postUrl) {
-
     return (
-
       <a
         href={photo.postUrl}
         target="_blank"
@@ -919,14 +858,10 @@ function PhotoCard({
       >
         {content}
       </a>
-
     );
-
   }
 
-
   return content;
-
 }
 
 
@@ -935,25 +870,17 @@ function PhotoCard({
 ============================================================ */
 
 function EmptyPhotoState() {
-
   return (
+    <div className="mt-8 rounded-[2rem] border-2 border-dashed border-[#dfbdcc] bg-[#fff7fb] px-6 py-12 text-center">
 
-    <div className="mt-8 rounded-[2rem] border border-dashed border-[#dfc3cf] bg-[#fffafd]/70 px-6 py-12 text-center">
-
-      <div className="flex justify-center gap-2 text-[#c092a5]">
-        <Camera
-          size={25}
-          strokeWidth={1.2}
-        />
-
-        <span className="text-lg">
-          ♡
-        </span>
-      </div>
-
+      <Camera
+        size={25}
+        strokeWidth={1.2}
+        className="mx-auto text-[#d08ba5]"
+      />
 
       <p
-        className="mt-4 text-xl text-[#9d7e8d]"
+        className="mt-4 text-xl text-[#9d7487]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -962,18 +889,11 @@ function EmptyPhotoState() {
         the photo collection is waiting ♡
       </p>
 
-
-      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#b49aa8]">
+      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#a98d9a]">
         Add JL photos to the photo archive whenever
         you're ready.
       </p>
 
-      <div className="mt-4 text-xs text-[#d0aabb]">
-        🦌 ୨୧ ✦
-      </div>
-
     </div>
-
   );
-
 }
