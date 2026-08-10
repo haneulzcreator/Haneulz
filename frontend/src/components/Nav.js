@@ -2,25 +2,27 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Menu, X } from "lucide-react";
-
 const links = [
   { to: "/", label: "Home" },
   { to: "/about", label: "About" },
   { to: "/aus", label: "AU Library" },
   { to: "/variety", label: "Variety Corner" },
   { to: "/our-little-corner", label: "Our Little Corner" },
+  { to: "/music", label: "Music" },
   { to: "/about-haneulz", label: "About Us" },
 ];
-
 export default function Nav() {
   const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
-
   return (
     <motion.header
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+      transition={{
+        duration: 0.9,
+        ease: [0.22, 1, 0.36, 1],
+        delay: 0.2,
+      }}
       className="fixed top-0 left-0 right-0 z-50 px-4 pt-4"
     >
       <nav
@@ -35,29 +37,38 @@ export default function Nav() {
         >
           <span
             className="grid h-8 w-8 place-items-center rounded-full"
-            style={{ background: "linear-gradient(135deg,var(--pink-deep),var(--blue-deep))" }}
+            style={{
+              background:
+                "linear-gradient(135deg,var(--pink-deep),var(--blue-deep))",
+            }}
           >
-            <Heart size={15} className="text-white" fill="white" />
+            <Heart
+              size={15}
+              className="text-white"
+              fill="white"
+            />
           </span>
           HANEULZ
         </Link>
-
         {/* Desktop links */}
         <div className="hidden items-center gap-8 md:flex">
           {links.map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              data-testid={`nav-${l.label.toLowerCase().replace(/\s/g, "-")}`}
+              data-testid={`nav-${l.label
+                .toLowerCase()
+                .replace(/\s/g, "-")}`}
               className={`link-underline text-sm uppercase tracking-widest ${
-                pathname === l.to ? "text-[color:var(--ink)]" : "text-[color:var(--ink-soft)]"
+                pathname === l.to
+                  ? "text-[color:var(--ink)]"
+                  : "text-[color:var(--ink-soft)]"
               }`}
             >
               {l.label}
             </Link>
           ))}
         </div>
-
         <div className="flex items-center gap-2">
           <Link
             to="/submit"
@@ -66,7 +77,6 @@ export default function Nav() {
           >
             Share an AU
           </Link>
-
           {/* Mobile toggle */}
           <button
             onClick={() => setOpen((v) => !v)}
@@ -75,11 +85,14 @@ export default function Nav() {
             aria-expanded={open}
             className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--line)] md:hidden"
           >
-            {open ? <X size={18} /> : <Menu size={18} />}
+            {open ? (
+              <X size={18} />
+            ) : (
+              <Menu size={18} />
+            )}
           </button>
         </div>
       </nav>
-
       {/* Mobile menu panel */}
       <AnimatePresence>
         {open && (
@@ -87,7 +100,10 @@ export default function Nav() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.25,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             data-testid="mobile-menu"
             className="glass mx-auto mt-3 max-w-6xl overflow-hidden rounded-[1.75rem] p-3 md:hidden"
           >
@@ -97,7 +113,9 @@ export default function Nav() {
                   key={l.to}
                   to={l.to}
                   onClick={() => setOpen(false)}
-                  data-testid={`mobile-nav-${l.label.toLowerCase().replace(/\s/g, "-")}`}
+                  data-testid={`mobile-nav-${l.label
+                    .toLowerCase()
+                    .replace(/\s/g, "-")}`}
                   className={`rounded-2xl px-4 py-3 text-sm uppercase tracking-widest ${
                     pathname === l.to
                       ? "bg-[color:var(--pink)] text-[color:var(--ink)]"
