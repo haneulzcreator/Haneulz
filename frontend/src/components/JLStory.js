@@ -116,26 +116,24 @@ export default function JLStory() {
       <div className="mx-auto max-w-5xl">
 
         {/* =================================================
-            SCRAPBOOK HEADER
-        ================================================= */}
+    SCRAPBOOK HEADER
+================================================= */}
 
-        <header className="flex items-center justify-between px-2 py-3">
+<header className="relative flex flex-col items-center justify-center px-2 py-5 text-center">
 
-          <div>
-            <p className="font-mono text-[9px] tracking-[0.28em] text-[#a56f89]">
-              HANEULZ SCRAPBOOK
-            </p>
+  <p className="font-mono text-[9px] tracking-[0.28em] text-[#a56f89]">
+    HANEULZ SCRAPBOOK
+  </p>
 
-            <p className="mt-1 font-mono text-[8px] tracking-[0.22em] text-[#c39aaa]">
-              JL / YENCE / 01
-            </p>
-          </div>
+  <p className="mt-2 font-mono text-[8px] tracking-[0.22em] text-[#c39aaa]">
+    JL / YENCE / 01
+  </p>
 
-          <div className="text-xl text-[#d58da8]">
-            ♡ ୨୧ ♡
-          </div>
+  <div className="mt-3 text-xl text-[#d58da8]">
+    ♡ ୨୧ ♡
+  </div>
 
-        </header>
+</header>
 
 
         {/* =================================================
