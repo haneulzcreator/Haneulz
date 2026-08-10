@@ -1,5 +1,14 @@
 import React, { useMemo, useState } from "react";
-import { ArrowUpRight, Camera, Heart, Film, Sparkles } from "lucide-react";
+import {
+  ArrowUpRight,
+  Camera,
+  Heart,
+  Star,
+  Sparkles,
+  Flower2,
+  Paperclip,
+  Scissors,
+} from "lucide-react";
 
 const PHOTOS_PER_PAGE = 25;
 
@@ -61,308 +70,294 @@ export default function JLStory() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f8e9ef] px-4 py-8 text-[#4f4650] sm:px-6">
+    <main className="min-h-screen overflow-hidden bg-[#ead7c5] px-3 py-5 text-[#3f3835] sm:px-6">
 
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-6xl">
 
-        {/* TOP SCRAPBOOK LABEL */}
-        <div className="mb-6 flex items-center justify-between px-2">
+        {/* =========================
+            SCRAPBOOK COVER
+        ========================== */}
 
-          <div>
-            <p className="font-mono text-[10px] font-semibold tracking-[0.25em] text-[#8d6678]">
-              HANEULZ SCRAPBOOK
-            </p>
+        <section className="relative overflow-hidden border-[10px] border-[#8d6955] bg-[#f5e9da] p-3 shadow-[0_12px_0_rgba(80,55,43,0.18)]">
 
-            <p className="mt-1 font-mono text-[9px] tracking-[0.18em] text-[#b28799]">
-              JL / YENCE / 01
-            </p>
-          </div>
+          <div className="relative min-h-[700px] overflow-hidden border border-[#c9a98e] bg-[#f8eee2] px-5 py-12 sm:px-12">
 
-          <Sparkles
-            size={20}
-            strokeWidth={1.4}
-            className="text-[#c47e9a]"
-          />
+            {/* paper texture pieces */}
 
-        </div>
+            <div className="absolute -left-10 top-24 h-40 w-40 rounded-full bg-[#e7c8b8]/50 blur-2xl" />
+            <div className="absolute -right-12 bottom-20 h-48 w-48 rounded-full bg-[#d8c7ae]/50 blur-2xl" />
 
+            {/* tape */}
 
-        {/* =====================================================
-            COVER PAGE
-        ===================================================== */}
+            <Tape className="absolute left-8 top-5 rotate-[-7deg]" />
+            <Tape className="absolute right-10 top-12 rotate-[8deg]" />
 
-        <section className="relative overflow-hidden rounded-[2rem] border-2 border-[#dfb8c9] bg-[#fffafc] p-6 shadow-[8px_9px_0_rgba(173,111,139,0.15)] sm:p-10">
+            {/* stickers */}
 
-          {/* tape */}
-          <Tape className="left-10 top-[-10px] rotate-[-5deg]" />
-          <Tape className="right-10 top-[-10px] rotate-[6deg]" />
+            <Sticker className="absolute left-5 top-44 rotate-[-12deg]">
+              ♡
+            </Sticker>
 
-          {/* doodles */}
-          <span className="absolute left-5 top-20 rotate-[-12deg] text-2xl text-[#d18aa6]">
-            ♡
-          </span>
+            <Sticker className="absolute right-5 top-52 rotate-[12deg]">
+              ★
+            </Sticker>
 
-          <span className="absolute right-7 top-24 rotate-[10deg] text-xl text-[#c9829e]">
-            ✦
-          </span>
+            <Sticker className="absolute bottom-24 left-8 rotate-[7deg]">
+              ✦
+            </Sticker>
 
-          <span className="absolute bottom-10 left-8 text-lg text-[#d895ad]">
-            ୨୧
-          </span>
+            <Sticker className="absolute bottom-16 right-8 rotate-[-8deg]">
+              ♡
+            </Sticker>
 
-          <span className="absolute bottom-8 right-9 rotate-[8deg] text-xl text-[#c9829e]">
-            ♡
-          </span>
+            {/* title */}
 
+            <div className="relative mx-auto max-w-3xl text-center">
 
-          {/* centered cover */}
-          <div className="mx-auto max-w-2xl text-center">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-[#8d6b59]">
+                HANEULZ MEMORY BOOK
+              </p>
 
-            <p
-              className="text-2xl font-semibold text-[#9b627b]"
-              style={{ fontFamily: "'Comic Sans MS', cursive" }}
-            >
-              ୨୧ a little page for Yence ୨୧
-            </p>
+              <div className="mt-5 inline-block rotate-[-2deg] bg-[#fffdf8] px-7 py-4 shadow-[4px_5px_0_rgba(80,55,43,0.13)]">
+                <p className="font-serif text-lg text-[#9c705b]">
+                  a little page for
+                </p>
 
-            <div className="my-5 text-xl tracking-[0.35em] text-[#c87e9c]">
-              ♡ ✦ ♡
-            </div>
+                <h1 className="mt-1 font-serif text-7xl font-bold text-[#443936] sm:text-9xl">
+                  JL
+                </h1>
+              </div>
 
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.35em] text-[#9c7a89]">
-              known as
-            </p>
+              <div className="mt-8 flex justify-center gap-5 text-[#9d695d]">
+                <Heart size={18} fill="currentColor" />
+                <Star size={18} fill="currentColor" />
+                <Flower2 size={18} />
+              </div>
 
-            <h1
-              className="mt-1 text-8xl font-bold leading-none text-[#554752] sm:text-9xl"
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              JL
-            </h1>
+              <p className="mt-7 font-serif text-3xl font-semibold text-[#57443d]">
+                Jay Lawrence Gaspar
+              </p>
 
-            <p
-              className="mt-4 text-4xl font-semibold text-[#634f5a]"
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              {profile.fullName}
-            </p>
-
-            <p
-              className="mt-2 text-2xl font-semibold text-[#a2637d]"
-              style={{ fontFamily: "'Comic Sans MS', cursive" }}
-            >
-              {profile.nickname} · {profile.alsoKnownAs}
-            </p>
-
-
-            {/* taped hero photo */}
-            <div className="relative mx-auto mt-10 max-w-md rotate-[-1.5deg]">
-
-              <Tape className="left-1/2 top-[-16px] -translate-x-1/2 rotate-[2deg]" />
-
-              <PhotoPlaceholder label="JL PHOTO" />
-
-              <span className="absolute -bottom-4 -right-4 rotate-[8deg] rounded-lg bg-[#fde4ee] px-4 py-2 font-semibold text-[#a7657f] shadow-sm">
-                Yence ♡
-              </span>
+              <p className="mt-2 text-xl font-semibold text-[#a36f62]">
+                Yence · Jaeyel
+              </p>
 
             </div>
 
+            {/* polaroid */}
 
-            <p
-              className="mx-auto mt-10 max-w-xl text-lg font-medium leading-8 text-[#665761]"
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              a tiny collection of little moments, favorite
-              things, memories, and pieces of the person
-              behind the name.
-            </p>
+            <div className="relative mx-auto mt-12 w-full max-w-sm rotate-[2deg] bg-white p-4 pb-7 shadow-[8px_10px_0_rgba(74,54,45,0.18)]">
 
-            <div className="mt-6 text-xl tracking-widest text-[#c87d9a]">
-              ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
+              <div className="aspect-[4/5] bg-[#eadfd3]">
+                <PhotoPlaceholder label="JL PHOTO" />
+              </div>
+
+              <p className="mt-4 text-center font-serif text-xl font-semibold text-[#554640]">
+                my favorite little page ♡
+              </p>
+
             </div>
+
+            {/* handwritten note */}
+
+            <div className="relative mx-auto mt-10 max-w-lg rotate-[-1.5deg] bg-[#fff6a8] px-6 py-5 shadow-[4px_6px_0_rgba(88,73,39,0.14)]">
+
+              <p className="text-center text-lg font-semibold leading-7 text-[#635632]">
+                ✎ little moments, little memories,
+                and all the things that make JL special.
+              </p>
+
+            </div>
+
+            <p className="mt-10 text-center font-mono text-[9px] uppercase tracking-[0.3em] text-[#9d806e]">
+              page 01 · JL archive
+            </p>
 
           </div>
-
         </section>
 
 
-        {/* =====================================================
+        {/* =========================
             QUICK LOOK
-        ===================================================== */}
+        ========================== */}
 
-        <ScrapbookSection rotation="-rotate-[0.5deg]">
+        <ScrapbookSection
+          title="a quick look"
+          sticker="♡"
+          rotation="-rotate-[0.5deg]"
+        >
 
-          <SectionTitle>୨୧ a quick look ୨୧</SectionTitle>
+          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
 
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
+            <PaperCard label="KNOWN AS" value={profile.knownAs} />
+            <PaperCard label="NICKNAME" value={profile.nickname} />
+            <PaperCard label="ALSO KNOWN AS" value={profile.alsoKnownAs} />
+            <PaperCard label="BIRTHDAY" value={profile.birthday} />
+            <PaperCard label="NATIONALITY" value={profile.nationality} />
+            <PaperCard label="MBTI" value={profile.mbti} />
 
-            <InfoCard label="KNOWN AS" value={profile.knownAs} />
-            <InfoCard label="NICKNAME" value={profile.nickname} />
-            <InfoCard
-              label="ALSO KNOWN AS"
-              value={profile.alsoKnownAs}
+          </div>
+
+        </ScrapbookSection>
+
+
+        {/* =========================
+            ABOUT
+        ========================== */}
+
+        <ScrapbookSection
+          title="about JL"
+          sticker="✦"
+          rotation="rotate-[0.4deg]"
+        >
+
+          <div className="grid items-center gap-10 md:grid-cols-2">
+
+            <Polaroid
+              label="A LITTLE PHOTO OF JL"
+              rotation="-rotate-[3deg]"
             />
-            <InfoCard label="BIRTHDAY" value={profile.birthday} />
-            <InfoCard label="NATIONALITY" value={profile.nationality} />
-            <InfoCard label="MBTI" value={profile.mbti} />
 
-          </div>
+            <div className="relative">
 
-        </ScrapbookSection>
+              <Tape className="absolute -right-2 -top-7 rotate-[9deg]" />
 
+              <div className="rotate-[1deg] bg-[#fffdf5] p-7 shadow-[5px_7px_0_rgba(79,59,49,0.12)]">
 
-        {/* =====================================================
-            ABOUT JL
-        ===================================================== */}
+                <p className="font-serif text-2xl font-semibold leading-9 text-[#453b38]">
+                  This is a little space for everything
+                  that makes JL feel like JL — his
+                  personality, little habits, memorable
+                  moments, and the tiny things that make
+                  people smile.
+                </p>
 
-        <ScrapbookSection rotation="rotate-[0.4deg]">
-
-          <SectionTitle>♡ about JL ♡</SectionTitle>
-
-          <div className="mt-10 grid gap-10 md:grid-cols-2 md:items-center">
-
-            <div className="relative mx-auto w-full max-w-sm rotate-[-2deg]">
-
-              <Tape className="left-1/2 top-[-14px] -translate-x-1/2 rotate-[3deg]" />
-
-              <PhotoPlaceholder label="A LITTLE PHOTO OF JL" />
-
-            </div>
-
-
-            <div>
-
-              <p
-                className="text-2xl font-semibold leading-9 text-[#514650]"
-                style={{
-                  fontFamily:
-                    "'Cormorant Garamond', Georgia, serif",
-                }}
-              >
-                This is a little space for everything that
-                makes JL feel like JL — his personality,
-                little habits, memorable moments, and
-                the tiny things that make people smile.
-              </p>
-
-              <p
-                className="mt-5 text-lg font-medium leading-8 text-[#71606a]"
-                style={{
-                  fontFamily:
-                    "'Cormorant Garamond', Georgia, serif",
-                }}
-              >
-                Add your own little story about Yence here
-                whenever you're ready.
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-
-                <CuteTag>JL</CuteTag>
-                <CuteTag>Yence</CuteTag>
-                <CuteTag>Jaeyel</CuteTag>
-                <CuteTag>♡</CuteTag>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </ScrapbookSection>
-
-
-        {/* =====================================================
-            HOBBIES
-        ===================================================== */}
-
-        <ScrapbookSection rotation="-rotate-[0.35deg]">
-
-          <SectionTitle>୨୧ hobbies & interests ୨୧</SectionTitle>
-
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-
-            <SoftCard title="♡ hobbies" value={profile.hobbies} />
-            <SoftCard title="♡ interests" value={profile.interests} />
-            <SoftCard title="♡ MBTI" value={profile.mbti} />
-            <SoftCard title="♡ favorites" value={profile.favorites} />
-
-          </div>
-
-        </ScrapbookSection>
-
-
-        {/* =====================================================
-            FUN FACTS
-        ===================================================== */}
-
-        <ScrapbookSection rotation="rotate-[0.3deg]">
-
-          <SectionTitle>♡ little things about JL ♡</SectionTitle>
-
-          <div className="mt-8">
-
-            {facts.map((fact, index) => (
-
-              <div
-                key={index}
-                className="flex gap-4 border-b border-[#ead1dc] py-5 last:border-0"
-              >
-
-                <span className="shrink-0 text-xl text-[#c87e9b]">
-                  ୨୧
-                </span>
-
-                <p
-                  className="text-xl font-semibold leading-8 text-[#554951]"
-                  style={{
-                    fontFamily:
-                      "'Cormorant Garamond', Georgia, serif",
-                  }}
-                >
-                  {fact}
+                <p className="mt-5 font-serif text-lg leading-8 text-[#75645c]">
+                  Add your own little story about Yence
+                  here whenever you're ready.
                 </p>
 
               </div>
 
-            ))}
+              <div className="mt-7 flex flex-wrap gap-3">
+
+                <ScrapTag>JL ♡</ScrapTag>
+                <ScrapTag>Yence</ScrapTag>
+                <ScrapTag>Jaeyel</ScrapTag>
+
+              </div>
+
+            </div>
 
           </div>
 
         </ScrapbookSection>
 
 
-        {/* =====================================================
-            PHOTOS
-        ===================================================== */}
+        {/* =========================
+            HOBBIES
+        ========================== */}
 
-        <section
-          id="jl-photo-archive"
-          className="relative mt-8 rounded-[2rem] border-2 border-[#dfb8c9] bg-[#fffafc] p-5 shadow-[7px_8px_0_rgba(173,111,139,0.13)] sm:p-8"
+        <ScrapbookSection
+          title="things JL likes"
+          sticker="★"
+          rotation="-rotate-[0.3deg]"
         >
 
-          <Tape className="left-16 top-[-12px] rotate-[-4deg]" />
+          <div className="grid gap-6 sm:grid-cols-2">
 
-          <SectionTitle>୨୧ JL photos ୨୧</SectionTitle>
+            <NoteCard
+              title="♡ hobbies"
+              value={profile.hobbies}
+              color="yellow"
+              rotation="-rotate-[1deg]"
+            />
 
-          <p
-            className="mt-2 text-center text-lg font-semibold text-[#856674]"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            ♡ a tiny photo collection ♡
+            <NoteCard
+              title="✦ interests"
+              value={profile.interests}
+              color="blue"
+              rotation="rotate-[1.2deg]"
+            />
+
+            <NoteCard
+              title="♡ favorites"
+              value={profile.favorites}
+              color="pink"
+              rotation="-rotate-[0.7deg]"
+            />
+
+            <NoteCard
+              title="✦ MBTI"
+              value={profile.mbti}
+              color="green"
+              rotation="rotate-[0.8deg]"
+            />
+
+          </div>
+
+        </ScrapbookSection>
+
+
+        {/* =========================
+            FUN FACTS
+        ========================== */}
+
+        <ScrapbookSection
+          title="little things about JL"
+          sticker="♡"
+          rotation="rotate-[0.5deg]"
+        >
+
+          <div className="relative mx-auto max-w-3xl">
+
+            <Paperclip className="absolute -right-2 -top-7 rotate-[20deg] text-[#826957]" />
+
+            <div className="bg-[#fffdf5] p-5 shadow-[6px_7px_0_rgba(73,54,43,0.13)]">
+
+              {facts.map((fact, index) => (
+                <div
+                  key={index}
+                  className="flex gap-4 border-b border-dashed border-[#d5c5b8] px-3 py-5 last:border-0"
+                >
+
+                  <span className="font-serif text-xl font-bold text-[#a56e62]">
+                    {index + 1}.
+                  </span>
+
+                  <p className="font-serif text-xl font-semibold leading-8 text-[#4c403b]">
+                    {fact}
+                  </p>
+
+                </div>
+              ))}
+
+            </div>
+
+          </div>
+
+        </ScrapbookSection>
+
+
+        {/* =========================
+            PHOTO ARCHIVE
+        ========================== */}
+
+        <ScrapbookSection
+          title="JL photo collection"
+          sticker="📷"
+          rotation="-rotate-[0.4deg]"
+          id="jl-photo-archive"
+        >
+
+          <p className="text-center font-serif text-lg font-semibold text-[#79645b]">
+            little snapshots kept here ♡
           </p>
 
-          {!showArchive ? (
+          {photos.length === 0 ? (
+            <EmptyPhotoState />
+          ) : !showArchive ? (
+
             <>
               <PhotoGrid
                 photos={photos.slice(0, PHOTOS_PER_PAGE)}
@@ -376,14 +371,16 @@ export default function JLStory() {
                     setShowArchive(true);
                     setCurrentPage(1);
                   }}
-                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border-2 border-[#d8aec0] bg-[#fdeaf2] px-7 py-3 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#80586b] hover:bg-[#f8dce7]"
+                  className="mx-auto mt-10 flex items-center gap-2 border-2 border-[#765b4c] bg-[#fff6a8] px-7 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#58473e] shadow-[4px_4px_0_rgba(74,54,45,0.15)] transition hover:-translate-y-1"
                 >
-                  load more ♡
-                  <ArrowUpRight size={13} />
+                  open archive ♡
+                  <ArrowUpRight size={14} />
                 </button>
               )}
             </>
+
           ) : (
+
             <>
               <PhotoGrid
                 photos={visiblePhotos}
@@ -396,20 +393,18 @@ export default function JLStory() {
                   { length: totalPages },
                   (_, index) => index + 1
                 ).map((page) => (
-
                   <button
                     key={page}
                     type="button"
                     onClick={() => goToPage(page)}
-                    className={`h-9 min-w-9 rounded-full px-3 font-semibold ${
+                    className={`h-9 min-w-9 border-2 px-3 font-mono text-xs font-bold ${
                       currentPage === page
-                        ? "bg-[#b86f8d] text-white"
-                        : "bg-[#fdeaf2] text-[#815c6d]"
+                        ? "border-[#765b4c] bg-[#765b4c] text-white"
+                        : "border-[#c5ad9c] bg-[#fffdf7] text-[#765b4c]"
                     }`}
                   >
                     {page}
                   </button>
-
                 ))}
 
               </div>
@@ -420,45 +415,43 @@ export default function JLStory() {
                   setShowArchive(false);
                   setCurrentPage(1);
                 }}
-                className="mx-auto mt-6 block font-mono text-[9px] font-semibold uppercase tracking-[0.25em] text-[#926d7d] underline"
+                className="mx-auto mt-6 block font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-[#80685b] underline"
               >
                 close archive
               </button>
             </>
           )}
 
-        </section>
+        </ScrapbookSection>
 
 
-        {/* FOOTER */}
+        {/* =========================
+            FOOTER
+        ========================== */}
 
-        <footer className="py-16 text-center">
+        <footer className="relative py-20 text-center">
 
-          <div className="text-2xl tracking-widest text-[#c47b99]">
-            ♡ ୨୧ ✦
+          <div className="mx-auto max-w-md rotate-[-1deg] bg-[#fff6a8] px-7 py-8 shadow-[5px_7px_0_rgba(73,54,43,0.15)]">
+
+            <div className="flex justify-center gap-4 text-[#9b6a5d]">
+              <Heart size={18} fill="currentColor" />
+              <Sparkles size={18} />
+              <Heart size={18} fill="currentColor" />
+            </div>
+
+            <p className="mt-5 font-serif text-2xl font-bold text-[#59453d]">
+              made with love for Yence ♡
+            </p>
+
+            <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.2em] text-[#856d61]">
+              JL · Yence · Jaeyel
+            </p>
+
           </div>
-
-          <p
-            className="mt-5 text-2xl font-semibold text-[#8f5d72]"
-            style={{
-              fontFamily: "'Comic Sans MS', cursive",
-            }}
-          >
-            made with love for Yence ♡
-          </p>
-
-          <p className="mt-3 text-sm font-medium text-[#856c78]">
-            JL · Yence · Jaeyel
-          </p>
-
-          <p className="mt-4 text-xs font-medium tracking-[0.15em] text-[#ae8e9d]">
-            one little page in the HANEULZ scrapbook
-          </p>
 
         </footer>
 
       </div>
-
     </main>
   );
 }
@@ -468,44 +461,47 @@ export default function JLStory() {
    SCRAPBOOK SECTION
 ============================================================ */
 
-function ScrapbookSection({ children, rotation }) {
+function ScrapbookSection({
+  title,
+  sticker,
+  rotation = "",
+  children,
+  id,
+}) {
   return (
     <section
-      className={`relative mt-8 rounded-[1.8rem] border-2 border-[#e4c3d0] bg-[#fffafc] px-6 py-10 shadow-[6px_7px_0_rgba(173,111,139,0.12)] sm:px-10 ${rotation}`}
+      id={id}
+      className={`relative mt-12 bg-[#f8eee1] p-3 shadow-[7px_8px_0_rgba(73,54,43,0.13)] ${rotation}`}
     >
-      {children}
-    </section>
-  );
-}
 
+      <div className="relative border border-[#d1b69f] bg-[#fffaf2] px-5 py-12 sm:px-10">
 
-/* ============================================================
-   SECTION TITLE
-============================================================ */
+        <Tape className="absolute left-1/2 top-[-12px] -translate-x-1/2 rotate-[2deg]" />
 
-function SectionTitle({ children }) {
-  return (
-    <div className="text-center">
+        <div className="mb-10 text-center">
 
-      <div className="text-base font-semibold text-[#c47b98]">
-        ୨୧
-      </div>
+          <div className="mx-auto inline-flex items-center gap-3 bg-[#fff6a8] px-6 py-3 shadow-[3px_4px_0_rgba(73,54,43,0.12)]">
 
-      <h2
-        className="mt-1 text-4xl font-bold text-[#554650]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
+            <span className="text-[#9a6b5c]">
+              {sticker}
+            </span>
+
+            <h2 className="font-serif text-3xl font-bold text-[#493b36] sm:text-4xl">
+              {title}
+            </h2>
+
+            <span className="text-[#9a6b5c]">
+              {sticker}
+            </span>
+
+          </div>
+
+        </div>
+
         {children}
-      </h2>
 
-      <div className="mt-2 text-base font-semibold text-[#c47b98]">
-        ♡
       </div>
-
-    </div>
+    </section>
   );
 }
 
@@ -517,31 +513,42 @@ function SectionTitle({ children }) {
 function Tape({ className = "" }) {
   return (
     <div
-      className={`pointer-events-none absolute z-10 h-7 w-24 bg-[#f6d8a8]/75 shadow-sm ${className}`}
+      className={`h-8 w-24 bg-[#e7c7a7]/75 shadow-sm ${className}`}
     />
   );
 }
 
 
 /* ============================================================
-   INFO CARD
+   STICKER
 ============================================================ */
 
-function InfoCard({ label, value }) {
+function Sticker({ children, className = "" }) {
   return (
-    <div className="rounded-xl border border-[#e5cbd6] bg-[#fff4f8] p-5 text-center shadow-[2px_3px_0_rgba(190,130,153,0.08)]">
+    <div
+      className={`flex h-12 w-12 items-center justify-center rounded-full bg-[#fff6a8] font-serif text-xl font-bold text-[#95685b] shadow-[3px_4px_0_rgba(73,54,43,0.12)] ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
 
-      <p className="font-mono text-[8px] font-semibold tracking-[0.2em] text-[#9a7181]">
+
+/* ============================================================
+   PAPER CARD
+============================================================ */
+
+function PaperCard({ label, value }) {
+  return (
+    <div className="rotate-[0.5deg] bg-[#fffdf7] p-6 text-center shadow-[4px_5px_0_rgba(73,54,43,0.12)]">
+
+      <p className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#927568]">
         {label}
       </p>
 
-      <p
-        className="mt-3 text-xl font-bold text-[#574952]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
+      <div className="mx-auto mt-3 h-px w-12 bg-[#d6b9a5]" />
+
+      <p className="mt-4 font-serif text-2xl font-bold text-[#493d38]">
         {value}
       </p>
 
@@ -551,48 +558,69 @@ function InfoCard({ label, value }) {
 
 
 /* ============================================================
-   TAG
+   NOTE CARD
 ============================================================ */
 
-function CuteTag({ children }) {
+function NoteCard({
+  title,
+  value,
+  color,
+  rotation,
+}) {
+  const colors = {
+    yellow: "bg-[#fff6a8]",
+    blue: "bg-[#cfe8ee]",
+    pink: "bg-[#f4ccd4]",
+    green: "bg-[#d6e7c8]",
+  };
+
   return (
-    <span className="rounded-full border border-[#dfb8c9] bg-[#fdebf3] px-4 py-2 text-sm font-semibold text-[#875c6f]">
-      {children} ♡
+    <div
+      className={`relative min-h-[160px] p-7 shadow-[5px_6px_0_rgba(73,54,43,0.12)] ${colors[color]} ${rotation}`}
+    >
+
+      <Tape className="absolute left-1/2 top-[-9px] h-6 w-20 -translate-x-1/2 rotate-[2deg]" />
+
+      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#66544b]">
+        {title}
+      </p>
+
+      <p className="mt-5 font-serif text-xl font-semibold leading-8 text-[#403834]">
+        {value}
+      </p>
+
+    </div>
+  );
+}
+
+
+/* ============================================================
+   SCRAP TAG
+============================================================ */
+
+function ScrapTag({ children }) {
+  return (
+    <span className="rotate-[-1deg] border border-[#c8aa98] bg-[#fffdf7] px-4 py-2 font-mono text-[10px] font-bold text-[#70594d] shadow-[2px_3px_0_rgba(73,54,43,0.1)]">
+      {children}
     </span>
   );
 }
 
 
 /* ============================================================
-   SOFT CARD
+   POLAROID
 ============================================================ */
 
-function SoftCard({ title, value }) {
+function Polaroid({ label, rotation }) {
   return (
-    <div className="rounded-2xl border border-[#e5cbd6] bg-[#fff5f9] p-6">
+    <div
+      className={`mx-auto w-full max-w-sm bg-white p-4 pb-7 shadow-[7px_8px_0_rgba(73,54,43,0.17)] ${rotation}`}
+    >
 
-      <div className="flex items-center gap-2">
+      <PhotoPlaceholder label={label} />
 
-        <Heart
-          size={15}
-          strokeWidth={1.7}
-          className="text-[#bd718f]"
-        />
-
-        <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#966f7e]">
-          {title}
-        </p>
-
-      </div>
-
-      <p
-        className="mt-4 text-xl font-semibold leading-8 text-[#5b4b54]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
-        {value}
+      <p className="mt-4 text-center font-serif text-lg font-bold text-[#594740]">
+        a little memory ♡
       </p>
 
     </div>
@@ -606,31 +634,19 @@ function SoftCard({ title, value }) {
 
 function PhotoPlaceholder({ label }) {
   return (
-    <div className="overflow-hidden rounded-xl border-2 border-[#dfbfcd] bg-[#fffafc] p-3 shadow-[3px_4px_0_rgba(173,111,139,0.12)]">
+    <div className="flex aspect-[4/5] flex-col items-center justify-center bg-[#eadfd3] text-center">
 
-      <div className="flex aspect-[4/5] flex-col items-center justify-center bg-[#f9eaf1]">
-
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-[#bc7691] shadow-sm">
-
-          <Camera size={22} strokeWidth={1.5} />
-
-        </div>
-
-        <p className="mt-5 font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-[#916b7a]">
-          {label}
-        </p>
-
-        <p
-          className="mt-2 text-lg font-semibold text-[#9d6f82]"
-          style={{
-            fontFamily:
-              "'Cormorant Garamond', Georgia, serif",
-          }}
-        >
-          photo goes here ♡
-        </p>
-
+      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#fffdf7] text-[#96705e] shadow-sm">
+        <Camera size={25} strokeWidth={1.4} />
       </div>
+
+      <p className="mt-5 font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#796256]">
+        {label}
+      </p>
+
+      <p className="mt-2 font-serif text-lg font-semibold text-[#8a7063]">
+        photo goes here ♡
+      </p>
 
     </div>
   );
@@ -646,12 +662,12 @@ function PhotoGrid({ photos, startIndex = 0 }) {
     (photo) => photo && photo.src
   );
 
-  if (validPhotos.length === 0) {
+  if (!validPhotos.length) {
     return <EmptyPhotoState />;
   }
 
   return (
-    <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+    <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
 
       {validPhotos.map((photo, index) => (
         <PhotoCard
@@ -671,23 +687,23 @@ function PhotoGrid({ photos, startIndex = 0 }) {
 ============================================================ */
 
 function PhotoCard({ photo, index }) {
-  const content = (
-    <div className="group relative rotate-[-1deg] border-[8px] border-white bg-white shadow-[3px_4px_8px_rgba(93,63,76,0.16)] transition duration-300 hover:-translate-y-1 hover:rotate-0 hover:shadow-lg">
+  const card = (
+    <div className="bg-white p-3 pb-5 shadow-[5px_6px_0_rgba(73,54,43,0.14)] transition duration-300 hover:-translate-y-2 hover:rotate-1">
 
-      <div className="aspect-square overflow-hidden">
+      <div className="aspect-square overflow-hidden bg-[#eadfd3]">
 
         <img
           src={photo.src}
           alt={photo.alt || `JL photo ${index + 1}`}
-          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover"
           loading="lazy"
         />
 
       </div>
 
-      <div className="absolute -bottom-3 -right-2 rotate-[8deg] text-sm text-[#c77c98]">
-        ♡
-      </div>
+      <p className="mt-3 text-center font-mono text-[8px] font-bold uppercase tracking-[0.15em] text-[#796256]">
+        JL · {String(index + 1).padStart(2, "0")} ♡
+      </p>
 
     </div>
   );
@@ -699,42 +715,36 @@ function PhotoCard({ photo, index }) {
         target="_blank"
         rel="noreferrer"
       >
-        {content}
+        {card}
       </a>
     );
   }
 
-  return content;
+  return card;
 }
 
 
 /* ============================================================
-   EMPTY STATE
+   EMPTY
 ============================================================ */
 
 function EmptyPhotoState() {
   return (
-    <div className="mt-8 rounded-2xl border-2 border-dashed border-[#dfbdcc] bg-[#fff5f9] px-6 py-12 text-center">
+    <div className="mx-auto mt-10 max-w-md rotate-[-1deg] bg-[#fff6a8] px-7 py-12 text-center shadow-[5px_6px_0_rgba(73,54,43,0.13)]">
 
       <Camera
-        size={26}
+        size={28}
+        className="mx-auto text-[#92705f]"
         strokeWidth={1.4}
-        className="mx-auto text-[#bd7692]"
       />
 
-      <p
-        className="mt-4 text-xl font-bold text-[#795969]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
+      <p className="mt-5 font-serif text-xl font-bold text-[#57443d]">
         the photo collection is waiting ♡
       </p>
 
-      <p className="mx-auto mt-2 max-w-md text-sm font-medium leading-6 text-[#876f7b]">
-        Add JL photos to the scrapbook whenever you're
-        ready.
+      <p className="mt-2 font-mono text-[9px] leading-5 text-[#79685f]">
+        Add JL photos to the scrapbook whenever
+        you're ready.
       </p>
 
     </div>
