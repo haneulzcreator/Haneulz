@@ -1,12 +1,5 @@
 import React, { useMemo, useState } from "react";
-import {
-  ArrowUpRight,
-  Camera,
-  Heart,
-  Film,
-  Sparkles,
-  Star,
-} from "lucide-react";
+import { ArrowUpRight, Camera, Heart, Sparkles, Cat } from "lucide-react";
 const PHOTOS_PER_PAGE = 25;
 const profile = {
   fullName: "Park Han",
@@ -26,48 +19,13 @@ const facts = [
   "Add another little Han fact here.",
   "Add another detail whenever you want.",
 ];
-const movieRecommendations = [
-  {
-    title: "Add movie recommendation here",
-  },
-  {
-    title: "Add another movie here",
-  },
-  {
-    title: "Add another movie here",
-  },
-];
 const photos = [
-  {
-    src: "",
-    alt: "Han photo 01",
-    postUrl: "",
-  },
-  {
-    src: "",
-    alt: "Han photo 02",
-    postUrl: "",
-  },
-  {
-    src: "",
-    alt: "Han photo 03",
-    postUrl: "",
-  },
-  {
-    src: "",
-    alt: "Han photo 04",
-    postUrl: "",
-  },
-  {
-    src: "",
-    alt: "Han photo 05",
-    postUrl: "",
-  },
-  {
-    src: "",
-    alt: "Han photo 06",
-    postUrl: "",
-  },
+  { src: "", alt: "Han photo 01", postUrl: "" },
+  { src: "", alt: "Han photo 02", postUrl: "" },
+  { src: "", alt: "Han photo 03", postUrl: "" },
+  { src: "", alt: "Han photo 04", postUrl: "" },
+  { src: "", alt: "Han photo 05", postUrl: "" },
+  { src: "", alt: "Han photo 06", postUrl: "" },
 ];
 export default function HanStory() {
   const [showArchive, setShowArchive] = useState(false);
@@ -82,7 +40,7 @@ export default function HanStory() {
   }, [currentPage]);
   const goToPage = (page) => {
     setCurrentPage(page);
-    window.requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
       document
         .getElementById("han-photo-archive")
         ?.scrollIntoView({
@@ -92,115 +50,88 @@ export default function HanStory() {
     });
   };
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f2f8fc] px-4 py-6 text-[#536879] sm:px-6">
+    <main className="min-h-screen bg-[#f4f9fd] px-4 py-6 text-[#405363] sm:px-6">
       <div className="mx-auto max-w-5xl">
-        {/* HEADER */}
-        <header className="flex items-center justify-between px-3 py-3">
+        {/* =================================================
+            HEADER
+        ================================================= */}
+        <header className="flex items-center justify-between py-4">
           <div>
-            <p className="font-mono text-[9px] font-medium tracking-[0.28em] text-[#668ca8]">
-              HANEULZ SCRAPBOOK
+            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.3em] text-[#7598b1]">
+              HANEULZ CORNER
             </p>
-            <p className="mt-1 font-mono text-[8px] tracking-[0.22em] text-[#9ab5c8]">
-              HAN / HANI / 01
+            <p className="mt-1 text-xs text-[#9bb2c3]">
+              a little collection for Han ♡
             </p>
           </div>
-          <div className="text-lg text-[#7da5c0]">
-            ♡ ✦ ♡
+          <div className="flex items-center gap-2 text-[#8db0c7]">
+            <span>♡</span>
+            <span className="text-lg">🐈</span>
+            <span>✦</span>
           </div>
         </header>
-        {/* HERO */}
-        <section className="relative mt-4 overflow-hidden rounded-[2.3rem] border border-[#c9deeb] bg-[#fbfdff] px-6 py-14 shadow-[6px_7px_0_rgba(126,166,193,0.15)] sm:px-10">
-          {/* subtle scrapbook pieces */}
-          <div className="absolute left-7 top-6 rotate-[-6deg] rounded-md bg-[#dceef8] px-3 py-2 text-sm text-[#7098b2] shadow-sm">
-            ୨୧
+        {/* =================================================
+            HERO
+        ================================================= */}
+        <section className="relative mt-5 overflow-hidden rounded-[2rem] border border-[#d5e5ef] bg-[#fbfdff] p-5 shadow-[5px_6px_0_rgba(133,170,194,0.13)] sm:p-8">
+          {/* cute little cat decoration */}
+          <div className="absolute left-5 top-5 rotate-[-6deg] rounded-xl bg-[#e8f3f9] px-3 py-2 text-lg shadow-sm">
+            🐈
           </div>
-          <div className="absolute right-7 top-7 rotate-[7deg] rounded-md bg-[#edf7fc] px-3 py-2 text-sm text-[#7fa7bf] shadow-sm">
+          <div className="absolute right-6 top-6 rotate-[7deg] text-lg text-[#91b1c6]">
             ♡
           </div>
-          <div className="absolute bottom-8 left-9 rotate-[-5deg] text-sm text-[#9fc0d4]">
+          <div className="absolute bottom-7 left-8 text-sm text-[#abc6d6]">
             ✦
           </div>
-          <div className="absolute bottom-8 right-9 rotate-[6deg] text-sm text-[#91b5cc]">
-            ୨୧
+          <div className="absolute bottom-7 right-8 text-lg text-[#9dbbcd]">
+            🐾
           </div>
-          <div className="mx-auto max-w-2xl text-center">
-            <p
-              className="text-2xl text-[#668ca7]"
-              style={{
-                fontFamily: "'Comic Sans MS', cursive",
-              }}
-            >
-              ୨୧ a little page for Han ୨୧
+          <div className="relative rounded-[1.5rem] border border-[#e0edf4] bg-white px-6 py-12 text-center sm:px-10">
+            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.35em] text-[#7898ae]">
+              a little page about
             </p>
-            <div className="mt-5 text-lg tracking-[0.3em] text-[#82a9c3]">
-              ♡ ୨୧ ♡
-            </div>
-            <p className="mt-8 font-mono text-[8px] font-medium uppercase tracking-[0.4em] text-[#7d9caf]">
-              known as
-            </p>
-            <h1
-              className="mt-2 text-7xl font-normal tracking-tight text-[#425d70] sm:text-8xl"
-              style={{
-                fontFamily:
-                  "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
+            <h1 className="mt-3 font-serif text-7xl font-medium tracking-tight text-[#3f5362] sm:text-8xl">
               Han
             </h1>
-            <div className="mt-3 text-xl text-[#82a9c3]">
-              ♡
+            <div className="mt-2 flex items-center justify-center gap-3 text-[#87abc2]">
+              <span>♡</span>
+              <span className="text-xs">🐾</span>
+              <span>♡</span>
             </div>
-            <p
-              className="mt-3 text-3xl text-[#526d80]"
-              style={{
-                fontFamily:
-                  "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
+            <p className="mt-4 font-serif text-3xl text-[#5c7282]">
               {profile.fullName}
             </p>
-            <p
-              className="mt-2 text-2xl text-[#6e96b0]"
-              style={{
-                fontFamily: "'Comic Sans MS', cursive",
-              }}
-            >
-              {profile.nickname}
+            <p className="mt-2 text-lg font-medium text-[#7899ae]">
+              {profile.nickname} ♡
             </p>
             {/* HERO PHOTO */}
-            <div className="mx-auto mt-10 max-w-md">
-              <PhotoPlaceholder label="HAN PHOTO" />
+            <div className="mx-auto mt-8 max-w-md">
+              <PhotoPlaceholder label="HAN'S PHOTO" />
             </div>
-            <p
-              className="mt-5 text-xl text-[#719ab3]"
-              style={{
-                fontFamily: "'Comic Sans MS', cursive",
-              }}
-            >
+            <div className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#e8f3f9] px-5 py-2 text-sm font-medium text-[#64899f] shadow-sm">
+              <span>🐈</span>
               Han ♡
+            </div>
+            <p className="mx-auto mt-6 max-w-xl font-serif text-lg leading-8 text-[#657a89]">
+              A tiny corner filled with little moments,
+              favorite things, memories, and all the
+              little details that make Han special.
             </p>
-            <p
-              className="mx-auto mt-4 max-w-lg text-lg leading-8 text-[#657b8b]"
-              style={{
-                fontFamily:
-                  "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              a tiny collection of things about Han —
-              little moments, favorite things, memories,
-              and pieces of the person behind the name.
-            </p>
-            <div className="mt-6 text-xl text-[#7fa8c1]">
-              ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
+            <div className="mt-5 text-lg text-[#91b3c8]">
+              ˚₊‧꒰ა 🐾 ໒꒱ ‧₊˚
             </div>
           </div>
         </section>
-        {/* QUICK LOOK */}
-        <section className="mt-8 -rotate-[0.3deg] rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.12)] sm:px-10">
-          <SectionTitle>
-            ୨୧ a quick look ୨୧
-          </SectionTitle>
-          <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
+        {/* =================================================
+            QUICK LOOK
+        ================================================= */}
+        <section className="mt-10">
+          <SectionHeading
+            eyebrow="01 · little details"
+            title="a quick look"
+          />
+          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
             <InfoCard
               label="KNOWN AS"
               value={profile.knownAs}
@@ -221,257 +152,198 @@ export default function HanStory() {
               label="MBTI"
               value={profile.mbti}
             />
+            <InfoCard
+              label="FAVORITES"
+              value={profile.favorites}
+            />
           </div>
         </section>
-        {/* ABOUT HAN */}
-        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.11)] sm:px-10">
-          <SectionTitle>
-            ♡ about Han ♡
-          </SectionTitle>
-          <div className="mt-8 grid gap-8 md:grid-cols-2 md:items-center">
+        {/* =================================================
+            ABOUT HAN
+        ================================================= */}
+        <section className="mt-12">
+          <SectionHeading
+            eyebrow="02 · the little story"
+            title="about Han"
+          />
+          <div className="mt-6 grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
             <PhotoPlaceholder label="A LITTLE PHOTO OF HAN" />
-            <div>
-              <p
-                className="text-2xl leading-9 text-[#526a7b]"
-                style={{
-                  fontFamily:
-                    "'Cormorant Garamond', Georgia, serif",
-                }}
-              >
+            <div className="relative rounded-[1.75rem] border border-[#dbe8f0] bg-[#fbfdff] p-7 shadow-[4px_5px_0_rgba(133,170,194,0.1)]">
+              <div className="absolute -right-2 -top-3 rotate-6 rounded-md bg-[#e6f2f8] px-3 py-1 text-xs text-[#6d93a9] shadow-sm">
+                little note 🐾
+              </div>
+              <p className="font-serif text-2xl leading-9 text-[#455a69]">
                 This is a little space for everything
                 that makes Han feel like Han — his
-                personality, little habits, memorable
-                moments, and all the tiny things that
-                make people smile.
+                personality, habits, memorable moments,
+                and the tiny details that make people
+                smile.
               </p>
-              <p
-                className="mt-5 text-lg leading-8 text-[#718797]"
-                style={{
-                  fontFamily:
-                    "'Cormorant Garamond', Georgia, serif",
-                }}
-              >
+              <p className="mt-5 font-serif text-lg leading-8 text-[#718592]">
                 Add your own little story about Han
                 here whenever you're ready.
               </p>
-              <div className="mt-6 flex flex-wrap gap-2">
+              <div className="mt-7 flex flex-wrap gap-2">
                 <CuteTag>Han</CuteTag>
-                <CuteTag>HANI</CuteTag>
+                <CuteTag>hani</CuteTag>
+                <CuteTag>🐈</CuteTag>
                 <CuteTag>♡</CuteTag>
               </div>
             </div>
           </div>
         </section>
-        {/* HOBBIES & INTERESTS */}
-        <section className="mt-8 rotate-[0.25deg] rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.10)] sm:px-10">
-          <SectionTitle>
-            ୨୧ hobbies & interests ୨୧
-          </SectionTitle>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        {/* =================================================
+            HOBBIES & INTERESTS
+        ================================================= */}
+        <section className="mt-12">
+          <SectionHeading
+            eyebrow="03 · things he likes"
+            title="hobbies & interests"
+          />
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
             <SoftCard
-              title="♡ hobbies"
+              title="hobbies"
               value={profile.hobbies}
             />
             <SoftCard
-              title="♡ interests"
+              title="interests"
               value={profile.interests}
             />
             <SoftCard
-              title="♡ MBTI"
+              title="MBTI"
               value={profile.mbti}
             />
             <SoftCard
-              title="♡ favorites"
+              title="favorites"
               value={profile.favorites}
             />
           </div>
         </section>
-        {/* FUN FACTS */}
-        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.10)] sm:px-10">
-          <SectionTitle>
-            ♡ little things about Han ♡
-          </SectionTitle>
-          <div className="mt-8">
+        {/* =================================================
+            LITTLE THINGS
+        ================================================= */}
+        <section className="mt-12">
+          <SectionHeading
+            eyebrow="04 · tiny memories"
+            title="little things about Han"
+          />
+          <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-[#dbe8f0] bg-[#fbfdff] shadow-[4px_5px_0_rgba(133,170,194,0.08)]">
             {facts.map((fact, index) => (
               <div
                 key={index}
-                className="flex gap-4 border-b border-[#d9e7ef] py-5 last:border-b-0"
+                className="flex gap-4 border-b border-[#e5eef3] px-6 py-5 last:border-0"
               >
-                <span className="shrink-0 text-[#7da5c0]">
-                  ୨୧
+                <span className="mt-1 text-[#88acc1]">
+                  🐾
                 </span>
-                <p
-                  className="text-xl leading-8 text-[#536b7c]"
-                  style={{
-                    fontFamily:
-                      "'Cormorant Garamond', Georgia, serif",
-                  }}
-                >
+                <p className="font-serif text-lg leading-8 text-[#536875]">
                   {fact}
                 </p>
               </div>
             ))}
           </div>
         </section>
-        {/* MOVIE RECOMMENDATIONS */}
-        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.10)] sm:px-10">
-          <SectionTitle>
-            ୨୧ Han's movie recommendations ୨୧
-          </SectionTitle>
-          <p
-            className="mt-2 text-center text-lg text-[#7293a7]"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            ♡ movies Han recommends ♡
-          </p>
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
-            {movieRecommendations.map(
-              (movie, index) => (
-                <div
-                  key={`${movie.title}-${index}`}
-                  className="group flex items-center gap-4 rounded-[1.5rem] border border-[#d4e4ed] bg-[#fafdff] p-5 transition duration-300 hover:-translate-y-1 hover:shadow-md"
-                >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e5f2f9] text-[#709ab4]">
-                    <Film
-                      size={17}
-                      strokeWidth={1.4}
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="font-mono text-[7px] uppercase tracking-[0.22em] text-[#91aabb]">
-                      recommendation{" "}
-                      {String(index + 1).padStart(2, "0")}
-                    </p>
-                    <p
-                      className="mt-1 text-xl text-[#526b7b]"
-                      style={{
-                        fontFamily:
-                          "'Cormorant Garamond', Georgia, serif",
-                      }}
-                    >
-                      {movie.title}
-                    </p>
-                  </div>
-                  <span className="ml-auto text-[#8fb0c3] opacity-0 transition group-hover:opacity-100">
-                    ♡
-                  </span>
-                </div>
-              )
-            )}
-          </div>
-        </section>
-        {/* PHOTO ARCHIVE */}
+        {/* =================================================
+            PHOTO ARCHIVE
+        ================================================= */}
         <section
           id="han-photo-archive"
-          className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-5 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.11)] sm:px-8"
+          className="mt-12"
         >
-          <SectionTitle>
-            ୨୧ Han photos ୨୧
-          </SectionTitle>
-          <p
-            className="mt-2 text-center text-lg text-[#7293a7]"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            ♡ a tiny photo collection ♡
-          </p>
-          {photos.length === 0 ? (
-            <EmptyPhotoState />
-          ) : !showArchive ? (
-            <>
-              <PhotoGrid
-                photos={photos.slice(
-                  0,
-                  PHOTOS_PER_PAGE
-                )}
-                startIndex={0}
-              />
-              {photos.length > PHOTOS_PER_PAGE && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowArchive(true);
-                    setCurrentPage(1);
-                  }}
-                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border border-[#b9d1df] bg-[#edf7fc] px-7 py-3 text-[9px] uppercase tracking-[0.25em] text-[#66869c] transition hover:bg-white hover:shadow-md"
-                >
-                  load more ♡
-                  <ArrowUpRight
-                    size={13}
-                    strokeWidth={1}
-                  />
-                </button>
-              )}
-            </>
-          ) : (
-            <>
-              <PhotoGrid
-                photos={visiblePhotos}
-                startIndex={
-                  (currentPage - 1) *
-                  PHOTOS_PER_PAGE
-                }
-              />
-              <div className="mt-10 flex flex-wrap justify-center gap-2">
-                {Array.from(
-                  { length: totalPages },
-                  (_, index) => index + 1
-                ).map((page) => (
+          <SectionHeading
+            eyebrow="05 · photo diary"
+            title="Han photos"
+          />
+          <div className="mt-6 rounded-[1.75rem] border border-[#dbe8f0] bg-[#fbfdff] p-5 shadow-[4px_5px_0_rgba(133,170,194,0.1)] sm:p-7">
+            <div className="mb-6 flex items-center justify-between">
+              <p className="font-serif text-lg text-[#607684]">
+                little snapshots ♡
+              </p>
+              <span className="text-lg">
+                🐈
+              </span>
+            </div>
+            {photos.length === 0 ? (
+              <EmptyPhotoState />
+            ) : !showArchive ? (
+              <>
+                <PhotoGrid
+                  photos={photos.slice(
+                    0,
+                    PHOTOS_PER_PAGE
+                  )}
+                  startIndex={0}
+                />
+                {photos.length > PHOTOS_PER_PAGE && (
                   <button
-                    key={page}
                     type="button"
-                    onClick={() =>
-                      goToPage(page)
-                    }
-                    className={`h-9 min-w-9 rounded-full px-3 text-xs transition ${
-                      currentPage === page
-                        ? "bg-[#7fa7c0] text-white"
-                        : "bg-[#edf7fc] text-[#6d8ca0] hover:bg-[#dceef7]"
-                    }`}
+                    onClick={() => {
+                      setShowArchive(true);
+                      setCurrentPage(1);
+                    }}
+                    className="mx-auto mt-8 flex items-center gap-2 rounded-full bg-[#e5f1f7] px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#63889e] transition hover:-translate-y-0.5 hover:bg-[#dcecf4]"
                   >
-                    {page}
+                    load more ♡
+                    <ArrowUpRight size={14} />
                   </button>
-                ))}
-              </div>
-              <div className="mt-6 text-center">
+                )}
+              </>
+            ) : (
+              <>
+                <PhotoGrid
+                  photos={visiblePhotos}
+                  startIndex={
+                    (currentPage - 1) *
+                    PHOTOS_PER_PAGE
+                  }
+                />
+                <div className="mt-8 flex justify-center gap-2">
+                  {Array.from(
+                    { length: totalPages },
+                    (_, index) => index + 1
+                  ).map((page) => (
+                    <button
+                      key={page}
+                      type="button"
+                      onClick={() =>
+                        goToPage(page)
+                      }
+                      className={`h-9 min-w-9 rounded-full px-3 text-xs font-semibold ${
+                        currentPage === page
+                          ? "bg-[#78a0b7] text-white"
+                          : "bg-[#eaf4f8] text-[#6d91a5]"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
                 <button
                   type="button"
                   onClick={() => {
                     setShowArchive(false);
                     setCurrentPage(1);
                   }}
-                  className="text-[9px] uppercase tracking-[0.3em] text-[#7896a8] underline underline-offset-4"
+                  className="mx-auto mt-6 block text-xs text-[#819eae] underline underline-offset-4"
                 >
                   close archive
                 </button>
-              </div>
-            </>
-          )}
-        </section>
-        {/* FOOTER */}
-        <footer className="px-4 py-16 text-center">
-          <div className="text-2xl tracking-[0.2em] text-[#7fa8c1]">
-            ♡ ୨୧ ✦
+              </>
+            )}
           </div>
-          <p
-            className="mt-5 text-2xl text-[#678da7]"
-            style={{
-              fontFamily:
-                "'Comic Sans MS', cursive",
-            }}
-          >
+        </section>
+        {/* =================================================
+            FOOTER
+        ================================================= */}
+        <footer className="py-16 text-center">
+          <div className="text-xl text-[#86aabd]">
+            ♡ 🐾 ✦ 🐈 ✦ 🐾 ♡
+          </div>
+          <p className="mt-4 font-serif text-2xl text-[#607f91]">
             made with love for Han ♡
           </p>
-          <p className="mt-3 text-sm text-[#7d99aa]">
+          <p className="mt-2 text-xs text-[#91a7b4]">
             Han · HANEULZ
-          </p>
-          <p className="mt-5 text-xs tracking-[0.15em] text-[#b0c5d1]">
-            one little page in the HANEULZ scrapbook
           </p>
         </footer>
       </div>
@@ -479,25 +351,23 @@ export default function HanStory() {
   );
 }
 /* ============================================================
-   SECTION TITLE
+   SECTION HEADING
 ============================================================ */
-function SectionTitle({ children }) {
+function SectionHeading({ eyebrow, title }) {
   return (
     <div className="text-center">
-      <div className="text-sm text-[#7da6bf]">
-        ୨୧
-      </div>
-      <h2
-        className="mt-1 text-4xl font-normal text-[#526b7c]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
-        {children}
+      <p className="font-mono text-[8px] font-semibold uppercase tracking-[0.3em] text-[#7899ad]">
+        {eyebrow}
+      </p>
+      <h2 className="mt-2 font-serif text-4xl font-medium text-[#455966]">
+        {title}
       </h2>
-      <div className="mt-2 text-sm text-[#7da6bf]">
-        ♡
+      <div className="mx-auto mt-3 flex w-fit items-center gap-2 text-[#88abc0]">
+        <span>♡</span>
+        <span className="text-[9px]">
+          🐾
+        </span>
+        <span>♡</span>
       </div>
     </div>
   );
@@ -507,17 +377,11 @@ function SectionTitle({ children }) {
 ============================================================ */
 function InfoCard({ label, value }) {
   return (
-    <div className="rounded-[1.4rem] border border-[#d4e3ec] bg-[#fafdff] p-5 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
-      <p className="font-mono text-[7px] font-medium tracking-[0.25em] text-[#7898aa]">
+    <div className="rounded-[1.4rem] border border-[#dbe8ef] bg-[#fbfdff] p-5 text-center shadow-[2px_3px_0_rgba(133,170,194,0.07)]">
+      <p className="font-mono text-[7px] font-semibold tracking-[0.22em] text-[#829eae]">
         {label}
       </p>
-      <p
-        className="mt-3 text-xl text-[#526b7c]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
+      <p className="mt-3 font-serif text-xl text-[#526673]">
         {value}
       </p>
     </div>
@@ -528,8 +392,8 @@ function InfoCard({ label, value }) {
 ============================================================ */
 function CuteTag({ children }) {
   return (
-    <span className="rounded-full border border-[#c9dfe9] bg-[#eef8fc] px-4 py-2 text-xs text-[#64879d]">
-      {children} ♡
+    <span className="rounded-full border border-[#d2e4ed] bg-[#eaf4f8] px-4 py-2 text-xs font-medium text-[#688c9f]">
+      {children}
     </span>
   );
 }
@@ -538,24 +402,18 @@ function CuteTag({ children }) {
 ============================================================ */
 function SoftCard({ title, value }) {
   return (
-    <div className="rounded-[1.6rem] border border-[#d4e3ec] bg-[#fafdff] p-6">
+    <div className="rounded-[1.5rem] border border-[#dbe8ef] bg-[#fbfdff] p-6 shadow-[2px_3px_0_rgba(133,170,194,0.07)]">
       <div className="flex items-center gap-2">
         <Heart
           size={14}
           strokeWidth={1.5}
-          className="text-[#7da6bf]"
+          className="text-[#83aabd]"
         />
-        <p className="font-mono text-[8px] font-medium uppercase tracking-[0.25em] text-[#7898aa]">
+        <p className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-[#829eae]">
           {title}
         </p>
       </div>
-      <p
-        className="mt-4 text-xl leading-8 text-[#526b7c]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
+      <p className="mt-4 font-serif text-xl leading-8 text-[#586c78]">
         {value}
       </p>
     </div>
@@ -564,31 +422,32 @@ function SoftCard({ title, value }) {
 /* ============================================================
    PHOTO PLACEHOLDER
 ============================================================ */
-function PhotoPlaceholder({
-  label = "HAN PHOTO",
-}) {
+function PhotoPlaceholder({ label }) {
   return (
-    <div className="group relative overflow-hidden rounded-[2rem] border border-[#d2e2eb] bg-[#fafdff]">
-      <div className="aspect-[4/5] w-full bg-gradient-to-br from-[#fbfdff] via-[#edf7fc] to-[#deedf6]">
-        <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-[#7da6bf] shadow-sm">
+    <div className="relative overflow-hidden rounded-[1.75rem] border border-[#d8e7ef] bg-[#fbfdff] p-3 shadow-[4px_5px_0_rgba(133,170,194,0.1)]">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.35rem] bg-gradient-to-br from-[#fbfdff] via-[#eaf4f8] to-[#dcecf4]">
+        <div className="absolute left-3 top-3 rounded-md bg-white/80 px-3 py-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-[#7899aa] shadow-sm">
+          🐈 HAN
+        </div>
+        <div className="absolute right-4 top-4 text-sm text-[#8dafc2]">
+          ♡
+        </div>
+        <div className="flex h-full flex-col items-center justify-center text-center">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/85 text-[#78a2b8] shadow-sm">
             <Camera
               size={21}
               strokeWidth={1.3}
             />
           </div>
-          <p className="mt-5 font-mono text-[8px] font-medium uppercase tracking-[0.25em] text-[#7898aa]">
+          <p className="mt-5 font-mono text-[8px] font-semibold uppercase tracking-[0.22em] text-[#7898aa]">
             {label}
           </p>
-          <p
-            className="mt-2 text-lg text-[#6f98b1]"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
+          <p className="mt-2 font-serif text-lg text-[#7397aa]">
             photo goes here ♡
           </p>
+          <span className="mt-3 text-base">
+            🐾
+          </span>
         </div>
       </div>
     </div>
@@ -604,11 +463,11 @@ function PhotoGrid({
   const validPhotos = photos.filter(
     (photo) => photo && photo.src
   );
-  if (validPhotos.length === 0) {
+  if (!validPhotos.length) {
     return <EmptyPhotoState />;
   }
   return (
-    <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
       {validPhotos.map((photo, index) => (
         <PhotoCard
           key={`${photo.src}-${index}`}
@@ -626,9 +485,9 @@ function PhotoCard({
   photo,
   index,
 }) {
-  const content = (
-    <div className="group relative overflow-hidden rounded-[1.4rem] border border-[#d3e3ec] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:rotate-[0.5deg] hover:shadow-lg">
-      <div className="aspect-square overflow-hidden">
+  const card = (
+    <div className="group overflow-hidden rounded-[1.2rem] border border-[#d9e7ee] bg-white p-2 shadow-[2px_3px_0_rgba(133,170,194,0.08)] transition duration-300 hover:-translate-y-1 hover:rotate-[0.5deg] hover:shadow-md">
+      <div className="aspect-square overflow-hidden rounded-[0.9rem]">
         <img
           src={photo.src}
           alt={
@@ -639,11 +498,6 @@ function PhotoCard({
           loading="lazy"
         />
       </div>
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/30 to-transparent px-3 pb-3 pt-10 opacity-0 transition group-hover:opacity-100">
-        <p className="text-right text-[10px] text-white">
-          ୨୧
-        </p>
-      </div>
     </div>
   );
   if (photo.postUrl) {
@@ -653,35 +507,31 @@ function PhotoCard({
         target="_blank"
         rel="noreferrer"
       >
-        {content}
+        {card}
       </a>
     );
   }
-  return content;
+  return card;
 }
 /* ============================================================
    EMPTY PHOTO STATE
 ============================================================ */
 function EmptyPhotoState() {
   return (
-    <div className="mt-8 rounded-[2rem] border border-dashed border-[#c2d9e5] bg-[#f8fcfe] px-6 py-12 text-center">
+    <div className="rounded-[1.5rem] border border-dashed border-[#c9dce6] bg-[#f5fafc] px-6 py-12 text-center">
+      <div className="text-2xl">
+        🐈
+      </div>
       <Camera
         size={25}
         strokeWidth={1.2}
-        className="mx-auto text-[#7da6bf]"
+        className="mx-auto mt-2 text-[#7fa5b8]"
       />
-      <p
-        className="mt-4 text-xl text-[#668ca4]"
-        style={{
-          fontFamily:
-            "'Cormorant Garamond', Georgia, serif",
-        }}
-      >
+      <p className="mt-4 font-serif text-xl text-[#668697]">
         the photo collection is waiting ♡
       </p>
-      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#829dac]">
-        Add Han photos to the photo archive whenever
-        you're ready.
+      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#8da4b1]">
+        Add Han photos to the archive whenever you're ready.
       </p>
     </div>
   );
