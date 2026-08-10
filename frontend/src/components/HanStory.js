@@ -1,5 +1,11 @@
 import React, { useMemo, useState } from "react";
-import { ArrowUpRight, Camera, Heart, Sparkles, Cat } from "lucide-react";
+import {
+  ArrowUpRight,
+  Camera,
+  Heart,
+  Sparkles,
+  Cat,
+} from "lucide-react";
 const PHOTOS_PER_PAGE = 25;
 const profile = {
   fullName: "Park Han",
@@ -27,6 +33,11 @@ const photos = [
   { src: "", alt: "Han photo 05", postUrl: "" },
   { src: "", alt: "Han photo 06", postUrl: "" },
 ];
+const movieRecommendations = [
+  { title: "Add movie recommendation here" },
+  { title: "Add another movie here" },
+  { title: "Add another movie here" },
+];
 export default function HanStory() {
   const [showArchive, setShowArchive] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,76 +61,84 @@ export default function HanStory() {
     });
   };
   return (
-    <main className="min-h-screen bg-[#f4f9fd] px-4 py-6 text-[#405363] sm:px-6">
+    <main className="min-h-screen bg-[#f5f5f5] px-4 py-6 text-[#454545] sm:px-6">
       <div className="mx-auto max-w-5xl">
         {/* =================================================
             HEADER
         ================================================= */}
         <header className="flex items-center justify-between py-4">
           <div>
-            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.3em] text-[#7598b1]">
+            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.3em] text-[#555]">
               HANEULZ CORNER
             </p>
-            <p className="mt-1 text-xs text-[#9bb2c3]">
+            <p className="mt-1 text-xs text-[#999]">
               a little collection for Han ♡
             </p>
           </div>
-          <div className="flex items-center gap-2 text-[#8db0c7]">
+          <div className="flex items-center gap-2 text-[#555]">
             <span>♡</span>
-            <span className="text-lg">🐈</span>
-            <span>✦</span>
+            <span className="text-lg">✦</span>
+            <span>♡</span>
           </div>
         </header>
         {/* =================================================
             HERO
         ================================================= */}
-        <section className="relative mt-5 overflow-hidden rounded-[2rem] border border-[#d5e5ef] bg-[#fbfdff] p-5 shadow-[5px_6px_0_rgba(133,170,194,0.13)] sm:p-8">
-          {/* cute little cat decoration */}
-          <div className="absolute left-5 top-5 rotate-[-6deg] rounded-xl bg-[#e8f3f9] px-3 py-2 text-lg shadow-sm">
-            🐈
+        <section className="relative mt-5 overflow-hidden rounded-[2rem] border border-[#d9d9d9] bg-[#fff] p-5 shadow-[5px_6px_0_rgba(0,0,0,0.07)] sm:p-8">
+          {/* subtle decorations */}
+          <div className="absolute left-5 top-5 rotate-[-8deg] text-lg text-[#777]">
+            ୨୧
           </div>
-          <div className="absolute right-6 top-6 rotate-[7deg] text-lg text-[#91b1c6]">
+          <div className="absolute right-6 top-6 rotate-[7deg] text-lg text-[#555]">
             ♡
           </div>
-          <div className="absolute bottom-7 left-8 text-sm text-[#abc6d6]">
+          <div className="absolute bottom-7 left-7 text-sm text-[#aaa]">
             ✦
           </div>
-          <div className="absolute bottom-7 right-8 text-lg text-[#9dbbcd]">
-            🐾
+          <div className="absolute bottom-7 right-7 rotate-[8deg] text-sm text-[#777]">
+            ♡
           </div>
-          <div className="relative rounded-[1.5rem] border border-[#e0edf4] bg-white px-6 py-12 text-center sm:px-10">
-            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.35em] text-[#7898ae]">
+          <div className="relative rounded-[1.5rem] border border-[#e3e3e3] bg-[#fafafa] px-6 py-12 text-center sm:px-10">
+            <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.35em] text-[#777]">
               a little page about
             </p>
-            <h1 className="mt-3 font-serif text-7xl font-medium tracking-tight text-[#3f5362] sm:text-8xl">
+            <h1 className="mt-3 font-serif text-7xl font-medium tracking-tight text-[#303030] sm:text-8xl">
               Han
             </h1>
-            <div className="mt-2 flex items-center justify-center gap-3 text-[#87abc2]">
+            <div className="mt-2 flex items-center justify-center gap-3 text-[#555]">
               <span>♡</span>
-              <span className="text-xs">🐾</span>
+              <span className="text-xs">✦</span>
               <span>♡</span>
             </div>
-            <p className="mt-4 font-serif text-3xl text-[#5c7282]">
+            <p className="mt-4 font-serif text-3xl text-[#555]">
               {profile.fullName}
             </p>
-            <p className="mt-2 text-lg font-medium text-[#7899ae]">
-              {profile.nickname} ♡
+            <p className="mt-2 text-lg font-medium text-[#777]">
+              {profile.nickname}
             </p>
-            {/* HERO PHOTO */}
+            {/* tiny black-cat detail */}
+            <div className="mt-5 flex items-center justify-center gap-2 text-[#444]">
+              <Cat
+                size={15}
+                strokeWidth={1.4}
+              />
+              <span className="text-xs">
+                little black cat ♡
+              </span>
+            </div>
             <div className="mx-auto mt-8 max-w-md">
               <PhotoPlaceholder label="HAN'S PHOTO" />
             </div>
-            <div className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#e8f3f9] px-5 py-2 text-sm font-medium text-[#64899f] shadow-sm">
-              <span>🐈</span>
+            <div className="mt-6 inline-block rotate-[-2deg] rounded-xl bg-[#eeeeee] px-5 py-2 text-sm font-medium text-[#4c4c4c] shadow-sm">
               Han ♡
             </div>
-            <p className="mx-auto mt-6 max-w-xl font-serif text-lg leading-8 text-[#657a89]">
+            <p className="mx-auto mt-6 max-w-xl font-serif text-lg leading-8 text-[#666]">
               A tiny corner filled with little moments,
-              favorite things, memories, and all the
-              little details that make Han special.
+              favorite things, memories, and everything
+              that makes Han special.
             </p>
-            <div className="mt-5 text-lg text-[#91b3c8]">
-              ˚₊‧꒰ა 🐾 ໒꒱ ‧₊˚
+            <div className="mt-6 text-sm text-[#777]">
+              ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
             </div>
           </div>
         </section>
@@ -168,25 +187,24 @@ export default function HanStory() {
           />
           <div className="mt-6 grid gap-6 md:grid-cols-[0.9fr_1.1fr]">
             <PhotoPlaceholder label="A LITTLE PHOTO OF HAN" />
-            <div className="relative rounded-[1.75rem] border border-[#dbe8f0] bg-[#fbfdff] p-7 shadow-[4px_5px_0_rgba(133,170,194,0.1)]">
-              <div className="absolute -right-2 -top-3 rotate-6 rounded-md bg-[#e6f2f8] px-3 py-1 text-xs text-[#6d93a9] shadow-sm">
-                little note 🐾
+            <div className="relative rounded-[1.75rem] border border-[#dedede] bg-[#fff] p-7 shadow-[4px_5px_0_rgba(0,0,0,0.07)]">
+              <div className="absolute -right-2 -top-3 rotate-6 rounded-md bg-[#eeeeee] px-3 py-1 text-xs text-[#555] shadow-sm">
+                little note ♡
               </div>
-              <p className="font-serif text-2xl leading-9 text-[#455a69]">
+              <p className="font-serif text-2xl leading-9 text-[#3f3f3f]">
                 This is a little space for everything
                 that makes Han feel like Han — his
-                personality, habits, memorable moments,
-                and the tiny details that make people
-                smile.
+                personality, little habits, memorable
+                moments, and the tiny things that make
+                people smile.
               </p>
-              <p className="mt-5 font-serif text-lg leading-8 text-[#718592]">
+              <p className="mt-5 font-serif text-lg leading-8 text-[#707070]">
                 Add your own little story about Han
                 here whenever you're ready.
               </p>
               <div className="mt-7 flex flex-wrap gap-2">
                 <CuteTag>Han</CuteTag>
-                <CuteTag>hani</CuteTag>
-                <CuteTag>🐈</CuteTag>
+                <CuteTag>HANEULZ</CuteTag>
                 <CuteTag>♡</CuteTag>
               </div>
             </div>
@@ -227,20 +245,80 @@ export default function HanStory() {
             eyebrow="04 · tiny memories"
             title="little things about Han"
           />
-          <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-[#dbe8f0] bg-[#fbfdff] shadow-[4px_5px_0_rgba(133,170,194,0.08)]">
+          <div className="mt-6 overflow-hidden rounded-[1.75rem] border border-[#dedede] bg-[#fff] shadow-[4px_5px_0_rgba(0,0,0,0.06)]">
             {facts.map((fact, index) => (
               <div
                 key={index}
-                className="flex gap-4 border-b border-[#e5eef3] px-6 py-5 last:border-0"
+                className="flex gap-4 border-b border-[#eeeeee] px-6 py-5 last:border-0"
               >
-                <span className="mt-1 text-[#88acc1]">
-                  🐾
+                <span className="mt-1 text-[#555]">
+                  ♡
                 </span>
-                <p className="font-serif text-lg leading-8 text-[#536875]">
+                <p className="font-serif text-lg leading-8 text-[#555]">
                   {fact}
                 </p>
               </div>
             ))}
+          </div>
+        </section>
+        {/* =================================================
+            MOVIE RECOMMENDATIONS
+        ================================================= */}
+        <section className="mt-12">
+          <SectionHeading
+            eyebrow="05 · movie diary"
+            title="Han's movie recommendations"
+          />
+          <div className="mt-6 rounded-[1.75rem] border border-[#dedede] bg-[#fff] p-5 shadow-[4px_5px_0_rgba(0,0,0,0.06)] sm:p-7">
+            <div className="mb-6 flex items-center justify-between">
+              <p className="font-serif text-lg text-[#666]">
+                movies Han recommends ♡
+              </p>
+              <Sparkles
+                size={18}
+                strokeWidth={1.4}
+                className="text-[#666]"
+              />
+            </div>
+            {movieRecommendations.length === 0 ? (
+              <div className="rounded-[1.5rem] border border-dashed border-[#d5d5d5] bg-[#fafafa] px-6 py-12 text-center">
+                <p className="font-serif text-xl text-[#666]">
+                  Han's movie list is waiting ♡
+                </p>
+              </div>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {movieRecommendations.map(
+                  (movie, index) => (
+                    <div
+                      key={`${movie.title}-${index}`}
+                      className="group flex items-center gap-4 rounded-[1.5rem] border border-[#e2e2e2] bg-[#fafafa] p-5 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-md"
+                    >
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#ededed] text-[#555]">
+                        <span className="text-base">
+                          ♡
+                        </span>
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-mono text-[7px] font-semibold uppercase tracking-[0.22em] text-[#999]">
+                          recommendation{" "}
+                          {String(index + 1).padStart(
+                            2,
+                            "0"
+                          )}
+                        </p>
+                        <p className="mt-1 font-serif text-xl text-[#505050]">
+                          {movie.title}
+                        </p>
+                      </div>
+                      <span className="ml-auto text-[#777] opacity-0 transition group-hover:opacity-100">
+                        ♡
+                      </span>
+                    </div>
+                  )
+                )}
+              </div>
+            )}
           </div>
         </section>
         {/* =================================================
@@ -251,17 +329,19 @@ export default function HanStory() {
           className="mt-12"
         >
           <SectionHeading
-            eyebrow="05 · photo diary"
+            eyebrow="06 · photo diary"
             title="Han photos"
           />
-          <div className="mt-6 rounded-[1.75rem] border border-[#dbe8f0] bg-[#fbfdff] p-5 shadow-[4px_5px_0_rgba(133,170,194,0.1)] sm:p-7">
+          <div className="mt-6 rounded-[1.75rem] border border-[#dedede] bg-[#fff] p-5 shadow-[4px_5px_0_rgba(0,0,0,0.06)] sm:p-7">
             <div className="mb-6 flex items-center justify-between">
-              <p className="font-serif text-lg text-[#607684]">
+              <p className="font-serif text-lg text-[#666]">
                 little snapshots ♡
               </p>
-              <span className="text-lg">
-                🐈
-              </span>
+              <Camera
+                size={18}
+                strokeWidth={1.4}
+                className="text-[#666]"
+              />
             </div>
             {photos.length === 0 ? (
               <EmptyPhotoState />
@@ -274,17 +354,20 @@ export default function HanStory() {
                   )}
                   startIndex={0}
                 />
-                {photos.length > PHOTOS_PER_PAGE && (
+                {photos.length >
+                  PHOTOS_PER_PAGE && (
                   <button
                     type="button"
                     onClick={() => {
                       setShowArchive(true);
                       setCurrentPage(1);
                     }}
-                    className="mx-auto mt-8 flex items-center gap-2 rounded-full bg-[#e5f1f7] px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#63889e] transition hover:-translate-y-0.5 hover:bg-[#dcecf4]"
+                    className="mx-auto mt-8 flex items-center gap-2 rounded-full bg-[#e9e9e9] px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#555] transition hover:-translate-y-0.5 hover:bg-[#dedede]"
                   >
                     load more ♡
-                    <ArrowUpRight size={14} />
+                    <ArrowUpRight
+                      size={14}
+                    />
                   </button>
                 )}
               </>
@@ -310,8 +393,8 @@ export default function HanStory() {
                       }
                       className={`h-9 min-w-9 rounded-full px-3 text-xs font-semibold ${
                         currentPage === page
-                          ? "bg-[#78a0b7] text-white"
-                          : "bg-[#eaf4f8] text-[#6d91a5]"
+                          ? "bg-[#555] text-white"
+                          : "bg-[#eeeeee] text-[#666]"
                       }`}
                     >
                       {page}
@@ -324,7 +407,7 @@ export default function HanStory() {
                     setShowArchive(false);
                     setCurrentPage(1);
                   }}
-                  className="mx-auto mt-6 block text-xs text-[#819eae] underline underline-offset-4"
+                  className="mx-auto mt-6 block text-xs text-[#777] underline underline-offset-4"
                 >
                   close archive
                 </button>
@@ -336,14 +419,21 @@ export default function HanStory() {
             FOOTER
         ================================================= */}
         <footer className="py-16 text-center">
-          <div className="text-xl text-[#86aabd]">
-            ♡ 🐾 ✦ 🐈 ✦ 🐾 ♡
+          <div className="flex items-center justify-center gap-3 text-xl text-[#555]">
+            <span>♡</span>
+            <span>✦</span>
+            <span>୨୧</span>
+            <span>✦</span>
+            <span>♡</span>
           </div>
-          <p className="mt-4 font-serif text-2xl text-[#607f91]">
+          <p className="mt-4 font-serif text-2xl text-[#555]">
             made with love for Han ♡
           </p>
-          <p className="mt-2 text-xs text-[#91a7b4]">
+          <p className="mt-2 text-xs text-[#999]">
             Han · HANEULZ
+          </p>
+          <p className="mt-4 text-[10px] uppercase tracking-[0.18em] text-[#aaa]">
+            one little page in the HANEULZ corner
           </p>
         </footer>
       </div>
@@ -356,17 +446,15 @@ export default function HanStory() {
 function SectionHeading({ eyebrow, title }) {
   return (
     <div className="text-center">
-      <p className="font-mono text-[8px] font-semibold uppercase tracking-[0.3em] text-[#7899ad]">
+      <p className="font-mono text-[8px] font-semibold uppercase tracking-[0.3em] text-[#888]">
         {eyebrow}
       </p>
-      <h2 className="mt-2 font-serif text-4xl font-medium text-[#455966]">
+      <h2 className="mt-2 font-serif text-4xl font-medium text-[#444]">
         {title}
       </h2>
-      <div className="mx-auto mt-3 flex w-fit items-center gap-2 text-[#88abc0]">
+      <div className="mx-auto mt-3 flex w-fit items-center gap-2 text-[#666]">
         <span>♡</span>
-        <span className="text-[9px]">
-          🐾
-        </span>
+        <span className="text-[9px]">✦</span>
         <span>♡</span>
       </div>
     </div>
@@ -377,11 +465,11 @@ function SectionHeading({ eyebrow, title }) {
 ============================================================ */
 function InfoCard({ label, value }) {
   return (
-    <div className="rounded-[1.4rem] border border-[#dbe8ef] bg-[#fbfdff] p-5 text-center shadow-[2px_3px_0_rgba(133,170,194,0.07)]">
-      <p className="font-mono text-[7px] font-semibold tracking-[0.22em] text-[#829eae]">
+    <div className="rounded-[1.4rem] border border-[#dedede] bg-[#fff] p-5 text-center shadow-[2px_3px_0_rgba(0,0,0,0.05)]">
+      <p className="font-mono text-[7px] font-semibold tracking-[0.22em] text-[#999]">
         {label}
       </p>
-      <p className="mt-3 font-serif text-xl text-[#526673]">
+      <p className="mt-3 font-serif text-xl text-[#505050]">
         {value}
       </p>
     </div>
@@ -392,7 +480,7 @@ function InfoCard({ label, value }) {
 ============================================================ */
 function CuteTag({ children }) {
   return (
-    <span className="rounded-full border border-[#d2e4ed] bg-[#eaf4f8] px-4 py-2 text-xs font-medium text-[#688c9f]">
+    <span className="rounded-full border border-[#d8d8d8] bg-[#f2f2f2] px-4 py-2 text-xs font-medium text-[#555]">
       {children}
     </span>
   );
@@ -402,18 +490,18 @@ function CuteTag({ children }) {
 ============================================================ */
 function SoftCard({ title, value }) {
   return (
-    <div className="rounded-[1.5rem] border border-[#dbe8ef] bg-[#fbfdff] p-6 shadow-[2px_3px_0_rgba(133,170,194,0.07)]">
+    <div className="rounded-[1.5rem] border border-[#dedede] bg-[#fff] p-6 shadow-[2px_3px_0_rgba(0,0,0,0.05)]">
       <div className="flex items-center gap-2">
         <Heart
           size={14}
           strokeWidth={1.5}
-          className="text-[#83aabd]"
+          className="text-[#555]"
         />
-        <p className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-[#829eae]">
+        <p className="font-mono text-[8px] font-semibold uppercase tracking-[0.2em] text-[#999]">
           {title}
         </p>
       </div>
-      <p className="mt-4 font-serif text-xl leading-8 text-[#586c78]">
+      <p className="mt-4 font-serif text-xl leading-8 text-[#555]">
         {value}
       </p>
     </div>
@@ -424,30 +512,25 @@ function SoftCard({ title, value }) {
 ============================================================ */
 function PhotoPlaceholder({ label }) {
   return (
-    <div className="relative overflow-hidden rounded-[1.75rem] border border-[#d8e7ef] bg-[#fbfdff] p-3 shadow-[4px_5px_0_rgba(133,170,194,0.1)]">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.35rem] bg-gradient-to-br from-[#fbfdff] via-[#eaf4f8] to-[#dcecf4]">
-        <div className="absolute left-3 top-3 rounded-md bg-white/80 px-3 py-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-[#7899aa] shadow-sm">
-          🐈 HAN
-        </div>
-        <div className="absolute right-4 top-4 text-sm text-[#8dafc2]">
-          ♡
+    <div className="relative overflow-hidden rounded-[1.75rem] border border-[#dedede] bg-[#fff] p-3 shadow-[4px_5px_0_rgba(0,0,0,0.07)]">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.35rem] bg-gradient-to-br from-[#fafafa] via-[#ededed] to-[#dddddd]">
+        {/* subtle cat accent */}
+        <div className="absolute left-3 top-3 rounded-md bg-white/80 px-3 py-1 text-[8px] font-semibold uppercase tracking-[0.18em] text-[#555] shadow-sm">
+          Han ♡
         </div>
         <div className="flex h-full flex-col items-center justify-center text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/85 text-[#78a2b8] shadow-sm">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/80 text-[#444] shadow-sm">
             <Camera
               size={21}
               strokeWidth={1.3}
             />
           </div>
-          <p className="mt-5 font-mono text-[8px] font-semibold uppercase tracking-[0.22em] text-[#7898aa]">
+          <p className="mt-5 font-mono text-[8px] font-semibold uppercase tracking-[0.22em] text-[#777]">
             {label}
           </p>
-          <p className="mt-2 font-serif text-lg text-[#7397aa]">
+          <p className="mt-2 font-serif text-lg text-[#666]">
             photo goes here ♡
           </p>
-          <span className="mt-3 text-base">
-            🐾
-          </span>
         </div>
       </div>
     </div>
@@ -486,7 +569,7 @@ function PhotoCard({
   index,
 }) {
   const card = (
-    <div className="group overflow-hidden rounded-[1.2rem] border border-[#d9e7ee] bg-white p-2 shadow-[2px_3px_0_rgba(133,170,194,0.08)] transition duration-300 hover:-translate-y-1 hover:rotate-[0.5deg] hover:shadow-md">
+    <div className="group overflow-hidden rounded-[1.2rem] border border-[#dedede] bg-white p-2 shadow-[2px_3px_0_rgba(0,0,0,0.06)] transition duration-300 hover:-translate-y-1 hover:rotate-[0.5deg] hover:shadow-md">
       <div className="aspect-square overflow-hidden rounded-[0.9rem]">
         <img
           src={photo.src}
@@ -518,20 +601,18 @@ function PhotoCard({
 ============================================================ */
 function EmptyPhotoState() {
   return (
-    <div className="rounded-[1.5rem] border border-dashed border-[#c9dce6] bg-[#f5fafc] px-6 py-12 text-center">
-      <div className="text-2xl">
-        🐈
-      </div>
+    <div className="rounded-[1.5rem] border border-dashed border-[#d2d2d2] bg-[#fafafa] px-6 py-12 text-center">
       <Camera
         size={25}
         strokeWidth={1.2}
-        className="mx-auto mt-2 text-[#7fa5b8]"
+        className="mx-auto text-[#666]"
       />
-      <p className="mt-4 font-serif text-xl text-[#668697]">
+      <p className="mt-4 font-serif text-xl text-[#666]">
         the photo collection is waiting ♡
       </p>
-      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#8da4b1]">
-        Add Han photos to the archive whenever you're ready.
+      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#999]">
+        Add Han photos to the archive whenever
+        you're ready.
       </p>
     </div>
   );
