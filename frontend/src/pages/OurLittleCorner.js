@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import HaneulzStory from "../components/HaneulzStory";
 import JLStory from "../components/JLStory";
 import HanStory from "../components/HanStory";
-import Music from "../components/music";
+import Music from "../components/Music";
 import {Music2, Gamepad2,Palette, Mail, Cloud,UserRound,} from "lucide-react";
 export default function OurLittleCorner() {
   const [activeTab, setActiveTab] = useState("haneulz");
