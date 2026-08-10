@@ -5,14 +5,8 @@ import Footer from "../components/Footer";
 import HaneulzStory from "../components/HaneulzStory";
 import JLStory from "../components/JLStory";
 import HanStory from "../components/HanStory";
-import {
-  Music2,
-  Gamepad2,
-  Palette,
-  Mail,
-  Cloud,
-  UserRound,
-} from "lucide-react";
+import Music from "../components/music";
+import {Music2, Gamepad2,Palette, Mail, Cloud,UserRound,} from "lucide-react";
 export default function OurLittleCorner() {
   const [activeTab, setActiveTab] = useState("haneulz");
   const [openGame, setOpenGame] = useState(null);
@@ -128,9 +122,9 @@ export default function OurLittleCorner() {
           <HanStory />
         )}
         {/* SPOTIFY */}
-        {activeTab === "spotify" && (
-          <Placeholder title="Spotify Corner" />
-        )}
+{activeTab === "spotify" && (
+  <Music />
+)}
         {/* GAMES */}
         {activeTab === "games" && (
           <Reveal>
