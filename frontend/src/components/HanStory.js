@@ -3,8 +3,8 @@ import {
   ArrowUpRight,
   Camera,
   Heart,
-  Sparkles,
   Film,
+  Sparkles,
   Star,
 } from "lucide-react";
 const PHOTOS_PER_PAGE = 25;
@@ -92,117 +92,111 @@ export default function HanStory() {
     });
   };
   return (
-    <main className="min-h-screen overflow-hidden bg-[#eef7fc] px-4 py-6 text-[#40586a] sm:px-6">
+    <main className="min-h-screen overflow-hidden bg-[#f2f8fc] px-4 py-6 text-[#536879] sm:px-6">
       <div className="mx-auto max-w-5xl">
-        {/* =====================================================
-            TOP
-        ===================================================== */}
+        {/* HEADER */}
         <header className="flex items-center justify-between px-3 py-3">
           <div>
-            <p className="font-mono text-[9px] font-medium tracking-[0.28em] text-[#557b94]">
-              HANEULZ CORNER
+            <p className="font-mono text-[9px] font-medium tracking-[0.28em] text-[#668ca8]">
+              HANEULZ SCRAPBOOK
             </p>
-            <p className="mt-1 font-mono text-[8px] tracking-[0.22em] text-[#82a4b8]">
-              HAN / 01
+            <p className="mt-1 font-mono text-[8px] tracking-[0.22em] text-[#9ab5c8]">
+              HAN / HANI / 01
             </p>
           </div>
-          <div className="flex items-center gap-2 text-[#6e9bb7]">
-            <span>♡</span>
-            <span>୨୧</span>
-            <span>♡</span>
+          <div className="text-lg text-[#7da5c0]">
+            ♡ ✦ ♡
           </div>
         </header>
-        {/* =====================================================
-            HERO
-        ===================================================== */}
-        <section className="relative mt-4 overflow-hidden rounded-[2.5rem] border border-[#c9dfeb] bg-[#fafdff] px-6 py-14 text-center shadow-[0_12px_35px_rgba(76,125,153,0.10)] sm:px-10">
-          {/* subtle decorative pieces */}
-          <div className="pointer-events-none absolute left-7 top-7 rotate-[-8deg] rounded-xl bg-[#e3f2f9] px-3 py-2 text-sm text-[#6e9bb6] shadow-sm">
+        {/* HERO */}
+        <section className="relative mt-4 overflow-hidden rounded-[2.3rem] border border-[#c9deeb] bg-[#fbfdff] px-6 py-14 shadow-[6px_7px_0_rgba(126,166,193,0.15)] sm:px-10">
+          {/* subtle scrapbook pieces */}
+          <div className="absolute left-7 top-6 rotate-[-6deg] rounded-md bg-[#dceef8] px-3 py-2 text-sm text-[#7098b2] shadow-sm">
             ୨୧
           </div>
-          <div className="pointer-events-none absolute right-7 top-7 rotate-[7deg] rounded-xl bg-[#edf7fb] px-3 py-2 text-sm text-[#76a0b8] shadow-sm">
+          <div className="absolute right-7 top-7 rotate-[7deg] rounded-md bg-[#edf7fc] px-3 py-2 text-sm text-[#7fa7bf] shadow-sm">
             ♡
           </div>
-          <div className="pointer-events-none absolute bottom-8 left-9 text-xs text-[#9bbccc]">
+          <div className="absolute bottom-8 left-9 rotate-[-5deg] text-sm text-[#9fc0d4]">
             ✦
           </div>
-          <div className="pointer-events-none absolute bottom-8 right-9 text-xs text-[#9bbccc]">
+          <div className="absolute bottom-8 right-9 rotate-[6deg] text-sm text-[#91b5cc]">
             ୨୧
           </div>
-          <p
-            className="text-2xl font-medium text-[#52758c]"
-            style={{
-              fontFamily: "'Comic Sans MS', cursive",
-            }}
-          >
-            ୨୧ a little page for Han ୨୧
-          </p>
-          <div className="mt-5 text-lg tracking-[0.3em] text-[#78a5be]">
-            ♡ ୨୧ ♡
-          </div>
-          <p className="mt-8 font-mono text-[8px] font-medium uppercase tracking-[0.4em] text-[#7293a7]">
-            known as
-          </p>
-          <h1
-            className="mt-2 text-7xl font-normal tracking-tight text-[#304c5e] sm:text-8xl"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            Han
-          </h1>
-          <div className="mt-3 text-xl text-[#6d9bb5]">
-            ♡
-          </div>
-          <p
-            className="mt-3 text-3xl font-medium text-[#425e70]"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            {profile.fullName}
-          </p>
-          <p
-            className="mt-2 text-2xl font-medium text-[#5d86a0]"
-            style={{
-              fontFamily: "'Comic Sans MS', cursive",
-            }}
-          >
-            {profile.nickname}
-          </p>
-          {/* HERO PHOTO */}
-          <div className="mx-auto mt-10 max-w-md">
-            <PhotoPlaceholder label="HAN PHOTO" />
-          </div>
-          <p
-            className="mt-5 text-xl font-medium text-[#638da5]"
-            style={{
-              fontFamily: "'Comic Sans MS', cursive",
-            }}
-          >
-            Han ♡
-          </p>
-          <p
-            className="mx-auto mt-4 max-w-lg text-lg font-medium leading-8 text-[#526b7b]"
-            style={{
-              fontFamily:
-                "'Cormorant Garamond', Georgia, serif",
-            }}
-          >
-            a tiny collection of things about Han —
-            little moments, favorite things, memories,
-            and pieces of the person behind the name.
-          </p>
-          <div className="mt-6 text-xl text-[#76a3bb]">
-            ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
+          <div className="mx-auto max-w-2xl text-center">
+            <p
+              className="text-2xl text-[#668ca7]"
+              style={{
+                fontFamily: "'Comic Sans MS', cursive",
+              }}
+            >
+              ୨୧ a little page for Han ୨୧
+            </p>
+            <div className="mt-5 text-lg tracking-[0.3em] text-[#82a9c3]">
+              ♡ ୨୧ ♡
+            </div>
+            <p className="mt-8 font-mono text-[8px] font-medium uppercase tracking-[0.4em] text-[#7d9caf]">
+              known as
+            </p>
+            <h1
+              className="mt-2 text-7xl font-normal tracking-tight text-[#425d70] sm:text-8xl"
+              style={{
+                fontFamily:
+                  "'Cormorant Garamond', Georgia, serif",
+              }}
+            >
+              Han
+            </h1>
+            <div className="mt-3 text-xl text-[#82a9c3]">
+              ♡
+            </div>
+            <p
+              className="mt-3 text-3xl text-[#526d80]"
+              style={{
+                fontFamily:
+                  "'Cormorant Garamond', Georgia, serif",
+              }}
+            >
+              {profile.fullName}
+            </p>
+            <p
+              className="mt-2 text-2xl text-[#6e96b0]"
+              style={{
+                fontFamily: "'Comic Sans MS', cursive",
+              }}
+            >
+              {profile.nickname}
+            </p>
+            {/* HERO PHOTO */}
+            <div className="mx-auto mt-10 max-w-md">
+              <PhotoPlaceholder label="HAN PHOTO" />
+            </div>
+            <p
+              className="mt-5 text-xl text-[#719ab3]"
+              style={{
+                fontFamily: "'Comic Sans MS', cursive",
+              }}
+            >
+              Han ♡
+            </p>
+            <p
+              className="mx-auto mt-4 max-w-lg text-lg leading-8 text-[#657b8b]"
+              style={{
+                fontFamily:
+                  "'Cormorant Garamond', Georgia, serif",
+              }}
+            >
+              a tiny collection of things about Han —
+              little moments, favorite things, memories,
+              and pieces of the person behind the name.
+            </p>
+            <div className="mt-6 text-xl text-[#7fa8c1]">
+              ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
+            </div>
           </div>
         </section>
-        {/* =====================================================
-            QUICK LOOK
-        ===================================================== */}
-        <section className="mt-8 rotate-[-0.2deg] rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(112,157,180,0.12)] sm:px-10">
+        {/* QUICK LOOK */}
+        <section className="mt-8 -rotate-[0.3deg] rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.12)] sm:px-10">
           <SectionTitle>
             ୨୧ a quick look ୨୧
           </SectionTitle>
@@ -227,26 +221,18 @@ export default function HanStory() {
               label="MBTI"
               value={profile.mbti}
             />
-            <InfoCard
-              label="♡"
-              value="Han"
-            />
           </div>
         </section>
-        {/* =====================================================
-            ABOUT HAN
-        ===================================================== */}
-        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(112,157,180,0.10)] sm:px-10">
+        {/* ABOUT HAN */}
+        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.11)] sm:px-10">
           <SectionTitle>
             ♡ about Han ♡
           </SectionTitle>
           <div className="mt-8 grid gap-8 md:grid-cols-2 md:items-center">
-            <PhotoPlaceholder
-              label="A LITTLE PHOTO OF HAN"
-            />
+            <PhotoPlaceholder label="A LITTLE PHOTO OF HAN" />
             <div>
               <p
-                className="text-2xl font-medium leading-9 text-[#40596a]"
+                className="text-2xl leading-9 text-[#526a7b]"
                 style={{
                   fontFamily:
                     "'Cormorant Garamond', Georgia, serif",
@@ -255,11 +241,11 @@ export default function HanStory() {
                 This is a little space for everything
                 that makes Han feel like Han — his
                 personality, little habits, memorable
-                moments, and the tiny things that make
-                people smile.
+                moments, and all the tiny things that
+                make people smile.
               </p>
               <p
-                className="mt-5 text-lg font-medium leading-8 text-[#607889]"
+                className="mt-5 text-lg leading-8 text-[#718797]"
                 style={{
                   fontFamily:
                     "'Cormorant Garamond', Georgia, serif",
@@ -269,23 +255,15 @@ export default function HanStory() {
                 here whenever you're ready.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
-                <CuteTag>
-                  Han
-                </CuteTag>
-                <CuteTag>
-                  HANEULZ
-                </CuteTag>
-                <CuteTag>
-                  ♡
-                </CuteTag>
+                <CuteTag>Han</CuteTag>
+                <CuteTag>HANI</CuteTag>
+                <CuteTag>♡</CuteTag>
               </div>
             </div>
           </div>
         </section>
-        {/* =====================================================
-            HOBBIES & INTERESTS
-        ===================================================== */}
-        <section className="mt-8 rotate-[0.25deg] rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(112,157,180,0.10)] sm:px-10">
+        {/* HOBBIES & INTERESTS */}
+        <section className="mt-8 rotate-[0.25deg] rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.10)] sm:px-10">
           <SectionTitle>
             ୨୧ hobbies & interests ୨୧
           </SectionTitle>
@@ -308,10 +286,8 @@ export default function HanStory() {
             />
           </div>
         </section>
-        {/* =====================================================
-            LITTLE THINGS
-        ===================================================== */}
-        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(112,157,180,0.10)] sm:px-10">
+        {/* FUN FACTS */}
+        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.10)] sm:px-10">
           <SectionTitle>
             ♡ little things about Han ♡
           </SectionTitle>
@@ -319,13 +295,13 @@ export default function HanStory() {
             {facts.map((fact, index) => (
               <div
                 key={index}
-                className="flex gap-4 border-b border-[#d7e6ee] py-5 last:border-b-0"
+                className="flex gap-4 border-b border-[#d9e7ef] py-5 last:border-b-0"
               >
-                <span className="shrink-0 pt-1 text-[#6d9db7]">
+                <span className="shrink-0 text-[#7da5c0]">
                   ୨୧
                 </span>
                 <p
-                  className="text-xl font-medium leading-8 text-[#40596a]"
+                  className="text-xl leading-8 text-[#536b7c]"
                   style={{
                     fontFamily:
                       "'Cormorant Garamond', Georgia, serif",
@@ -337,100 +313,73 @@ export default function HanStory() {
             ))}
           </div>
         </section>
-        {/* =====================================================
-            MOVIE RECOMMENDATIONS
-        ===================================================== */}
-        <section className="mt-8 rotate-[-0.2deg] rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-6 py-10 shadow-[5px_6px_0_rgba(112,157,180,0.10)] sm:px-10">
+        {/* MOVIE RECOMMENDATIONS */}
+        <section className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-6 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.10)] sm:px-10">
           <SectionTitle>
             ୨୧ Han's movie recommendations ୨୧
           </SectionTitle>
-          <div className="mx-auto mt-2 max-w-xl text-center">
-            <span
-              className="text-lg font-medium text-[#5e8093]"
-              style={{
-                fontFamily:
-                  "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              ♡ movies Han recommends ♡
-            </span>
-          </div>
-          {movieRecommendations.length === 0 ? (
-            <div className="mt-8 rounded-[1.75rem] border border-dashed border-[#bdd7e5] bg-[#f5fbfe] px-6 py-12 text-center">
-              <Film
-                size={25}
-                strokeWidth={1.3}
-                className="mx-auto text-[#6e9db7]"
-              />
-              <p
-                className="mt-4 text-xl font-medium text-[#557688]"
-                style={{
-                  fontFamily:
-                    "'Cormorant Garamond', Georgia, serif",
-                }}
-              >
-                Han's movie list is waiting ♡
-              </p>
-            </div>
-          ) : (
-            <div className="mt-8 grid gap-4 sm:grid-cols-2">
-              {movieRecommendations.map(
-                (movie, index) => (
-                  <div
-                    key={`${movie.title}-${index}`}
-                    className="group flex items-center gap-4 rounded-[1.6rem] border border-[#cfe1ea] bg-[#f8fcfe] p-5 transition duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-md"
-                  >
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e5f3f9] text-[#6394ae]">
-                      <Film
-                        size={17}
-                        strokeWidth={1.4}
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-mono text-[7px] font-medium uppercase tracking-[0.22em] text-[#7898aa]">
-                        recommendation{" "}
-                        {String(index + 1).padStart(2, "0")}
-                      </p>
-                      <p
-                        className="mt-1 text-xl font-medium text-[#405a6a]"
-                        style={{
-                          fontFamily:
-                            "'Cormorant Garamond', Georgia, serif",
-                        }}
-                      >
-                        {movie.title}
-                      </p>
-                    </div>
-                    <span className="ml-auto text-[#82abc0] opacity-0 transition group-hover:opacity-100">
-                      ♡
-                    </span>
+          <p
+            className="mt-2 text-center text-lg text-[#7293a7]"
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', Georgia, serif",
+            }}
+          >
+            ♡ movies Han recommends ♡
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+            {movieRecommendations.map(
+              (movie, index) => (
+                <div
+                  key={`${movie.title}-${index}`}
+                  className="group flex items-center gap-4 rounded-[1.5rem] border border-[#d4e4ed] bg-[#fafdff] p-5 transition duration-300 hover:-translate-y-1 hover:shadow-md"
+                >
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e5f2f9] text-[#709ab4]">
+                    <Film
+                      size={17}
+                      strokeWidth={1.4}
+                    />
                   </div>
-                )
-              )}
-            </div>
-          )}
+                  <div className="min-w-0">
+                    <p className="font-mono text-[7px] uppercase tracking-[0.22em] text-[#91aabb]">
+                      recommendation{" "}
+                      {String(index + 1).padStart(2, "0")}
+                    </p>
+                    <p
+                      className="mt-1 text-xl text-[#526b7b]"
+                      style={{
+                        fontFamily:
+                          "'Cormorant Garamond', Georgia, serif",
+                      }}
+                    >
+                      {movie.title}
+                    </p>
+                  </div>
+                  <span className="ml-auto text-[#8fb0c3] opacity-0 transition group-hover:opacity-100">
+                    ♡
+                  </span>
+                </div>
+              )
+            )}
+          </div>
         </section>
-        {/* =====================================================
-            PHOTO ARCHIVE
-        ===================================================== */}
+        {/* PHOTO ARCHIVE */}
         <section
           id="han-photo-archive"
-          className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fafdff] px-5 py-10 shadow-[5px_6px_0_rgba(112,157,180,0.10)] sm:px-8"
+          className="mt-8 rounded-[2rem] border border-[#cbdfea] bg-[#fbfdff] px-5 py-10 shadow-[5px_6px_0_rgba(126,166,193,0.11)] sm:px-8"
         >
           <SectionTitle>
             ୨୧ Han photos ୨୧
           </SectionTitle>
-          <div className="mt-2 text-center">
-            <span
-              className="text-lg font-medium text-[#5d8094]"
-              style={{
-                fontFamily:
-                  "'Cormorant Garamond', Georgia, serif",
-              }}
-            >
-              ♡ a tiny photo collection ♡
-            </span>
-          </div>
+          <p
+            className="mt-2 text-center text-lg text-[#7293a7]"
+            style={{
+              fontFamily:
+                "'Cormorant Garamond', Georgia, serif",
+            }}
+          >
+            ♡ a tiny photo collection ♡
+          </p>
           {photos.length === 0 ? (
             <EmptyPhotoState />
           ) : !showArchive ? (
@@ -449,7 +398,7 @@ export default function HanStory() {
                     setShowArchive(true);
                     setCurrentPage(1);
                   }}
-                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border border-[#b9d2df] bg-[#f0f8fc] px-7 py-3 text-[9px] font-medium uppercase tracking-[0.25em] text-[#56788c] transition hover:bg-white hover:shadow-md"
+                  className="mx-auto mt-8 flex items-center gap-2 rounded-full border border-[#b9d1df] bg-[#edf7fc] px-7 py-3 text-[9px] uppercase tracking-[0.25em] text-[#66869c] transition hover:bg-white hover:shadow-md"
                 >
                   load more ♡
                   <ArrowUpRight
@@ -479,10 +428,10 @@ export default function HanStory() {
                     onClick={() =>
                       goToPage(page)
                     }
-                    className={`h-9 min-w-9 rounded-full px-3 text-xs font-medium transition ${
+                    className={`h-9 min-w-9 rounded-full px-3 text-xs transition ${
                       currentPage === page
-                        ? "bg-[#719db5] text-white"
-                        : "bg-[#edf7fb] text-[#5d8094] hover:bg-[#dceef5]"
+                        ? "bg-[#7fa7c0] text-white"
+                        : "bg-[#edf7fc] text-[#6d8ca0] hover:bg-[#dceef7]"
                     }`}
                   >
                     {page}
@@ -496,7 +445,7 @@ export default function HanStory() {
                     setShowArchive(false);
                     setCurrentPage(1);
                   }}
-                  className="text-[9px] font-medium uppercase tracking-[0.3em] text-[#6e8fa2] underline underline-offset-4"
+                  className="text-[9px] uppercase tracking-[0.3em] text-[#7896a8] underline underline-offset-4"
                 >
                   close archive
                 </button>
@@ -504,15 +453,13 @@ export default function HanStory() {
             </>
           )}
         </section>
-        {/* =====================================================
-            END
-        ===================================================== */}
+        {/* FOOTER */}
         <footer className="px-4 py-16 text-center">
-          <div className="text-2xl tracking-[0.2em] text-[#70a0b8]">
+          <div className="text-2xl tracking-[0.2em] text-[#7fa8c1]">
             ♡ ୨୧ ✦
           </div>
           <p
-            className="mt-5 text-2xl font-medium text-[#547b91]"
+            className="mt-5 text-2xl text-[#678da7]"
             style={{
               fontFamily:
                 "'Comic Sans MS', cursive",
@@ -520,11 +467,11 @@ export default function HanStory() {
           >
             made with love for Han ♡
           </p>
-          <p className="mt-3 text-sm font-medium text-[#718e9e]">
+          <p className="mt-3 text-sm text-[#7d99aa]">
             Han · HANEULZ
           </p>
-          <p className="mt-5 text-xs font-medium tracking-[0.15em] text-[#91aab7]">
-            one little page in the HANEULZ corner
+          <p className="mt-5 text-xs tracking-[0.15em] text-[#b0c5d1]">
+            one little page in the HANEULZ scrapbook
           </p>
         </footer>
       </div>
@@ -537,11 +484,11 @@ export default function HanStory() {
 function SectionTitle({ children }) {
   return (
     <div className="text-center">
-      <div className="text-sm text-[#6d9db7]">
+      <div className="text-sm text-[#7da6bf]">
         ୨୧
       </div>
       <h2
-        className="mt-1 text-4xl font-medium text-[#405b6b]"
+        className="mt-1 text-4xl font-normal text-[#526b7c]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -549,7 +496,7 @@ function SectionTitle({ children }) {
       >
         {children}
       </h2>
-      <div className="mt-2 text-sm text-[#6d9db7]">
+      <div className="mt-2 text-sm text-[#7da6bf]">
         ♡
       </div>
     </div>
@@ -560,12 +507,12 @@ function SectionTitle({ children }) {
 ============================================================ */
 function InfoCard({ label, value }) {
   return (
-    <div className="rounded-[1.4rem] border border-[#cfe1ea] bg-[#fafdff] p-5 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
-      <p className="font-mono text-[7px] font-medium tracking-[0.25em] text-[#7897a8]">
+    <div className="rounded-[1.4rem] border border-[#d4e3ec] bg-[#fafdff] p-5 text-center transition hover:-translate-y-0.5 hover:shadow-sm">
+      <p className="font-mono text-[7px] font-medium tracking-[0.25em] text-[#7898aa]">
         {label}
       </p>
       <p
-        className="mt-3 text-xl font-medium text-[#405a6b]"
+        className="mt-3 text-xl text-[#526b7c]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -581,7 +528,7 @@ function InfoCard({ label, value }) {
 ============================================================ */
 function CuteTag({ children }) {
   return (
-    <span className="rounded-full border border-[#c6dce7] bg-[#eef8fc] px-4 py-2 text-xs font-medium text-[#587c91]">
+    <span className="rounded-full border border-[#c9dfe9] bg-[#eef8fc] px-4 py-2 text-xs text-[#64879d]">
       {children} ♡
     </span>
   );
@@ -591,19 +538,19 @@ function CuteTag({ children }) {
 ============================================================ */
 function SoftCard({ title, value }) {
   return (
-    <div className="rounded-[1.6rem] border border-[#cfe1ea] bg-[#fafdff] p-6">
+    <div className="rounded-[1.6rem] border border-[#d4e3ec] bg-[#fafdff] p-6">
       <div className="flex items-center gap-2">
         <Heart
           size={14}
           strokeWidth={1.5}
-          className="text-[#6d9db7]"
+          className="text-[#7da6bf]"
         />
-        <p className="font-mono text-[8px] font-medium uppercase tracking-[0.25em] text-[#7897a8]">
+        <p className="font-mono text-[8px] font-medium uppercase tracking-[0.25em] text-[#7898aa]">
           {title}
         </p>
       </div>
       <p
-        className="mt-4 text-xl font-medium leading-8 text-[#405b6c]"
+        className="mt-4 text-xl leading-8 text-[#526b7c]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -621,20 +568,20 @@ function PhotoPlaceholder({
   label = "HAN PHOTO",
 }) {
   return (
-    <div className="group relative overflow-hidden rounded-[2rem] border border-[#c9dfe9] bg-[#fafdff]">
-      <div className="aspect-[4/5] w-full bg-gradient-to-br from-[#fafdff] via-[#edf7fb] to-[#dceef5]">
+    <div className="group relative overflow-hidden rounded-[2rem] border border-[#d2e2eb] bg-[#fafdff]">
+      <div className="aspect-[4/5] w-full bg-gradient-to-br from-[#fbfdff] via-[#edf7fc] to-[#deedf6]">
         <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-[#6d9db7] shadow-sm">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-[#7da6bf] shadow-sm">
             <Camera
               size={21}
               strokeWidth={1.3}
             />
           </div>
-          <p className="mt-5 font-mono text-[8px] font-medium uppercase tracking-[0.25em] text-[#7897a8]">
+          <p className="mt-5 font-mono text-[8px] font-medium uppercase tracking-[0.25em] text-[#7898aa]">
             {label}
           </p>
           <p
-            className="mt-2 text-lg font-medium text-[#5d8398]"
+            className="mt-2 text-lg text-[#6f98b1]"
             style={{
               fontFamily:
                 "'Cormorant Garamond', Georgia, serif",
@@ -680,7 +627,7 @@ function PhotoCard({
   index,
 }) {
   const content = (
-    <div className="group relative overflow-hidden rounded-[1.4rem] border border-[#cfe1ea] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:rotate-[0.4deg] hover:shadow-lg">
+    <div className="group relative overflow-hidden rounded-[1.4rem] border border-[#d3e3ec] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:rotate-[0.5deg] hover:shadow-lg">
       <div className="aspect-square overflow-hidden">
         <img
           src={photo.src}
@@ -717,14 +664,14 @@ function PhotoCard({
 ============================================================ */
 function EmptyPhotoState() {
   return (
-    <div className="mt-8 rounded-[2rem] border border-dashed border-[#bfd8e4] bg-[#f6fbfd] px-6 py-12 text-center">
+    <div className="mt-8 rounded-[2rem] border border-dashed border-[#c2d9e5] bg-[#f8fcfe] px-6 py-12 text-center">
       <Camera
         size={25}
         strokeWidth={1.2}
-        className="mx-auto text-[#6d9db7]"
+        className="mx-auto text-[#7da6bf]"
       />
       <p
-        className="mt-4 text-xl font-medium text-[#52788d]"
+        className="mt-4 text-xl text-[#668ca4]"
         style={{
           fontFamily:
             "'Cormorant Garamond', Georgia, serif",
@@ -732,7 +679,7 @@ function EmptyPhotoState() {
       >
         the photo collection is waiting ♡
       </p>
-      <p className="mx-auto mt-2 max-w-md text-xs font-medium leading-6 text-[#718f9e]">
+      <p className="mx-auto mt-2 max-w-md text-xs leading-6 text-[#829dac]">
         Add Han photos to the photo archive whenever
         you're ready.
       </p>
