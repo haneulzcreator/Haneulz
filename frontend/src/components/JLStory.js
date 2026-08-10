@@ -1,22 +1,12 @@
 import React, { useMemo, useState } from "react";
-import {
-  ArrowUpRight,
-  Camera,
-  Heart,
-  Star,
-  Sparkles,
-  Flower2,
-  Paperclip,
-  Scissors,
-} from "lucide-react";
+import { Camera, Heart, Star, Flower2, Sparkles } from "lucide-react";
 
-const PHOTOS_PER_PAGE = 25;
+const PHOTOS_PER_PAGE = 12;
 
 const profile = {
   fullName: "Jay Lawrence Gaspar",
   knownAs: "JL",
   nickname: "Yence",
-  alsoKnownAs: "Jaeyel",
   birthday: "Add later",
   nationality: "Add later",
   hobbies: "Add later",
@@ -27,10 +17,9 @@ const profile = {
 
 const facts = [
   "Add JL's first fun fact here.",
-  "Add another interesting fact about JL here.",
-  "Add a funny or memorable detail here.",
-  "Add another little JL fact here.",
-  "Add another detail whenever you want.",
+  "Add another interesting thing about JL here.",
+  "Add a funny or memorable JL moment here.",
+  "Add another little detail about JL here.",
 ];
 
 const photos = [
@@ -44,7 +33,7 @@ const photos = [
 
 export default function JLStory() {
   const [showArchive, setShowArchive] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
 
   const totalPages = Math.max(
     1,
@@ -52,280 +41,274 @@ export default function JLStory() {
   );
 
   const visiblePhotos = useMemo(() => {
-    const start = (currentPage - 1) * PHOTOS_PER_PAGE;
+    const start = (page - 1) * PHOTOS_PER_PAGE;
     return photos.slice(start, start + PHOTOS_PER_PAGE);
-  }, [currentPage]);
-
-  const goToPage = (page) => {
-    setCurrentPage(page);
-
-    requestAnimationFrame(() => {
-      document
-        .getElementById("jl-photo-archive")
-        ?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-    });
-  };
+  }, [page]);
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#ead7c5] px-3 py-5 text-[#3f3835] sm:px-6">
+    <main className="min-h-screen bg-[#f8e9ee] px-4 py-8 text-[#594b52] sm:px-8">
 
-      <div className="mx-auto max-w-6xl">
+      {/* BACKGROUND DOODLES */}
+      <div className="pointer-events-none fixed left-3 top-28 rotate-[-12deg] text-2xl text-[#d89bad]">
+        ♡
+      </div>
 
-        {/* =========================
-            SCRAPBOOK COVER
-        ========================== */}
+      <div className="pointer-events-none fixed right-5 top-44 rotate-[10deg] text-xl text-[#d59aaa]">
+        ✦
+      </div>
 
-        <section className="relative overflow-hidden border-[10px] border-[#8d6955] bg-[#f5e9da] p-3 shadow-[0_12px_0_rgba(80,55,43,0.18)]">
+      <div className="pointer-events-none fixed bottom-24 left-6 text-lg text-[#dda8b8]">
+        ୨୧
+      </div>
 
-          <div className="relative min-h-[700px] overflow-hidden border border-[#c9a98e] bg-[#f8eee2] px-5 py-12 sm:px-12">
+      <div className="pointer-events-none fixed bottom-20 right-6 rotate-[-8deg] text-xl text-[#d795a9]">
+        ♡
+      </div>
 
-            {/* paper texture pieces */}
 
-            <div className="absolute -left-10 top-24 h-40 w-40 rounded-full bg-[#e7c8b8]/50 blur-2xl" />
-            <div className="absolute -right-12 bottom-20 h-48 w-48 rounded-full bg-[#d8c7ae]/50 blur-2xl" />
+      <div className="mx-auto max-w-5xl">
 
-            {/* tape */}
+        {/* ================= HEADER ================= */}
 
-            <Tape className="absolute left-8 top-5 rotate-[-7deg]" />
-            <Tape className="absolute right-10 top-12 rotate-[8deg]" />
+        <header className="mb-6 flex items-end justify-between px-3">
 
-            {/* stickers */}
+          <div>
+            <p className="font-mono text-[9px] font-bold tracking-[0.3em] text-[#a86f82]">
+              HANEULZ
+            </p>
 
-            <Sticker className="absolute left-5 top-44 rotate-[-12deg]">
-              ♡
+            <p className="mt-1 font-mono text-[8px] tracking-[0.2em] text-[#b88b9a]">
+              SCRAPBOOK • 01
+            </p>
+          </div>
+
+          <div className="rotate-[5deg] rounded-sm bg-[#fff9f8] px-3 py-2 font-mono text-[8px] font-bold text-[#b8798e] shadow-sm">
+            MY LITTLE JL PAGE ♡
+          </div>
+
+        </header>
+
+
+        {/* ================= MAIN PAPER ================= */}
+
+        <div className="relative overflow-hidden rounded-[1.5rem] border border-[#dfbbc7] bg-[#fffaf7] p-4 shadow-[8px_10px_0_rgba(179,115,137,0.15)] sm:p-7">
+
+          {/* paper texture layers */}
+          <div className="pointer-events-none absolute -right-12 top-28 h-32 w-32 rotate-12 rounded-full bg-[#fce8ee] opacity-60" />
+          <div className="pointer-events-none absolute -left-10 bottom-36 h-40 w-40 rounded-full bg-[#f8edf0] opacity-70" />
+
+
+          {/* ================= TITLE PAGE ================= */}
+
+          <section className="relative overflow-hidden border-b-2 border-dashed border-[#e8cbd4] px-4 pb-12 pt-8 sm:px-10">
+
+            <Sticker className="left-3 top-3 rotate-[-8deg]">
+              ♡ JL ♡
             </Sticker>
 
-            <Sticker className="absolute right-5 top-52 rotate-[12deg]">
-              ★
+            <Sticker className="right-3 top-4 rotate-[8deg]">
+              YENCE
             </Sticker>
 
-            <Sticker className="absolute bottom-24 left-8 rotate-[7deg]">
-              ✦
-            </Sticker>
-
-            <Sticker className="absolute bottom-16 right-8 rotate-[-8deg]">
-              ♡
-            </Sticker>
-
-            {/* title */}
 
             <div className="relative mx-auto max-w-3xl text-center">
 
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.35em] text-[#8d6b59]">
-                HANEULZ MEMORY BOOK
+              <p
+                className="text-2xl font-bold text-[#a86c82] sm:text-3xl"
+                style={{ fontFamily: "'Comic Sans MS', cursive" }}
+              >
+                a little scrapbook
               </p>
 
-              <div className="mt-5 inline-block rotate-[-2deg] bg-[#fffdf8] px-7 py-4 shadow-[4px_5px_0_rgba(80,55,43,0.13)]">
-                <p className="font-serif text-lg text-[#9c705b]">
-                  a little page for
-                </p>
-
-                <h1 className="mt-1 font-serif text-7xl font-bold text-[#443936] sm:text-9xl">
-                  JL
-                </h1>
+              <div className="mt-2 text-xl text-[#d0839b]">
+                ♡ ✦ ♡
               </div>
 
-              <div className="mt-8 flex justify-center gap-5 text-[#9d695d]">
-                <Heart size={18} fill="currentColor" />
-                <Star size={18} fill="currentColor" />
-                <Flower2 size={18} />
-              </div>
+              <p className="mt-7 font-mono text-[9px] font-bold uppercase tracking-[0.35em] text-[#aa8390]">
+                this page belongs to
+              </p>
 
-              <p className="mt-7 font-serif text-3xl font-semibold text-[#57443d]">
+              <h1
+                className="mt-1 text-7xl font-bold text-[#594953] sm:text-9xl"
+                style={{
+                  fontFamily: "'Georgia', serif",
+                }}
+              >
+                JL
+              </h1>
+
+              <p
+                className="mt-1 text-3xl font-semibold text-[#8f5d71]"
+                style={{ fontFamily: "'Georgia', serif" }}
+              >
                 Jay Lawrence Gaspar
               </p>
 
-              <p className="mt-2 text-xl font-semibold text-[#a36f62]">
-                Yence · Jaeyel
+              <p
+                className="mt-2 text-xl font-bold text-[#bd7890]"
+                style={{ fontFamily: "'Comic Sans MS', cursive" }}
+              >
+                Yence ♡
               </p>
 
-            </div>
-
-            {/* polaroid */}
-
-            <div className="relative mx-auto mt-12 w-full max-w-sm rotate-[2deg] bg-white p-4 pb-7 shadow-[8px_10px_0_rgba(74,54,45,0.18)]">
-
-              <div className="aspect-[4/5] bg-[#eadfd3]">
-                <PhotoPlaceholder label="JL PHOTO" />
+              <div className="mx-auto mt-7 max-w-md">
+                <Polaroid
+                  src=""
+                  label="JL ♡"
+                  rotation="rotate-[-2deg]"
+                />
               </div>
 
-              <p className="mt-4 text-center font-serif text-xl font-semibold text-[#554640]">
-                my favorite little page ♡
+              <p
+                className="mx-auto mt-8 max-w-xl text-lg font-medium leading-8 text-[#725f68]"
+                style={{ fontFamily: "'Georgia', serif" }}
+              >
+                a tiny collection of photos, memories,
+                favorite things, little facts, and all the
+                small pieces that make JL special.
               </p>
 
-            </div>
-
-            {/* handwritten note */}
-
-            <div className="relative mx-auto mt-10 max-w-lg rotate-[-1.5deg] bg-[#fff6a8] px-6 py-5 shadow-[4px_6px_0_rgba(88,73,39,0.14)]">
-
-              <p className="text-center text-lg font-semibold leading-7 text-[#635632]">
-                ✎ little moments, little memories,
-                and all the things that make JL special.
-              </p>
-
-            </div>
-
-            <p className="mt-10 text-center font-mono text-[9px] uppercase tracking-[0.3em] text-[#9d806e]">
-              page 01 · JL archive
-            </p>
-
-          </div>
-        </section>
-
-
-        {/* =========================
-            QUICK LOOK
-        ========================== */}
-
-        <ScrapbookSection
-          title="a quick look"
-          sticker="♡"
-          rotation="-rotate-[0.5deg]"
-        >
-
-          <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
-
-            <PaperCard label="KNOWN AS" value={profile.knownAs} />
-            <PaperCard label="NICKNAME" value={profile.nickname} />
-            <PaperCard label="ALSO KNOWN AS" value={profile.alsoKnownAs} />
-            <PaperCard label="BIRTHDAY" value={profile.birthday} />
-            <PaperCard label="NATIONALITY" value={profile.nationality} />
-            <PaperCard label="MBTI" value={profile.mbti} />
-
-          </div>
-
-        </ScrapbookSection>
-
-
-        {/* =========================
-            ABOUT
-        ========================== */}
-
-        <ScrapbookSection
-          title="about JL"
-          sticker="✦"
-          rotation="rotate-[0.4deg]"
-        >
-
-          <div className="grid items-center gap-10 md:grid-cols-2">
-
-            <Polaroid
-              label="A LITTLE PHOTO OF JL"
-              rotation="-rotate-[3deg]"
-            />
-
-            <div className="relative">
-
-              <Tape className="absolute -right-2 -top-7 rotate-[9deg]" />
-
-              <div className="rotate-[1deg] bg-[#fffdf5] p-7 shadow-[5px_7px_0_rgba(79,59,49,0.12)]">
-
-                <p className="font-serif text-2xl font-semibold leading-9 text-[#453b38]">
-                  This is a little space for everything
-                  that makes JL feel like JL — his
-                  personality, little habits, memorable
-                  moments, and the tiny things that make
-                  people smile.
-                </p>
-
-                <p className="mt-5 font-serif text-lg leading-8 text-[#75645c]">
-                  Add your own little story about Yence
-                  here whenever you're ready.
-                </p>
-
-              </div>
-
-              <div className="mt-7 flex flex-wrap gap-3">
-
-                <ScrapTag>JL ♡</ScrapTag>
-                <ScrapTag>Yence</ScrapTag>
-                <ScrapTag>Jaeyel</ScrapTag>
-
+              <div className="mt-6 text-lg text-[#c77f96]">
+                ˚₊‧꒰ა ♡ ໒꒱ ‧₊˚
               </div>
 
             </div>
 
-          </div>
-
-        </ScrapbookSection>
+          </section>
 
 
-        {/* =========================
-            HOBBIES
-        ========================== */}
+          {/* ================= JOURNAL NOTE ================= */}
 
-        <ScrapbookSection
-          title="things JL likes"
-          sticker="★"
-          rotation="-rotate-[0.3deg]"
-        >
+          <section className="relative px-3 py-12 sm:px-10">
 
-          <div className="grid gap-6 sm:grid-cols-2">
+            <WashiTape className="left-1/2 top-7 -translate-x-1/2 rotate-[-2deg]" />
 
-            <NoteCard
-              title="♡ hobbies"
-              value={profile.hobbies}
-              color="yellow"
-              rotation="-rotate-[1deg]"
-            />
+            <div className="relative mx-auto max-w-3xl rotate-[0.4deg] bg-[#fff3c9] px-7 py-8 shadow-[4px_5px_0_rgba(180,150,100,0.15)] sm:px-12">
 
-            <NoteCard
-              title="✦ interests"
-              value={profile.interests}
-              color="blue"
-              rotation="rotate-[1.2deg]"
-            />
+              <div className="absolute right-5 top-4 rotate-[8deg] text-lg text-[#d38a9d]">
+                ♡
+              </div>
 
-            <NoteCard
-              title="♡ favorites"
-              value={profile.favorites}
-              color="pink"
-              rotation="-rotate-[0.7deg]"
-            />
+              <p className="font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-[#aa8b68]">
+                little journal note
+              </p>
 
-            <NoteCard
-              title="✦ MBTI"
-              value={profile.mbti}
-              color="green"
-              rotation="rotate-[0.8deg]"
-            />
+              <h2
+                className="mt-2 text-3xl font-bold text-[#5c4e4c]"
+                style={{ fontFamily: "'Georgia', serif" }}
+              >
+                about JL
+              </h2>
 
-          </div>
+              <p
+                className="mt-5 text-lg font-medium leading-8 text-[#67595a]"
+                style={{ fontFamily: "'Georgia', serif" }}
+              >
+                This is a little space for the things
+                that make JL feel like JL — personality,
+                habits, memories, funny moments, and
+                all the tiny details worth remembering.
+              </p>
 
-        </ScrapbookSection>
+              <div className="mt-6 flex flex-wrap gap-2">
+                <ScrapSticker>JL</ScrapSticker>
+                <ScrapSticker>YENCE</ScrapSticker>
+                <ScrapSticker>♡</ScrapSticker>
+              </div>
+
+            </div>
+
+          </section>
 
 
-        {/* =========================
-            FUN FACTS
-        ========================== */}
+          {/* ================= QUICK FACTS ================= */}
 
-        <ScrapbookSection
-          title="little things about JL"
-          sticker="♡"
-          rotation="rotate-[0.5deg]"
-        >
+          <section className="relative px-3 py-10 sm:px-10">
 
-          <div className="relative mx-auto max-w-3xl">
+            <SectionHeading>
+              ୨୧ little facts ୨୧
+            </SectionHeading>
 
-            <Paperclip className="absolute -right-2 -top-7 rotate-[20deg] text-[#826957]" />
+            <div className="mt-8 grid gap-5 sm:grid-cols-2">
 
-            <div className="bg-[#fffdf5] p-5 shadow-[6px_7px_0_rgba(73,54,43,0.13)]">
+              <PaperNote title="known as" value={profile.knownAs} />
+              <PaperNote title="nickname" value={profile.nickname} />
+              <PaperNote title="birthday" value={profile.birthday} />
+              <PaperNote title="nationality" value={profile.nationality} />
+              <PaperNote title="MBTI" value={profile.mbti} />
+              <PaperNote title="favorites" value={profile.favorites} />
+
+            </div>
+
+          </section>
+
+
+          {/* ================= HOBBIES ================= */}
+
+          <section className="relative px-3 py-12 sm:px-10">
+
+            <Tape />
+
+            <SectionHeading>
+              ♡ things JL likes ♡
+            </SectionHeading>
+
+            <div className="mt-8 grid gap-6 sm:grid-cols-2">
+
+              <JournalCard
+                icon="♡"
+                title="hobbies"
+                value={profile.hobbies}
+                rotation="rotate-[-1deg]"
+              />
+
+              <JournalCard
+                icon="✦"
+                title="interests"
+                value={profile.interests}
+                rotation="rotate-[1deg]"
+              />
+
+              <JournalCard
+                icon="୨୧"
+                title="favorites"
+                value={profile.favorites}
+                rotation="rotate-[0.5deg]"
+              />
+
+              <JournalCard
+                icon="♡"
+                title="more"
+                value="Add anything else you want here."
+                rotation="rotate-[-0.7deg]"
+              />
+
+            </div>
+
+          </section>
+
+
+          {/* ================= FUN FACTS ================= */}
+
+          <section className="relative px-3 py-12 sm:px-10">
+
+            <SectionHeading>
+              ✦ little things about JL ✦
+            </SectionHeading>
+
+            <div className="mx-auto mt-8 max-w-3xl">
 
               {facts.map((fact, index) => (
                 <div
                   key={index}
-                  className="flex gap-4 border-b border-dashed border-[#d5c5b8] px-3 py-5 last:border-0"
+                  className="relative mb-5 rotate-[0.2deg] border-b border-dashed border-[#dfc3cc] bg-[#fff6f8] px-5 py-5 pl-12"
                 >
 
-                  <span className="font-serif text-xl font-bold text-[#a56e62]">
-                    {index + 1}.
+                  <span className="absolute left-4 top-5 text-[#cf8299]">
+                    ♡
                   </span>
 
-                  <p className="font-serif text-xl font-semibold leading-8 text-[#4c403b]">
+                  <p className="font-medium leading-7 text-[#62545b]">
                     {fact}
                   </p>
 
@@ -334,419 +317,274 @@ export default function JLStory() {
 
             </div>
 
-          </div>
-
-        </ScrapbookSection>
+          </section>
 
 
-        {/* =========================
-            PHOTO ARCHIVE
-        ========================== */}
+          {/* ================= PHOTOS ================= */}
 
-        <ScrapbookSection
-          title="JL photo collection"
-          sticker="📷"
-          rotation="-rotate-[0.4deg]"
-          id="jl-photo-archive"
-        >
+          <section className="relative px-3 py-12 sm:px-10">
 
-          <p className="text-center font-serif text-lg font-semibold text-[#79645b]">
-            little snapshots kept here ♡
-          </p>
+            <SectionHeading>
+              ୨୧ JL's photo pile ୨୧
+            </SectionHeading>
 
-          {photos.length === 0 ? (
-            <EmptyPhotoState />
-          ) : !showArchive ? (
+            <p className="mt-2 text-center font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#a98291]">
+              photos i want to keep forever ♡
+            </p>
 
-            <>
-              <PhotoGrid
-                photos={photos.slice(0, PHOTOS_PER_PAGE)}
-                startIndex={0}
-              />
+            {!showArchive ? (
+              <>
+                <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3">
 
-              {photos.length > PHOTOS_PER_PAGE && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowArchive(true);
-                    setCurrentPage(1);
-                  }}
-                  className="mx-auto mt-10 flex items-center gap-2 border-2 border-[#765b4c] bg-[#fff6a8] px-7 py-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#58473e] shadow-[4px_4px_0_rgba(74,54,45,0.15)] transition hover:-translate-y-1"
-                >
-                  open archive ♡
-                  <ArrowUpRight size={14} />
-                </button>
-              )}
-            </>
+                  {photos.slice(0, PHOTOS_PER_PAGE).map((photo, index) => (
+                    <Polaroid
+                      key={index}
+                      src={photo.src}
+                      label={`JL • ${String(index + 1).padStart(2, "0")}`}
+                      rotation={
+                        index % 3 === 0
+                          ? "rotate-[-2deg]"
+                          : index % 3 === 1
+                          ? "rotate-[1.5deg]"
+                          : "rotate-[-0.5deg]"
+                      }
+                      postUrl={photo.postUrl}
+                    />
+                  ))}
 
-          ) : (
+                </div>
 
-            <>
-              <PhotoGrid
-                photos={visiblePhotos}
-                startIndex={(currentPage - 1) * PHOTOS_PER_PAGE}
-              />
-
-              <div className="mt-10 flex justify-center gap-2">
-
-                {Array.from(
-                  { length: totalPages },
-                  (_, index) => index + 1
-                ).map((page) => (
+                {photos.length > PHOTOS_PER_PAGE && (
                   <button
-                    key={page}
-                    type="button"
-                    onClick={() => goToPage(page)}
-                    className={`h-9 min-w-9 border-2 px-3 font-mono text-xs font-bold ${
-                      currentPage === page
-                        ? "border-[#765b4c] bg-[#765b4c] text-white"
-                        : "border-[#c5ad9c] bg-[#fffdf7] text-[#765b4c]"
-                    }`}
+                    onClick={() => {
+                      setShowArchive(true);
+                      setPage(1);
+                    }}
+                    className="mx-auto mt-10 block rounded-full border-2 border-[#d69aad] bg-[#fff1f5] px-7 py-3 font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#956477] shadow-[3px_3px_0_rgba(190,125,146,0.15)]"
                   >
-                    {page}
+                    open photo box ♡
                   </button>
-                ))}
+                )}
+              </>
+            ) : (
+              <>
+                <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3">
 
-              </div>
+                  {visiblePhotos.map((photo, index) => (
+                    <Polaroid
+                      key={index}
+                      src={photo.src}
+                      label={`JL • ${String(
+                        (page - 1) * PHOTOS_PER_PAGE + index + 1
+                      ).padStart(2, "0")}`}
+                      rotation="rotate-[0.5deg]"
+                      postUrl={photo.postUrl}
+                    />
+                  ))}
 
-              <button
-                type="button"
-                onClick={() => {
-                  setShowArchive(false);
-                  setCurrentPage(1);
-                }}
-                className="mx-auto mt-6 block font-mono text-[9px] font-bold uppercase tracking-[0.25em] text-[#80685b] underline"
-              >
-                close archive
-              </button>
-            </>
-          )}
+                </div>
 
-        </ScrapbookSection>
+                <div className="mt-10 flex justify-center gap-2">
+
+                  {Array.from(
+                    { length: totalPages },
+                    (_, index) => index + 1
+                  ).map((number) => (
+                    <button
+                      key={number}
+                      onClick={() => setPage(number)}
+                      className={`h-9 w-9 rounded-full border font-mono text-xs font-bold ${
+                        page === number
+                          ? "border-[#bf7890] bg-[#bf7890] text-white"
+                          : "border-[#e1bcc9] bg-white text-[#987283]"
+                      }`}
+                    >
+                      {number}
+                    </button>
+                  ))}
+
+                </div>
+
+                <button
+                  onClick={() => setShowArchive(false)}
+                  className="mx-auto mt-7 block font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#a17b8a] underline"
+                >
+                  close photo box
+                </button>
+              </>
+            )}
+
+          </section>
 
 
-        {/* =========================
-            FOOTER
-        ========================== */}
+          {/* ================= END ================= */}
 
-        <footer className="relative py-20 text-center">
+          <footer className="relative border-t-2 border-dashed border-[#e8cbd4] px-4 py-14 text-center">
 
-          <div className="mx-auto max-w-md rotate-[-1deg] bg-[#fff6a8] px-7 py-8 shadow-[5px_7px_0_rgba(73,54,43,0.15)]">
-
-            <div className="flex justify-center gap-4 text-[#9b6a5d]">
-              <Heart size={18} fill="currentColor" />
-              <Sparkles size={18} />
-              <Heart size={18} fill="currentColor" />
+            <div className="text-2xl text-[#cf8299]">
+              ♡ ✦ ୨୧ ✦ ♡
             </div>
 
-            <p className="mt-5 font-serif text-2xl font-bold text-[#59453d]">
-              made with love for Yence ♡
+            <p
+              className="mt-5 text-2xl font-bold text-[#9d687d]"
+              style={{ fontFamily: "'Comic Sans MS', cursive" }}
+            >
+              made with love for JL ♡
             </p>
 
-            <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.2em] text-[#856d61]">
-              JL · Yence · Jaeyel
+            <p className="mt-3 text-sm font-medium text-[#987783]">
+              JL · Yence
             </p>
 
-          </div>
+          </footer>
 
-        </footer>
-
+        </div>
       </div>
     </main>
   );
 }
 
 
-/* ============================================================
-   SCRAPBOOK SECTION
-============================================================ */
-
-function ScrapbookSection({
-  title,
-  sticker,
-  rotation = "",
-  children,
-  id,
-}) {
-  return (
-    <section
-      id={id}
-      className={`relative mt-12 bg-[#f8eee1] p-3 shadow-[7px_8px_0_rgba(73,54,43,0.13)] ${rotation}`}
-    >
-
-      <div className="relative border border-[#d1b69f] bg-[#fffaf2] px-5 py-12 sm:px-10">
-
-        <Tape className="absolute left-1/2 top-[-12px] -translate-x-1/2 rotate-[2deg]" />
-
-        <div className="mb-10 text-center">
-
-          <div className="mx-auto inline-flex items-center gap-3 bg-[#fff6a8] px-6 py-3 shadow-[3px_4px_0_rgba(73,54,43,0.12)]">
-
-            <span className="text-[#9a6b5c]">
-              {sticker}
-            </span>
-
-            <h2 className="font-serif text-3xl font-bold text-[#493b36] sm:text-4xl">
-              {title}
-            </h2>
-
-            <span className="text-[#9a6b5c]">
-              {sticker}
-            </span>
-
-          </div>
-
-        </div>
-
-        {children}
-
-      </div>
-    </section>
-  );
-}
-
-
-/* ============================================================
-   TAPE
-============================================================ */
-
-function Tape({ className = "" }) {
-  return (
-    <div
-      className={`h-8 w-24 bg-[#e7c7a7]/75 shadow-sm ${className}`}
-    />
-  );
-}
-
-
-/* ============================================================
-   STICKER
-============================================================ */
+/* ================= COMPONENTS ================= */
 
 function Sticker({ children, className = "" }) {
   return (
     <div
-      className={`flex h-12 w-12 items-center justify-center rounded-full bg-[#fff6a8] font-serif text-xl font-bold text-[#95685b] shadow-[3px_4px_0_rgba(73,54,43,0.12)] ${className}`}
+      className={`absolute rounded-md border border-[#ecc9d4] bg-[#fff0f5] px-3 py-2 font-mono text-[8px] font-bold tracking-wider text-[#a96e82] shadow-[2px_3px_0_rgba(190,130,150,0.12)] ${className}`}
     >
       {children}
     </div>
   );
 }
 
-
-/* ============================================================
-   PAPER CARD
-============================================================ */
-
-function PaperCard({ label, value }) {
-  return (
-    <div className="rotate-[0.5deg] bg-[#fffdf7] p-6 text-center shadow-[4px_5px_0_rgba(73,54,43,0.12)]">
-
-      <p className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#927568]">
-        {label}
-      </p>
-
-      <div className="mx-auto mt-3 h-px w-12 bg-[#d6b9a5]" />
-
-      <p className="mt-4 font-serif text-2xl font-bold text-[#493d38]">
-        {value}
-      </p>
-
-    </div>
-  );
-}
-
-
-/* ============================================================
-   NOTE CARD
-============================================================ */
-
-function NoteCard({
-  title,
-  value,
-  color,
-  rotation,
-}) {
-  const colors = {
-    yellow: "bg-[#fff6a8]",
-    blue: "bg-[#cfe8ee]",
-    pink: "bg-[#f4ccd4]",
-    green: "bg-[#d6e7c8]",
-  };
-
+function WashiTape({ className = "" }) {
   return (
     <div
-      className={`relative min-h-[160px] p-7 shadow-[5px_6px_0_rgba(73,54,43,0.12)] ${colors[color]} ${rotation}`}
-    >
-
-      <Tape className="absolute left-1/2 top-[-9px] h-6 w-20 -translate-x-1/2 rotate-[2deg]" />
-
-      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#66544b]">
-        {title}
-      </p>
-
-      <p className="mt-5 font-serif text-xl font-semibold leading-8 text-[#403834]">
-        {value}
-      </p>
-
-    </div>
+      className={`absolute z-10 h-7 w-32 bg-[#e9b4c4]/75 ${className}`}
+    />
   );
 }
 
-
-/* ============================================================
-   SCRAP TAG
-============================================================ */
-
-function ScrapTag({ children }) {
+function Tape() {
   return (
-    <span className="rotate-[-1deg] border border-[#c8aa98] bg-[#fffdf7] px-4 py-2 font-mono text-[10px] font-bold text-[#70594d] shadow-[2px_3px_0_rgba(73,54,43,0.1)]">
+    <div className="pointer-events-none absolute right-12 top-4 h-7 w-28 rotate-[5deg] bg-[#efb8c8]/70" />
+  );
+}
+
+function ScrapSticker({ children }) {
+  return (
+    <span className="rounded-full border border-[#ddb1bf] bg-[#fff8fa] px-4 py-2 text-xs font-bold text-[#a46e81] shadow-sm">
       {children}
     </span>
   );
 }
 
+function SectionHeading({ children }) {
+  return (
+    <div className="text-center">
+      <div className="text-lg text-[#ce8299]">♡</div>
 
-/* ============================================================
-   POLAROID
-============================================================ */
+      <h2
+        className="mt-1 text-3xl font-bold text-[#604f58] sm:text-4xl"
+        style={{ fontFamily: "'Georgia', serif" }}
+      >
+        {children}
+      </h2>
 
-function Polaroid({ label, rotation }) {
+      <div className="mt-2 text-sm text-[#d08ca0]">✦ ୨୧ ✦</div>
+    </div>
+  );
+}
+
+function PaperNote({ title, value }) {
+  return (
+    <div className="relative rotate-[0.5deg] bg-[#fff8dc] px-6 py-6 shadow-[4px_5px_0_rgba(173,145,95,0.12)]">
+
+      <div className="absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-[-2deg] bg-[#efc4d0]/80" />
+
+      <p className="font-mono text-[8px] font-bold uppercase tracking-[0.22em] text-[#a78a6b]">
+        {title}
+      </p>
+
+      <p className="mt-2 text-xl font-bold text-[#5d5152]">
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function JournalCard({ icon, title, value, rotation }) {
   return (
     <div
-      className={`mx-auto w-full max-w-sm bg-white p-4 pb-7 shadow-[7px_8px_0_rgba(73,54,43,0.17)] ${rotation}`}
+      className={`relative ${rotation} border border-[#e8cbd4] bg-[#fffdf9] p-6 shadow-[4px_5px_0_rgba(174,125,142,0.13)]`}
     >
-
-      <PhotoPlaceholder label={label} />
-
-      <p className="mt-4 text-center font-serif text-lg font-bold text-[#594740]">
-        a little memory ♡
-      </p>
-
-    </div>
-  );
-}
-
-
-/* ============================================================
-   PHOTO PLACEHOLDER
-============================================================ */
-
-function PhotoPlaceholder({ label }) {
-  return (
-    <div className="flex aspect-[4/5] flex-col items-center justify-center bg-[#eadfd3] text-center">
-
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#fffdf7] text-[#96705e] shadow-sm">
-        <Camera size={25} strokeWidth={1.4} />
+      <div className="absolute -right-2 -top-3 rotate-[12deg] text-xl text-[#cf839a]">
+        {icon}
       </div>
 
-      <p className="mt-5 font-mono text-[9px] font-bold uppercase tracking-[0.2em] text-[#796256]">
-        {label}
+      <p className="font-mono text-[8px] font-bold uppercase tracking-[0.2em] text-[#a37c8b]">
+        {title}
       </p>
 
-      <p className="mt-2 font-serif text-lg font-semibold text-[#8a7063]">
-        photo goes here ♡
+      <p className="mt-4 text-lg font-medium leading-7 text-[#62545b]">
+        {value}
       </p>
-
     </div>
   );
 }
 
-
-/* ============================================================
-   PHOTO GRID
-============================================================ */
-
-function PhotoGrid({ photos, startIndex = 0 }) {
-  const validPhotos = photos.filter(
-    (photo) => photo && photo.src
-  );
-
-  if (!validPhotos.length) {
-    return <EmptyPhotoState />;
-  }
-
-  return (
-    <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4">
-
-      {validPhotos.map((photo, index) => (
-        <PhotoCard
-          key={`${photo.src}-${index}`}
-          photo={photo}
-          index={startIndex + index}
-        />
-      ))}
-
-    </div>
-  );
-}
-
-
-/* ============================================================
-   PHOTO CARD
-============================================================ */
-
-function PhotoCard({ photo, index }) {
+function Polaroid({
+  src,
+  label,
+  rotation = "rotate-0",
+  postUrl = "",
+}) {
   const card = (
-    <div className="bg-white p-3 pb-5 shadow-[5px_6px_0_rgba(73,54,43,0.14)] transition duration-300 hover:-translate-y-2 hover:rotate-1">
+    <div
+      className={`relative ${rotation} bg-white p-3 pb-5 shadow-[4px_6px_0_rgba(120,90,100,0.13)] transition duration-300 hover:z-10 hover:rotate-0 hover:scale-[1.03]`}
+    >
+      <div className="absolute -top-3 left-1/2 z-10 h-6 w-20 -translate-x-1/2 rotate-[-2deg] bg-[#efb8c7]/80" />
 
-      <div className="aspect-square overflow-hidden bg-[#eadfd3]">
+      <div className="aspect-square overflow-hidden bg-[#f8e9ee]">
 
-        <img
-          src={photo.src}
-          alt={photo.alt || `JL photo ${index + 1}`}
-          className="h-full w-full object-cover"
-          loading="lazy"
-        />
+        {src ? (
+          <img
+            src={src}
+            alt={label}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div className="flex h-full flex-col items-center justify-center text-center">
+
+            <Camera
+              size={25}
+              strokeWidth={1.4}
+              className="text-[#c97f96]"
+            />
+
+            <p className="mt-3 font-mono text-[8px] font-bold tracking-[0.15em] text-[#a37b89]">
+              PHOTO GOES HERE
+            </p>
+          </div>
+        )}
 
       </div>
 
-      <p className="mt-3 text-center font-mono text-[8px] font-bold uppercase tracking-[0.15em] text-[#796256]">
-        JL · {String(index + 1).padStart(2, "0")} ♡
+      <p
+        className="mt-3 text-center text-sm font-bold text-[#715b64]"
+        style={{ fontFamily: "'Comic Sans MS', cursive" }}
+      >
+        {label} ♡
       </p>
-
     </div>
   );
 
-  if (photo.postUrl) {
-    return (
-      <a
-        href={photo.postUrl}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {card}
-      </a>
-    );
-  }
-
-  return card;
-}
-
-
-/* ============================================================
-   EMPTY
-============================================================ */
-
-function EmptyPhotoState() {
-  return (
-    <div className="mx-auto mt-10 max-w-md rotate-[-1deg] bg-[#fff6a8] px-7 py-12 text-center shadow-[5px_6px_0_rgba(73,54,43,0.13)]">
-
-      <Camera
-        size={28}
-        className="mx-auto text-[#92705f]"
-        strokeWidth={1.4}
-      />
-
-      <p className="mt-5 font-serif text-xl font-bold text-[#57443d]">
-        the photo collection is waiting ♡
-      </p>
-
-      <p className="mt-2 font-mono text-[9px] leading-5 text-[#79685f]">
-        Add JL photos to the scrapbook whenever
-        you're ready.
-      </p>
-
-    </div>
+  return postUrl ? (
+    <a href={postUrl} target="_blank" rel="noreferrer">
+      {card}
+    </a>
+  ) : (
+    card
   );
 }
