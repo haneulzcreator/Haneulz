@@ -4,10 +4,9 @@ import {
   MessageCircle,
   Send,
   Flag,
+  Mail,
   X,
-  MailHeart,
   Sparkles,
-  ChevronDown,
 } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "../lib/api";
@@ -166,7 +165,7 @@ export default function Letters() {
         {!loading && error && (
           <div className="rounded-[2.5rem] border border-[#ecdbe2] bg-white px-6 py-20 text-center shadow-[0_15px_45px_rgba(100,65,80,0.06)]">
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#fff0f5]">
-              <MailHeart
+              <Mail
                 size={27}
                 strokeWidth={1.3}
                 className="text-[#df86a7]"
