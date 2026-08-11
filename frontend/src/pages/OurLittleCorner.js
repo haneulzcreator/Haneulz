@@ -6,7 +6,15 @@ import HaneulzStory from "../components/HaneulzStory";
 import JLStory from "../components/JLStory";
 import HanStory from "../components/HanStory";
 import Music from "../components/Music";
-import {Music2, Gamepad2,Palette, Mail, Cloud,UserRound,} from "lucide-react";
+import Gallery from "../components/Gallery";
+import {
+  Music2,
+  Gamepad2,
+  Palette,
+  Mail,
+  Cloud,
+  UserRound,
+} from "lucide-react";
 export default function OurLittleCorner() {
   const [activeTab, setActiveTab] = useState("haneulz");
   const [openGame, setOpenGame] = useState(null);
@@ -109,23 +117,33 @@ export default function OurLittleCorner() {
           CONTENT AREA
       ===================================================== */}
       <section className="mx-auto mt-16 max-w-6xl px-6">
-        {/* HANEULZ */}
+        {/* =====================================================
+            HANEULZ
+        ===================================================== */}
         {activeTab === "haneulz" && (
           <HaneulzStory />
         )}
-        {/* JL */}
+        {/* =====================================================
+            JL
+        ===================================================== */}
         {activeTab === "jl" && (
           <JLStory />
         )}
-        {/* HAN */}
+        {/* =====================================================
+            HAN
+        ===================================================== */}
         {activeTab === "han" && (
           <HanStory />
         )}
-        {/* SPOTIFY */}
-{activeTab === "spotify" && (
-  <Music />
-)}
-        {/* GAMES */}
+        {/* =====================================================
+            SPOTIFY
+        ===================================================== */}
+        {activeTab === "spotify" && (
+          <Music />
+        )}
+        {/* =====================================================
+            GAMES
+        ===================================================== */}
         {activeTab === "games" && (
           <Reveal>
             <div className="rounded-[3rem] bg-[color:var(--pink)] p-10">
@@ -142,11 +160,15 @@ export default function OurLittleCorner() {
             </div>
           </Reveal>
         )}
-        {/* GALLERY */}
+        {/* =====================================================
+            GALLERY
+        ===================================================== */}
         {activeTab === "gallery" && (
-          <Placeholder title="Fan Art Gallery" />
+          <Gallery />
         )}
-        {/* LETTERS */}
+        {/* =====================================================
+            LETTERS
+        ===================================================== */}
         {activeTab === "letters" && (
           <Placeholder title="Letter To HANEULZ" />
         )}
@@ -159,6 +181,9 @@ export default function OurLittleCorner() {
           onClose={() => setOpenGame(null)}
         />
       )}
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
       <Footer />
     </div>
   );
