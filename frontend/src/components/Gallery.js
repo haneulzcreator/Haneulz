@@ -140,8 +140,9 @@ function HaneulzGallery() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+    useEffect(() => {
     loadGallery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function loadGallery() {
@@ -290,8 +291,9 @@ function HaneulzArchive() {
   const [loading, setLoading] = useState(true);
   const [showSubmit, setShowSubmit] = useState(false);
 
-  useEffect(() => {
+    useEffect(() => {
     loadArchive();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   async function loadArchive() {
