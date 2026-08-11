@@ -158,38 +158,35 @@ export default function Gallery() {
 ============================================================= */
 
 function HaneulzGallery() {
-
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  useEffect(() => {
-    loadGallery();
-  }, []);
-
-  async function loadGallery() {
-
+  const loadGallery = useCallback(async () => {
     try {
-
       setLoading(true);
+      setError(false);
 
       const response = await api.get("/gallery");
 
-      setPosts(response.data || []);
-
+      setPosts(
+        Array.isArray(response.data)
+          ? response.data
+          : []
+      );
     } catch (error) {
-
       console.error("Gallery error:", error);
 
       setPosts([]);
-
-      toast.error("Couldn't load the gallery.");
-
+      setError(true);
     } finally {
-
       setLoading(false);
-
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    loadGallery();
+  }, [loadGallery]);
 
   return (
     <div className="mx-auto max-w-6xl">
@@ -228,9 +225,11 @@ function HaneulzGallery() {
 
       </div>
 
+      {/* LOADING */}
+
       {loading ? (
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
 
           {[1, 2, 3, 4, 5, 6].map((item) => (
             <div
@@ -241,7 +240,39 @@ function HaneulzGallery() {
 
         </div>
 
+      ) : error ? (
+
+        /* ERROR */
+
+        <div className="rounded-[2.5rem] border border-[color:var(--line)] bg-white/55 px-6 py-20 text-center shadow-sm">
+
+          <ImageIcon
+            className="mx-auto text-[color:var(--pink-deep)]"
+            size={32}
+            strokeWidth={1.2}
+          />
+
+          <h3 className="mt-5 font-serif-display text-3xl">
+            the gallery is resting
+          </h3>
+
+          <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
+            We couldn't connect to the gallery right now.
+          </p>
+
+          <button
+            type="button"
+            onClick={loadGallery}
+            className="mt-6 rounded-full bg-[color:var(--ink)] px-6 py-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-[color:var(--pink-deep)]"
+          >
+            Try again
+          </button>
+
+        </div>
+
       ) : posts.length === 0 ? (
+
+        /* EMPTY */
 
         <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/50 px-6 py-24 text-center shadow-sm">
 
@@ -275,6 +306,8 @@ function HaneulzGallery() {
         </div>
 
       ) : (
+
+        /* POSTS */
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
 
@@ -336,56 +369,83 @@ function HaneulzGallery() {
 /* =============================================================
    HANEULZ ARCHIVE
 ============================================================= */
+
 function HaneulzArchive() {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [archiveError, setArchiveError] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
+
   const loadArchive = useCallback(async () => {
     try {
       setLoading(true);
+      setArchiveError(false);
+
       const response = await api.get("/archive", {
         params: {
           page,
           limit: POSTS_PER_PAGE,
         },
       });
+
       setPosts(response.data?.posts || []);
       setTotalPages(response.data?.total_pages || 1);
+
     } catch (error) {
       console.error("Archive error:", error);
+
       setPosts([]);
       setTotalPages(1);
-      toast.error("Couldn't load the archive.");
+      setArchiveError(true);
+
     } finally {
       setLoading(false);
     }
   }, [page]);
+
   useEffect(() => {
     loadArchive();
   }, [loadArchive]);
+
   function handleSubmitted() {
     setShowSubmit(false);
-    setPage(1);
+
+    if (page !== 1) {
+      setPage(1);
+    } else {
+      loadArchive();
+    }
   }
+
   return (
     <div className="mx-auto max-w-3xl">
+
       {/* ARCHIVE INTRO */}
+
       <div className="relative mb-10 overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/60 p-7 shadow-[0_15px_50px_rgba(70,50,60,0.07)] backdrop-blur-md md:p-10">
+
         <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full border border-[color:var(--line)] opacity-40" />
+
         <div className="absolute -right-3 -top-3 h-16 w-16 rounded-full border border-[color:var(--line)] opacity-40" />
+
         <div className="absolute bottom-5 right-7 rotate-12 text-2xl opacity-20">
           ♡
         </div>
+
         <div className="relative flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+
           <div>
+
             <div className="mb-3 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pink-deep)]" />
+
               <p className="text-[9px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
                 community archive
               </p>
             </div>
+
             <h3 className="font-serif-display text-4xl md:text-6xl">
               HANEULZ
               <br />
@@ -393,11 +453,14 @@ function HaneulzArchive() {
                 Archive
               </span>
             </h3>
+
             <p className="mt-5 max-w-lg text-sm leading-7 text-[color:var(--ink-soft)]">
               A running collection of fan art and creative pieces submitted
               by the HANEULZ community.
             </p>
+
           </div>
+
           <button
             type="button"
             onClick={() => setShowSubmit(true)}
@@ -406,46 +469,101 @@ function HaneulzArchive() {
             <Upload size={13} />
             Add your work
           </button>
+
         </div>
+
       </div>
+
       {/* FEED */}
+
       {loading ? (
+
         <div className="space-y-7">
+
           {[1, 2, 3].map((item) => (
             <div
               key={item}
               className="h-[430px] animate-pulse rounded-[2.5rem] border border-[color:var(--line)] bg-white/50"
             />
           ))}
+
         </div>
-      ) : posts.length === 0 ? (
-        <div className="rounded-[2.5rem] border border-dashed border-[color:var(--line)] bg-white/45 px-6 py-24 text-center">
+
+      ) : archiveError ? (
+
+        /* ERROR */
+
+        <div className="rounded-[2.5rem] border border-[color:var(--line)] bg-white/55 px-6 py-20 text-center shadow-sm">
+
           <Sparkles
             className="mx-auto text-[color:var(--pink-deep)]"
             size={32}
             strokeWidth={1.2}
           />
+
+          <h3 className="mt-5 font-serif-display text-3xl">
+            the archive is resting
+          </h3>
+
+          <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
+            We couldn't connect to the archive right now.
+          </p>
+
+          <button
+            type="button"
+            onClick={loadArchive}
+            className="mt-6 rounded-full bg-[color:var(--ink)] px-6 py-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-[color:var(--pink-deep)]"
+          >
+            Try again
+          </button>
+
+        </div>
+
+      ) : posts.length === 0 ? (
+
+        /* EMPTY */
+
+        <div className="rounded-[2.5rem] border border-dashed border-[color:var(--line)] bg-white/45 px-6 py-24 text-center">
+
+          <Sparkles
+            className="mx-auto text-[color:var(--pink-deep)]"
+            size={32}
+            strokeWidth={1.2}
+          />
+
           <h3 className="mt-6 font-serif-display text-3xl">
             nothing filed yet
           </h3>
+
           <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
             The archive is ready for its first submission.
           </p>
+
         </div>
+
       ) : (
+
+        /* POSTS */
+
         <div className="space-y-8">
+
           {posts.map((post) => (
             <ArchivePost
               key={post.id}
               post={post}
-              onChanged={loadArchive}
             />
           ))}
+
         </div>
+
       )}
+
       {/* PAGINATION */}
-      {totalPages > 1 && (
+
+      {!archiveError && totalPages > 1 && (
+
         <div className="mt-12 flex items-center justify-center gap-3">
+
           <button
             type="button"
             disabled={page <= 1}
@@ -454,9 +572,11 @@ function HaneulzArchive() {
           >
             <ChevronLeft size={16} />
           </button>
+
           <span className="rounded-full border border-[color:var(--line)] bg-white/70 px-6 py-2.5 text-[9px] font-semibold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
             {page} / {totalPages}
           </span>
+
           <button
             type="button"
             disabled={page >= totalPages}
@@ -465,18 +585,24 @@ function HaneulzArchive() {
           >
             <ChevronRight size={16} />
           </button>
+
         </div>
+
       )}
+
       {/* SUBMISSION MODAL */}
+
       {showSubmit && (
         <ArchiveSubmission
           onSubmitted={handleSubmitted}
           onClose={() => setShowSubmit(false)}
         />
       )}
+
     </div>
   );
 }
+
 
 /* =============================================================
    ARCHIVE POST
@@ -496,7 +622,6 @@ function ArchivePost({ post }) {
   const [commentLoading, setCommentLoading] = useState(false);
 
   async function handleLike() {
-
     try {
 
       const response = await api.post(
@@ -514,7 +639,6 @@ function ArchivePost({ post }) {
   }
 
   async function loadComments() {
-
     try {
 
       const response = await api.get(
@@ -526,8 +650,6 @@ function ArchivePost({ post }) {
     } catch (error) {
 
       console.error(error);
-
-      toast.error("Couldn't load comments.");
 
     }
   }
@@ -659,6 +781,7 @@ function ArchivePost({ post }) {
                 : "text-[color:var(--ink-soft)] hover:text-[color:var(--pink-deep)]"
             }`}
           >
+
             <Heart
               size={20}
               strokeWidth={1.5}
@@ -666,6 +789,7 @@ function ArchivePost({ post }) {
             />
 
             <span>{likes}</span>
+
           </button>
 
           <button
@@ -673,6 +797,7 @@ function ArchivePost({ post }) {
             onClick={toggleComments}
             className="flex items-center gap-2 text-sm text-[color:var(--ink-soft)] transition hover:text-[color:var(--ink)]"
           >
+
             <MessageCircle
               size={20}
               strokeWidth={1.5}
@@ -683,6 +808,7 @@ function ArchivePost({ post }) {
                 ? `${comments.length} comments`
                 : "Comments"}
             </span>
+
           </button>
 
         </div>
@@ -691,10 +817,13 @@ function ArchivePost({ post }) {
 
         {post.caption && (
           <p className="mt-5 whitespace-pre-wrap text-sm leading-7 text-[color:var(--ink)]">
+
             <span className="font-semibold">
               {post.author_name}
             </span>{" "}
+
             {post.caption}
+
           </p>
         )}
 
@@ -789,8 +918,53 @@ function ArchiveSubmission({ onSubmitted, onClose }) {
   const [caption, setCaption] = useState("");
   const [originalUrl, setOriginalUrl] = useState("");
   const [image, setImage] = useState(null);
-
+  const [preview, setPreview] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  /* IMAGE PREVIEW */
+
+  useEffect(() => {
+
+    if (!image) {
+      setPreview("");
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(image);
+
+    setPreview(objectUrl);
+
+    return () => {
+      URL.revokeObjectURL(objectUrl);
+    };
+
+  }, [image]);
+
+  /* ESCAPE TO CLOSE */
+
+  useEffect(() => {
+
+    function handleEscape(event) {
+
+      if (event.key === "Escape") {
+        onClose();
+      }
+
+    }
+
+    document.addEventListener(
+      "keydown",
+      handleEscape
+    );
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleEscape
+      );
+    };
+
+  }, [onClose]);
 
   async function submit(event) {
 
@@ -845,7 +1019,10 @@ function ArchiveSubmission({ onSubmitted, onClose }) {
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        "Archive submission error:",
+        error
+      );
 
       toast.error(
         error?.response?.data?.detail ||
@@ -859,185 +1036,293 @@ function ArchiveSubmission({ onSubmitted, onClose }) {
     }
   }
 
+  function handleFileChange(event) {
+
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file.");
+      return;
+    }
+
+    setImage(file);
+
+  }
+
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/45 p-4 backdrop-blur-md">
+    <div
+      className="fixed inset-0 z-[200] flex items-end justify-center bg-black/50 p-0 backdrop-blur-md sm:items-center sm:p-5"
+      onMouseDown={(event) => {
 
-      <div className="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-[2.5rem] border border-white/60 bg-[color:var(--cream)] p-6 shadow-2xl md:p-8">
+        if (
+          event.target === event.currentTarget
+        ) {
+          onClose();
+        }
 
-        {/* CLOSE BUTTON */}
+      }}
+    >
 
-        <button
-          type="button"
-          onClick={onClose}
-          disabled={submitting}
-          aria-label="Close submission form"
-          className="absolute right-5 top-5 grid h-10 w-10 place-items-center rounded-full border border-[color:var(--line)] bg-white/70 text-[color:var(--ink-soft)] transition hover:bg-white hover:text-[color:var(--ink)] disabled:cursor-not-allowed disabled:opacity-40"
-        >
-          <X size={17} />
-        </button>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="archive-submission-title"
+        className="relative max-h-[94vh] w-full max-w-xl overflow-y-auto rounded-t-[2rem] border border-white/70 bg-[color:var(--cream)] shadow-2xl sm:rounded-[2rem]"
+        onMouseDown={(event) =>
+          event.stopPropagation()
+        }
+      >
 
-        {/* DECORATIONS */}
+        {/* TOP BAR */}
 
-        <div className="pointer-events-none absolute left-5 top-16 rotate-[-12deg] text-2xl opacity-20">
-          ✦
-        </div>
+        <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[color:var(--line)] bg-[color:var(--cream)]/95 px-5 py-4 backdrop-blur-md">
 
-        <div className="pointer-events-none absolute right-8 top-24 rotate-12 text-2xl opacity-20">
-          ♡
-        </div>
+          <div className="flex items-center gap-3">
 
-        {/* HEADER */}
+            <div className="grid h-9 w-9 place-items-center rounded-full bg-white shadow-sm">
 
-        <div className="relative pr-12 text-center">
-
-          <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-[color:var(--line)] bg-white shadow-sm">
-
-            <Sparkles
-              size={20}
-              className="text-[color:var(--pink-deep)]"
-            />
-
-          </div>
-
-          <p className="mt-5 text-[9px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
-            HANEULZ ARCHIVE
-          </p>
-
-          <h2 className="mt-2 font-serif-display text-4xl">
-            add a piece ♡
-          </h2>
-
-          <p className="mt-3 text-sm leading-6 text-[color:var(--ink-soft)]">
-            Send in your fan art for consideration in the archive.
-          </p>
-
-        </div>
-
-        {/* FORM */}
-
-        <form
-          onSubmit={submit}
-          className="mt-8 space-y-5"
-        >
-
-          <div>
-
-            <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
-              Name / username
-            </label>
-
-            <input
-              value={username}
-              onChange={(event) =>
-                setUsername(event.target.value)
-              }
-              required
-              placeholder="@yourusername"
-              className="w-full rounded-2xl border border-[color:var(--line)] bg-white/70 px-4 py-3.5 text-sm outline-none transition focus:border-[color:var(--pink-deep)]"
-            />
-
-          </div>
-
-          <div>
-
-            <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
-              Artwork
-            </label>
-
-            <label className="flex min-h-40 cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--line)] bg-white/55 px-5 text-center transition hover:bg-white">
-
-              <Upload
-                size={21}
+              <Sparkles
+                size={15}
                 className="text-[color:var(--pink-deep)]"
               />
 
-              <span className="mt-3 text-sm">
-                {image
-                  ? image.name
-                  : "Choose your fan art"}
-              </span>
+            </div>
 
-              <span className="mt-1 text-[10px] text-[color:var(--ink-soft)]">
-                JPG · PNG · WEBP
-              </span>
+            <div>
 
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                className="hidden"
-                onChange={(event) =>
-                  setImage(
-                    event.target.files?.[0] || null
-                  )
-                }
-              />
+              <p className="text-[8px] font-semibold uppercase tracking-[0.25em] text-[color:var(--ink-soft)]">
+                HANEULZ ARCHIVE
+              </p>
 
-            </label>
+              <p className="font-serif-display text-lg">
+                submit a piece
+              </p>
+
+            </div>
 
           </div>
 
-          <div>
-
-            <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
-              Caption
-            </label>
-
-            <textarea
-              value={caption}
-              onChange={(event) =>
-                setCaption(event.target.value)
-              }
-              rows={4}
-              placeholder="Add a caption..."
-              className="w-full resize-none rounded-2xl border border-[color:var(--line)] bg-white/70 px-4 py-3.5 text-sm outline-none transition focus:border-[color:var(--pink-deep)]"
-            />
-
-          </div>
-
-          <div>
-
-            <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
-              Original post link
-              <span className="ml-1 font-normal normal-case tracking-normal opacity-60">
-                optional
-              </span>
-            </label>
-
-            <input
-              type="url"
-              value={originalUrl}
-              onChange={(event) =>
-                setOriginalUrl(event.target.value)
-              }
-              placeholder="https://..."
-              className="w-full rounded-2xl border border-[color:var(--line)] bg-white/70 px-4 py-3.5 text-sm outline-none transition focus:border-[color:var(--pink-deep)]"
-            />
-
-          </div>
+          {/* X BUTTON */}
 
           <button
-            type="submit"
-            disabled={submitting}
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--ink)] px-5 py-4 text-[9px] font-semibold uppercase tracking-[0.25em] text-white shadow-lg transition hover:bg-[color:var(--pink-deep)] disabled:cursor-not-allowed disabled:opacity-50"
+            type="button"
+            onClick={onClose}
+            aria-label="Close submission form"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[color:var(--line)] bg-white text-[color:var(--ink)] shadow-sm transition hover:bg-[color:var(--ink)] hover:text-white"
           >
 
-            {submitting ? (
-              "Submitting..."
-            ) : (
-              <>
-                <Send size={13} />
-                Submit artwork
-              </>
-            )}
+            <X size={18} />
 
           </button>
 
-          <p className="text-center text-[10px] leading-5 text-[color:var(--ink-soft)]">
-            Your submission will be reviewed before appearing
-            in the public archive.
-          </p>
+        </div>
 
-        </form>
+        {/* CONTENT */}
+
+        <div className="p-5 sm:p-7">
+
+          <div className="mb-7">
+
+            <h2
+              id="archive-submission-title"
+              className="font-serif-display text-3xl sm:text-4xl"
+            >
+              add a little something ♡
+            </h2>
+
+            <p className="mt-2 max-w-md text-sm leading-6 text-[color:var(--ink-soft)]">
+              Share your fan art with HANEULZ. Submissions are reviewed
+              before they appear in the public archive.
+            </p>
+
+          </div>
+
+          <form
+            onSubmit={submit}
+            className="space-y-5"
+          >
+
+            {/* USERNAME */}
+
+            <div>
+
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+                Name / username
+              </label>
+
+              <input
+                value={username}
+                onChange={(event) =>
+                  setUsername(event.target.value)
+                }
+                required
+                placeholder="@yourusername"
+                className="w-full rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3.5 text-sm shadow-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)] focus:ring-2 focus:ring-[color:var(--pink)]/20"
+              />
+
+            </div>
+
+            {/* IMAGE */}
+
+            <div>
+
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+                Artwork
+              </label>
+
+              <label
+                htmlFor="archive-image-upload"
+                className={`group relative block cursor-pointer overflow-hidden rounded-2xl border border-dashed border-[color:var(--line)] bg-white transition hover:border-[color:var(--pink-deep)] hover:bg-white ${
+                  preview
+                    ? "p-2"
+                    : "p-6"
+                }`}
+              >
+
+                {preview ? (
+
+                  <div className="relative overflow-hidden rounded-xl bg-[color:var(--cream)]">
+
+                    <img
+                      src={preview}
+                      alt="Artwork preview"
+                      className="max-h-72 w-full object-contain"
+                    />
+
+                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/50 to-transparent opacity-0 transition group-hover:opacity-100">
+
+                      <div className="p-4 text-white">
+
+                        <p className="text-xs font-semibold">
+                          {image?.name}
+                        </p>
+
+                        <p className="mt-1 text-[9px] uppercase tracking-[0.15em] opacity-80">
+                          Tap to change image
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                ) : (
+
+                  <div className="flex min-h-36 flex-col items-center justify-center text-center">
+
+                    <div className="grid h-12 w-12 place-items-center rounded-full bg-[color:var(--pink)]/30">
+
+                      <Upload
+                        size={20}
+                        className="text-[color:var(--pink-deep)]"
+                      />
+
+                    </div>
+
+                    <p className="mt-4 text-sm font-medium">
+                      Choose your fan art
+                    </p>
+
+                    <p className="mt-1 text-[10px] text-[color:var(--ink-soft)]">
+                      JPG · PNG · WEBP
+                    </p>
+
+                  </div>
+
+                )}
+
+                <input
+                  id="archive-image-upload"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+
+              </label>
+
+            </div>
+
+            {/* CAPTION */}
+
+            <div>
+
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+                Caption
+              </label>
+
+              <textarea
+                value={caption}
+                onChange={(event) =>
+                  setCaption(event.target.value)
+                }
+                rows={3}
+                placeholder="Tell us a little about this piece..."
+                className="w-full resize-none rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3.5 text-sm leading-6 shadow-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)] focus:ring-2 focus:ring-[color:var(--pink)]/20"
+              />
+
+            </div>
+
+            {/* ORIGINAL LINK */}
+
+            <div>
+
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+
+                Original post
+
+                <span className="ml-1 font-normal normal-case tracking-normal text-[color:var(--ink-soft)]">
+                  optional
+                </span>
+
+              </label>
+
+              <input
+                type="url"
+                value={originalUrl}
+                onChange={(event) =>
+                  setOriginalUrl(event.target.value)
+                }
+                placeholder="https://x.com/..."
+                className="w-full rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3.5 text-sm shadow-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)] focus:ring-2 focus:ring-[color:var(--pink)]/20"
+              />
+
+            </div>
+
+            {/* SUBMIT */}
+
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[color:var(--ink)] px-5 py-4 text-[9px] font-semibold uppercase tracking-[0.25em] text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[color:var(--pink-deep)] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+
+              {submitting ? (
+
+                <>
+                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  Submitting...
+                </>
+
+              ) : (
+
+                <>
+                  <Send size={13} />
+                  Submit artwork
+                </>
+
+              )}
+
+            </button>
+
+          </form>
+
+        </div>
 
       </div>
 
@@ -1072,4 +1357,5 @@ function formatDate(value) {
     return "";
 
   }
+
 }
