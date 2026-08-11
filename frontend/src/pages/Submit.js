@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Sparkles, ShieldAlert } from "lucide-react";
+import { Sparkles, HeartHandshake } from "lucide-react";
 import { api, formatApiError } from "../lib/api";
 import { Reveal } from "../components/Reveal";
 import Footer from "../components/Footer";
@@ -93,7 +93,7 @@ const submit = async (e) => {
             className="glass mt-10 space-y-5 rounded-[2.5rem] p-8"
           >
             <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+              <label className="label mb-2 block text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Title <span className="text-red-500">*</span>
               </label>
               <input
@@ -106,7 +106,7 @@ const submit = async (e) => {
             </div>
 
             <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+              <label className="label mb-2 block text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Author / Creator Name
               </label>
               <input
@@ -118,7 +118,7 @@ const submit = async (e) => {
             </div>
 
             <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+              <label className="label mb-2 block text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Type
               </label>
               <div className="flex gap-3">
@@ -143,7 +143,7 @@ const submit = async (e) => {
             </div>
 
             <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+              <label className="label mb-2 block text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Source Platform
               </label>
               <div className="flex flex-wrap gap-3">
@@ -170,7 +170,7 @@ const submit = async (e) => {
             </div>
 
             <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+              <label className="label mb-2 block text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Original Story / Post Link <span className="text-red-500">*</span>
               </label>
               <input
@@ -201,7 +201,7 @@ const submit = async (e) => {
   />
 </div>                            
             <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+              <label className="label mb-2 block text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Short Description
               </label>
               <textarea
@@ -214,7 +214,7 @@ const submit = async (e) => {
             </div>
 
             <div>
-              <label className="label block mb-2 text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
+              <label className="label mb-2 block text-xs font-bold uppercase tracking-wider text-[color:var(--ink-soft)]">
                 Full Story (Optional)
               </label>
               <textarea
@@ -226,19 +226,26 @@ const submit = async (e) => {
               />
             </div>
 
-            {/* Disclaimer Box */}
-            <div className="space-y-2 rounded-2xl border border-[color:var(--line)] bg-white/40 p-5 text-xs text-[color:var(--ink-soft)]">
-              <p className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-[color:var(--ink)]">
-                <ShieldAlert size={14} /> Disclaimer & Community Notice
+            {/* Friendly Disclaimer Box */}
+            <div className="space-y-2.5 rounded-2xl border border-[color:var(--line)] bg-white/50 p-6 text-xs text-[color:var(--ink-soft)] shadow-sm">
+              <p className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-[color:var(--ink)]">
+                <HeartHandshake size={16} className="text-[color:var(--pink-deep)]" /> 
+                A Quick Note Before You Submit ☁️
               </p>
-              <p>
-                Sky Archive serves solely as a directory for community-recommended works. All original credit belongs entirely to respective authors and creators; we claim no ownership.
+
+              <p className="leading-relaxed">
+                We love seeing your creativity and reading all the amazing stories you bring to <strong>Haneulz Corner</strong>! While we wish we could feature every single alternate universe (AU) submission, please keep in mind that not all AUs can be approved.
               </p>
-              <p>
-                All content is strictly fictional and does not reflect real-life events, real individuals, or actual personalities.
-              </p>
-              <p>
-                <strong>Creators & Copyright:</strong> If you are a creator and wish to have your entry updated or removed, please leave a message and we will fulfill your request promptly. Broken links will also be removed upon review. ☁️
+
+              <ul className="list-inside list-disc space-y-1.5 pl-1 leading-relaxed">
+                <li>Submissions are reviewed to ensure they follow our community guidelines and keep the site a safe, cozy space for everyone.</li>
+                <li>AUs with explicit content, inappropriate themes, or guideline violations won't be published.</li>
+                <li>All original credit belongs to respective authors; all stories remain strictly fictional.</li>
+                <li>If you are a creator and wish to have your entry updated or removed, please contact me and I will handle it right away.</li>
+              </ul>
+
+              <p className="pt-1 italic">
+                Thank you for sharing your imagination and helping make Haneulz Corner special! ✨
               </p>
             </div>
 
