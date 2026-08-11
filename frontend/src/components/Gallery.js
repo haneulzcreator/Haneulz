@@ -10,6 +10,8 @@ import {
   ChevronRight,
   Sparkles,
   Image as ImageIcon,
+  Palette,
+  Camera,
   ArrowUpRight,
 } from "lucide-react";
 import { api } from "../lib/api";
@@ -23,169 +25,255 @@ export default function Gallery() {
   return (
     <section className="relative min-h-screen overflow-hidden pb-24">
 
-      {/* BACKGROUND DECOR */}
+      {/* =========================================================
+          BACKGROUND DECORATIONS
+      ========================================================= */}
 
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-32 h-72 w-72 rounded-full bg-[color:var(--pink)]/20 blur-3xl" />
-        <div className="absolute -right-24 top-[45%] h-80 w-80 rounded-full bg-[color:var(--blue)]/20 blur-3xl" />
 
-        <span className="absolute left-[5%] top-24 rotate-[-14deg] font-serif-display text-4xl text-[color:var(--pink-deep)] opacity-40">
+        <div className="absolute -left-24 top-20 h-72 w-72 rounded-full bg-[color:var(--pink)]/20 blur-3xl" />
+
+        <div className="absolute -right-24 top-[28rem] h-80 w-80 rounded-full bg-[color:var(--blue)]/20 blur-3xl" />
+
+        <div className="absolute left-[35%] top-[45rem] h-64 w-64 rounded-full bg-purple-200/20 blur-3xl" />
+
+        <div className="absolute left-[5%] top-32 rotate-[-12deg] text-3xl text-[color:var(--pink-deep)] opacity-40">
           ✦
-        </span>
+        </div>
 
-        <span className="absolute right-[8%] top-44 rotate-12 text-5xl text-[color:var(--blue)] opacity-30">
+        <div className="absolute right-[7%] top-40 rotate-12 text-4xl text-[color:var(--blue)] opacity-40">
           ♡
-        </span>
+        </div>
 
-        <span className="absolute left-[8%] top-[52%] text-3xl opacity-20">
+        <div className="absolute left-[12%] top-[38%] text-2xl opacity-25">
           ୨୧
-        </span>
+        </div>
 
-        <span className="absolute right-[9%] top-[72%] rotate-[-12deg] text-4xl opacity-20">
+        <div className="absolute right-[10%] top-[62%] rotate-[-8deg] text-3xl opacity-25">
           ✧
-        </span>
+        </div>
 
-        <span className="absolute left-[12%] bottom-20 text-2xl opacity-20">
+        <div className="absolute left-[5%] bottom-40 text-xl opacity-20">
           ☁
-        </span>
+        </div>
+
+        <div className="absolute right-[18%] bottom-24 rotate-12 text-2xl opacity-20">
+          ♡
+        </div>
+
       </div>
 
-      {/* HERO */}
+      {/* =========================================================
+          HERO
+      ========================================================= */}
 
-      <div className="relative mx-auto max-w-6xl px-5 pt-8 md:px-8 md:pt-14">
+      <div className="relative mx-auto max-w-5xl px-4 pt-4 text-center md:pt-8">
 
-        <div className="grid items-end gap-10 md:grid-cols-[1fr_auto]">
+        <div className="mx-auto mb-6 flex items-center justify-center gap-4">
 
-          <div className="relative">
+          <span className="h-px w-12 bg-[color:var(--line)] md:w-20" />
 
-            <div className="mb-5 flex items-center gap-3">
-              <span className="h-px w-12 bg-[color:var(--ink)]/30" />
+          <span className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--line)] bg-white shadow-[0_8px_25px_rgba(70,50,60,0.08)]">
+            <Sparkles
+              size={15}
+              className="text-[color:var(--pink-deep)]"
+            />
+          </span>
 
-              <span className="text-[8px] font-semibold uppercase tracking-[0.4em] text-[color:var(--ink-soft)]">
-                06 · visual archive
-              </span>
-
-              <Sparkles
-                size={12}
-                className="text-[color:var(--pink-deep)]"
-              />
-            </div>
-
-            <h1 className="font-serif-display text-[4.5rem] font-medium leading-[0.78] tracking-[-0.055em] sm:text-[6rem] md:text-[8.5rem]">
-              little
-              <br />
-
-              <span className="ml-[8%] italic text-[color:var(--pink-deep)]">
-                HANEULZ
-              </span>
-
-              <br />
-
-              <span className="ml-[24%] text-[2.2rem] tracking-[-0.03em] text-[color:var(--ink)] sm:text-[3rem] md:text-[4.2rem]">
-                archive
-              </span>
-            </h1>
-
-          </div>
-
-          {/* HERO NOTE */}
-
-          <div className="relative max-w-xs md:pb-3">
-
-            <div className="absolute -left-4 -top-5 text-2xl opacity-20">
-              ✦
-            </div>
-
-            <div className="rotate-[2deg] border border-[color:var(--line)] bg-white/65 p-5 shadow-[5px_8px_25px_rgba(70,50,60,0.08)] backdrop-blur-sm">
-
-              <p className="font-serif-display text-lg leading-6">
-                little things worth keeping,
-                <br />
-                one memory at a time.
-              </p>
-
-              <div className="mt-4 flex items-center justify-between border-t border-[color:var(--line)] pt-3">
-
-                <span className="text-[7px] font-semibold uppercase tracking-[0.25em] text-[color:var(--ink-soft)]">
-                  HANEULZ COMMUNITY
-                </span>
-
-                <span className="text-sm text-[color:var(--pink-deep)]">
-                  ♡
-                </span>
-
-              </div>
-
-            </div>
-
-          </div>
+          <span className="h-px w-12 bg-[color:var(--line)] md:w-20" />
 
         </div>
 
-        <p className="mt-9 max-w-xl text-sm leading-7 text-[color:var(--ink-soft)] md:ml-[8%]">
-          A visual corner for fan creations, screenshots, illustrations,
-          and tiny HANEULZ moments worth saving.
-        </p>
+        <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--line)] bg-white/80 px-4 py-2 shadow-sm backdrop-blur-sm">
 
-      </div>
+          <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pink-deep)]" />
 
-      {/* TABS */}
+          <p className="text-[8px] font-semibold uppercase tracking-[0.35em] text-[color:var(--ink-soft)]">
+            06 · visual archive
+          </p>
 
-      <div className="relative mx-auto mt-14 max-w-6xl px-5 md:px-8">
-
-        <div className="flex items-center justify-between border-b border-[color:var(--line)]">
-
-          <div className="flex">
-
-            <button
-              type="button"
-              onClick={() => setSection("gallery")}
-              className={`relative px-1 pb-4 pr-7 text-[9px] font-semibold uppercase tracking-[0.25em] transition ${
-                section === "gallery"
-                  ? "text-[color:var(--ink)]"
-                  : "text-[color:var(--ink-soft)] hover:text-[color:var(--ink)]"
-              }`}
-            >
-              Gallery
-
-              {section === "gallery" && (
-                <span className="absolute bottom-[-1px] left-0 h-[2px] w-full bg-[color:var(--pink-deep)]" />
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setSection("archive")}
-              className={`relative px-1 pb-4 text-[9px] font-semibold uppercase tracking-[0.25em] transition ${
-                section === "archive"
-                  ? "text-[color:var(--ink)]"
-                  : "text-[color:var(--ink-soft)] hover:text-[color:var(--ink)]"
-              }`}
-            >
-              Community Archive
-
-              {section === "archive" && (
-                <span className="absolute bottom-[-1px] left-0 h-[2px] w-full bg-[color:var(--pink-deep)]" />
-              )}
-            </button>
-
-          </div>
-
-          <span className="hidden text-[8px] uppercase tracking-[0.2em] text-[color:var(--ink-soft)] sm:block">
-            keep · create · remember
+          <span className="text-[10px]">
+            ♡
           </span>
 
         </div>
 
+        <h2 className="mt-7 font-serif-display text-5xl font-medium leading-[0.88] tracking-tight md:text-8xl">
+
+          little
+
+          <br />
+
+          <span className="italic text-[color:var(--pink-deep)]">
+            HANEULZ
+          </span>
+
+          <br />
+
+          <span className="text-3xl md:text-5xl">
+            archive
+          </span>
+
+        </h2>
+
+        <p className="mx-auto mt-8 max-w-xl text-sm leading-7 text-[color:var(--ink-soft)] md:text-base">
+          A little corner for fan creations, screenshots,
+          illustrations, and HANEULZ moments worth keeping.
+        </p>
+
       </div>
 
-      {/* CONTENT */}
+      {/* =========================================================
+          SECTION SWITCHER
+      ========================================================= */}
 
-      <div className="relative mx-auto mt-14 max-w-6xl px-5 md:px-8">
+      <div className="relative mx-auto mt-12 max-w-2xl px-4">
 
-        {section === "gallery" && <HaneulzGallery />}
+        <div className="rounded-[2rem] border border-[color:var(--line)] bg-white/75 p-2 shadow-[0_18px_55px_rgba(70,50,60,0.09)] backdrop-blur-md">
 
-        {section === "archive" && <HaneulzArchive />}
+          <div className="grid grid-cols-2 gap-2">
+
+            {/* GALLERY TAB */}
+
+            <button
+              type="button"
+              onClick={() => setSection("gallery")}
+              className={`group relative overflow-hidden rounded-[1.5rem] px-4 py-4 text-left transition duration-300 ${
+                section === "gallery"
+                  ? "bg-[color:var(--ink)] text-white shadow-lg"
+                  : "text-[color:var(--ink-soft)] hover:bg-[color:var(--pink)]/15"
+              }`}
+            >
+
+              <div className="relative z-10 flex items-center gap-3">
+
+                <div
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${
+                    section === "gallery"
+                      ? "bg-white/15"
+                      : "bg-[color:var(--pink)]/30"
+                  }`}
+                >
+                  <Camera size={16} />
+                </div>
+
+                <div className="min-w-0">
+
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em]">
+                    HANEULZ Gallery
+                  </p>
+
+                  <p
+                    className={`mt-1 text-[10px] ${
+                      section === "gallery"
+                        ? "text-white/60"
+                        : "text-[color:var(--ink-soft)]"
+                    }`}
+                  >
+                    curated visuals
+                  </p>
+
+                </div>
+
+              </div>
+
+              {section === "gallery" && (
+                <>
+                  <span className="absolute -right-2 -top-4 text-4xl opacity-15">
+                    ✦
+                  </span>
+
+                  <span className="absolute bottom-0 right-5 text-lg opacity-20">
+                    ♡
+                  </span>
+                </>
+              )}
+
+            </button>
+
+            {/* ARCHIVE TAB */}
+
+            <button
+              type="button"
+              onClick={() => setSection("archive")}
+              className={`group relative overflow-hidden rounded-[1.5rem] px-4 py-4 text-left transition duration-300 ${
+                section === "archive"
+                  ? "bg-[color:var(--ink)] text-white shadow-lg"
+                  : "text-[color:var(--ink-soft)] hover:bg-[color:var(--blue)]/15"
+              }`}
+            >
+
+              <div className="relative z-10 flex items-center gap-3">
+
+                <div
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${
+                    section === "archive"
+                      ? "bg-white/15"
+                      : "bg-[color:var(--blue)]/30"
+                  }`}
+                >
+                  <Palette size={16} />
+                </div>
+
+                <div className="min-w-0">
+
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.18em]">
+                    HANEULZ Archive
+                  </p>
+
+                  <p
+                    className={`mt-1 text-[10px] ${
+                      section === "archive"
+                        ? "text-white/60"
+                        : "text-[color:var(--ink-soft)]"
+                    }`}
+                  >
+                    fan creations
+                  </p>
+
+                </div>
+
+              </div>
+
+              {section === "archive" && (
+                <>
+                  <span className="absolute -left-2 -top-4 text-4xl opacity-15">
+                    ♡
+                  </span>
+
+                  <span className="absolute bottom-0 right-5 text-lg opacity-20">
+                    ✧
+                  </span>
+                </>
+              )}
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <p className="mt-4 text-center text-[9px] uppercase tracking-[0.18em] text-[color:var(--ink-soft)]">
+          {section === "gallery"
+            ? "browse the little moments"
+            : "share something with the community"}
+        </p>
+
+      </div>
+
+      {/* =========================================================
+          CONTENT
+      ========================================================= */}
+
+      <div className="relative mt-12 px-4 md:mt-16">
+
+        {section === "gallery" && (
+          <HaneulzGallery />
+        )}
+
+        {section === "archive" && (
+          <HaneulzArchive />
+        )}
 
       </div>
 
@@ -219,9 +307,9 @@ function HaneulzGallery() {
           : []
       );
 
-    } catch (error) {
+    } catch (err) {
 
-      console.error("Gallery error:", error);
+      console.error("Gallery error:", err);
 
       setPosts([]);
       setError(true);
@@ -235,37 +323,48 @@ function HaneulzGallery() {
   }, []);
 
   useEffect(() => {
+
     loadGallery();
+
   }, [loadGallery]);
 
   return (
-    <div>
+    <div className="mx-auto max-w-6xl">
 
-      {/* SECTION INTRO */}
+      {/* GALLERY INTRO */}
 
-      <div className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+      <div className="mb-10 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
 
         <div>
 
           <div className="mb-3 flex items-center gap-2">
+
             <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pink-deep)]" />
 
-            <span className="text-[8px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
+            <p className="text-[9px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
               selected visuals
-            </span>
+            </p>
+
           </div>
 
-          <h2 className="font-serif-display text-4xl md:text-6xl">
+          <h3 className="font-serif-display text-4xl md:text-6xl">
             little snapshots
-          </h2>
+          </h3>
+
+          <p className="mt-3 max-w-lg text-sm leading-6 text-[color:var(--ink-soft)]">
+            A collection of moments gathered from around the
+            HANEULZ community.
+          </p>
 
         </div>
 
-        <p className="max-w-xs text-right font-serif-display text-lg italic leading-6 text-[color:var(--ink-soft)]">
-          a collection of moments
-          <br />
-          saved from the timeline.
-        </p>
+        <div className="rounded-2xl border border-[color:var(--line)] bg-white/70 px-4 py-3 md:max-w-xs md:text-right">
+
+          <p className="font-serif-display text-base italic text-[color:var(--ink-soft)]">
+            tap any piece to visit its original source
+          </p>
+
+        </div>
 
       </div>
 
@@ -273,22 +372,14 @@ function HaneulzGallery() {
 
       {loading && (
 
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-7">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
 
           {[1, 2, 3, 4, 5, 6].map((item) => (
 
             <div
               key={item}
-              className={`relative aspect-[0.92] animate-pulse bg-white/55 ${
-                item % 3 === 0
-                  ? "rotate-[1.5deg]"
-                  : item % 3 === 1
-                    ? "rotate-[-1deg]"
-                    : ""
-              }`}
-            >
-              <div className="absolute inset-2 border border-[color:var(--line)]" />
-            </div>
+              className="aspect-square animate-pulse rounded-[2rem] border border-[color:var(--line)] bg-white/70"
+            />
 
           ))}
 
@@ -300,21 +391,23 @@ function HaneulzGallery() {
 
       {!loading && error && (
 
-        <div className="mx-auto max-w-xl border border-[color:var(--line)] bg-white/60 px-7 py-20 text-center shadow-[8px_12px_35px_rgba(70,50,60,0.06)]">
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/75 px-6 py-20 text-center shadow-[0_15px_45px_rgba(70,50,60,0.07)]">
 
-          <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-[color:var(--line)] bg-white">
-            <ImageIcon
-              size={24}
-              strokeWidth={1.2}
-              className="text-[color:var(--pink-deep)]"
-            />
+          <div className="absolute left-8 top-8 text-3xl opacity-20">
+            ✦
           </div>
 
-          <p className="mt-6 text-[8px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
-            temporarily away
-          </p>
+          <div className="absolute right-10 top-10 text-3xl opacity-20">
+            ♡
+          </div>
 
-          <h3 className="mt-2 font-serif-display text-3xl">
+          <ImageIcon
+            className="mx-auto text-[color:var(--pink-deep)]"
+            size={34}
+            strokeWidth={1.2}
+          />
+
+          <h3 className="mt-5 font-serif-display text-3xl">
             the gallery is resting
           </h3>
 
@@ -325,7 +418,7 @@ function HaneulzGallery() {
           <button
             type="button"
             onClick={loadGallery}
-            className="mt-7 border border-[color:var(--ink)] bg-[color:var(--ink)] px-7 py-3 text-[8px] font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-[color:var(--pink-deep)] hover:border-[color:var(--pink-deep)]"
+            className="mt-6 rounded-full bg-[color:var(--ink)] px-6 py-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:bg-[color:var(--pink-deep)]"
           >
             Try again
           </button>
@@ -338,28 +431,24 @@ function HaneulzGallery() {
 
       {!loading && !error && posts.length === 0 && (
 
-        <div className="relative overflow-hidden border border-[color:var(--line)] bg-white/50 px-7 py-24 text-center">
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/75 px-6 py-24 text-center shadow-[0_15px_45px_rgba(70,50,60,0.06)]">
 
-          <span className="absolute left-8 top-8 rotate-[-12deg] text-3xl opacity-20">
+          <div className="absolute left-8 top-8 rotate-[-12deg] text-3xl opacity-20">
             ✦
-          </span>
+          </div>
 
-          <span className="absolute right-10 top-12 rotate-12 text-3xl opacity-20">
+          <div className="absolute right-10 top-12 rotate-12 text-3xl opacity-20">
             ♡
-          </span>
+          </div>
 
-          <span className="absolute bottom-8 left-[20%] text-2xl opacity-15">
+          <div className="absolute bottom-8 left-1/4 text-2xl opacity-15">
             ୨୧
-          </span>
-
-          <span className="absolute bottom-12 right-[20%] text-2xl opacity-15">
-            ✧
-          </span>
+          </div>
 
           <ImageIcon
             className="mx-auto text-[color:var(--ink-soft)]"
-            size={30}
-            strokeWidth={1.1}
+            size={34}
+            strokeWidth={1.2}
           />
 
           <h3 className="mt-6 font-serif-display text-3xl">
@@ -368,88 +457,86 @@ function HaneulzGallery() {
 
           <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
             There aren't any gallery pieces here yet.
+            Check back when the next set of visuals arrives.
           </p>
 
         </div>
 
       )}
 
-      {/* GALLERY */}
+      {/* GALLERY GRID */}
 
       {!loading && !error && posts.length > 0 && (
 
-        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-8 md:gap-y-14">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
 
           {posts.map((post, index) => (
 
             <a
               key={post.id}
-              href={post.original_url || "#"}
+              href={
+                post.original_url &&
+                /^https?:\/\//i.test(post.original_url)
+                  ? post.original_url
+                  : undefined
+              }
               target="_blank"
               rel="noopener noreferrer"
-              className={`group relative block ${
+              onClick={(event) => {
+                if (
+                  !post.original_url ||
+                  !/^https?:\/\//i.test(post.original_url)
+                ) {
+                  event.preventDefault();
+                }
+              }}
+              className={`group relative overflow-hidden rounded-[1.75rem] border border-white bg-white p-1.5 shadow-[0_12px_40px_rgba(70,50,60,0.08)] transition duration-500 hover:-translate-y-2 hover:shadow-xl md:rounded-[2rem] ${
                 index % 5 === 0
-                  ? "md:translate-y-3"
-                  : index % 5 === 2
-                    ? "md:-translate-y-3"
-                    : index % 5 === 4
-                      ? "md:translate-y-6"
-                      : ""
+                  ? "md:rotate-[-1deg]"
+                  : ""
+              } ${
+                index % 5 === 2
+                  ? "md:rotate-[1deg]"
+                  : ""
               }`}
             >
 
-              {/* PAPER */}
+              <div className="relative aspect-square overflow-hidden rounded-[1.35rem] bg-[color:var(--cream)] md:rounded-[1.6rem]">
 
-              <div
-                className={`relative bg-white p-2 pb-12 shadow-[5px_8px_28px_rgba(70,50,60,0.10)] transition duration-500 group-hover:-translate-y-2 group-hover:rotate-0 group-hover:shadow-[10px_18px_40px_rgba(70,50,60,0.16)] ${
-                  index % 5 === 0
-                    ? "rotate-[-1.5deg]"
-                    : index % 5 === 1
-                      ? "rotate-[1deg]"
-                      : index % 5 === 2
-                        ? "rotate-[-0.5deg]"
-                        : index % 5 === 3
-                          ? "rotate-[1.5deg]"
-                          : "rotate-[-1deg]"
-                }`}
-              >
+                <img
+                  src={post.image_url}
+                  alt={
+                    post.caption ||
+                    "HANEULZ Gallery"
+                  }
+                  className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
+                />
 
-                {/* TAPE */}
+                {/* COLOR OVERLAY */}
 
-                <div className="pointer-events-none absolute -top-3 left-1/2 z-20 h-7 w-20 -translate-x-1/2 rotate-[-2deg] bg-[color:var(--pink)]/55 shadow-sm" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(35,25,35,0.75)] via-transparent to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
 
-                {/* IMAGE */}
+                {/* NUMBER */}
 
-                <div className="relative aspect-square overflow-hidden bg-[color:var(--cream)]">
-
-                  <img
-                    src={post.image_url}
-                    alt={
-                      post.caption ||
-                      "HANEULZ Gallery"
-                    }
-                    className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                  />
-
-                  <div className="absolute inset-0 bg-black/10 opacity-0 transition group-hover:opacity-100" />
-
-                  <div className="absolute bottom-3 right-3 flex h-9 w-9 translate-y-2 items-center justify-center rounded-full bg-white text-black opacity-0 shadow-lg transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    <ArrowUpRight size={15} />
-                  </div>
-
+                <div className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[7px] font-semibold uppercase tracking-[0.15em] text-black opacity-0 shadow-sm backdrop-blur-md transition duration-300 group-hover:opacity-100">
+                  {String(index + 1).padStart(2, "0")}
                 </div>
 
-                {/* CAPTION STRIP */}
+                {/* SOURCE */}
 
-                <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-3 pb-3">
+                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between opacity-0 transition duration-300 group-hover:opacity-100">
 
-                  <span className="max-w-[75%] truncate font-serif-display text-sm text-[color:var(--ink)]">
-                    {post.caption || "a little HANEULZ moment ♡"}
+                  <span className="rounded-full bg-white/95 px-3 py-2 text-[7px] font-semibold uppercase tracking-[0.15em] text-black backdrop-blur-md">
+                    {post.original_url
+                      ? "view original"
+                      : "gallery piece"}
                   </span>
 
-                  <span className="text-[8px] font-semibold uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                  {post.original_url && (
+                    <span className="grid h-9 w-9 place-items-center rounded-full bg-white text-black shadow-lg">
+                      <ArrowUpRight size={14} />
+                    </span>
+                  )}
 
                 </div>
 
@@ -488,15 +575,12 @@ function HaneulzArchive() {
       setLoading(true);
       setArchiveError(false);
 
-      const response = await api.get(
-        "/archive",
-        {
-          params: {
-            page,
-            limit: POSTS_PER_PAGE,
-          },
-        }
-      );
+      const response = await api.get("/archive", {
+        params: {
+          page,
+          limit: POSTS_PER_PAGE,
+        },
+      });
 
       setPosts(
         response.data?.posts || []
@@ -508,10 +592,7 @@ function HaneulzArchive() {
 
     } catch (error) {
 
-      console.error(
-        "Archive error:",
-        error
-      );
+      console.error("Archive error:", error);
 
       setPosts([]);
       setTotalPages(1);
@@ -526,100 +607,100 @@ function HaneulzArchive() {
   }, [page]);
 
   useEffect(() => {
+
     loadArchive();
+
   }, [loadArchive]);
 
   function handleSubmitted() {
 
     setShowSubmit(false);
 
-    if (page !== 1) {
-      setPage(1);
-    } else {
+    if (page === 1) {
       loadArchive();
+    } else {
+      setPage(1);
     }
 
   }
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto max-w-3xl">
 
-      {/* ARCHIVE HEADER */}
+      {/* =======================================================
+          ARCHIVE HERO
+      ======================================================= */}
 
-      <div className="relative mb-12 overflow-hidden border-y border-[color:var(--line)] py-9">
+      <div className="relative mb-10 overflow-hidden rounded-[2.5rem] border border-white bg-gradient-to-br from-[color:var(--pink)]/35 via-white/80 to-[color:var(--blue)]/30 p-7 shadow-[0_18px_55px_rgba(70,50,60,0.08)] md:p-10">
 
-        <div className="absolute right-0 top-0 h-full w-1/3 bg-[color:var(--pink)]/10" />
+        <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full border border-white/70" />
 
-        <div className="relative flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
+        <div className="absolute -right-3 -top-3 h-20 w-20 rounded-full border border-white/70" />
 
-          <div>
+        <div className="absolute bottom-6 right-8 rotate-12 text-3xl opacity-30">
+          ♡
+        </div>
 
-            <div className="mb-4 flex items-center gap-2">
+        <div className="absolute left-8 bottom-7 rotate-[-8deg] text-xl opacity-20">
+          ✦
+        </div>
 
-              <span className="text-[8px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
-                community archive
-              </span>
+        <div className="relative">
 
-              <span className="text-[color:var(--pink-deep)]">
-                ✦
-              </span>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white/80 px-3 py-2 shadow-sm">
 
-            </div>
+            <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pink-deep)]" />
 
-            <h2 className="font-serif-display text-5xl leading-[0.85] md:text-7xl">
-
-              things
-              <br />
-
-              <span className="italic text-[color:var(--pink-deep)]">
-                we made.
-              </span>
-
-            </h2>
-
-            <p className="mt-5 max-w-xl text-sm leading-7 text-[color:var(--ink-soft)]">
-              A little corner for fan art and creative pieces
-              made by the HANEULZ community.
+            <p className="text-[8px] font-semibold uppercase tracking-[0.25em] text-[color:var(--ink-soft)]">
+              community archive
             </p>
 
           </div>
 
+          <h3 className="font-serif-display text-4xl md:text-6xl">
+
+            HANEULZ
+
+            <br />
+
+            <span className="italic text-[color:var(--pink-deep)]">
+              Archive
+            </span>
+
+          </h3>
+
+          <p className="mt-5 max-w-lg text-sm leading-7 text-[color:var(--ink-soft)]">
+            A little home for fan art and creative pieces
+            submitted by the HANEULZ community.
+          </p>
+
           <button
             type="button"
             onClick={() => setShowSubmit(true)}
-            className="group flex items-center justify-center gap-3 self-start border border-[color:var(--ink)] bg-[color:var(--ink)] px-6 py-4 text-[8px] font-semibold uppercase tracking-[0.25em] text-white transition hover:border-[color:var(--pink-deep)] hover:bg-[color:var(--pink-deep)] md:self-end"
+            className="mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-[color:var(--ink)] px-6 py-4 text-[9px] font-semibold uppercase tracking-[0.2em] text-white shadow-lg transition hover:-translate-y-1 hover:bg-[color:var(--pink-deep)]"
           >
-
             <Upload size={13} />
-
             Add your work
-
-            <ArrowUpRight
-              size={13}
-              className="transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-
           </button>
 
         </div>
 
       </div>
 
-      {/* LOADING */}
+      {/* =======================================================
+          FEED
+      ======================================================= */}
 
       {loading && (
 
-        <div className="space-y-10">
+        <div className="space-y-7">
 
           {[1, 2, 3].map((item) => (
 
             <div
               key={item}
-              className="animate-pulse border border-[color:var(--line)] bg-white/50"
-            >
-              <div className="h-12 border-b border-[color:var(--line)]" />
-              <div className="aspect-[4/3] bg-white/40" />
-            </div>
+              className="h-[430px] animate-pulse rounded-[2.5rem] border border-[color:var(--line)] bg-white/70"
+            />
 
           ))}
 
@@ -631,12 +712,12 @@ function HaneulzArchive() {
 
       {!loading && archiveError && (
 
-        <div className="border border-[color:var(--line)] bg-white/60 px-7 py-20 text-center">
+        <div className="rounded-[2.5rem] border border-[color:var(--line)] bg-white/80 px-6 py-20 text-center shadow-sm">
 
           <Sparkles
             className="mx-auto text-[color:var(--pink-deep)]"
-            size={30}
-            strokeWidth={1.1}
+            size={34}
+            strokeWidth={1.2}
           />
 
           <h3 className="mt-5 font-serif-display text-3xl">
@@ -650,7 +731,7 @@ function HaneulzArchive() {
           <button
             type="button"
             onClick={loadArchive}
-            className="mt-7 border border-[color:var(--ink)] bg-[color:var(--ink)] px-7 py-3 text-[8px] font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-[color:var(--pink-deep)] hover:border-[color:var(--pink-deep)]"
+            className="mt-6 rounded-full bg-[color:var(--ink)] px-6 py-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-[color:var(--pink-deep)]"
           >
             Try again
           </button>
@@ -661,98 +742,113 @@ function HaneulzArchive() {
 
       {/* EMPTY */}
 
-      {!loading && !archiveError && posts.length === 0 && (
-
-        <div className="border border-dashed border-[color:var(--line)] bg-white/45 px-7 py-24 text-center">
-
-          <div className="mx-auto grid h-14 w-14 place-items-center border border-[color:var(--line)] bg-white">
-            <Sparkles
-              size={23}
-              className="text-[color:var(--pink-deep)]"
-              strokeWidth={1.1}
-            />
-          </div>
-
-          <h3 className="mt-6 font-serif-display text-3xl">
-            nothing filed yet
-          </h3>
-
-          <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
-            Be the first little piece in the archive.
-          </p>
-
-        </div>
-
-      )}
-
-      {/* POSTS */}
-
-      {!loading && !archiveError && posts.length > 0 && (
-
-        <div className="space-y-12">
-
-          {posts.map((post) => (
-            <ArchivePost
-              key={post.id}
-              post={post}
-            />
-          ))}
-
-        </div>
-
-      )}
-
-      {/* PAGINATION */}
-
       {!loading &&
         !archiveError &&
-        totalPages > 1 && (
+        posts.length === 0 && (
 
-          <div className="mt-14 flex items-center justify-center gap-4">
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-dashed border-[color:var(--line)] bg-white/75 px-6 py-24 text-center">
+
+            <div className="absolute left-8 top-8 text-3xl opacity-20">
+              ✦
+            </div>
+
+            <div className="absolute right-8 top-10 text-3xl opacity-20">
+              ♡
+            </div>
+
+            <Sparkles
+              className="mx-auto text-[color:var(--pink-deep)]"
+              size={34}
+              strokeWidth={1.2}
+            />
+
+            <h3 className="mt-6 font-serif-display text-3xl">
+              nothing filed yet
+            </h3>
+
+            <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
+              Be the first person to leave something
+              in the HANEULZ archive.
+            </p>
 
             <button
               type="button"
-              disabled={page <= 1}
-              onClick={() =>
-                setPage(
-                  (value) => value - 1
-                )
-              }
-              className="grid h-10 w-10 place-items-center border border-[color:var(--line)] bg-white transition hover:bg-[color:var(--ink)] hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+              onClick={() => setShowSubmit(true)}
+              className="mt-6 rounded-full bg-[color:var(--pink-deep)] px-6 py-3 text-[9px] font-semibold uppercase tracking-[0.2em] text-white shadow-lg transition hover:-translate-y-0.5"
             >
-              <ChevronLeft size={15} />
-            </button>
-
-            <span className="text-[8px] font-semibold uppercase tracking-[0.25em] text-[color:var(--ink-soft)]">
-              page {page} / {totalPages}
-            </span>
-
-            <button
-              type="button"
-              disabled={page >= totalPages}
-              onClick={() =>
-                setPage(
-                  (value) => value + 1
-                )
-              }
-              className="grid h-10 w-10 place-items-center border border-[color:var(--line)] bg-white transition hover:bg-[color:var(--ink)] hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
-            >
-              <ChevronRight size={15} />
+              Submit your art
             </button>
 
           </div>
 
         )}
 
+      {/* POSTS */}
+
+      {!loading &&
+        !archiveError &&
+        posts.length > 0 && (
+
+          <div className="space-y-8">
+
+            {posts.map((post) => (
+
+              <ArchivePost
+                key={post.id}
+                post={post}
+              />
+
+            ))}
+
+          </div>
+
+        )}
+
+      {/* PAGINATION */}
+
+      {!archiveError && totalPages > 1 && (
+
+        <div className="mt-12 flex items-center justify-center gap-3">
+
+          <button
+            type="button"
+            disabled={page <= 1}
+            onClick={() =>
+              setPage((value) => value - 1)
+            }
+            className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--line)] bg-white/80 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          <span className="rounded-full border border-[color:var(--line)] bg-white/80 px-6 py-2.5 text-[9px] font-semibold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+            {page} / {totalPages}
+          </span>
+
+          <button
+            type="button"
+            disabled={page >= totalPages}
+            onClick={() =>
+              setPage((value) => value + 1)
+            }
+            className="grid h-11 w-11 place-items-center rounded-full border border-[color:var(--line)] bg-white/80 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <ChevronRight size={16} />
+          </button>
+
+        </div>
+
+      )}
+
       {/* SUBMISSION */}
 
       {showSubmit && (
+
         <ArchiveSubmission
           onSubmitted={handleSubmitted}
-          onClose={() =>
-            setShowSubmit(false)
-          }
+          onClose={() => setShowSubmit(false)}
         />
+
       )}
 
     </div>
@@ -788,6 +884,8 @@ function ArchivePost({ post }) {
 
   async function handleLike() {
 
+    if (liked) return;
+
     try {
 
       const response = await api.post(
@@ -799,7 +897,7 @@ function ArchivePost({ post }) {
 
     } catch (error) {
 
-      console.error(error);
+      console.error("Like error:", error);
 
     }
 
@@ -814,12 +912,14 @@ function ArchivePost({ post }) {
       );
 
       setComments(
-        response.data || []
+        Array.isArray(response.data)
+          ? response.data
+          : []
       );
 
     } catch (error) {
 
-      console.error(error);
+      console.error("Comments error:", error);
 
     }
 
@@ -827,8 +927,7 @@ function ArchivePost({ post }) {
 
   async function toggleComments() {
 
-    const next =
-      !commentsOpen;
+    const next = !commentsOpen;
 
     setCommentsOpen(next);
 
@@ -854,11 +953,8 @@ function ArchivePost({ post }) {
         `/archive/${post.id}/comments`,
         {
           author_name:
-            commentName.trim() ||
-            "Anonymous",
-
-          text:
-            commentText.trim(),
+            commentName.trim() || "Anonymous",
+          text: commentText.trim(),
         }
       );
 
@@ -871,9 +967,10 @@ function ArchivePost({ post }) {
 
     } catch (error) {
 
-      console.error(error);
+      console.error("Comment error:", error);
 
       toast.error(
+        error?.response?.data?.detail ||
         "Couldn't send your comment."
       );
 
@@ -886,34 +983,34 @@ function ArchivePost({ post }) {
   }
 
   return (
-    <article className="relative border border-[color:var(--line)] bg-white/75 shadow-[8px_12px_35px_rgba(70,50,60,0.07)] backdrop-blur-md">
+    <article className="overflow-hidden rounded-[2.5rem] border border-white bg-white/90 shadow-[0_18px_55px_rgba(70,50,60,0.08)]">
 
       {/* HEADER */}
 
-      <div className="flex items-center justify-between border-b border-[color:var(--line)] px-5 py-4 md:px-7">
+      <div className="flex items-center justify-between px-5 py-5 md:px-7">
 
         <div className="flex min-w-0 items-center gap-3">
 
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[color:var(--pink)]/40 font-serif-display text-lg">
+          <div className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[color:var(--pink)] to-[color:var(--blue)] font-serif-display text-lg shadow-sm">
 
             {post.author_name
               ?.charAt(0)
-              ?.toUpperCase() ||
-              "♡"}
+              ?.toUpperCase() || "♡"}
+
+            <span className="absolute -bottom-1 -right-1 text-[10px]">
+              ✦
+            </span>
 
           </div>
 
           <div className="min-w-0">
 
             <p className="truncate text-sm font-semibold">
-              {post.author_name ||
-                "Anonymous"}
+              {post.author_name || "Anonymous"}
             </p>
 
-            <p className="mt-0.5 text-[8px] uppercase tracking-[0.18em] text-[color:var(--ink-soft)]">
-              {formatDate(
-                post.created_at
-              )}
+            <p className="mt-0.5 text-[9px] uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
+              {formatDate(post.created_at)}
             </p>
 
           </div>
@@ -921,19 +1018,15 @@ function ArchivePost({ post }) {
         </div>
 
         {post.original_url && (
-
           <a
             href={post.original_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 text-[8px] font-semibold uppercase tracking-[0.2em] text-[color:var(--ink-soft)] transition hover:text-[color:var(--pink-deep)]"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] transition hover:bg-[color:var(--pink)]/20 hover:text-[color:var(--ink)]"
+            aria-label="Open original post"
           >
-            original
-
-            <ExternalLink size={12} />
-
+            <ExternalLink size={14} />
           </a>
-
         )}
 
       </div>
@@ -942,20 +1035,22 @@ function ArchivePost({ post }) {
 
       <div className="relative bg-[color:var(--cream)]">
 
+        <div className="pointer-events-none absolute left-5 top-5 z-10 h-5 w-16 rotate-[-5deg] bg-white/30 backdrop-blur-sm" />
+
         <img
           src={post.image_url}
           alt={
             post.caption ||
             "HANEULZ fan art"
           }
-          className="mx-auto max-h-[800px] w-full object-contain"
+          className="mx-auto max-h-[750px] w-full object-contain"
         />
 
       </div>
 
       {/* CONTENT */}
 
-      <div className="px-5 py-6 md:px-7">
+      <div className="px-5 pb-6 pt-5 md:px-7">
 
         <div className="flex items-center gap-6">
 
@@ -970,7 +1065,7 @@ function ArchivePost({ post }) {
           >
 
             <Heart
-              size={19}
+              size={20}
               strokeWidth={1.5}
               fill={
                 liked
@@ -990,7 +1085,7 @@ function ArchivePost({ post }) {
           >
 
             <MessageCircle
-              size={19}
+              size={20}
               strokeWidth={1.5}
             />
 
@@ -1006,7 +1101,7 @@ function ArchivePost({ post }) {
 
         {post.caption && (
 
-          <p className="mt-5 whitespace-pre-wrap text-sm leading-7">
+          <p className="mt-5 whitespace-pre-wrap text-sm leading-7 text-[color:var(--ink)]">
 
             <span className="font-semibold">
               {post.author_name}
@@ -1018,8 +1113,6 @@ function ArchivePost({ post }) {
 
         )}
 
-        {/* COMMENTS */}
-
         {commentsOpen && (
 
           <div className="mt-6 border-t border-[color:var(--line)] pt-6">
@@ -1028,26 +1121,24 @@ function ArchivePost({ post }) {
 
               <div className="space-y-3">
 
-                {comments.map(
-                  (comment) => (
+                {comments.map((comment) => (
 
-                    <div
-                      key={comment.id}
-                      className="border-l-2 border-[color:var(--pink)] bg-[color:var(--cream)] px-4 py-3"
-                    >
+                  <div
+                    key={comment.id}
+                    className="rounded-2xl border border-[color:var(--line)] bg-[color:var(--cream)] px-4 py-3"
+                  >
 
-                      <p className="text-xs font-semibold">
-                        {comment.author_name}
-                      </p>
+                    <p className="text-xs font-semibold">
+                      {comment.author_name}
+                    </p>
 
-                      <p className="mt-1 text-sm leading-5 text-[color:var(--ink-soft)]">
-                        {comment.text}
-                      </p>
+                    <p className="mt-1 text-sm leading-5 text-[color:var(--ink-soft)]">
+                      {comment.text}
+                    </p>
 
-                    </div>
+                  </div>
 
-                  )
-                )}
+                ))}
 
               </div>
 
@@ -1055,7 +1146,7 @@ function ArchivePost({ post }) {
 
             <form
               onSubmit={submitComment}
-              className="mt-5"
+              className="mt-4"
             >
 
               <input
@@ -1066,7 +1157,7 @@ function ArchivePost({ post }) {
                   )
                 }
                 placeholder="Your name"
-                className="w-full border border-[color:var(--line)] bg-white px-4 py-3 text-sm outline-none transition focus:border-[color:var(--pink-deep)]"
+                className="w-full rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3 text-sm outline-none transition focus:border-[color:var(--pink-deep)]"
               />
 
               <div className="mt-2 flex gap-2">
@@ -1079,13 +1170,13 @@ function ArchivePost({ post }) {
                     )
                   }
                   placeholder="Write a little comment..."
-                  className="min-w-0 flex-1 border border-[color:var(--line)] bg-white px-4 py-3 text-sm outline-none transition focus:border-[color:var(--pink-deep)]"
+                  className="min-w-0 flex-1 rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3 text-sm outline-none transition focus:border-[color:var(--pink-deep)]"
                 />
 
                 <button
                   type="submit"
                   disabled={commentLoading}
-                  className="grid h-11 w-11 shrink-0 place-items-center bg-[color:var(--ink)] text-white transition hover:bg-[color:var(--pink-deep)] disabled:opacity-50"
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[color:var(--ink)] text-white transition hover:bg-[color:var(--pink-deep)] disabled:opacity-50"
                 >
                   <Send size={15} />
                 </button>
@@ -1106,7 +1197,7 @@ function ArchivePost({ post }) {
 
 
 /* =============================================================
-   SUBMISSION MODAL
+   ARCHIVE SUBMISSION MODAL
 ============================================================= */
 
 function ArchiveSubmission({
@@ -1132,7 +1223,7 @@ function ArchiveSubmission({
   const [submitting, setSubmitting] =
     useState(false);
 
-  /* PREVIEW */
+  /* IMAGE PREVIEW */
 
   useEffect(() => {
 
@@ -1150,9 +1241,7 @@ function ArchiveSubmission({
     setPreview(objectUrl);
 
     return () => {
-      URL.revokeObjectURL(
-        objectUrl
-      );
+      URL.revokeObjectURL(objectUrl);
     };
 
   }, [image]);
@@ -1164,7 +1253,8 @@ function ArchiveSubmission({
     function handleEscape(event) {
 
       if (
-        event.key === "Escape"
+        event.key === "Escape" &&
+        !submitting
       ) {
         onClose();
       }
@@ -1185,7 +1275,7 @@ function ArchiveSubmission({
 
     };
 
-  }, [onClose]);
+  }, [onClose, submitting]);
 
   async function submit(event) {
 
@@ -1274,14 +1364,10 @@ function ArchiveSubmission({
     const file =
       event.target.files?.[0];
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     if (
-      !file.type.startsWith(
-        "image/"
-      )
+      !file.type.startsWith("image/")
     ) {
 
       toast.error(
@@ -1297,13 +1383,15 @@ function ArchiveSubmission({
   }
 
   return (
+
     <div
-      className="fixed inset-0 z-[200] flex items-end justify-center bg-black/55 p-0 backdrop-blur-lg sm:items-center sm:p-5"
+      className="fixed inset-0 z-[200] flex items-end justify-center bg-[rgba(35,25,35,0.58)] p-0 backdrop-blur-md sm:items-center sm:p-5"
       onMouseDown={(event) => {
 
         if (
           event.target ===
-          event.currentTarget
+            event.currentTarget &&
+          !submitting
         ) {
           onClose();
         }
@@ -1315,81 +1403,110 @@ function ArchiveSubmission({
         role="dialog"
         aria-modal="true"
         aria-labelledby="archive-submission-title"
+        className="relative max-h-[94vh] w-full max-w-xl overflow-y-auto rounded-t-[2rem] border border-white/80 bg-[color:var(--cream)] shadow-2xl sm:rounded-[2rem]"
         onMouseDown={(event) =>
           event.stopPropagation()
         }
-        className="relative max-h-[95vh] w-full max-w-2xl overflow-y-auto bg-[color:var(--cream)] shadow-[0_25px_80px_rgba(0,0,0,0.25)] sm:max-h-[90vh]"
       >
 
-        {/* DECORATIVE PAPER EDGE */}
+        {/* COLOR DECORATIONS */}
 
-        <div className="absolute left-0 right-0 top-0 h-1 bg-[color:var(--pink-deep)]" />
+        <div className="pointer-events-none absolute -right-16 top-16 h-40 w-40 rounded-full bg-[color:var(--pink)]/30 blur-2xl" />
 
-        {/* CLOSE */}
+        <div className="pointer-events-none absolute -left-16 bottom-20 h-36 w-36 rounded-full bg-[color:var(--blue)]/25 blur-2xl" />
 
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close submission form"
-          className="absolute right-4 top-4 z-30 grid h-10 w-10 place-items-center border border-[color:var(--line)] bg-white text-[color:var(--ink)] shadow-sm transition hover:bg-[color:var(--ink)] hover:text-white sm:right-6 sm:top-6"
-        >
-          <X size={18} />
-        </button>
+        <div className="pointer-events-none absolute right-10 top-24 rotate-12 text-3xl opacity-20">
+          ♡
+        </div>
 
-        {/* HEADER */}
+        <div className="pointer-events-none absolute left-7 top-36 rotate-[-10deg] text-2xl opacity-20">
+          ✦
+        </div>
 
-        <div className="relative border-b border-[color:var(--line)] px-6 pb-7 pt-8 sm:px-9">
+        {/* TOP BAR */}
 
-          <div className="absolute left-8 top-4 rotate-[-8deg] text-2xl opacity-20">
-            ✦
-          </div>
+        <div className="sticky top-0 z-30 flex items-center justify-between border-b border-[color:var(--line)] bg-[color:var(--cream)] px-5 py-4">
 
-          <div className="absolute right-20 top-9 rotate-12 text-2xl opacity-20">
-            ♡
-          </div>
+          <div className="flex items-center gap-3">
 
-          <div className="pr-12">
+            <div className="grid h-10 w-10 place-items-center rounded-full bg-white shadow-sm">
 
-            <p className="text-[8px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
-              HANEULZ ARCHIVE · COMMUNITY SUBMISSION
-            </p>
+              <Sparkles
+                size={16}
+                className="text-[color:var(--pink-deep)]"
+              />
 
-            <h2
-              id="archive-submission-title"
-              className="mt-3 font-serif-display text-4xl leading-none sm:text-5xl"
-            >
-              add a little
-              <br />
-              <span className="italic text-[color:var(--pink-deep)]">
-                something ♡
-              </span>
-            </h2>
+            </div>
 
-            <p className="mt-4 max-w-lg text-sm leading-6 text-[color:var(--ink-soft)]">
-              Share something you made with the HANEULZ
-              community. Every submission is reviewed before
-              appearing in the archive.
-            </p>
+            <div>
+
+              <p className="text-[8px] font-semibold uppercase tracking-[0.25em] text-[color:var(--ink-soft)]">
+                HANEULZ ARCHIVE
+              </p>
+
+              <p className="font-serif-display text-lg">
+                submit a piece
+              </p>
+
+            </div>
 
           </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close submission form"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[color:var(--line)] bg-white text-[color:var(--ink)] shadow-sm transition hover:bg-[color:var(--ink)] hover:text-white"
+          >
+            <X size={18} />
+          </button>
 
         </div>
 
-        {/* FORM */}
+        {/* CONTENT */}
 
-        <form
-          onSubmit={submit}
-          className="px-6 py-7 sm:px-9 sm:py-8"
-        >
+        <div className="relative p-5 sm:p-7">
 
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="mb-7">
+
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[color:var(--pink)]/30 px-3 py-1.5">
+
+              <span className="text-xs">
+                ♡
+              </span>
+
+              <span className="text-[8px] font-semibold uppercase tracking-[0.2em] text-[color:var(--pink-deep)]">
+                made by you
+              </span>
+
+            </div>
+
+            <h2
+              id="archive-submission-title"
+              className="font-serif-display text-3xl sm:text-4xl"
+            >
+              add a little something
+            </h2>
+
+            <p className="mt-2 max-w-md text-sm leading-6 text-[color:var(--ink-soft)]">
+              Share your fan art with HANEULZ.
+              We'll review it before it appears
+              in the public archive.
+            </p>
+
+          </div>
+
+          <form
+            onSubmit={submit}
+            className="space-y-5"
+          >
 
             {/* NAME */}
 
-            <div className="md:col-span-1">
+            <div>
 
-              <label className="mb-2 block text-[8px] font-semibold uppercase tracking-[0.25em]">
-                Name / username
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+                Your name / username
               </label>
 
               <input
@@ -1401,20 +1518,127 @@ function ArchiveSubmission({
                 }
                 required
                 placeholder="@yourusername"
-                className="w-full border-b border-[color:var(--line)] bg-transparent px-1 py-3 text-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)]"
+                className="w-full rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3.5 text-sm shadow-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)] focus:ring-2 focus:ring-[color:var(--pink)]/30"
               />
 
             </div>
 
-            {/* ORIGINAL LINK */}
+            {/* IMAGE */}
 
-            <div className="md:col-span-1">
+            <div>
 
-              <label className="mb-2 block text-[8px] font-semibold uppercase tracking-[0.25em]">
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+                Your artwork
+              </label>
 
-                Original picture / post
+              <label
+                htmlFor="archive-image-upload"
+                className={`group relative block cursor-pointer overflow-hidden rounded-2xl border border-dashed border-[color:var(--line)] bg-white transition hover:border-[color:var(--pink-deep)] ${
+                  preview
+                    ? "p-2"
+                    : "p-6"
+                }`}
+              >
 
-                <span className="ml-2 font-normal normal-case tracking-normal text-[color:var(--ink-soft)]">
+                {preview ? (
+
+                  <div className="relative overflow-hidden rounded-xl bg-[color:var(--cream)]">
+
+                    <img
+                      src={preview}
+                      alt="Artwork preview"
+                      className="max-h-72 w-full object-contain"
+                    />
+
+                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent opacity-0 transition group-hover:opacity-100">
+
+                      <div className="p-4 text-white">
+
+                        <p className="text-xs font-semibold">
+                          {image?.name}
+                        </p>
+
+                        <p className="mt-1 text-[9px] uppercase tracking-[0.15em] opacity-80">
+                          Tap to choose another
+                        </p>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                ) : (
+
+                  <div className="flex min-h-36 flex-col items-center justify-center text-center">
+
+                    <div className="grid h-12 w-12 place-items-center rounded-full bg-[color:var(--pink)]/35">
+
+                      <Upload
+                        size={20}
+                        className="text-[color:var(--pink-deep)]"
+                      />
+
+                    </div>
+
+                    <p className="mt-4 text-sm font-medium">
+                      Choose your fan art
+                    </p>
+
+                    <p className="mt-1 text-[10px] text-[color:var(--ink-soft)]">
+                      JPG · PNG · WEBP
+                    </p>
+
+                  </div>
+
+                )}
+
+                <input
+                  id="archive-image-upload"
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+
+              </label>
+
+            </div>
+
+            {/* CAPTION */}
+
+            <div>
+
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+                Tell us about it
+                <span className="ml-1 font-normal normal-case tracking-normal text-[color:var(--ink-soft)]">
+                  optional
+                </span>
+              </label>
+
+              <textarea
+                value={caption}
+                onChange={(event) =>
+                  setCaption(
+                    event.target.value
+                  )
+                }
+                rows={3}
+                placeholder="Add a little caption..."
+                className="w-full resize-none rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3.5 text-sm leading-6 shadow-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)] focus:ring-2 focus:ring-[color:var(--pink)]/30"
+              />
+
+            </div>
+
+            {/* ORIGINAL SOURCE */}
+
+            <div>
+
+              <label className="mb-2 block text-[9px] font-semibold uppercase tracking-[0.2em]">
+
+                Original post / source
+
+                <span className="ml-1 font-normal normal-case tracking-normal text-[color:var(--ink-soft)]">
                   optional
                 </span>
 
@@ -1429,138 +1653,22 @@ function ArchiveSubmission({
                   )
                 }
                 placeholder="https://..."
-                className="w-full border-b border-[color:var(--line)] bg-transparent px-1 py-3 text-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)]"
+                className="w-full rounded-2xl border border-[color:var(--line)] bg-white px-4 py-3.5 text-sm shadow-sm outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)] focus:ring-2 focus:ring-[color:var(--pink)]/30"
               />
 
               <p className="mt-2 text-[9px] leading-4 text-[color:var(--ink-soft)]">
-                Any website is okay — X, Instagram,
-                Tumblr, TikTok, or another site.
+                You can paste a link from X, Instagram,
+                TikTok, Tumblr, YouTube, or any other website.
               </p>
 
             </div>
 
-            {/* ARTWORK */}
-
-            <div className="md:col-span-2">
-
-              <label className="mb-2 block text-[8px] font-semibold uppercase tracking-[0.25em]">
-                Artwork
-              </label>
-
-              <label
-                htmlFor="archive-image-upload"
-                className={`group relative block cursor-pointer overflow-hidden border border-dashed border-[color:var(--line)] bg-white transition hover:border-[color:var(--pink-deep)] ${
-                  preview
-                    ? "p-2"
-                    : "p-7"
-                }`}
-              >
-
-                {preview ? (
-
-                  <div className="relative bg-[color:var(--cream)]">
-
-                    <img
-                      src={preview}
-                      alt="Artwork preview"
-                      className="mx-auto max-h-80 w-full object-contain"
-                    />
-
-                    <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 to-transparent opacity-0 transition group-hover:opacity-100">
-
-                      <div className="p-5 text-white">
-
-                        <p className="text-xs font-medium">
-                          {image?.name}
-                        </p>
-
-                        <p className="mt-1 text-[8px] uppercase tracking-[0.2em]">
-                          Tap to change image
-                        </p>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                ) : (
-
-                  <div className="flex min-h-44 flex-col items-center justify-center text-center">
-
-                    <div className="mb-4 grid h-14 w-14 place-items-center border border-[color:var(--line)] bg-[color:var(--pink)]/20">
-
-                      <Upload
-                        size={21}
-                        strokeWidth={1.3}
-                        className="text-[color:var(--pink-deep)]"
-                      />
-
-                    </div>
-
-                    <p className="font-serif-display text-xl">
-                      choose your artwork
-                    </p>
-
-                    <p className="mt-2 text-[9px] uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
-                      JPG · PNG · WEBP
-                    </p>
-
-                  </div>
-
-                )}
-
-                <input
-                  id="archive-image-upload"
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  className="hidden"
-                  onChange={
-                    handleFileChange
-                  }
-                />
-
-              </label>
-
-            </div>
-
-            {/* CAPTION */}
-
-            <div className="md:col-span-2">
-
-              <label className="mb-2 block text-[8px] font-semibold uppercase tracking-[0.25em]">
-                Caption
-              </label>
-
-              <textarea
-                value={caption}
-                onChange={(event) =>
-                  setCaption(
-                    event.target.value
-                  )
-                }
-                rows={3}
-                placeholder="Tell us a little about this piece..."
-                className="w-full resize-none border border-[color:var(--line)] bg-white px-4 py-3.5 text-sm leading-6 outline-none transition placeholder:text-[color:var(--ink-soft)] focus:border-[color:var(--pink-deep)]"
-              />
-
-            </div>
-
-          </div>
-
-          {/* SUBMIT AREA */}
-
-          <div className="mt-7 flex flex-col gap-4 border-t border-[color:var(--line)] pt-6 sm:flex-row sm:items-center sm:justify-between">
-
-            <p className="max-w-xs text-[9px] leading-5 text-[color:var(--ink-soft)]">
-              Your work will be reviewed before it
-              appears publicly in the archive.
-            </p>
+            {/* SUBMIT */}
 
             <button
               type="submit"
               disabled={submitting}
-              className="flex shrink-0 items-center justify-center gap-2 bg-[color:var(--ink)] px-7 py-4 text-[8px] font-semibold uppercase tracking-[0.25em] text-white transition hover:bg-[color:var(--pink-deep)] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[color:var(--pink-deep)] px-5 py-4 text-[9px] font-semibold uppercase tracking-[0.25em] text-white shadow-[0_10px_30px_rgba(180,90,120,0.25)] transition hover:-translate-y-0.5 hover:bg-[color:var(--ink)] disabled:cursor-not-allowed disabled:opacity-50"
             >
 
               {submitting ? (
@@ -1581,13 +1689,19 @@ function ArchiveSubmission({
 
             </button>
 
-          </div>
+            <p className="text-center text-[9px] leading-5 text-[color:var(--ink-soft)]">
+              ♡ Your artwork will be reviewed before
+              appearing in the public archive.
+            </p>
 
-        </form>
+          </form>
+
+        </div>
 
       </div>
 
     </div>
+
   );
 }
 
@@ -1604,9 +1718,7 @@ function formatDate(value) {
 
   try {
 
-    return new Date(
-      value
-    ).toLocaleDateString(
+    return new Date(value).toLocaleDateString(
       undefined,
       {
         month: "short",
