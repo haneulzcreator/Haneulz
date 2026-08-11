@@ -8,8 +8,8 @@ import {
   X,
   Sparkles,
 } from "lucide-react";
-import { toast } from "sonner";
 import { api } from "../lib/api";
+import { toast } from "sonner";
 const LETTERS_PER_PAGE = 6;
 export default function Letters() {
   const [letters, setLetters] = useState([]);
