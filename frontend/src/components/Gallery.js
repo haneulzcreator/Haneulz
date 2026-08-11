@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Heart,
   MessageCircle,
@@ -336,87 +336,56 @@ function HaneulzGallery() {
 /* =============================================================
    HANEULZ ARCHIVE
 ============================================================= */
-
 function HaneulzArchive() {
-
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
   const [loading, setLoading] = useState(true);
   const [showSubmit, setShowSubmit] = useState(false);
-
-  useEffect(() => {
-    loadArchive();
-  }, [page]);
-
-  async function loadArchive() {
-
+  const loadArchive = useCallback(async () => {
     try {
-
       setLoading(true);
-
       const response = await api.get("/archive", {
         params: {
           page,
           limit: POSTS_PER_PAGE,
         },
       });
-
       setPosts(response.data?.posts || []);
       setTotalPages(response.data?.total_pages || 1);
-
     } catch (error) {
-
       console.error("Archive error:", error);
-
       setPosts([]);
       setTotalPages(1);
-
       toast.error("Couldn't load the archive.");
-
     } finally {
-
       setLoading(false);
-
     }
-  }
-
+  }, [page]);
+  useEffect(() => {
+    loadArchive();
+  }, [loadArchive]);
   function handleSubmitted() {
-
     setShowSubmit(false);
     setPage(1);
-    loadArchive();
-
   }
-
   return (
     <div className="mx-auto max-w-3xl">
-
       {/* ARCHIVE INTRO */}
-
       <div className="relative mb-10 overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/60 p-7 shadow-[0_15px_50px_rgba(70,50,60,0.07)] backdrop-blur-md md:p-10">
-
         <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full border border-[color:var(--line)] opacity-40" />
-
         <div className="absolute -right-3 -top-3 h-16 w-16 rounded-full border border-[color:var(--line)] opacity-40" />
-
         <div className="absolute bottom-5 right-7 rotate-12 text-2xl opacity-20">
           ♡
         </div>
-
         <div className="relative flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-
           <div>
-
             <div className="mb-3 flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-[color:var(--pink-deep)]" />
-
               <p className="text-[9px] font-semibold uppercase tracking-[0.3em] text-[color:var(--ink-soft)]">
                 community archive
               </p>
             </div>
-
             <h3 className="font-serif-display text-4xl md:text-6xl">
               HANEULZ
               <br />
@@ -424,14 +393,11 @@ function HaneulzArchive() {
                 Archive
               </span>
             </h3>
-
             <p className="mt-5 max-w-lg text-sm leading-7 text-[color:var(--ink-soft)]">
               A running collection of fan art and creative pieces submitted
               by the HANEULZ community.
             </p>
-
           </div>
-
           <button
             type="button"
             onClick={() => setShowSubmit(true)}
@@ -440,50 +406,34 @@ function HaneulzArchive() {
             <Upload size={13} />
             Add your work
           </button>
-
         </div>
-
       </div>
-
       {/* FEED */}
-
       {loading ? (
-
         <div className="space-y-7">
-
           {[1, 2, 3].map((item) => (
             <div
               key={item}
               className="h-[430px] animate-pulse rounded-[2.5rem] border border-[color:var(--line)] bg-white/50"
             />
           ))}
-
         </div>
-
       ) : posts.length === 0 ? (
-
         <div className="rounded-[2.5rem] border border-dashed border-[color:var(--line)] bg-white/45 px-6 py-24 text-center">
-
           <Sparkles
             className="mx-auto text-[color:var(--pink-deep)]"
             size={32}
             strokeWidth={1.2}
           />
-
           <h3 className="mt-6 font-serif-display text-3xl">
             nothing filed yet
           </h3>
-
           <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
             The archive is ready for its first submission.
           </p>
-
         </div>
-
       ) : (
-
         <div className="space-y-8">
-
           {posts.map((post) => (
             <ArchivePost
               key={post.id}
@@ -491,17 +441,11 @@ function HaneulzArchive() {
               onChanged={loadArchive}
             />
           ))}
-
         </div>
-
       )}
-
       {/* PAGINATION */}
-
       {totalPages > 1 && (
-
         <div className="mt-12 flex items-center justify-center gap-3">
-
           <button
             type="button"
             disabled={page <= 1}
@@ -510,11 +454,9 @@ function HaneulzArchive() {
           >
             <ChevronLeft size={16} />
           </button>
-
           <span className="rounded-full border border-[color:var(--line)] bg-white/70 px-6 py-2.5 text-[9px] font-semibold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
             {page} / {totalPages}
           </span>
-
           <button
             type="button"
             disabled={page >= totalPages}
@@ -523,24 +465,18 @@ function HaneulzArchive() {
           >
             <ChevronRight size={16} />
           </button>
-
         </div>
-
       )}
-
       {/* SUBMISSION MODAL */}
-
       {showSubmit && (
         <ArchiveSubmission
           onSubmitted={handleSubmitted}
           onClose={() => setShowSubmit(false)}
         />
       )}
-
     </div>
   );
 }
-
 
 /* =============================================================
    ARCHIVE POST
