@@ -21,8 +21,6 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AboutWebsite from "./pages/AboutWebsite";
 import OurLittleCorner from "./pages/OurLittleCorner";
 import GameRoom from "./pages/GameRoom";
-// 🎧 HANEULZ MUSIC
-import Music from "./components/Music";
 function ScrollTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -78,13 +76,6 @@ function Shell() {
         <Route
           path="/our-little-corner"
           element={<OurLittleCorner />}
-        />
-        {/* =========================
-            🎧 HANEULZ MUSIC
-        ========================= */}
-        <Route
-          path="/music"
-          element={<Music />}
         />
         {/* =========================
             ABOUT HANEULZ
