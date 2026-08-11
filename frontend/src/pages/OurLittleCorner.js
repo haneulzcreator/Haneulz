@@ -8,6 +8,7 @@ import JLStory from "../components/JLStory";
 import HanStory from "../components/HanStory";
 import Music from "../components/Music";
 import Gallery from "../components/Gallery";
+import Letters from "../components/Letters";
 
 import {
   Music2,
@@ -223,9 +224,8 @@ export default function OurLittleCorner() {
         ===================================================== */}
 
         {activeTab === "letters" && (
-          <Placeholder title="Letter To HANEULZ" />
-        )}
-
+  <Letters />
+)}
       </section>
 
 
