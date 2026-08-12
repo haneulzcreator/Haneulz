@@ -5,7 +5,6 @@ import {
   ShieldAlert,
   Heart,
   Link as LinkIcon,
-  CheckCircle2,
 } from "lucide-react";
 
 import { api, formatApiError } from "../lib/api";
@@ -83,8 +82,8 @@ export default function Submit() {
   const inputStyle =
     "w-full rounded-2xl border border-[color:var(--line)] bg-white px-5 py-4 text-sm text-[color:var(--ink)] outline-none transition placeholder:text-[color:var(--ink-soft)]/60 focus:border-[color:var(--pink-deep)] focus:ring-4 focus:ring-[color:var(--pink-soft)]";
 
-  const sectionTitle =
-    "mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--ink-soft)]";
+  const labelStyle =
+    "mb-2 block text-[10px] font-bold uppercase tracking-[0.22em] text-[color:var(--ink-soft)]";
 
   return (
     <div className="pt-28 md:pt-32">
@@ -118,8 +117,8 @@ export default function Submit() {
 
               <p className="mt-6 max-w-xl text-sm leading-7 text-[color:var(--ink-soft)] md:text-base">
                 Found a work you think belongs in the Corner?
-                Send it our way and help other HANEULZ fans discover
-                something new.
+                Send it our way and help other HANEULZ fans
+                discover something new.
               </p>
 
               <div className="mt-7 flex flex-wrap gap-2">
@@ -162,9 +161,8 @@ export default function Submit() {
               </h2>
 
               <p className="mt-2 max-w-lg text-sm leading-6 text-[color:var(--ink-soft)]">
-                Just fill in the details below. The original link
-                is required so visitors can find the creator's
-                work.
+                Fill in the details below and include the
+                original link so readers can find the work.
               </p>
 
             </div>
@@ -175,7 +173,7 @@ export default function Submit() {
               {/* TITLE */}
 
               <div>
-                <label className={sectionTitle}>
+                <label className={labelStyle}>
                   Title <span className="text-red-500">*</span>
                 </label>
 
@@ -192,7 +190,7 @@ export default function Submit() {
               {/* AUTHOR */}
 
               <div>
-                <label className={sectionTitle}>
+                <label className={labelStyle}>
                   Author / Creator
                 </label>
 
@@ -205,79 +203,77 @@ export default function Submit() {
               </div>
 
 
-              {/* TYPE + SOURCE */}
+              {/* TYPE */}
 
-              <div className="grid gap-7 md:grid-cols-2">
+              <div>
+                <label className={labelStyle}>
+                  Content type
+                </label>
 
-                <div>
-                  <label className={sectionTitle}>
-                    Content type
-                  </label>
+                <div className="flex flex-wrap gap-2">
 
-                  <div className="flex gap-2">
+                  {[
+                    { v: "story", l: "Story" },
+                    { v: "headcanon", l: "Headcanon" },
+                  ].map((item) => (
+                    <button
+                      type="button"
+                      key={item.v}
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          au_type: item.v,
+                        })
+                      }
+                      className={`rounded-full px-5 py-3 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
+                        form.au_type === item.v
+                          ? "bg-[color:var(--ink)] text-white"
+                          : "border border-[color:var(--line)] text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
+                      }`}
+                    >
+                      {item.l}
+                    </button>
+                  ))}
 
-                    {[
-                      { v: "story", l: "Story" },
-                      { v: "headcanon", l: "Headcanon" },
-                    ].map((item) => (
-                      <button
-                        type="button"
-                        key={item.v}
-                        onClick={() =>
-                          setForm({
-                            ...form,
-                            au_type: item.v,
-                          })
-                        }
-                        className={`rounded-full px-5 py-3 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
-                          form.au_type === item.v
-                            ? "bg-[color:var(--ink)] text-white"
-                            : "border border-[color:var(--line)] text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
-                        }`}
-                      >
-                        {item.l}
-                      </button>
-                    ))}
-
-                  </div>
                 </div>
+              </div>
 
 
-                <div>
-                  <label className={sectionTitle}>
-                    Source
-                  </label>
+              {/* SOURCE */}
 
-                  <div className="flex flex-wrap gap-2">
+              <div>
+                <label className={labelStyle}>
+                  Source platform
+                </label>
 
-                    {[
-                      { v: "x", l: "X" },
-                      { v: "tiktok", l: "TikTok" },
-                      { v: "ao3", l: "AO3" },
-                      { v: "other", l: "Other" },
-                    ].map((item) => (
-                      <button
-                        type="button"
-                        key={item.v}
-                        onClick={() =>
-                          setForm({
-                            ...form,
-                            source: item.v,
-                          })
-                        }
-                        className={`rounded-full px-4 py-3 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
-                          form.source === item.v
-                            ? "bg-[color:var(--pink-deep)] text-white"
-                            : "border border-[color:var(--line)] text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
-                        }`}
-                      >
-                        {item.l}
-                      </button>
-                    ))}
+                <div className="flex flex-wrap gap-2">
 
-                  </div>
+                  {[
+                    { v: "x", l: "X" },
+                    { v: "tiktok", l: "TikTok" },
+                    { v: "ao3", l: "AO3" },
+                    { v: "other", l: "Other" },
+                  ].map((item) => (
+                    <button
+                      type="button"
+                      key={item.v}
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          source: item.v,
+                        })
+                      }
+                      className={`rounded-full px-4 py-3 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
+                        form.source === item.v
+                          ? "bg-[color:var(--pink-deep)] text-white"
+                          : "border border-[color:var(--line)] text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
+                      }`}
+                    >
+                      {item.l}
+                    </button>
+                  ))}
+
                 </div>
-
               </div>
 
 
@@ -285,7 +281,7 @@ export default function Submit() {
 
               <div>
 
-                <label className={sectionTitle}>
+                <label className={labelStyle}>
                   Original work link{" "}
                   <span className="text-red-500">*</span>
                 </label>
@@ -308,19 +304,14 @@ export default function Submit() {
 
                 </div>
 
-                <p className="mt-2 text-[11px] leading-5 text-[color:var(--ink-soft)]">
-                  This link will be used to direct readers to the
-                  original work.
-                </p>
-
               </div>
 
 
-              {/* COVER */}
+              {/* COVER IMAGE */}
 
               <div>
 
-                <label className={sectionTitle}>
+                <label className={labelStyle}>
                   Cover image
                 </label>
 
@@ -358,11 +349,11 @@ export default function Submit() {
               </div>
 
 
-              {/* DESCRIPTION */}
+              {/* SHORT DESCRIPTION */}
 
               <div>
 
-                <label className={sectionTitle}>
+                <label className={labelStyle}>
                   Short description
                 </label>
 
@@ -381,7 +372,7 @@ export default function Submit() {
 
               <div>
 
-                <label className={sectionTitle}>
+                <label className={labelStyle}>
                   Full story
                 </label>
 
@@ -397,42 +388,126 @@ export default function Submit() {
 
 
               {/* =================================================
-                  BEFORE YOU SUBMIT
+                  SUBMISSION NOTICE
               ================================================== */}
 
-              <div className="rounded-[1.75rem] bg-[color:var(--pink-soft)]/50 p-6">
+              <div className="rounded-[1.75rem] border border-[color:var(--line)] bg-[color:var(--pink-soft)]/40 p-6 md:p-7">
 
                 <div className="flex items-start gap-3">
 
-                  <div className="mt-0.5 shrink-0 rounded-full bg-white p-2 text-[color:var(--pink-deep)]">
-                    <Heart size={15} />
+                  <div className="mt-0.5 shrink-0 rounded-full bg-white p-2.5 text-[color:var(--pink-deep)]">
+                    <ShieldAlert size={16} />
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
 
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em]">
-                      Before you submit
+                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink)]">
+                      Submission Notice
                     </h3>
 
-                    <p className="mt-3 text-xs leading-6 text-[color:var(--ink-soft)]">
-                      Please be mindful when submitting work to
-                      HANEULZ Corner. Submissions should follow the
-                      rules and community standards of the website.
-                    </p>
+                    <div className="mt-4 space-y-4 text-xs leading-6 text-[color:var(--ink-soft)]">
 
-                    <p className="mt-2 text-xs leading-6 text-[color:var(--ink-soft)]">
-                      Do not submit content that is abusive,
-                      hateful, deliberately misleading, or intended
-                      to cause harm or unnecessary conflict within
-                      the community.
-                    </p>
+                      <p>
+                        Please be mindful when submitting work to
+                        <strong className="font-semibold text-[color:var(--ink)]">
+                          {" "}HANEULZ Corner.
+                        </strong>{" "}
+                        HANEULZ Corner is a fan-made community
+                        archive and is not affiliated with or
+                        officially connected to the artists,
+                        creators, platforms, or individuals
+                        mentioned in submitted works.
+                      </p>
 
-                    <p className="mt-2 text-xs leading-6 text-[color:var(--ink-soft)]">
-                      Submitting something does not guarantee that
-                      it will be published. Entries may be reviewed,
-                      edited for presentation, or declined when
-                      they do not fit the Corner's guidelines.
-                    </p>
+                      <p>
+                        The original work remains the property of
+                        its respective creator. HANEULZ Corner does
+                        not claim ownership of submitted works, and
+                        the original source link is provided so
+                        readers can visit the creator's work.
+                      </p>
+
+                      <div>
+
+                        <p className="mb-2 font-semibold text-[color:var(--ink)]">
+                          When submitting, please keep the following
+                          in mind:
+                        </p>
+
+                        <ul className="space-y-2">
+
+                          <NoticeItem>
+                            Keep submissions relevant to the
+                            HANEULZ Corner community.
+                          </NoticeItem>
+
+                          <NoticeItem>
+                            Do not submit content intended to
+                            harass, attack, threaten, or target
+                            others.
+                          </NoticeItem>
+
+                          <NoticeItem>
+                            Do not use submissions to start
+                            fanwars, spread unnecessary drama,
+                            or deliberately provoke other fans.
+                          </NoticeItem>
+
+                          <NoticeItem>
+                            Do not submit abusive, hateful,
+                            deliberately misleading, or harmful
+                            content.
+                          </NoticeItem>
+
+                          <NoticeItem>
+                            Do not intentionally misrepresent
+                            another person's work or information.
+                          </NoticeItem>
+
+                          <NoticeItem>
+                            Please use the correct source platform
+                            and original work link.
+                          </NoticeItem>
+
+                          <NoticeItem>
+                            Respect the creators and communities
+                            where the work was originally shared.
+                          </NoticeItem>
+
+                        </ul>
+
+                      </div>
+
+                      <p>
+                        All submissions are subject to review, and
+                        submission does not guarantee publication.
+                        HANEULZ Corner may decline or make reasonable
+                        presentation changes to submissions that do
+                        not follow the website's community
+                        guidelines.
+                      </p>
+
+                      <div className="border-t border-[color:var(--line)] pt-4">
+
+                        <div className="flex items-start gap-2">
+
+                          <Heart
+                            size={14}
+                            className="mt-1 shrink-0 text-[color:var(--pink-deep)]"
+                          />
+
+                          <p className="font-medium text-[color:var(--ink)]">
+                            By submitting, you agree to follow these
+                            guidelines and understand that your
+                            submission will be reviewed before
+                            appearing on HANEULZ Corner.
+                          </p>
+
+                        </div>
+
+                      </div>
+
+                    </div>
 
                   </div>
 
@@ -441,109 +516,7 @@ export default function Submit() {
               </div>
 
 
-              {/* =================================================
-                  COMMUNITY GUIDELINES
-              ================================================== */}
-
-              <div className="rounded-[1.75rem] border border-[color:var(--line)] bg-white p-6">
-
-                <div className="flex items-center gap-2">
-
-                  <CheckCircle2
-                    size={16}
-                    className="text-[color:var(--pink-deep)]"
-                  />
-
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em]">
-                    Community guidelines
-                  </h3>
-
-                </div>
-
-                <div className="mt-5 space-y-3">
-
-                  <Guideline>
-                    Keep submissions relevant to HANEULZ Corner
-                    and the community.
-                  </Guideline>
-
-                  <Guideline>
-                    Do not submit content intended to harass,
-                    attack, threaten, or target other people.
-                  </Guideline>
-
-                  <Guideline>
-                    Do not use submissions to start fanwars,
-                    spread unnecessary drama, or deliberately
-                    provoke other fans.
-                  </Guideline>
-
-                  <Guideline>
-                    Respect creators and the communities where
-                    their work was originally posted.
-                  </Guideline>
-
-                  <Guideline>
-                    Do not submit misleading information or
-                    intentionally misrepresent someone else's work.
-                  </Guideline>
-
-                  <Guideline>
-                    Please use the correct source link and source
-                    platform when submitting.
-                  </Guideline>
-
-                </div>
-
-              </div>
-
-
-              {/* =================================================
-                  DISCLAIMER
-              ================================================== */}
-
-              <div className="rounded-[1.75rem] border border-[color:var(--line)] bg-[color:var(--ink)] p-6 text-white">
-
-                <div className="flex items-center gap-2">
-
-                  <ShieldAlert size={16} />
-
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.2em]">
-                    Disclaimer
-                  </h3>
-
-                </div>
-
-                <div className="mt-4 space-y-3 text-xs leading-6 text-white/70">
-
-                  <p>
-                    HANEULZ Corner is a fan-made community archive.
-                    It is not affiliated with or officially connected
-                    to the artists, creators, platforms, or individuals
-                    mentioned in submitted works.
-                  </p>
-
-                  <p>
-                    HANEULZ Corner does not claim ownership of works
-                    submitted by the community. The original work
-                    remains with its respective creator, and the
-                    provided source link allows readers to visit the
-                    original post or work.
-                  </p>
-
-                  <p>
-                    By submitting, you acknowledge that your entry
-                    may be reviewed and that HANEULZ Corner may
-                    decline submissions that do not follow its
-                    community guidelines.
-                  </p>
-
-                </div>
-
-              </div>
-
-
-              {/* SUBMIT */}
+              {/* SUBMIT BUTTON */}
 
               <button
                 type="submit"
@@ -568,19 +541,17 @@ export default function Submit() {
 
 
 /* ================================================================
-   GUIDELINE ITEM
+   NOTICE ITEM
 ================================================================ */
 
-function Guideline({ children }) {
+function NoticeItem({ children }) {
   return (
-    <div className="flex gap-3">
+    <li className="flex gap-3">
 
       <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[color:var(--pink-deep)]" />
 
-      <p className="text-xs leading-6 text-[color:var(--ink-soft)]">
-        {children}
-      </p>
+      <span>{children}</span>
 
-    </div>
+    </li>
   );
 }
