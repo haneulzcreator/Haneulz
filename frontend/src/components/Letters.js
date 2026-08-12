@@ -14,11 +14,17 @@ import { toast } from "sonner";
 
 const LETTERS_PER_PAGE = 6;
 
+/* ============================================================
+   MAIN LETTERS PAGE
+============================================================ */
+
 export default function Letters() {
   const [letters, setLetters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+
   const [showComposer, setShowComposer] = useState(false);
+
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -34,11 +40,39 @@ export default function Letters() {
         },
       });
 
-      setLetters(response.data?.letters || []);
-      setTotalPages(response.data?.total_pages || 1);
-    } catch (err) {
-      console.error("Letters error:", err);
+      const data = response?.data;
 
+      /*
+       * Supports either:
+       * { letters: [], total_pages: 1 }
+       *
+       * OR
+       * []
+       */
+      if (Array.isArray(data)) {
+        setLetters(data);
+        setTotalPages(1);
+      } else {
+        setLetters(
+          Array.isArray(data?.letters)
+            ? data.letters
+            : []
+        );
+
+        setTotalPages(
+          Number(data?.total_pages) > 0
+            ? Number(data.total_pages)
+            : 1
+        );
+      }
+    } catch (err) {
+      console.error("Letters API error:", err);
+
+      /*
+       * IMPORTANT:
+       * The page itself still renders even if the API
+       * is unavailable.
+       */
       setLetters([]);
       setTotalPages(1);
       setError(true);
@@ -62,10 +96,14 @@ export default function Letters() {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#fff9fc] pb-24">
+    <main className="relative min-h-screen overflow-hidden bg-[#fff9fc] pb-24">
 
-      {/* BACKGROUND DECOR */}
+      {/* ======================================================
+          BACKGROUND
+      ====================================================== */}
+
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
+
         <div className="absolute -left-32 top-20 h-80 w-80 rounded-full bg-[#ffd9e8]/70 blur-3xl" />
 
         <div className="absolute -right-32 top-[30rem] h-96 w-96 rounded-full bg-[#dce8ff]/70 blur-3xl" />
@@ -83,25 +121,35 @@ export default function Letters() {
         <span className="absolute right-[7%] top-[65rem] text-3xl text-[#c8afe5]">
           ୨୧
         </span>
+
       </div>
 
-      {/* HEADER */}
-      <div className="relative mx-auto max-w-6xl px-5 pt-14 md:px-8 md:pt-20">
+
+      {/* ======================================================
+          HEADER
+      ====================================================== */}
+
+      <section className="relative mx-auto max-w-6xl px-5 pt-14 md:px-8 md:pt-20">
 
         <div className="grid gap-10 md:grid-cols-[1fr_280px] md:items-end">
 
           <div>
 
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#f0cadb] bg-white px-4 py-2 shadow-sm">
+
               <span className="h-2 w-2 rounded-full bg-[#df86a7]" />
 
               <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#8f707d]">
                 07 · little letters
               </span>
+
             </div>
 
+
             <h1 className="font-serif-display text-6xl font-medium leading-[0.82] tracking-tight text-[#30252b] md:text-8xl">
+
               little
+
               <br />
 
               <span className="italic text-[#df86a7]">
@@ -113,7 +161,9 @@ export default function Letters() {
               <span className="text-4xl text-[#71646b] md:text-5xl">
                 from haneulz
               </span>
+
             </h1>
+
 
             <p className="mt-8 max-w-xl text-sm leading-7 text-[#776b72] md:text-base">
               A tiny corner where HANEULZ fans can leave words,
@@ -123,7 +173,9 @@ export default function Letters() {
 
           </div>
 
+
           {/* SIDE CARD */}
+
           <div className="relative overflow-hidden rounded-[2rem] border border-[#ead6df] bg-white p-6 shadow-[0_18px_50px_rgba(100,65,80,0.08)]">
 
             <div className="absolute -right-5 -top-5 h-24 w-24 rounded-full bg-[#ffe0ec]" />
@@ -131,10 +183,12 @@ export default function Letters() {
             <div className="relative">
 
               <div className="mb-4 grid h-11 w-11 place-items-center rounded-full bg-[#fff0f5]">
+
                 <Mail
                   size={18}
                   className="text-[#df86a7]"
                 />
+
               </div>
 
               <p className="font-serif-display text-xl text-[#30252b]">
@@ -143,30 +197,39 @@ export default function Letters() {
 
               <p className="mt-2 text-xs leading-5 text-[#85777e]">
                 It doesn't have to be addressed to anyone.
-                Just write whatever is in your heart.
+                Just write whatever you want to leave here.
               </p>
 
             </div>
+
           </div>
 
         </div>
-      </div>
 
-      {/* WRITE BUTTON */}
-      <div className="relative mx-auto mt-12 max-w-6xl px-5 md:px-8">
+      </section>
+
+
+      {/* ======================================================
+          WRITE LETTER BAR
+      ====================================================== */}
+
+      <section className="relative mx-auto mt-12 max-w-6xl px-5 md:px-8">
 
         <div className="flex flex-col gap-5 rounded-[2rem] border border-[#ead6df] bg-white p-5 shadow-[0_15px_45px_rgba(100,65,80,0.07)] sm:flex-row sm:items-center sm:justify-between sm:p-6">
 
           <div>
+
             <p className="font-serif-display text-2xl text-[#30252b]">
               have something to say? ♡
             </p>
 
             <p className="mt-1 text-xs text-[#8b7b83]">
-              Write a letter, thought, message, or anything you
-              would like to leave here.
+              Write a letter, thought, message, or anything
+              you would like to leave here.
             </p>
+
           </div>
+
 
           <button
             type="button"
@@ -178,19 +241,26 @@ export default function Letters() {
           </button>
 
         </div>
-      </div>
 
-      {/* CONTENT */}
-      <div className="relative mx-auto mt-14 max-w-4xl px-5 md:px-8">
+      </section>
+
+
+      {/* ======================================================
+          LETTER CONTENT
+      ====================================================== */}
+
+      <section className="relative mx-auto mt-14 max-w-4xl px-5 md:px-8">
 
         <div className="mb-8">
 
           <div className="mb-3 flex items-center gap-2">
+
             <span className="h-2 w-2 rounded-full bg-[#df86a7]" />
 
             <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#927b84]">
               from the community
             </p>
+
           </div>
 
           <h2 className="font-serif-display text-4xl text-[#30252b] md:text-5xl">
@@ -199,28 +269,36 @@ export default function Letters() {
 
         </div>
 
+
         {/* LOADING */}
+
         {loading && (
           <div className="space-y-7">
+
             {[1, 2, 3].map((item) => (
               <div
                 key={item}
                 className="h-72 animate-pulse rounded-[2rem] border border-[#ecdbe2] bg-white"
               />
             ))}
+
           </div>
         )}
 
-        {/* ERROR */}
+
+        {/* API ERROR */}
+
         {!loading && error && (
           <div className="rounded-[2.5rem] border border-[#ecdbe2] bg-white px-6 py-20 text-center shadow-[0_15px_45px_rgba(100,65,80,0.06)]">
 
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#fff0f5]">
+
               <Mail
                 size={27}
                 strokeWidth={1.3}
                 className="text-[#df86a7]"
               />
+
             </div>
 
             <h3 className="mt-6 font-serif-display text-3xl text-[#30252b]">
@@ -228,7 +306,8 @@ export default function Letters() {
             </h3>
 
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#81747a]">
-              We couldn't connect to the letters right now.
+              We couldn't connect to the letters right now,
+              but the page itself is working.
             </p>
 
             <button
@@ -242,7 +321,9 @@ export default function Letters() {
           </div>
         )}
 
+
         {/* EMPTY */}
+
         {!loading && !error && letters.length === 0 && (
           <div className="relative overflow-hidden rounded-[2.5rem] border border-dashed border-[#e3d2dc] bg-white px-6 py-24 text-center shadow-sm">
 
@@ -254,21 +335,27 @@ export default function Letters() {
               ♡
             </span>
 
+
             <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#fff0f5]">
+
               <Mail
                 size={28}
                 strokeWidth={1.2}
                 className="text-[#df86a7]"
               />
+
             </div>
+
 
             <h3 className="mt-6 font-serif-display text-3xl text-[#30252b]">
               the mailbox is empty
             </h3>
 
+
             <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#81747a]">
               Be the first person to leave a little letter here.
             </p>
+
 
             <button
               type="button"
@@ -281,23 +368,26 @@ export default function Letters() {
           </div>
         )}
 
+
         {/* LETTERS */}
+
         {!loading && !error && letters.length > 0 && (
           <div className="space-y-7">
 
-            {letters.map((letter) => (
+            {letters.map((letter, index) => (
               <LetterCard
-                key={letter.id}
+                key={letter?.id || `letter-${index}`}
                 letter={letter}
-                onChanged={loadLetters}
               />
             ))}
 
           </div>
         )}
 
+
         {/* PAGINATION */}
-        {!error && totalPages > 1 && (
+
+        {!loading && !error && totalPages > 1 && (
           <div className="mt-12 flex items-center justify-center gap-3">
 
             <button
@@ -312,9 +402,11 @@ export default function Letters() {
               />
             </button>
 
+
             <span className="rounded-full border border-[#e0d9de] bg-white px-6 py-2.5 text-[9px] font-bold uppercase tracking-[0.2em] text-[#777078]">
               {page} / {totalPages}
             </span>
+
 
             <button
               type="button"
@@ -331,9 +423,13 @@ export default function Letters() {
           </div>
         )}
 
-      </div>
+      </section>
 
-      {/* COMPOSER */}
+
+      {/* ======================================================
+          COMPOSER
+      ====================================================== */}
+
       {showComposer && (
         <LetterComposer
           onClose={() => setShowComposer(false)}
@@ -341,7 +437,7 @@ export default function Letters() {
         />
       )}
 
-    </section>
+    </main>
   );
 }
 
@@ -351,8 +447,11 @@ export default function Letters() {
 ============================================================ */
 
 function LetterCard({ letter }) {
+
   const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(letter.likes || 0);
+  const [likes, setLikes] = useState(
+    Number(letter?.likes) || 0
+  );
 
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [comments, setComments] = useState([]);
@@ -365,36 +464,68 @@ function LetterCard({ letter }) {
   const [reportReason, setReportReason] = useState("");
   const [reporting, setReporting] = useState(false);
 
+
   async function handleLike() {
-    if (liked) return;
+
+    if (liked || !letter?.id) return;
 
     try {
+
       const response = await api.post(
         `/letters/${letter.id}/like`
       );
 
-      setLikes(response.data?.likes ?? likes + 1);
+      setLikes(
+        response?.data?.likes ??
+        likes + 1
+      );
+
       setLiked(true);
+
     } catch (error) {
+
       console.error("Like error:", error);
+
       toast.error("Couldn't react right now.");
+
     }
+
   }
 
+
   async function loadComments() {
+
+    if (!letter?.id) return;
+
     try {
+
       const response = await api.get(
         `/letters/${letter.id}/comments`
       );
 
-      setComments(response.data || []);
+      const data = response?.data;
+
+      setComments(
+        Array.isArray(data)
+          ? data
+          : Array.isArray(data?.comments)
+            ? data.comments
+            : []
+      );
+
     } catch (error) {
+
       console.error("Comments error:", error);
+
       toast.error("Couldn't load comments.");
+
     }
+
   }
 
+
   async function toggleComments() {
+
     const next = !commentsOpen;
 
     setCommentsOpen(next);
@@ -402,14 +533,20 @@ function LetterCard({ letter }) {
     if (next) {
       await loadComments();
     }
+
   }
 
+
   async function submitComment(event) {
+
     event.preventDefault();
 
-    if (!commentText.trim()) return;
+    if (!commentText.trim()) {
+      return;
+    }
 
     try {
+
       setCommentLoading(true);
 
       await api.post(
@@ -417,6 +554,7 @@ function LetterCard({ letter }) {
         {
           author_name:
             commentName.trim() || "Anonymous",
+
           text: commentText.trim(),
         }
       );
@@ -431,27 +569,36 @@ function LetterCard({ letter }) {
       await loadComments();
 
     } catch (error) {
+
       console.error("Comment error:", error);
 
       toast.error(
         error?.response?.data?.detail ||
-          "Couldn't send your comment."
+        "Couldn't send your comment."
       );
 
     } finally {
+
       setCommentLoading(false);
+
     }
+
   }
 
+
   async function submitReport() {
+
     if (!reportReason.trim()) {
+
       toast.error(
         "Please tell us why you're reporting this."
       );
+
       return;
     }
 
     try {
+
       setReporting(true);
 
       await api.post(
@@ -469,53 +616,63 @@ function LetterCard({ letter }) {
       setReportOpen(false);
 
     } catch (error) {
+
       console.error("Report error:", error);
 
       toast.error(
         error?.response?.data?.detail ||
-          "Couldn't send the report."
+        "Couldn't send the report."
       );
 
     } finally {
+
       setReporting(false);
+
     }
+
   }
 
+
   return (
-    <article className="overflow-hidden rounded-[2rem] border border-[#ead9e1] bg-white shadow-[0_15px_45px_rgba(90,60,75,0.07)] transition hover:shadow-[0_20px_55px_rgba(90,60,75,0.1)]">
+    <article className="overflow-hidden rounded-[2rem] border border-[#ead9e1] bg-white shadow-[0_15px_45px_rgba(90,60,75,0.07)]">
 
       {/* HEADER */}
+
       <div className="flex items-center justify-between px-5 py-5 md:px-7">
 
         <div className="flex min-w-0 items-center gap-3">
 
           <div className="relative grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#ffd7e7] to-[#dbe5ff] font-serif-display text-lg text-[#6e5d66]">
-            {letter.author_name?.charAt(0)?.toUpperCase() || "♡"}
+
+            {letter?.author_name?.charAt(0)?.toUpperCase() || "♡"}
 
             <span className="absolute -bottom-1 -right-1 text-[10px]">
               ✦
             </span>
+
           </div>
+
 
           <div className="min-w-0">
 
             <p className="truncate text-sm font-bold text-[#40363c]">
-              {letter.author_name || "Anonymous"}
+              {letter?.author_name || "Anonymous"}
             </p>
 
             <p className="mt-0.5 text-[9px] font-medium uppercase tracking-[0.15em] text-[#9a8c94]">
-              {formatDate(letter.created_at)}
+              {formatDate(letter?.created_at)}
             </p>
 
           </div>
 
         </div>
 
+
         <button
           type="button"
           onClick={() => setReportOpen(true)}
           aria-label="Report letter"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#eee1e7] bg-[#fffafd] text-[#a08e97] transition hover:border-[#e4a6ba] hover:bg-[#fff0f5] hover:text-[#d6759b]"
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[#eee1e7] bg-[#fffafd] text-[#a08e97] transition hover:bg-[#fff0f5] hover:text-[#d6759b]"
         >
           <Flag size={14} />
         </button>
@@ -523,7 +680,8 @@ function LetterCard({ letter }) {
       </div>
 
 
-      {/* LETTER BODY */}
+      {/* BODY */}
+
       <div className="px-6 pb-6 md:px-9 md:pb-8">
 
         <div className="relative rounded-[1.5rem] bg-[#fff8fb] px-6 py-7 md:px-8 md:py-9">
@@ -532,9 +690,13 @@ function LetterCard({ letter }) {
             “
           </span>
 
-          <p className="whitespace-pre-wrap text-[15px] leading-8 text-[#51464c] md:text-base">
-            {letter.message || letter.text}
+
+          <p className="whitespace-pre-wrap break-words text-[15px] leading-8 text-[#51464c] md:text-base">
+            {letter?.message ||
+              letter?.text ||
+              "A little letter from the community ♡"}
           </p>
+
 
           <span className="absolute -bottom-8 right-4 font-serif-display text-5xl text-[#edb1c6]/60">
             ”
@@ -543,8 +705,9 @@ function LetterCard({ letter }) {
         </div>
 
 
-        {/* OPTIONAL LINK */}
-        {letter.original_url && (
+        {/* LINK */}
+
+        {letter?.original_url && (
           <a
             href={letter.original_url}
             target="_blank"
@@ -557,6 +720,7 @@ function LetterCard({ letter }) {
 
 
         {/* ACTIONS */}
+
         <div className="mt-7 flex items-center gap-6">
 
           <button
@@ -568,6 +732,7 @@ function LetterCard({ letter }) {
                 : "text-[#93828a] hover:text-[#df86a7]"
             }`}
           >
+
             <Heart
               size={20}
               strokeWidth={1.5}
@@ -575,6 +740,7 @@ function LetterCard({ letter }) {
             />
 
             <span>{likes}</span>
+
           </button>
 
 
@@ -583,6 +749,7 @@ function LetterCard({ letter }) {
             onClick={toggleComments}
             className="flex items-center gap-2 text-sm text-[#93828a] transition hover:text-[#4c4147]"
           >
+
             <MessageCircle
               size={20}
               strokeWidth={1.5}
@@ -593,21 +760,26 @@ function LetterCard({ letter }) {
                 ? `${comments.length} comments`
                 : "Comments"}
             </span>
+
           </button>
 
         </div>
 
 
         {/* COMMENTS */}
+
         {commentsOpen && (
           <div className="mt-7 border-t border-[#eee1e7] pt-6">
 
             {comments.length > 0 && (
               <div className="space-y-3">
 
-                {comments.map((comment) => (
+                {comments.map((comment, index) => (
                   <Comment
-                    key={comment.id}
+                    key={
+                      comment?.id ||
+                      `comment-${index}`
+                    }
                     comment={comment}
                     letterId={letter.id}
                     onChanged={loadComments}
@@ -629,8 +801,10 @@ function LetterCard({ letter }) {
                   setCommentName(event.target.value)
                 }
                 placeholder="Your name"
-                className="w-full rounded-2xl border border-[#eadde3] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#df86a7] focus:ring-4 focus:ring-[#ffdce9]"
+                maxLength={50}
+                className="w-full rounded-2xl border border-[#eadde3] bg-white px-4 py-3 text-sm outline-none focus:border-[#df86a7]"
               />
+
 
               <div className="mt-2 flex gap-2">
 
@@ -640,8 +814,10 @@ function LetterCard({ letter }) {
                     setCommentText(event.target.value)
                   }
                   placeholder="Write a little comment..."
-                  className="min-w-0 flex-1 rounded-2xl border border-[#eadde3] bg-white px-4 py-3 text-sm outline-none transition focus:border-[#df86a7] focus:ring-4 focus:ring-[#ffdce9]"
+                  maxLength={1000}
+                  className="min-w-0 flex-1 rounded-2xl border border-[#eadde3] bg-white px-4 py-3 text-sm outline-none focus:border-[#df86a7]"
                 />
+
 
                 <button
                   type="submit"
@@ -660,6 +836,7 @@ function LetterCard({ letter }) {
 
 
         {/* REPORT */}
+
         {reportOpen && (
           <div className="mt-6 rounded-2xl border border-[#efd9e1] bg-[#fff8fb] p-5">
 
@@ -679,15 +856,18 @@ function LetterCard({ letter }) {
 
             </div>
 
+
             <textarea
               value={reportReason}
               onChange={(event) =>
                 setReportReason(event.target.value)
               }
               rows={3}
+              maxLength={1000}
               placeholder="Tell the admins what you noticed..."
               className="mt-4 w-full resize-none rounded-2xl border border-[#eadde3] bg-white px-4 py-3 text-sm outline-none focus:border-[#df86a7]"
             />
+
 
             <button
               type="button"
@@ -695,13 +875,16 @@ function LetterCard({ letter }) {
               onClick={submitReport}
               className="mt-3 rounded-full bg-[#40363c] px-5 py-2.5 text-[9px] font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#df86a7] disabled:opacity-50"
             >
-              {reporting ? "Sending..." : "Send report"}
+              {reporting
+                ? "Sending..."
+                : "Send report"}
             </button>
 
           </div>
         )}
 
       </div>
+
     </article>
   );
 }
@@ -716,17 +899,23 @@ function Comment({
   letterId,
   onChanged,
 }) {
+
   const [reportOpen, setReportOpen] = useState(false);
   const [reason, setReason] = useState("");
   const [sending, setSending] = useState(false);
 
+
   async function reportComment() {
+
     if (!reason.trim()) {
+
       toast.error("Please enter a reason.");
+
       return;
     }
 
     try {
+
       setSending(true);
 
       await api.post(
@@ -746,38 +935,49 @@ function Comment({
       onChanged?.();
 
     } catch (error) {
-      console.error(error);
+
+      console.error(
+        "Comment report error:",
+        error
+      );
 
       toast.error(
         error?.response?.data?.detail ||
-          "Couldn't report the comment."
+        "Couldn't report the comment."
       );
 
     } finally {
+
       setSending(false);
+
     }
+
   }
+
 
   return (
     <div className="rounded-2xl border border-[#eadde3] bg-[#fffafd] px-4 py-3">
 
       <div className="flex items-start justify-between gap-3">
 
-        <div>
+        <div className="min-w-0">
 
           <p className="text-xs font-bold text-[#4b4046]">
-            {comment.author_name || "Anonymous"}
+            {comment?.author_name || "Anonymous"}
           </p>
 
-          <p className="mt-1 whitespace-pre-wrap text-sm leading-5 text-[#81747a]">
-            {comment.text}
+          <p className="mt-1 whitespace-pre-wrap break-words text-sm leading-5 text-[#81747a]">
+            {comment?.text || ""}
           </p>
 
         </div>
 
+
         <button
           type="button"
-          onClick={() => setReportOpen((value) => !value)}
+          onClick={() =>
+            setReportOpen((value) => !value)
+          }
           aria-label="Report comment"
           className="shrink-0 text-[#ad99a2] transition hover:text-[#d6759b]"
         >
@@ -796,9 +996,11 @@ function Comment({
               setReason(event.target.value)
             }
             rows={2}
+            maxLength={500}
             placeholder="Why are you reporting this?"
             className="w-full resize-none rounded-xl border border-[#eadde3] bg-white px-3 py-2 text-xs outline-none focus:border-[#df86a7]"
           />
+
 
           <button
             type="button"
@@ -806,7 +1008,9 @@ function Comment({
             onClick={reportComment}
             className="mt-2 rounded-full bg-[#40363c] px-4 py-2 text-[8px] font-bold uppercase tracking-[0.15em] text-white hover:bg-[#df86a7] disabled:opacity-50"
           >
-            {sending ? "Sending..." : "Report comment"}
+            {sending
+              ? "Sending..."
+              : "Report comment"}
           </button>
 
         </div>
@@ -825,16 +1029,24 @@ function LetterComposer({
   onClose,
   onSubmitted,
 }) {
+
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
   const [originalUrl, setOriginalUrl] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+
   useEffect(() => {
+
     function handleEscape(event) {
-      if (event.key === "Escape" && !submitting) {
+
+      if (
+        event.key === "Escape" &&
+        !submitting
+      ) {
         onClose();
       }
+
     }
 
     document.addEventListener(
@@ -848,24 +1060,39 @@ function LetterComposer({
         handleEscape
       );
     };
+
   }, [onClose, submitting]);
 
 
   async function submit(event) {
+
     event.preventDefault();
 
+
     if (!username.trim()) {
-      toast.error("Please enter your name.");
+
+      toast.error(
+        "Please enter your name."
+      );
+
       return;
     }
+
 
     if (!message.trim()) {
-      toast.error("Please write something first.");
+
+      toast.error(
+        "Please write something first."
+      );
+
       return;
     }
 
+
     try {
+
       setSubmitting(true);
+
 
       await api.post("/letters", {
         author_name: username.trim(),
@@ -873,13 +1100,16 @@ function LetterComposer({
         original_url: originalUrl.trim(),
       });
 
+
       toast.success(
         "Your letter was sent for review ♡"
       );
 
+
       onSubmitted();
 
     } catch (error) {
+
       console.error(
         "Letter submission error:",
         error
@@ -887,12 +1117,15 @@ function LetterComposer({
 
       toast.error(
         error?.response?.data?.detail ||
-          "Couldn't send your letter."
+        "Couldn't send your letter."
       );
 
     } finally {
+
       setSubmitting(false);
+
     }
+
   }
 
 
@@ -900,12 +1133,14 @@ function LetterComposer({
     <div
       className="fixed inset-0 z-[200] flex items-end justify-center bg-[#241d22]/70 p-0 backdrop-blur-sm sm:items-center sm:p-5"
       onMouseDown={(event) => {
+
         if (
           event.target === event.currentTarget &&
           !submitting
         ) {
           onClose();
         }
+
       }}
     >
 
@@ -918,17 +1153,21 @@ function LetterComposer({
         }
       >
 
-        {/* TOP BAR */}
+        {/* TOP */}
+
         <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[#eedee5] bg-[#fffafc] px-5 py-4">
 
           <div className="flex items-center gap-3">
 
             <div className="grid h-10 w-10 place-items-center rounded-full bg-[#ffe5ef]">
+
               <Mail
                 size={17}
                 className="text-[#df86a7]"
               />
+
             </div>
+
 
             <div>
 
@@ -944,11 +1183,13 @@ function LetterComposer({
 
           </div>
 
+
           <button
             type="button"
             onClick={onClose}
+            disabled={submitting}
             aria-label="Close"
-            className="grid h-10 w-10 place-items-center rounded-full border border-[#eadde3] bg-white text-[#66575f] shadow-sm transition hover:bg-[#df86a7] hover:text-white"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[#eadde3] bg-white text-[#66575f] shadow-sm transition hover:bg-[#df86a7] hover:text-white disabled:opacity-50"
           >
             <X size={18} />
           </button>
@@ -956,7 +1197,8 @@ function LetterComposer({
         </div>
 
 
-        {/* CONTENT */}
+        {/* FORM */}
+
         <div className="p-5 sm:p-7">
 
           <div className="mb-7">
@@ -973,16 +1215,16 @@ function LetterComposer({
 
             </div>
 
+
             <h2 className="font-serif-display text-3xl leading-tight text-[#342a30] sm:text-4xl">
               what would you like to say?
               <span className="text-[#df86a7]">
-                {" "}
-                ♡
+                {" "}♡
               </span>
             </h2>
 
+
             <p className="mt-3 text-sm leading-6 text-[#7d6e75]">
-              Your letter doesn't need a recipient.
               Write to HANEULZ, Han, JL, the whole group,
               another fan, or simply leave a thought.
             </p>
@@ -996,6 +1238,7 @@ function LetterComposer({
           >
 
             {/* NAME */}
+
             <div>
 
               <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[#67565e]">
@@ -1017,6 +1260,7 @@ function LetterComposer({
 
 
             {/* MESSAGE */}
+
             <div>
 
               <label className="mb-2 flex items-center justify-between text-[9px] font-bold uppercase tracking-[0.2em] text-[#67565e]">
@@ -1031,12 +1275,19 @@ function LetterComposer({
 
               </label>
 
+
               <textarea
                 value={message}
                 onChange={(event) => {
-                  if (event.target.value.length <= 2000) {
-                    setMessage(event.target.value);
+
+                  if (
+                    event.target.value.length <= 2000
+                  ) {
+                    setMessage(
+                      event.target.value
+                    );
                   }
+
                 }}
                 required
                 rows={8}
@@ -1047,7 +1298,8 @@ function LetterComposer({
             </div>
 
 
-            {/* OPTIONAL LINK */}
+            {/* LINK */}
+
             <div>
 
               <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[#67565e]">
@@ -1060,11 +1312,14 @@ function LetterComposer({
 
               </label>
 
+
               <input
                 type="url"
                 value={originalUrl}
                 onChange={(event) =>
-                  setOriginalUrl(event.target.value)
+                  setOriginalUrl(
+                    event.target.value
+                  )
                 }
                 placeholder="https://..."
                 className="w-full rounded-2xl border border-[#eadde3] bg-white px-4 py-3.5 text-sm text-[#40343b] shadow-sm outline-none transition placeholder:text-[#b5a4ad] focus:border-[#df86a7] focus:ring-4 focus:ring-[#ffdce9]"
@@ -1074,6 +1329,7 @@ function LetterComposer({
 
 
             {/* NOTICE */}
+
             <div className="rounded-2xl border border-[#efd9e2] bg-[#fff4f8] px-4 py-3">
 
               <div className="flex gap-3">
@@ -1094,6 +1350,7 @@ function LetterComposer({
 
 
             {/* SUBMIT */}
+
             <button
               type="submit"
               disabled={submitting}
@@ -1113,6 +1370,7 @@ function LetterComposer({
               )}
 
             </button>
+
 
             <p className="text-center text-[10px] leading-5 text-[#96858d]">
               Be kind. Be respectful. ♡
@@ -1134,10 +1392,20 @@ function LetterComposer({
 ============================================================ */
 
 function formatDate(value) {
-  if (!value) return "";
+
+  if (!value) {
+    return "";
+  }
 
   try {
-    return new Date(value).toLocaleDateString(
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+
+    return date.toLocaleDateString(
       undefined,
       {
         month: "short",
@@ -1145,7 +1413,10 @@ function formatDate(value) {
         year: "numeric",
       }
     );
+
   } catch {
+
     return "";
+
   }
 }
