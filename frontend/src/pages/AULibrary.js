@@ -9,6 +9,7 @@ import {
   Search,
   X,
   Sparkles,
+  ArrowDownRight,
 } from "lucide-react";
 
 import { api } from "../lib/api";
@@ -20,7 +21,7 @@ import Footer from "../components/Footer";
 const AUS_PER_PAGE = 12;
 
 const sourceFilters = [
-  { key: "all", label: "All works" },
+  { key: "all", label: "All stories" },
   { key: "x", label: "X" },
   { key: "tiktok", label: "TikTok" },
   { key: "ao3", label: "AO3" },
@@ -33,8 +34,8 @@ const statusFilters = [
 ];
 
 const typeFilters = [
-  { key: "all", label: "All types" },
-  { key: "social media au", label: "Social media" },
+  { key: "all", label: "All" },
+  { key: "social media au", label: "Social Media" },
   { key: "written au", label: "Written" },
   { key: "one-shot", label: "One-shot" },
   { key: "series", label: "Series" },
@@ -66,7 +67,6 @@ export default function AULibrary() {
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
-
   const [source, setSource] = useState("all");
   const [status, setStatus] = useState("all");
   const [type, setType] = useState("all");
@@ -74,7 +74,6 @@ export default function AULibrary() {
 
   const [savedOnly, setSavedOnly] = useState(false);
   const [sort, setSort] = useState("newest");
-
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [page, setPage] = useState(1);
 
@@ -310,516 +309,660 @@ export default function AULibrary() {
   }
 
   return (
-    <div
-      className="min-h-screen pt-24 md:pt-28"
-      style={{
-        background:
-          "radial-gradient(circle at 8% 8%, rgba(216,190,177,.16), transparent 25%), radial-gradient(circle at 92% 18%, rgba(174,188,199,.14), transparent 23%), #F8F5F0",
-      }}
-    >
-      <section className="mx-auto max-w-6xl px-5 md:px-8">
+    <div className="relative min-h-screen overflow-hidden bg-[#f8f5ef] text-[#292725]">
 
-        {/* =====================================================
-            HERO
-        ===================================================== */}
+      {/* =====================================================
+          BACKGROUND DECOR
+      ===================================================== */}
 
-        <Reveal>
-          <div className="relative overflow-hidden border-y border-[#E5DED6] py-14 md:py-20">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
 
-            {/* Decorative background */}
-            <div className="pointer-events-none absolute -right-10 top-2 text-[12rem] font-serif-display leading-none text-[#EEE8E1] md:text-[16rem]">
-              H
-            </div>
+        <div className="absolute -left-32 top-32 h-80 w-80 rounded-full bg-[#f5dfe4] opacity-40 blur-3xl" />
 
-            <div className="pointer-events-none absolute left-1/2 top-10 h-2 w-2 rounded-full bg-[#D6AEB8]" />
+        <div className="absolute -right-32 top-[38rem] h-96 w-96 rounded-full bg-[#dce9ee] opacity-45 blur-3xl" />
 
-            <div className="relative">
+        <div className="absolute left-[8%] top-[45%] font-serif-display text-[8rem] text-[#292725]/[0.025]">
+          ✦
+        </div>
 
-              <div className="flex items-center gap-3">
-                <span className="h-px w-8 bg-[#C8B5A7]" />
+        <div className="absolute right-[8%] top-[15%] rotate-12 font-serif-display text-[6rem] text-[#d88f9b]/[0.07]">
+          ♡
+        </div>
 
-                <p className="text-[9px] font-bold uppercase tracking-[0.32em] text-[#81766F]">
-                  HANEULZ archive
-                </p>
+        <div className="absolute bottom-[10%] left-[5%] h-24 w-24 rounded-full border border-[#292725]/[0.04]" />
 
-                <Sparkles
-                  size={12}
-                  strokeWidth={1.5}
-                  className="text-[#C99DA9]"
-                />
-              </div>
+      </div>
 
-              <h1 className="mt-7 max-w-4xl font-serif-display text-6xl font-medium leading-[0.88] tracking-[-0.035em] text-[#29272A] md:text-8xl">
-                AU
-                <span className="text-[#C89FAA]">.</span>{" "}
-                Library
-              </h1>
 
-              <div className="mt-8 flex max-w-2xl flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <main className="relative pt-28 md:pt-36">
 
-                <p className="max-w-xl text-sm leading-7 text-[#716B69] md:text-base">
-                  A little collection of alternate universes,
-                  stories, and ideas written about HANEULZ —
-                  gathered in one quiet corner of the internet.
-                </p>
+        <section className="mx-auto max-w-6xl px-5 md:px-8">
 
-                <div className="flex shrink-0 items-center gap-5">
 
-                  <div>
-                    <p className="font-serif-display text-3xl text-[#29272A]">
-                      {aus.length}
+          {/* =================================================
+              EDITORIAL HERO
+          ================================================= */}
+
+          <Reveal>
+
+            <div className="relative min-h-[430px] overflow-hidden border-y border-[#292725]/10">
+
+              {/* Decorative corner */}
+
+              <div className="absolute right-5 top-5 hidden h-24 w-24 border-r border-t border-[#292725]/10 md:block" />
+
+              <div className="absolute bottom-5 left-5 hidden h-24 w-24 border-b border-l border-[#292725]/10 md:block" />
+
+
+              <div className="relative grid min-h-[430px] items-center py-16 md:grid-cols-[1fr_280px] md:gap-12 md:py-20">
+
+                <div>
+
+                  <div className="flex items-center gap-3">
+
+                    <span className="h-px w-8 bg-[#d78f9b]" />
+
+                    <p className="text-[9px] font-bold uppercase tracking-[0.35em] text-[#8f6f75]">
+                      HANEULZ / ARCHIVE 01
                     </p>
 
-                    <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-[#8A817B]">
-                      works
-                    </p>
                   </div>
 
-                  <span className="h-9 w-px bg-[#DDD5CD]" />
 
-                  <div>
-                    <p className="font-serif-display text-3xl text-[#29272A]">
-                      ✦
-                    </p>
+                  <h1 className="mt-7 max-w-4xl font-serif-display text-6xl font-medium leading-[0.88] tracking-[-0.04em] md:text-8xl">
 
-                    <p className="mt-1 text-[8px] font-bold uppercase tracking-[0.2em] text-[#8A817B]">
-                      archive
-                    </p>
-                  </div>
+                    Little worlds
 
-                </div>
+                    <span className="block pl-8 text-[#b86f7d] md:pl-20">
+                      written about them.
+                    </span>
 
-              </div>
-
-            </div>
-          </div>
-        </Reveal>
+                  </h1>
 
 
-        {/* =====================================================
-            SEARCH
-        ===================================================== */}
-
-        <div className="mt-9">
-
-          <div className="group relative">
-
-            <Search
-              size={17}
-              strokeWidth={1.5}
-              className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[#8C837D] transition group-focus-within:text-[#B98592]"
-            />
-
-            <input
-              type="search"
-              value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
-              placeholder="Search stories, authors, tags..."
-              className="w-full border-b border-[#DCD4CC] bg-transparent py-4 pl-12 pr-12 text-sm text-[#29272A] outline-none transition placeholder:text-[#9A928C] focus:border-[#B98592]"
-            />
-
-            {search && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                aria-label="Clear search"
-                className="absolute right-2 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-[#8C837D] transition hover:bg-[#EEE7E1]"
-              >
-                <X size={14} />
-              </button>
-            )}
-
-          </div>
-        </div>
+                  <p className="mt-8 max-w-xl text-sm leading-7 text-[#716c67] md:text-base">
+                    A growing collection of alternate universes,
+                    stories, and little ideas created and shared
+                    by HANEULZ fans.
+                  </p>
 
 
-        {/* =====================================================
-            SOURCE NAVIGATION
-        ===================================================== */}
+                  <div className="mt-9 flex items-center gap-4">
 
-        <div className="mt-7 flex items-center justify-between gap-5 border-b border-[#E2DAD2]">
-
-          <div className="flex min-w-0 gap-6 overflow-x-auto">
-
-            {sourceFilters.map((filter) => (
-              <button
-                key={filter.key}
-                type="button"
-                onClick={() => setSource(filter.key)}
-                className={`relative shrink-0 pb-3 text-[9px] font-bold uppercase tracking-[0.16em] transition ${
-                  source === filter.key
-                    ? "text-[#29272A]"
-                    : "text-[#928983] hover:text-[#5E5855]"
-                }`}
-              >
-                {filter.label}
-
-                {source === filter.key && (
-                  <span className="absolute bottom-0 left-0 right-0 h-px bg-[#B98592]" />
-                )}
-              </button>
-            ))}
-
-          </div>
-
-          <div className="hidden shrink-0 text-[8px] font-bold uppercase tracking-[0.18em] text-[#A09791] sm:block">
-            {filteredAUs.length} results
-          </div>
-
-        </div>
-
-
-        {/* =====================================================
-            FILTER / SORT
-        ===================================================== */}
-
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-
-          <button
-            type="button"
-            onClick={() =>
-              setFiltersOpen((value) => !value)
-            }
-            className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.16em] transition ${
-              filtersOpen || hasActiveFilters
-                ? "text-[#A86F7C]"
-                : "text-[#817873] hover:text-[#29272A]"
-            }`}
-          >
-            <Filter size={13} strokeWidth={1.5} />
-
-            Filters
-
-            <ChevronDown
-              size={13}
-              strokeWidth={1.5}
-              className={`transition-transform ${
-                filtersOpen ? "rotate-180" : ""
-              }`}
-            />
-
-            {hasActiveFilters && (
-              <span className="ml-1 grid h-4 min-w-4 place-items-center rounded-full bg-[#D9B4BD] px-1 text-[7px] text-white">
-                !
-              </span>
-            )}
-          </button>
-
-          <div className="flex items-center gap-3">
-
-            <span className="hidden text-[8px] font-bold uppercase tracking-[0.18em] text-[#9A918B] sm:inline">
-              Sort by
-            </span>
-
-            <select
-              value={sort}
-              onChange={(event) =>
-                setSort(event.target.value)
-              }
-              className="border-none bg-transparent py-2 pl-1 pr-1 text-[9px] font-bold uppercase tracking-[0.12em] text-[#4D4846] outline-none"
-            >
-              <option value="newest">Newest</option>
-              <option value="updated">Updated</option>
-              <option value="liked">Most liked</option>
-              <option value="bookmarked">Most saved</option>
-              <option value="title">A–Z</option>
-            </select>
-
-          </div>
-
-        </div>
-
-
-        {/* =====================================================
-            FILTER PANEL
-        ===================================================== */}
-
-        {filtersOpen && (
-          <div className="mt-4 border-y border-[#E2DAD2] py-6">
-
-            <FilterGroup
-              title="Status"
-              options={statusFilters}
-              value={status}
-              onChange={setStatus}
-            />
-
-            <FilterGroup
-              title="Type"
-              options={typeFilters}
-              value={type}
-              onChange={setType}
-              className="mt-7"
-            />
-
-            {allTags.length > 0 && (
-              <div className="mt-7">
-
-                <p className="mb-3 text-[8px] font-bold uppercase tracking-[0.22em] text-[#918780]">
-                  Tags
-                </p>
-
-                <div className="flex max-h-32 flex-wrap gap-2 overflow-y-auto">
-
-                  <FilterButton
-                    active={tag === "all"}
-                    onClick={() => setTag("all")}
-                  >
-                    All
-                  </FilterButton>
-
-                  {allTags.map((item) => (
-                    <FilterButton
-                      key={item}
-                      active={
-                        normalize(tag) === normalize(item)
-                      }
-                      onClick={() => setTag(item)}
+                    <Link
+                      to="/submit"
+                      className="group inline-flex items-center gap-3 bg-[#292725] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white transition hover:bg-[#b86f7d]"
                     >
-                      {item}
-                    </FilterButton>
-                  ))}
+                      Submit a story
+
+                      <ArrowDownRight
+                        size={13}
+                        className="transition-transform group-hover:translate-x-1 group-hover:translate-y-1"
+                      />
+                    </Link>
+
+
+                    <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#918b84]">
+                      {aus.length} collected
+                    </span>
+
+                  </div>
+
+                </div>
+
+
+                {/* HERO SIDE NOTE */}
+
+                <div className="relative mt-12 hidden md:block">
+
+                  <div className="rotate-[-3deg] border border-[#292725]/10 bg-[#fffdf8] p-6 shadow-[8px_12px_0_rgba(41,39,37,0.035)]">
+
+                    <div className="flex justify-between">
+
+                      <Sparkles
+                        size={15}
+                        className="text-[#d78f9b]"
+                      />
+
+                      <span className="font-serif-display text-lg">
+                        01
+                      </span>
+
+                    </div>
+
+
+                    <p className="mt-10 font-serif-display text-2xl leading-tight">
+                      stories can make
+                      <br />
+                      a whole little
+                      <br />
+                      universe.
+                    </p>
+
+
+                    <div className="mt-8 h-px bg-[#292725]/10" />
+
+
+                    <p className="mt-4 text-[8px] uppercase tracking-[0.22em] text-[#918b84]">
+                      curated for HANEULZ
+                    </p>
+
+                  </div>
 
                 </div>
 
               </div>
-            )}
 
-            <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-[#E5DED6] pt-5">
 
-              <button
-                type="button"
-                onClick={() =>
-                  setSavedOnly((value) => !value)
+              {/* tiny decorative marks */}
+
+              <div className="absolute bottom-8 right-8 text-lg text-[#d78f9b]">
+                ✦
+              </div>
+
+              <div className="absolute left-[46%] top-10 text-xs text-[#9eb9c2]">
+                +
+              </div>
+
+            </div>
+
+          </Reveal>
+
+
+          {/* =================================================
+              SEARCH
+          ================================================= */}
+
+          <div className="mt-10">
+
+            <div className="group relative">
+
+              <Search
+                size={17}
+                className="pointer-events-none absolute left-0 top-1/2 -translate-y-1/2 text-[#8f8982] transition group-focus-within:text-[#b86f7d]"
+              />
+
+              <input
+                type="search"
+                value={search}
+                onChange={(event) =>
+                  setSearch(event.target.value)
                 }
-                className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
-                  savedOnly
-                    ? "text-[#A86F7C]"
-                    : "text-[#817873] hover:text-[#29272A]"
-                }`}
-              >
-                <Bookmark
-                  size={13}
-                  strokeWidth={1.5}
-                  fill={savedOnly ? "currentColor" : "none"}
-                />
+                placeholder="Search the archive..."
+                className="w-full border-b border-[#292725]/15 bg-transparent py-4 pl-8 pr-10 text-sm outline-none transition placeholder:text-[#aaa49d] focus:border-[#b86f7d]"
+              />
 
-                Saved
-
-                {savedCount > 0 &&
-                  ` (${savedCount})`}
-              </button>
-
-              {hasActiveFilters && (
+              {search && (
                 <button
                   type="button"
-                  onClick={clearFilters}
-                  className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#A86F7C] transition hover:text-[#29272A]"
+                  onClick={() => setSearch("")}
+                  className="absolute right-0 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-[#8f8982] hover:bg-[#f1dfe3]"
                 >
-                  Clear all
+                  <X size={14} />
                 </button>
               )}
 
             </div>
 
           </div>
-        )}
 
 
-        {/* =====================================================
-            COLLECTION HEADER
-        ===================================================== */}
+          {/* =================================================
+              SOURCE NAV
+          ================================================= */}
 
-        <div className="mt-12 flex items-end justify-between gap-5">
+          <div className="mt-6 flex items-center justify-between gap-5">
 
-          <div>
+            <div className="flex min-w-0 items-center gap-1 overflow-x-auto pb-2">
 
-            <div className="flex items-center gap-3">
+              {sourceFilters.map((filter) => (
 
-              <span className="h-px w-5 bg-[#C9A9AF]" />
+                <button
+                  key={filter.key}
+                  type="button"
+                  onClick={() => setSource(filter.key)}
+                  className={`shrink-0 px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] transition ${
+                    source === filter.key
+                      ? "bg-[#292725] text-white"
+                      : "text-[#827c75] hover:text-[#b86f7d]"
+                  }`}
+                >
+                  {filter.label}
+                </button>
 
-              <p className="text-[8px] font-bold uppercase tracking-[0.25em] text-[#9A817F]">
-                The collection
+              ))}
+
+            </div>
+
+
+            <div className="hidden items-center gap-2 text-[#9a948c] sm:flex">
+
+              <span className="h-px w-8 bg-[#292725]/10" />
+
+              <span className="text-[8px] uppercase tracking-[0.2em]">
+                browse
+              </span>
+
+            </div>
+
+          </div>
+
+
+          {/* =================================================
+              FILTER BAR
+          ================================================= */}
+
+          <div className="mt-3 border-y border-[#292725]/10">
+
+            <div className="flex items-center justify-between gap-4 py-3">
+
+              <button
+                type="button"
+                onClick={() =>
+                  setFiltersOpen((value) => !value)
+                }
+                className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.17em] transition ${
+                  filtersOpen || hasActiveFilters
+                    ? "text-[#b86f7d]"
+                    : "text-[#827c75] hover:text-[#292725]"
+                }`}
+              >
+
+                <Filter size={13} />
+
+                Filters
+
+                {hasActiveFilters && (
+                  <span className="grid h-4 min-w-4 place-items-center rounded-full bg-[#d78f9b] px-1 text-[8px] text-white">
+                    !
+                  </span>
+                )}
+
+                <ChevronDown
+                  size={13}
+                  className={`transition ${
+                    filtersOpen ? "rotate-180" : ""
+                  }`}
+                />
+
+              </button>
+
+
+              <div className="flex items-center gap-3">
+
+                <span className="hidden text-[8px] uppercase tracking-[0.2em] text-[#aaa39b] sm:inline">
+                  Sort by
+                </span>
+
+                <select
+                  value={sort}
+                  onChange={(event) =>
+                    setSort(event.target.value)
+                  }
+                  className="bg-transparent text-[9px] font-bold uppercase tracking-[0.12em] outline-none"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="updated">Updated</option>
+                  <option value="liked">Most liked</option>
+                  <option value="bookmarked">Most saved</option>
+                  <option value="title">A–Z</option>
+                </select>
+
+              </div>
+
+            </div>
+
+
+            {filtersOpen && (
+
+              <div className="border-t border-[#292725]/10 py-7">
+
+                <FilterGroup
+                  title="Status"
+                  options={statusFilters}
+                  value={status}
+                  onChange={setStatus}
+                />
+
+                <FilterGroup
+                  title="Type"
+                  options={typeFilters}
+                  value={type}
+                  onChange={setType}
+                  className="mt-7"
+                />
+
+
+                {allTags.length > 0 && (
+
+                  <div className="mt-7">
+
+                    <p className="mb-3 text-[8px] font-bold uppercase tracking-[0.25em] text-[#9a948c]">
+                      Tags
+                    </p>
+
+                    <div className="flex max-h-32 flex-wrap gap-2 overflow-y-auto">
+
+                      <FilterButton
+                        active={tag === "all"}
+                        onClick={() => setTag("all")}
+                      >
+                        All
+                      </FilterButton>
+
+                      {allTags.map((item) => (
+
+                        <FilterButton
+                          key={item}
+                          active={
+                            normalize(tag) ===
+                            normalize(item)
+                          }
+                          onClick={() => setTag(item)}
+                        >
+                          {item}
+                        </FilterButton>
+
+                      ))}
+
+                    </div>
+
+                  </div>
+
+                )}
+
+
+                <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-[#292725]/10 pt-5">
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setSavedOnly((value) => !value)
+                    }
+                    className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.15em] ${
+                      savedOnly
+                        ? "text-[#b86f7d]"
+                        : "text-[#827c75]"
+                    }`}
+                  >
+
+                    <Bookmark
+                      size={13}
+                      fill={
+                        savedOnly
+                          ? "currentColor"
+                          : "none"
+                      }
+                    />
+
+                    Saved
+
+                    {savedCount > 0 &&
+                      ` (${savedCount})`}
+
+                  </button>
+
+
+                  {hasActiveFilters && (
+
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#b86f7d]"
+                    >
+                      Clear filters
+                    </button>
+
+                  )}
+
+                </div>
+
+              </div>
+
+            )}
+
+          </div>
+
+
+          {/* =================================================
+              COLLECTION HEADER
+          ================================================= */}
+
+          <div className="mt-14 flex items-end justify-between border-b border-[#292725]/10 pb-4">
+
+            <div>
+
+              <div className="flex items-center gap-2">
+
+                <Sparkles
+                  size={12}
+                  className="text-[#d78f9b]"
+                />
+
+                <p className="text-[8px] font-bold uppercase tracking-[0.28em] text-[#b86f7d]">
+                  The collection
+                </p>
+
+              </div>
+
+
+              <p className="mt-2 font-serif-display text-3xl md:text-4xl">
+                HANEULZ AUs
               </p>
 
             </div>
 
-            <p className="mt-2 text-xs text-[#817A76]">
+
+            <p className="text-right text-[8px] uppercase tracking-[0.18em] text-[#9a948c]">
+
               {loading
-                ? "Looking through the archive..."
+                ? "Searching..."
                 : filteredAUs.length === 0
                 ? "Nothing found"
-                : `Showing ${firstShown}–${lastShown} of ${filteredAUs.length}`}
+                : `${firstShown}–${lastShown} / ${filteredAUs.length}`}
+
             </p>
 
           </div>
 
-          <Link
-            to="/submit"
-            className="group flex items-center gap-2 border-b border-[#C9A2AC] pb-1 text-[9px] font-bold uppercase tracking-[0.15em] text-[#9C6876] transition hover:border-[#29272A] hover:text-[#29272A]"
-          >
-            Submit yours
 
-            <span className="transition-transform group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
+          {/* =================================================
+              AU LIST
+          ================================================= */}
 
-        </div>
+          <div className="relative mt-6 pb-12">
+
+            {/* vertical editorial line */}
+
+            <div className="pointer-events-none absolute bottom-0 left-2 top-0 hidden w-px bg-[#292725]/[0.07] md:block" />
 
 
-        {/* =====================================================
-            AU LIST
-        ===================================================== */}
+            <div className="space-y-5 md:pl-8">
 
-        <div className="mt-6 space-y-4 pb-12">
+              {loading &&
+                [1, 2, 3, 4].map((item) => (
 
-          {loading &&
-            [1, 2, 3, 4].map((item) => (
-              <div
-                key={item}
-                className="h-40 animate-pulse border border-[#E4DDD5] bg-[#FCFAF7]"
-              />
-            ))}
+                  <div
+                    key={item}
+                    className="h-40 animate-pulse border border-[#292725]/10 bg-[#fffdf8]"
+                  />
+
+                ))}
 
 
-          {!loading &&
-            filteredAUs.length === 0 && (
-              <div className="border-y border-dashed border-[#DCD4CC] px-6 py-24 text-center">
+              {!loading &&
+                filteredAUs.length === 0 && (
 
-                <div className="mx-auto flex items-center justify-center gap-2 text-[#B98C98]">
-                  <span className="h-px w-8 bg-[#D8C1C5]" />
-                  <Sparkles size={16} strokeWidth={1.3} />
-                  <span className="h-px w-8 bg-[#D8C1C5]" />
-                </div>
+                  <div className="border border-dashed border-[#292725]/15 bg-[#fffdf8] px-6 py-24 text-center">
 
-                <h2 className="mt-6 font-serif-display text-4xl text-[#29272A]">
-                  Nothing here yet
-                </h2>
+                    <div className="mx-auto text-3xl text-[#d78f9b]">
+                      ✦
+                    </div>
 
-                <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#817A76]">
-                  Try changing your search or removing some
-                  filters to find another story.
-                </p>
+                    <h2 className="mt-5 font-serif-display text-4xl">
+                      Nothing here yet.
+                    </h2>
 
-                {hasActiveFilters && (
-                  <button
-                    type="button"
-                    onClick={clearFilters}
-                    className="mt-7 border-b border-[#B98592] pb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-[#A06F7B]"
-                  >
-                    Clear filters
-                  </button>
-                )}
+                    <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[#827c75]">
+                      Try changing your search or filters
+                      and see what else is hiding in the archive.
+                    </p>
 
-              </div>
-            )}
-
-
-          {!loading &&
-            visibleAUs.map((au, index) => (
-              <Reveal
-                key={au.id}
-                delay={(index % 4) * 0.04}
-              >
-                <AUCard
-                  au={au}
-                  index={index}
-                />
-              </Reveal>
-            ))}
-
-        </div>
-
-
-        {/* =====================================================
-            PAGINATION
-        ===================================================== */}
-
-        {!loading && totalPages > 1 && (
-          <div className="mb-20 flex flex-col items-center gap-4">
-
-            <div className="flex items-center gap-1">
-
-              <button
-                type="button"
-                disabled={page === 1}
-                onClick={() => goToPage(page - 1)}
-                className="grid h-9 w-9 place-items-center text-[#817873] transition hover:text-[#29272A] disabled:opacity-25"
-                aria-label="Previous page"
-              >
-                <ChevronLeft size={15} strokeWidth={1.5} />
-              </button>
-
-              {Array.from(
-                { length: totalPages },
-                (_, index) => index + 1
-              )
-                .filter((number) => {
-                  if (totalPages <= 7) return true;
-
-                  return (
-                    number === 1 ||
-                    number === totalPages ||
-                    Math.abs(number - page) <= 1
-                  );
-                })
-                .map((number, index, array) => {
-                  const previous = array[index - 1];
-
-                  return (
-                    <div
-                      key={number}
-                      className="flex items-center"
-                    >
-
-                      {previous &&
-                        number - previous > 1 && (
-                          <span className="px-2 text-xs text-[#AAA19A]">
-                            ···
-                          </span>
-                        )}
+                    {hasActiveFilters && (
 
                       <button
                         type="button"
-                        onClick={() => goToPage(number)}
-                        className={`grid h-9 min-w-9 place-items-center text-[10px] transition ${
-                          page === number
-                            ? "font-bold text-[#A06F7B] underline decoration-[#D4AAB3] underline-offset-4"
-                            : "text-[#918983] hover:text-[#29272A]"
-                        }`}
+                        onClick={clearFilters}
+                        className="mt-7 bg-[#292725] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white"
                       >
-                        {number}
+                        Clear filters
                       </button>
 
-                    </div>
-                  );
-                })}
+                    )}
 
-              <button
-                type="button"
-                disabled={page === totalPages}
-                onClick={() => goToPage(page + 1)}
-                className="grid h-9 w-9 place-items-center text-[#817873] transition hover:text-[#29272A] disabled:opacity-25"
-                aria-label="Next page"
-              >
-                <ChevronRight size={15} strokeWidth={1.5} />
-              </button>
+                  </div>
+
+                )}
+
+
+              {!loading &&
+                visibleAUs.map((au, index) => (
+
+                  <Reveal
+                    key={au.id}
+                    delay={(index % 4) * 0.04}
+                  >
+
+                    <div className="relative">
+
+                      {/* little archive number */}
+
+                      <div className="absolute -left-8 top-5 hidden -translate-x-full font-serif-display text-sm text-[#aaa39b] md:block">
+                        {String(
+                          startIndex + index + 1
+                        ).padStart(2, "0")}
+                      </div>
+
+                      <AUCard
+                        au={au}
+                        index={index}
+                      />
+
+                    </div>
+
+                  </Reveal>
+
+                ))}
 
             </div>
 
-            <p className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#A09892]">
-              Page {page} of {totalPages}
-            </p>
-
           </div>
-        )}
 
-      </section>
+
+          {/* =================================================
+              PAGINATION
+          ================================================= */}
+
+          {!loading && totalPages > 1 && (
+
+            <div className="mb-20 border-t border-[#292725]/10 pt-8">
+
+              <div className="flex flex-col items-center gap-4">
+
+                <div className="flex items-center gap-2">
+
+                  <button
+                    type="button"
+                    disabled={page === 1}
+                    onClick={() => goToPage(page - 1)}
+                    className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
+                  >
+                    <ChevronLeft size={14} />
+                  </button>
+
+
+                  {Array.from(
+                    { length: totalPages },
+                    (_, index) => index + 1
+                  )
+                    .filter((number) => {
+                      if (totalPages <= 7) return true;
+
+                      return (
+                        number === 1 ||
+                        number === totalPages ||
+                        Math.abs(number - page) <= 1
+                      );
+                    })
+                    .map((number, index, array) => {
+
+                      const previous =
+                        array[index - 1];
+
+                      return (
+                        <div
+                          key={number}
+                          className="flex items-center gap-2"
+                        >
+
+                          {previous &&
+                            number - previous > 1 && (
+                              <span className="text-xs text-[#aaa39b]">
+                                …
+                              </span>
+                            )}
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              goToPage(number)
+                            }
+                            className={`grid h-9 min-w-9 place-items-center px-3 text-[10px] font-bold transition ${
+                              page === number
+                                ? "bg-[#292725] text-white"
+                                : "border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] hover:bg-[#f1dfe3]"
+                            }`}
+                          >
+                            {number}
+                          </button>
+
+                        </div>
+                      );
+
+                    })}
+
+
+                  <button
+                    type="button"
+                    disabled={page === totalPages}
+                    onClick={() =>
+                      goToPage(page + 1)
+                    }
+                    className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
+                  >
+                    <ChevronRight size={14} />
+                  </button>
+
+                </div>
+
+
+                <p className="text-[8px] font-bold uppercase tracking-[0.22em] text-[#aaa39b]">
+                  Page {page} of {totalPages}
+                </p>
+
+              </div>
+
+            </div>
+
+          )}
+
+        </section>
+
+      </main>
+
 
       <Footer />
+
     </div>
   );
 }
@@ -839,13 +982,14 @@ function FilterGroup({
   return (
     <div className={className}>
 
-      <p className="mb-3 text-[8px] font-bold uppercase tracking-[0.22em] text-[#918780]">
+      <p className="mb-3 text-[8px] font-bold uppercase tracking-[0.25em] text-[#9a948c]">
         {title}
       </p>
 
-      <div className="flex flex-wrap gap-x-5 gap-y-2">
+      <div className="flex flex-wrap gap-2">
 
         {options.map((option) => (
+
           <FilterButton
             key={option.key}
             active={value === option.key}
@@ -853,6 +997,7 @@ function FilterGroup({
           >
             {option.label}
           </FilterButton>
+
         ))}
 
       </div>
@@ -871,10 +1016,10 @@ function FilterButton({
     <button
       type="button"
       onClick={onClick}
-      className={`border-b pb-1 text-[9px] font-semibold uppercase tracking-[0.12em] transition ${
+      className={`border px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition ${
         active
-          ? "border-[#C99FAA] text-[#9D6875]"
-          : "border-transparent text-[#817873] hover:border-[#D8C5C7] hover:text-[#29272A]"
+          ? "border-[#292725] bg-[#292725] text-white"
+          : "border-[#292725]/10 bg-[#fffdf8] text-[#827c75] hover:border-[#d78f9b] hover:text-[#b86f7d]"
       }`}
     >
       {children}
