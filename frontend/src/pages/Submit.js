@@ -6,7 +6,6 @@ import {
   Link2,
   ImagePlus,
   Send,
-  Info,
 } from "lucide-react";
 
 import { api, formatApiError } from "../lib/api";
@@ -99,7 +98,10 @@ export default function Submit() {
 
       <section className="mx-auto max-w-4xl px-5 md:px-6">
 
-        {/* HERO */}
+        {/* =====================================================
+            HERO
+        ====================================================== */}
+
         <Reveal>
           <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white px-6 py-12 md:px-12 md:py-16">
 
@@ -130,6 +132,7 @@ export default function Submit() {
               </p>
 
               <div className="mt-7 flex flex-wrap gap-2">
+
                 <span className="rounded-full bg-[color:var(--pink-soft)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em]">
                   Fan submissions
                 </span>
@@ -137,6 +140,7 @@ export default function Submit() {
                 <span className="rounded-full border border-[color:var(--line)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
                   Reviewed before posting
                 </span>
+
               </div>
 
             </div>
@@ -144,7 +148,10 @@ export default function Submit() {
         </Reveal>
 
 
-        {/* FORM */}
+        {/* =====================================================
+            SUBMISSION FORM
+        ====================================================== */}
+
         <Reveal delay={0.08}>
           <form
             onSubmit={submit}
@@ -152,9 +159,13 @@ export default function Submit() {
           >
 
             {/* TITLE */}
+
             <div>
               <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
-                Title <span className="text-[color:var(--pink-deep)]">*</span>
+                Title{" "}
+                <span className="text-[color:var(--pink-deep)]">
+                  *
+                </span>
               </label>
 
               <input
@@ -168,6 +179,7 @@ export default function Submit() {
 
 
             {/* AUTHOR */}
+
             <div className="mt-6">
               <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
                 Creator / Author
@@ -183,7 +195,9 @@ export default function Submit() {
 
 
             {/* TYPE */}
+
             <div className="mt-7">
+
               <label className="mb-3 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
                 What are you submitting?
               </label>
@@ -216,7 +230,9 @@ export default function Submit() {
 
 
             {/* SOURCE */}
+
             <div className="mt-7">
+
               <label className="mb-3 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
                 Where was it originally posted?
               </label>
@@ -251,12 +267,18 @@ export default function Submit() {
             </div>
 
 
-            {/* LINK */}
+            {/* ORIGINAL LINK */}
+
             <div className="mt-7">
+
               <label className="mb-2 flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
                 <Link2 size={12} />
+
                 Original Work Link
-                <span className="text-[color:var(--pink-deep)]">*</span>
+
+                <span className="text-[color:var(--pink-deep)]">
+                  *
+                </span>
               </label>
 
               <input
@@ -269,17 +291,22 @@ export default function Submit() {
               />
 
               <p className="mt-2 text-[10px] leading-5 text-[color:var(--ink-soft)]">
-                This link will be attached to the entry so readers
-                can visit the original work.
+                Readers will be able to visit the original work
+                through this link.
               </p>
+
             </div>
 
 
-            {/* COVER */}
+            {/* COVER IMAGE */}
+
             <div className="mt-7">
+
               <label className="mb-2 flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
                 <ImagePlus size={12} />
+
                 Cover Image
+
                 <span className="font-normal normal-case tracking-normal">
                   · optional
                 </span>
@@ -299,7 +326,7 @@ export default function Submit() {
                 </span>
 
                 <span className="mt-1 text-[10px] text-[color:var(--ink-soft)]">
-                  Optional · JPG, PNG, or other image formats
+                  Optional · upload an image for the AU
                 </span>
 
                 <input
@@ -315,11 +342,14 @@ export default function Submit() {
                 />
 
               </label>
+
             </div>
 
 
-            {/* DESCRIPTION */}
+            {/* SHORT DESCRIPTION */}
+
             <div className="mt-7">
+
               <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
                 Short Description
               </label>
@@ -331,11 +361,14 @@ export default function Submit() {
                 className={inputStyle}
                 placeholder="Give readers a little idea of what the AU is about..."
               />
+
             </div>
 
 
             {/* FULL STORY */}
+
             <div className="mt-7">
+
               <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
                 Full Story
                 <span className="ml-2 font-normal normal-case tracking-normal">
@@ -350,140 +383,99 @@ export default function Submit() {
                 className={inputStyle}
                 placeholder="Optional — only add the story here if you want it displayed directly on HANEULZ Corner."
               />
-            </div>
-
-
-            {/* COMMUNITY NOTES */}
-            <div className="mt-10 space-y-4">
-
-              {/* DISCLAIMER */}
-              <div className="rounded-[1.75rem] bg-[color:var(--pink-soft)]/60 p-6">
-
-                <div className="flex items-center gap-2">
-                  <ShieldAlert
-                    size={15}
-                    className="text-[color:var(--pink-deep)]"
-                  />
-
-                  <h2 className="text-[9px] font-bold uppercase tracking-[0.2em]">
-                    Disclaimer ♡
-                  </h2>
-                </div>
-
-                <p className="mt-4 text-xs leading-6 text-[color:var(--ink-soft)]">
-                  HANEULZ Corner is a community-made archive for
-                  HANEULZ-related AUs, headcanons, and fan-created
-                  works. All works remain attributed to their
-                  respective original creators. HANEULZ Corner does
-                  not claim ownership of the stories, posts, or
-                  artwork featured here.
-                </p>
-
-                <p className="mt-3 text-xs leading-6 text-[color:var(--ink-soft)]">
-                  Every entry keeps its original source link so
-                  readers can visit the creator's original work.
-                </p>
-
-              </div>
-
-
-              {/* SUBMISSION NOTE */}
-              <div className="rounded-[1.75rem] border border-[color:var(--line)] bg-white p-6">
-
-                <div className="flex items-center gap-2">
-                  <Info
-                    size={15}
-                    className="text-[color:var(--pink-deep)]"
-                  />
-
-                  <h2 className="text-[9px] font-bold uppercase tracking-[0.2em]">
-                    Before you submit ✦
-                  </h2>
-                </div>
-
-                <p className="mt-4 text-xs leading-6 text-[color:var(--ink-soft)]">
-                  Please make sure the information you provide is
-                  accurate and that the original work link is
-                  included. Submissions are reviewed before they
-                  appear on HANEULZ Corner.
-                </p>
-
-                <p className="mt-3 text-xs leading-6 text-[color:var(--ink-soft)]">
-                  We may adjust the formatting, tags, description,
-                  or cover of an entry to keep the archive
-                  organized. The original work itself will not be
-                  altered.
-                </p>
-
-              </div>
-
-
-              {/* RULES / WARNING */}
-              <div className="rounded-[1.75rem] border border-[color:var(--line)] bg-white p-6">
-
-                <div className="flex items-center gap-2">
-                  <Sparkles
-                    size={15}
-                    className="text-[color:var(--pink-deep)]"
-                  />
-
-                  <h2 className="text-[9px] font-bold uppercase tracking-[0.2em]">
-                    Please keep in mind ✦
-                  </h2>
-                </div>
-
-                <p className="mt-4 text-xs leading-6 text-[color:var(--ink-soft)]">
-                  By submitting a work to HANEULZ Corner, please be
-                  mindful of the community and make sure your
-                  submission follows the rules and guidelines of
-                  the website.
-                </p>
-
-                <p className="mt-3 text-xs leading-6 text-[color:var(--ink-soft)]">
-                  Please do not submit anything that goes against
-                  the rules of HANEULZ Corner or could create
-                  unnecessary issues within the community.
-                  Submissions that do not follow the guidelines may
-                  not be accepted or may be removed after review.
-                </p>
-
-              </div>
-
-
-              {/* CREATOR NOTE */}
-              <div className="rounded-[1.75rem] bg-[color:var(--ink)] p-6 text-white">
-
-                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--pink-soft)]">
-                  Creator note ♡
-                </p>
-
-                <p className="mt-3 text-xs leading-6 text-white/75">
-                  If you're the original creator and want your work
-                  corrected or removed from the archive, you can
-                  contact us and we'll review the request.
-                </p>
-
-              </div>
 
             </div>
 
 
-            {/* SUBMIT */}
+            {/* =================================================
+                COMMUNITY NOTE
+            ================================================== */}
+
+            <div className="mt-10 rounded-[2rem] border border-[color:var(--line)] bg-[color:var(--pink-soft)]/40 p-6 md:p-7">
+
+              <div className="flex items-center gap-2">
+
+                <ShieldAlert
+                  size={15}
+                  className="text-[color:var(--pink-deep)]"
+                />
+
+                <h2 className="text-[9px] font-bold uppercase tracking-[0.2em]">
+                  A little note before you submit ♡
+                </h2>
+
+              </div>
+
+              <div className="mt-5 space-y-4 text-xs leading-6 text-[color:var(--ink-soft)]">
+
+                <p>
+                  HANEULZ Corner is a fan-made archive created
+                  to help others discover AU works and the
+                  creators behind them. Please be mindful when
+                  submitting and make sure your entry follows
+                  our community guidelines.
+                </p>
+
+                <p>
+                  <strong className="text-[color:var(--ink)]">
+                    Please do not submit content that violates
+                    HANEULZ Corner's rules.
+                  </strong>{" "}
+                  Submissions containing inappropriate, harmful,
+                  hateful, misleading, or otherwise prohibited
+                  content may be rejected or removed.
+                </p>
+
+                <p>
+                  <strong className="text-[color:var(--ink)]">
+                    Creator credit matters.
+                  </strong>{" "}
+                  The original work remains with its respective
+                  creator. HANEULZ Corner does not claim ownership
+                  of submitted works, and submitted entries should
+                  always lead back to the original source.
+                </p>
+
+                <p>
+                  By submitting an AU, you acknowledge that it
+                  will be reviewed by the HANEULZ Corner admin
+                  before being added to the archive. We may edit
+                  the listing details, tags, or presentation when
+                  needed to keep the archive organized and
+                  consistent.
+                </p>
+
+                <p>
+                  <strong className="text-[color:var(--ink)]">
+                    Please submit thoughtfully and respect the
+                    creators, the community, and the people
+                    represented in the works. ♡
+                  </strong>
+                </p>
+
+              </div>
+            </div>
+
+
+            {/* SUBMIT BUTTON */}
+
             <button
               type="submit"
               disabled={submitting}
               className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--pink-deep)] py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
+
               <Send size={14} />
 
               {submitting
                 ? "Sending to Admin..."
                 : "Submit for Review"}
+
             </button>
 
-            <p className="text-center text-[9px] leading-5 text-[color:var(--ink-soft)]">
-              Your submission will be reviewed before appearing
-              on HANEULZ Corner.
+            <p className="mt-3 text-center text-[9px] leading-5 text-[color:var(--ink-soft)]">
+              Submissions are reviewed before appearing on
+              HANEULZ Corner.
             </p>
 
           </form>
