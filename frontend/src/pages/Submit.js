@@ -2,13 +2,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import {
   Sparkles,
+  ShieldAlert,
   Link2,
   ImagePlus,
-  FileText,
-  Heart,
-  ShieldAlert,
-  ArrowRight,
-  Check,
+  Send,
+  Info,
 } from "lucide-react";
 
 import { api, formatApiError } from "../lib/api";
@@ -26,18 +24,6 @@ const empty = {
   image: null,
 };
 
-const sources = [
-  { v: "x", l: "X" },
-  { v: "tiktok", l: "TikTok" },
-  { v: "ao3", l: "AO3" },
-  { v: "other", l: "Other" },
-];
-
-const types = [
-  { v: "story", l: "AU Story" },
-  { v: "headcanon", l: "Headcanon" },
-];
-
 export default function Submit() {
   const [form, setForm] = useState(empty);
   const [submitting, setSubmitting] = useState(false);
@@ -53,7 +39,7 @@ export default function Submit() {
     e.preventDefault();
 
     if (!form.source_url) {
-      toast.error("Please add the original story or post link.");
+      toast.error("Please add the original work link.");
       return;
     }
 
@@ -67,7 +53,10 @@ export default function Submit() {
         "author_name",
         form.author_name.trim() || "Anonymous"
       );
-      formData.append("short_description", form.short_description);
+      formData.append(
+        "short_description",
+        form.short_description
+      );
       formData.append("full_story", form.full_story);
       formData.append("source_url", form.source_url);
       formData.append("au_type", form.au_type);
@@ -81,7 +70,9 @@ export default function Submit() {
 
       setForm(empty);
 
-      toast.success("Your AU is waiting for approval. 💗");
+      toast.success(
+        "Your AU is waiting for approval. 💗🌩️💙"
+      );
     } catch (err) {
       toast.error(
         formatApiError(err.response?.data?.detail)
@@ -92,63 +83,60 @@ export default function Submit() {
   };
 
   const inputStyle =
-    "w-full rounded-2xl border border-[color:var(--line)] bg-white px-5 py-4 text-sm text-[color:var(--ink)] outline-none transition placeholder:text-[color:var(--ink-soft)]/60 focus:border-[color:var(--pink-deep)] focus:ring-4 focus:ring-[color:var(--pink-soft)]";
+    "w-full rounded-2xl border border-[color:var(--line)] bg-white px-5 py-3.5 text-sm text-[color:var(--ink)] outline-none transition placeholder:text-[color:var(--ink-soft)]/60 focus:border-[color:var(--pink-deep)] focus:ring-4 focus:ring-[color:var(--pink-soft)]";
 
-  const sectionTitle =
-    "mb-1 text-[9px] font-bold uppercase tracking-[0.25em] text-[color:var(--pink-deep)]";
-
-  const labelStyle =
-    "mb-2 block text-[9px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink-soft)]";
+  const choiceStyle = (active, pink = false) =>
+    `rounded-full px-5 py-2.5 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
+      active
+        ? pink
+          ? "bg-[color:var(--pink-deep)] text-white"
+          : "bg-[color:var(--ink)] text-white"
+        : "border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
+    }`;
 
   return (
     <div className="min-h-screen pt-28 md:pt-32">
 
-      <section className="mx-auto max-w-3xl px-5 md:px-6">
+      <section className="mx-auto max-w-4xl px-5 md:px-6">
 
-        {/* =====================================================
-            HERO
-        ===================================================== */}
-
+        {/* HERO */}
         <Reveal>
-          <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white px-6 py-10 md:px-10 md:py-14">
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white px-6 py-12 md:px-12 md:py-16">
 
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[color:var(--pink-soft)] opacity-70 blur-3xl" />
 
-            <div className="pointer-events-none absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-[color:var(--pink-soft)] opacity-40 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-16 h-48 w-48 rounded-full bg-[color:var(--pink-soft)] opacity-40 blur-3xl" />
 
             <div className="relative">
 
               <div className="flex items-center gap-2 text-[color:var(--pink-deep)]">
                 <Sparkles size={14} />
 
-                <p className="text-[9px] font-bold uppercase tracking-[0.3em]">
+                <span className="text-[9px] font-bold uppercase tracking-[0.3em]">
                   HANEULZ Corner
-                </p>
+                </span>
               </div>
 
-              <h1 className="mt-5 max-w-xl font-serif-display text-5xl font-medium leading-[0.95] md:text-7xl">
-                Share a little
+              <h1 className="mt-5 max-w-2xl font-serif-display text-5xl font-medium leading-[0.95] md:text-7xl">
+                Leave something
                 <br />
-                world. ♡
+                here. ♡
               </h1>
 
               <p className="mt-6 max-w-xl text-sm leading-7 text-[color:var(--ink-soft)] md:text-base">
-                Found an AU or headcanon that deserves a little
-                corner here? Add the original link and a few
-                details below. We'll take care of the rest.
+                Found an AU, headcanon, or little story worth
+                remembering? Add it to the corner and let other
+                fans find it too.
               </p>
 
               <div className="mt-7 flex flex-wrap gap-2">
+                <span className="rounded-full bg-[color:var(--pink-soft)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em]">
+                  Fan submissions
+                </span>
 
-                <div className="flex items-center gap-2 rounded-full bg-[color:var(--pink-soft)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em]">
-                  <Heart size={12} />
-                  Community archive
-                </div>
-
-                <div className="rounded-full border border-[color:var(--line)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
-                  Original links required
-                </div>
-
+                <span className="rounded-full border border-[color:var(--line)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
+                  Reviewed before posting
+                </span>
               </div>
 
             </div>
@@ -156,414 +144,347 @@ export default function Submit() {
         </Reveal>
 
 
-        {/* =====================================================
-            FORM
-        ===================================================== */}
-
+        {/* FORM */}
         <Reveal delay={0.08}>
           <form
             onSubmit={submit}
-            className="mt-6 overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white"
+            className="mt-7 rounded-[2.5rem] border border-[color:var(--line)] bg-white p-6 md:p-10"
           >
 
-            {/* -------------------------------------------------
-                ABOUT THE AU
-            ------------------------------------------------- */}
+            {/* TITLE */}
+            <div>
+              <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                Title <span className="text-[color:var(--pink-deep)]">*</span>
+              </label>
 
-            <div className="p-6 md:p-8">
-
-              <div className="mb-7">
-                <p className={sectionTitle}>
-                  01 · About the AU
-                </p>
-
-                <h2 className="font-serif-display text-3xl">
-                  Tell us about it.
-                </h2>
-
-                <p className="mt-2 text-xs leading-5 text-[color:var(--ink-soft)]">
-                  Just the basics so we know what we're looking at.
-                </p>
-              </div>
+              <input
+                required
+                value={form.title}
+                onChange={set("title")}
+                className={inputStyle}
+                placeholder="What is the AU called?"
+              />
+            </div>
 
 
-              <div className="space-y-5">
+            {/* AUTHOR */}
+            <div className="mt-6">
+              <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                Creator / Author
+              </label>
 
-                {/* TITLE */}
-
-                <div>
-                  <label className={labelStyle}>
-                    Title <span className="text-[color:var(--pink-deep)]">*</span>
-                  </label>
-
-                  <input
-                    required
-                    value={form.title}
-                    onChange={set("title")}
-                    className={inputStyle}
-                    placeholder="e.g. Coffee Shop AU"
-                  />
-                </div>
+              <input
+                value={form.author_name}
+                onChange={set("author_name")}
+                className={inputStyle}
+                placeholder="Leave blank for Anonymous"
+              />
+            </div>
 
 
-                {/* CREATOR */}
+            {/* TYPE */}
+            <div className="mt-7">
+              <label className="mb-3 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                What are you submitting?
+              </label>
 
-                <div>
-                  <label className={labelStyle}>
-                    Author / Creator
-                  </label>
+              <div className="flex flex-wrap gap-2">
 
-                  <input
-                    value={form.author_name}
-                    onChange={set("author_name")}
-                    className={inputStyle}
-                    placeholder="Leave blank for Anonymous"
-                  />
-                </div>
-
-
-                {/* TYPE */}
-
-                <div>
-                  <label className={labelStyle}>
-                    What kind of AU is it?
-                  </label>
-
-                  <div className="flex flex-wrap gap-2">
-
-                    {types.map((item) => (
-                      <button
-                        type="button"
-                        key={item.v}
-                        onClick={() =>
-                          setForm({
-                            ...form,
-                            au_type: item.v,
-                          })
-                        }
-                        className={`rounded-full px-5 py-3 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
-                          form.au_type === item.v
-                            ? "bg-[color:var(--ink)] text-white"
-                            : "border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
-                        }`}
-                      >
-                        {form.au_type === item.v && (
-                          <Check
-                            size={11}
-                            className="mr-1.5 inline"
-                          />
-                        )}
-
-                        {item.l}
-                      </button>
-                    ))}
-
-                  </div>
-                </div>
+                {[
+                  { v: "story", l: "AU Story" },
+                  { v: "headcanon", l: "Headcanon" },
+                ].map((item) => (
+                  <button
+                    type="button"
+                    key={item.v}
+                    onClick={() =>
+                      setForm({
+                        ...form,
+                        au_type: item.v,
+                      })
+                    }
+                    className={choiceStyle(
+                      form.au_type === item.v
+                    )}
+                  >
+                    {item.l}
+                  </button>
+                ))}
 
               </div>
             </div>
 
 
-            {/* -------------------------------------------------
-                ORIGINAL SOURCE
-            ------------------------------------------------- */}
+            {/* SOURCE */}
+            <div className="mt-7">
+              <label className="mb-3 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                Where was it originally posted?
+              </label>
 
-            <div className="border-t border-[color:var(--line)] p-6 md:p-8">
+              <div className="flex flex-wrap gap-2">
 
-              <div className="mb-7">
-                <p className={sectionTitle}>
-                  02 · Original source
-                </p>
-
-                <h2 className="font-serif-display text-3xl">
-                  Where can we find it?
-                </h2>
-
-                <p className="mt-2 text-xs leading-5 text-[color:var(--ink-soft)]">
-                  The original link lets visitors find the actual
-                  post or work.
-                </p>
-              </div>
-
-
-              <div className="space-y-5">
-
-                {/* PLATFORM */}
-
-                <div>
-                  <label className={labelStyle}>
-                    Platform
-                  </label>
-
-                  <div className="flex flex-wrap gap-2">
-
-                    {sources.map((item) => (
-                      <button
-                        type="button"
-                        key={item.v}
-                        onClick={() =>
-                          setForm({
-                            ...form,
-                            source: item.v,
-                          })
-                        }
-                        className={`rounded-full px-5 py-3 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
-                          form.source === item.v
-                            ? "bg-[color:var(--pink-deep)] text-white"
-                            : "border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
-                        }`}
-                      >
-                        {form.source === item.v && (
-                          <Check
-                            size={11}
-                            className="mr-1.5 inline"
-                          />
-                        )}
-
-                        {item.l}
-                      </button>
-                    ))}
-
-                  </div>
-                </div>
-
-
-                {/* LINK */}
-
-                <div>
-                  <label className={labelStyle}>
-                    Original Story / Post Link{" "}
-                    <span className="text-[color:var(--pink-deep)]">
-                      *
-                    </span>
-                  </label>
-
-                  <div className="relative">
-
-                    <Link2
-                      size={16}
-                      className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[color:var(--ink-soft)]"
-                    />
-
-                    <input
-                      required
-                      type="url"
-                      value={form.source_url}
-                      onChange={set("source_url")}
-                      className={`${inputStyle} pl-11`}
-                      placeholder="https://x.com/... "
-                    />
-
-                  </div>
-
-                  <p className="mt-2 text-[10px] leading-5 text-[color:var(--ink-soft)]">
-                    Please use the link to the original post,
-                    thread, story, or work.
-                  </p>
-                </div>
+                {[
+                  { v: "x", l: "X" },
+                  { v: "tiktok", l: "TikTok" },
+                  { v: "ao3", l: "AO3" },
+                  { v: "other", l: "Other" },
+                ].map((item) => (
+                  <button
+                    type="button"
+                    key={item.v}
+                    onClick={() =>
+                      setForm({
+                        ...form,
+                        source: item.v,
+                      })
+                    }
+                    className={choiceStyle(
+                      form.source === item.v,
+                      true
+                    )}
+                  >
+                    {item.l}
+                  </button>
+                ))}
 
               </div>
             </div>
 
 
-            {/* -------------------------------------------------
-                DETAILS
-            ------------------------------------------------- */}
+            {/* LINK */}
+            <div className="mt-7">
+              <label className="mb-2 flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                <Link2 size={12} />
+                Original Work Link
+                <span className="text-[color:var(--pink-deep)]">*</span>
+              </label>
 
-            <div className="border-t border-[color:var(--line)] p-6 md:p-8">
+              <input
+                required
+                type="url"
+                value={form.source_url}
+                onChange={set("source_url")}
+                className={inputStyle}
+                placeholder="Paste the original post or story link"
+              />
 
-              <div className="mb-7">
-                <p className={sectionTitle}>
-                  03 · A little more
-                </p>
-
-                <h2 className="font-serif-display text-3xl">
-                  Add some details.
-                </h2>
-
-                <p className="mt-2 text-xs leading-5 text-[color:var(--ink-soft)]">
-                  These help make the archive entry feel complete.
-                </p>
-              </div>
-
-
-              <div className="space-y-5">
-
-                {/* IMAGE */}
-
-                <div>
-                  <label className={labelStyle}>
-                    Cover Image · Optional
-                  </label>
-
-                  <label className="group flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--line)] bg-[color:var(--pink-soft)]/30 px-6 py-8 text-center transition hover:bg-[color:var(--pink-soft)]">
-
-                    <div className="grid h-11 w-11 place-items-center rounded-full bg-white text-[color:var(--pink-deep)] shadow-sm">
-                      <ImagePlus size={18} />
-                    </div>
-
-                    <p className="mt-4 text-xs font-semibold">
-                      {form.image
-                        ? form.image.name
-                        : "Choose a cover image"}
-                    </p>
-
-                    <p className="mt-1 text-[10px] text-[color:var(--ink-soft)]">
-                      JPG, PNG, or another image format
-                    </p>
-
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) =>
-                        setForm({
-                          ...form,
-                          image: e.target.files?.[0] || null,
-                        })
-                      }
-                      className="hidden"
-                    />
-
-                  </label>
-                </div>
-
-
-                {/* SHORT DESCRIPTION */}
-
-                <div>
-                  <label className={labelStyle}>
-                    Short Description
-                  </label>
-
-                  <textarea
-                    value={form.short_description}
-                    onChange={set("short_description")}
-                    rows={4}
-                    className={`${inputStyle} resize-none`}
-                    placeholder="Give us a little teaser..."
-                  />
-                </div>
-
-
-                {/* FULL STORY */}
-
-                <div>
-                  <label className={labelStyle}>
-                    Full Story · Optional
-                  </label>
-
-                  <textarea
-                    value={form.full_story}
-                    onChange={set("full_story")}
-                    rows={7}
-                    className={`${inputStyle} resize-none`}
-                    placeholder="Only add this if you want the story text displayed directly on HANEULZ Corner."
-                  />
-
-                  <p className="mt-2 flex items-center gap-1.5 text-[10px] text-[color:var(--ink-soft)]">
-                    <FileText size={11} />
-                    This field is completely optional.
-                  </p>
-                </div>
-
-              </div>
-            </div>
-
-
-            {/* -------------------------------------------------
-                COMMUNITY NOTICE
-            ------------------------------------------------- */}
-
-            <div className="border-t border-[color:var(--line)] p-6 md:p-8">
-
-              <div className="rounded-[1.75rem] bg-[color:var(--pink-soft)]/45 p-6">
-
-                <div className="flex items-start gap-3">
-
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white text-[color:var(--pink-deep)]">
-                    <ShieldAlert size={16} />
-                  </div>
-
-                  <div>
-
-                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink)]">
-                      Before you submit
-                    </p>
-
-                    <h3 className="mt-1 font-serif-display text-2xl">
-                      A little community note ♡
-                    </h3>
-
-                  </div>
-
-                </div>
-
-
-                <div className="mt-5 space-y-3 text-xs leading-6 text-[color:var(--ink-soft)]">
-
-                  <p>
-                    HANEULZ Corner is a community archive for
-                    HANEULZ AUs, headcanons, and fan-created
-                    stories.
-                  </p>
-
-                  <p>
-                    Please include the original link so anyone
-                    viewing an entry can easily find the original
-                    post or work.
-                  </p>
-
-                  <p>
-                    HANEULZ Corner does not claim ownership of
-                    the works listed here. The original creator
-                    remains credited through their provided
-                    source.
-                  </p>
-
-                  <p>
-                    If you're the creator of a work listed here
-                    and would like information changed or an
-                    entry removed, you can contact us and we'll
-                    review your request.
-                  </p>
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            {/* -------------------------------------------------
-                SUBMIT
-            ------------------------------------------------- */}
-
-            <div className="border-t border-[color:var(--line)] bg-[color:var(--pink-soft)]/20 p-6 md:p-8">
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="group flex w-full items-center justify-center gap-3 rounded-full bg-[color:var(--pink-deep)] py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {submitting
-                  ? "Sending to Admin..."
-                  : "Submit for Review"}
-
-                {!submitting && (
-                  <ArrowRight
-                    size={14}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
-                )}
-              </button>
-
-              <p className="mt-4 text-center text-[9px] uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
-                Submissions are reviewed before appearing in
-                the archive.
+              <p className="mt-2 text-[10px] leading-5 text-[color:var(--ink-soft)]">
+                This link will be attached to the entry so readers
+                can visit the original work.
               </p>
+            </div>
+
+
+            {/* COVER */}
+            <div className="mt-7">
+              <label className="mb-2 flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                <ImagePlus size={12} />
+                Cover Image
+                <span className="font-normal normal-case tracking-normal">
+                  · optional
+                </span>
+              </label>
+
+              <label className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border border-dashed border-[color:var(--line)] bg-[color:var(--pink-soft)]/30 px-6 py-8 text-center transition hover:bg-[color:var(--pink-soft)]">
+
+                <ImagePlus
+                  size={22}
+                  className="text-[color:var(--pink-deep)]"
+                />
+
+                <span className="mt-3 text-xs font-semibold">
+                  {form.image
+                    ? form.image.name
+                    : "Add a cover image"}
+                </span>
+
+                <span className="mt-1 text-[10px] text-[color:var(--ink-soft)]">
+                  Optional · JPG, PNG, or other image formats
+                </span>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      image: e.target.files?.[0] || null,
+                    })
+                  }
+                  className="hidden"
+                />
+
+              </label>
+            </div>
+
+
+            {/* DESCRIPTION */}
+            <div className="mt-7">
+              <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                Short Description
+              </label>
+
+              <textarea
+                value={form.short_description}
+                onChange={set("short_description")}
+                rows={4}
+                className={inputStyle}
+                placeholder="Give readers a little idea of what the AU is about..."
+              />
+            </div>
+
+
+            {/* FULL STORY */}
+            <div className="mt-7">
+              <label className="mb-2 block text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                Full Story
+                <span className="ml-2 font-normal normal-case tracking-normal">
+                  · optional
+                </span>
+              </label>
+
+              <textarea
+                value={form.full_story}
+                onChange={set("full_story")}
+                rows={7}
+                className={inputStyle}
+                placeholder="Optional — only add the story here if you want it displayed directly on HANEULZ Corner."
+              />
+            </div>
+
+
+            {/* COMMUNITY NOTES */}
+            <div className="mt-10 space-y-4">
+
+              {/* DISCLAIMER */}
+              <div className="rounded-[1.75rem] bg-[color:var(--pink-soft)]/60 p-6">
+
+                <div className="flex items-center gap-2">
+                  <ShieldAlert
+                    size={15}
+                    className="text-[color:var(--pink-deep)]"
+                  />
+
+                  <h2 className="text-[9px] font-bold uppercase tracking-[0.2em]">
+                    Disclaimer ♡
+                  </h2>
+                </div>
+
+                <p className="mt-4 text-xs leading-6 text-[color:var(--ink-soft)]">
+                  HANEULZ Corner is a community-made archive for
+                  HANEULZ-related AUs, headcanons, and fan-created
+                  works. All works remain attributed to their
+                  respective original creators. HANEULZ Corner does
+                  not claim ownership of the stories, posts, or
+                  artwork featured here.
+                </p>
+
+                <p className="mt-3 text-xs leading-6 text-[color:var(--ink-soft)]">
+                  Every entry keeps its original source link so
+                  readers can visit the creator's original work.
+                </p>
+
+              </div>
+
+
+              {/* SUBMISSION NOTE */}
+              <div className="rounded-[1.75rem] border border-[color:var(--line)] bg-white p-6">
+
+                <div className="flex items-center gap-2">
+                  <Info
+                    size={15}
+                    className="text-[color:var(--pink-deep)]"
+                  />
+
+                  <h2 className="text-[9px] font-bold uppercase tracking-[0.2em]">
+                    Before you submit ✦
+                  </h2>
+                </div>
+
+                <p className="mt-4 text-xs leading-6 text-[color:var(--ink-soft)]">
+                  Please make sure the information you provide is
+                  accurate and that the original work link is
+                  included. Submissions are reviewed before they
+                  appear on HANEULZ Corner.
+                </p>
+
+                <p className="mt-3 text-xs leading-6 text-[color:var(--ink-soft)]">
+                  We may adjust the formatting, tags, description,
+                  or cover of an entry to keep the archive
+                  organized. The original work itself will not be
+                  altered.
+                </p>
+
+              </div>
+
+
+              {/* RULES / WARNING */}
+              <div className="rounded-[1.75rem] border border-[color:var(--line)] bg-white p-6">
+
+                <div className="flex items-center gap-2">
+                  <Sparkles
+                    size={15}
+                    className="text-[color:var(--pink-deep)]"
+                  />
+
+                  <h2 className="text-[9px] font-bold uppercase tracking-[0.2em]">
+                    Please keep in mind ✦
+                  </h2>
+                </div>
+
+                <p className="mt-4 text-xs leading-6 text-[color:var(--ink-soft)]">
+                  By submitting a work to HANEULZ Corner, please be
+                  mindful of the community and make sure your
+                  submission follows the rules and guidelines of
+                  the website.
+                </p>
+
+                <p className="mt-3 text-xs leading-6 text-[color:var(--ink-soft)]">
+                  Please do not submit anything that goes against
+                  the rules of HANEULZ Corner or could create
+                  unnecessary issues within the community.
+                  Submissions that do not follow the guidelines may
+                  not be accepted or may be removed after review.
+                </p>
+
+              </div>
+
+
+              {/* CREATOR NOTE */}
+              <div className="rounded-[1.75rem] bg-[color:var(--ink)] p-6 text-white">
+
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--pink-soft)]">
+                  Creator note ♡
+                </p>
+
+                <p className="mt-3 text-xs leading-6 text-white/75">
+                  If you're the original creator and want your work
+                  corrected or removed from the archive, you can
+                  contact us and we'll review the request.
+                </p>
+
+              </div>
 
             </div>
+
+
+            {/* SUBMIT */}
+            <button
+              type="submit"
+              disabled={submitting}
+              className="mt-8 flex w-full items-center justify-center gap-2 rounded-full bg-[color:var(--pink-deep)] py-4 text-[10px] font-bold uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <Send size={14} />
+
+              {submitting
+                ? "Sending to Admin..."
+                : "Submit for Review"}
+            </button>
+
+            <p className="text-center text-[9px] leading-5 text-[color:var(--ink-soft)]">
+              Your submission will be reviewed before appearing
+              on HANEULZ Corner.
+            </p>
 
           </form>
         </Reveal>
