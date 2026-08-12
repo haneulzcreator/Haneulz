@@ -9,6 +9,7 @@ import {
   Search,
   X,
   Sparkles,
+  Heart,
 } from "lucide-react";
 
 import { api } from "../lib/api";
@@ -310,47 +311,128 @@ export default function AULibrary() {
   }
 
   return (
-    <div className="pt-28 md:pt-32">
+    <div className="relative min-h-screen overflow-hidden bg-[color:var(--background)] pt-28 md:pt-32">
 
-      <section className="mx-auto max-w-5xl px-5 md:px-6">
+      {/* =====================================================
+          BACKGROUND DECORATION
+      ===================================================== */}
 
-        {/* HERO */}
+      <div
+        className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="absolute -left-32 top-32 h-72 w-72 rounded-full bg-[color:var(--pink-soft)] opacity-50 blur-3xl" />
+
+        <div className="absolute -right-32 top-[38rem] h-96 w-96 rounded-full bg-[color:var(--blue-soft)] opacity-40 blur-3xl" />
+
+        <div className="absolute left-1/2 top-[75rem] h-80 w-80 -translate-x-1/2 rounded-full bg-[color:var(--pink-soft)] opacity-30 blur-3xl" />
+
+        <div className="absolute left-[8%] top-[22rem] rotate-12 text-3xl text-[color:var(--pink-deep)] opacity-10">
+          ♡
+        </div>
+
+        <div className="absolute right-[10%] top-[55rem] -rotate-12 text-2xl text-[color:var(--pink-deep)] opacity-10">
+          ✦
+        </div>
+
+        <div className="absolute left-[5%] top-[90rem] text-xl text-[color:var(--pink-deep)] opacity-10">
+          ˚₊‧
+        </div>
+      </div>
+
+
+      <section className="mx-auto max-w-6xl px-5 md:px-8">
+
+        {/* =====================================================
+            HERO
+        ===================================================== */}
 
         <Reveal>
-          <div className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white px-6 py-12 md:px-10 md:py-16">
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-[color:var(--line)] bg-white/80 px-6 py-12 shadow-[0_25px_80px_-45px_rgba(0,0,0,0.25)] backdrop-blur md:px-12 md:py-16">
 
-            <div className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-[color:var(--pink-soft)] opacity-70 blur-3xl" />
+            {/* Decorative corner */}
 
-            <div className="relative">
+            <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[color:var(--pink-soft)] opacity-70 blur-2xl" />
+
+            <div className="absolute bottom-0 right-8 text-7xl font-serif-display text-[color:var(--pink-soft)] opacity-50">
+              ♡
+            </div>
+
+            <div className="relative z-10">
 
               <div className="flex items-center gap-2 text-[color:var(--pink-deep)]">
                 <Sparkles size={14} />
 
-                <p className="text-[9px] font-bold uppercase tracking-[0.28em]">
+                <span className="text-[9px] font-bold uppercase tracking-[0.3em]">
                   HANEULZ archive
-                </p>
+                </span>
               </div>
 
-              <h1 className="mt-5 max-w-3xl font-serif-display text-5xl font-medium leading-[0.95] md:text-7xl">
-                Little worlds
-                <br />
-                written about them.
-              </h1>
+              <div className="mt-5 flex flex-wrap items-end justify-between gap-8">
 
-              <p className="mt-6 max-w-xl text-sm leading-7 text-[color:var(--ink-soft)] md:text-base">
-                A growing collection of HANEULZ alternate
-                universes, stories, and little ideas shared
-                by fans.
-              </p>
+                <div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
+                  <h1 className="max-w-3xl font-serif-display text-5xl font-medium leading-[0.9] tracking-tight md:text-8xl">
+                    Little worlds
+                    <br />
+                    <span className="italic text-[color:var(--pink-deep)]">
+                      written about them.
+                    </span>
+                  </h1>
 
-                <div className="rounded-full bg-[color:var(--pink-soft)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em]">
-                  {aus.length} works
+                  <p className="mt-7 max-w-xl text-sm leading-7 text-[color:var(--ink-soft)] md:text-base">
+                    A growing collection of alternate universes,
+                    stories, and little ideas created by HANEULZ
+                    fans.
+                  </p>
+
                 </div>
 
-                <div className="rounded-full border border-[color:var(--line)] px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--ink-soft)]">
+                {/* Archive mark */}
+
+                <div className="hidden shrink-0 md:block">
+
+                  <div className="relative grid h-32 w-32 rotate-3 place-items-center rounded-full border border-[color:var(--line)] bg-[color:var(--pink-soft)]/50">
+
+                    <div className="absolute inset-3 rounded-full border border-dashed border-[color:var(--pink-deep)] opacity-30" />
+
+                    <div className="text-center">
+
+                      <Heart
+                        size={16}
+                        fill="currentColor"
+                        className="mx-auto text-[color:var(--pink-deep)]"
+                      />
+
+                      <p className="mt-2 text-[8px] font-bold uppercase tracking-[0.18em]">
+                        made with
+                        <br />
+                        love
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              {/* Stats */}
+
+              <div className="mt-10 flex flex-wrap items-center gap-2">
+
+                <div className="rounded-full bg-[color:var(--pink-soft)] px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--ink)]">
+                  {aus.length} {aus.length === 1 ? "work" : "works"}
+                </div>
+
+                <div className="rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--ink-soft)]">
                   HANEULZ only
+                </div>
+
+                <div className="rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[color:var(--ink-soft)]">
+                  fan archive
                 </div>
 
               </div>
@@ -360,66 +442,94 @@ export default function AULibrary() {
         </Reveal>
 
 
-        {/* SEARCH */}
+        {/* =====================================================
+            SEARCH
+        ===================================================== */}
+
+        <div className="mx-auto mt-8 max-w-4xl">
+
+          <div className="group relative">
+
+            <div className="pointer-events-none absolute -inset-1 rounded-[1.3rem] bg-[color:var(--pink-soft)] opacity-0 blur transition duration-500 group-focus-within:opacity-70" />
+
+            <div className="relative">
+
+              <Search
+                size={17}
+                className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[color:var(--ink-soft)]"
+              />
+
+              <input
+                type="search"
+                value={search}
+                onChange={(event) =>
+                  setSearch(event.target.value)
+                }
+                placeholder="Search the HANEULZ archive..."
+                className="w-full rounded-[1.2rem] border border-[color:var(--line)] bg-white/90 py-4 pl-12 pr-12 text-sm shadow-[0_12px_35px_-28px_rgba(0,0,0,0.35)] outline-none backdrop-blur transition focus:border-[color:var(--pink-deep)] focus:ring-4 focus:ring-[color:var(--pink-soft)]"
+              />
+
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => setSearch("")}
+                  aria-label="Clear search"
+                  className="absolute right-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-[color:var(--ink-soft)] transition hover:bg-[color:var(--pink-soft)]"
+                >
+                  <X size={14} />
+                </button>
+              )}
+
+            </div>
+          </div>
+
+        </div>
+
+
+        {/* =====================================================
+            SOURCE NAVIGATION
+        ===================================================== */}
 
         <div className="mt-7">
 
-          <div className="relative">
+          <div className="flex items-center gap-3">
 
-            <Search
-              size={17}
-              className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 text-[color:var(--ink-soft)]"
-            />
+            <span className="hidden text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)] md:block">
+              Browse
+            </span>
 
-            <input
-              type="search"
-              value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
-              placeholder="Search the archive..."
-              className="w-full rounded-2xl border border-[color:var(--line)] bg-white py-4 pl-12 pr-12 text-sm outline-none transition focus:border-[color:var(--pink-deep)] focus:ring-4 focus:ring-[color:var(--pink-soft)]"
-            />
-
-            {search && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                className="absolute right-4 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full hover:bg-[color:var(--pink-soft)]"
-              >
-                <X size={14} />
-              </button>
-            )}
+            <div className="h-px flex-1 bg-[color:var(--line)]" />
 
           </div>
+
+
+          <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
+
+            {sourceFilters.map((filter) => (
+              <button
+                key={filter.key}
+                type="button"
+                onClick={() => setSource(filter.key)}
+                className={`shrink-0 rounded-full px-5 py-2.5 text-[9px] font-bold uppercase tracking-[0.17em] transition duration-300 ${
+                  source === filter.key
+                    ? "bg-[color:var(--ink)] text-white shadow-lg"
+                    : "border border-[color:var(--line)] bg-white/80 text-[color:var(--ink-soft)] hover:-translate-y-0.5 hover:bg-[color:var(--pink-soft)]"
+                }`}
+              >
+                {filter.label}
+              </button>
+            ))}
+
+          </div>
+
         </div>
 
 
-        {/* SOURCE TABS */}
+        {/* =====================================================
+            FILTER BAR
+        ===================================================== */}
 
-        <div className="mt-5 flex items-center gap-2 overflow-x-auto pb-1">
-
-          {sourceFilters.map((filter) => (
-            <button
-              key={filter.key}
-              type="button"
-              onClick={() => setSource(filter.key)}
-              className={`shrink-0 rounded-full px-5 py-2.5 text-[9px] font-bold uppercase tracking-[0.16em] transition ${
-                source === filter.key
-                  ? "bg-[color:var(--ink)] text-white"
-                  : "border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
-              }`}
-            >
-              {filter.label}
-            </button>
-          ))}
-
-        </div>
-
-
-        {/* FILTER TOOLBAR */}
-
-        <div className="mt-4 overflow-hidden rounded-2xl border border-[color:var(--line)] bg-white">
+        <div className="mt-3 overflow-hidden rounded-[1.5rem] border border-[color:var(--line)] bg-white/80 shadow-[0_15px_45px_-35px_rgba(0,0,0,0.4)] backdrop-blur">
 
           <div className="flex items-center justify-between gap-3 p-3">
 
@@ -428,10 +538,10 @@ export default function AULibrary() {
               onClick={() =>
                 setFiltersOpen((value) => !value)
               }
-              className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.15em] ${
+              className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.15em] transition ${
                 filtersOpen || hasActiveFilters
                   ? "bg-[color:var(--pink-soft)] text-[color:var(--ink)]"
-                  : "text-[color:var(--ink-soft)]"
+                  : "text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
               }`}
             >
               <Filter size={13} />
@@ -440,31 +550,63 @@ export default function AULibrary() {
 
               <ChevronDown
                 size={13}
-                className={`transition ${
+                className={`transition-transform duration-300 ${
                   filtersOpen ? "rotate-180" : ""
                 }`}
               />
+
+              {hasActiveFilters && (
+                <span className="grid h-4 min-w-4 place-items-center rounded-full bg-[color:var(--pink-deep)] px-1 text-[8px] text-white">
+                  !
+                </span>
+              )}
+
             </button>
 
-            <select
-              value={sort}
-              onChange={(event) =>
-                setSort(event.target.value)
-              }
-              className="rounded-full border border-[color:var(--line)] bg-white px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.1em] outline-none"
-            >
-              <option value="newest">Newest</option>
-              <option value="updated">Updated</option>
-              <option value="liked">Most liked</option>
-              <option value="bookmarked">Most saved</option>
-              <option value="title">A–Z</option>
-            </select>
+
+            <div className="flex items-center gap-2">
+
+              <span className="hidden text-[8px] font-bold uppercase tracking-[0.15em] text-[color:var(--ink-soft)] sm:block">
+                Sort
+              </span>
+
+              <select
+                value={sort}
+                onChange={(event) =>
+                  setSort(event.target.value)
+                }
+                className="rounded-full border border-[color:var(--line)] bg-white px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.1em] text-[color:var(--ink)] outline-none transition focus:border-[color:var(--pink-deep)]"
+              >
+                <option value="newest">
+                  Newest
+                </option>
+
+                <option value="updated">
+                  Updated
+                </option>
+
+                <option value="liked">
+                  Most liked
+                </option>
+
+                <option value="bookmarked">
+                  Most saved
+                </option>
+
+                <option value="title">
+                  A–Z
+                </option>
+              </select>
+
+            </div>
 
           </div>
 
 
+          {/* FILTER CONTENT */}
+
           {filtersOpen && (
-            <div className="border-t border-[color:var(--line)] px-4 pb-5 pt-5">
+            <div className="border-t border-[color:var(--line)] px-5 pb-6 pt-6">
 
               <FilterGroup
                 title="Status"
@@ -474,21 +616,30 @@ export default function AULibrary() {
               />
 
               <FilterGroup
-                title="Type"
+                title="Format"
                 options={typeFilters}
                 value={type}
                 onChange={setType}
                 className="mt-6"
               />
 
+
               {allTags.length > 0 && (
                 <div className="mt-6">
 
-                  <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
-                    Tags
-                  </p>
+                  <div className="mb-3 flex items-center justify-between">
 
-                  <div className="flex max-h-36 flex-wrap gap-2 overflow-y-auto">
+                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)]">
+                      Tags
+                    </p>
+
+                    <span className="text-[8px] text-[color:var(--ink-soft)]">
+                      {allTags.length} available
+                    </span>
+
+                  </div>
+
+                  <div className="flex max-h-40 flex-wrap gap-2 overflow-y-auto pr-1">
 
                     <FilterButton
                       active={tag === "all"}
@@ -500,7 +651,10 @@ export default function AULibrary() {
                     {allTags.map((item) => (
                       <FilterButton
                         key={item}
-                        active={normalize(tag) === normalize(item)}
+                        active={
+                          normalize(tag) ===
+                          normalize(item)
+                        }
                         onClick={() => setTag(item)}
                       >
                         {item}
@@ -520,30 +674,37 @@ export default function AULibrary() {
                   onClick={() =>
                     setSavedOnly((value) => !value)
                   }
-                  className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.14em] ${
+                  className={`flex items-center gap-2 rounded-full px-4 py-2.5 text-[9px] font-bold uppercase tracking-[0.14em] transition ${
                     savedOnly
                       ? "bg-[color:var(--ink)] text-white"
-                      : "border border-[color:var(--line)] text-[color:var(--ink-soft)]"
+                      : "border border-[color:var(--line)] text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
                   }`}
                 >
+
                   <Bookmark
                     size={12}
-                    fill={savedOnly ? "currentColor" : "none"}
+                    fill={
+                      savedOnly
+                        ? "currentColor"
+                        : "none"
+                    }
                   />
 
                   Saved
 
                   {savedCount > 0 &&
                     ` (${savedCount})`}
+
                 </button>
+
 
                 {hasActiveFilters && (
                   <button
                     type="button"
                     onClick={clearFilters}
-                    className="text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--pink-deep)]"
+                    className="text-[9px] font-bold uppercase tracking-[0.15em] text-[color:var(--pink-deep)] transition hover:underline"
                   >
-                    Clear filters
+                    Clear all filters
                   </button>
                 )}
 
@@ -555,55 +716,101 @@ export default function AULibrary() {
         </div>
 
 
-        {/* RESULTS */}
+        {/* =====================================================
+            COLLECTION HEADER
+        ===================================================== */}
 
-        <div className="mt-8 flex items-end justify-between gap-4">
+        <div className="mt-12">
 
-          <div>
-            <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--pink-deep)]">
-              The collection
-            </p>
+          <div className="flex items-end justify-between gap-4">
 
-            <p className="mt-1 text-xs text-[color:var(--ink-soft)]">
-              {loading
-                ? "Looking through the archive..."
-                : filteredAUs.length === 0
-                ? "Nothing found"
-                : `${firstShown}–${lastShown} of ${filteredAUs.length} works`}
-            </p>
+            <div>
+
+              <div className="flex items-center gap-2">
+
+                <Sparkles
+                  size={12}
+                  className="text-[color:var(--pink-deep)]"
+                />
+
+                <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[color:var(--pink-deep)]">
+                  The collection
+                </p>
+
+              </div>
+
+              <p className="mt-2 text-xs text-[color:var(--ink-soft)]">
+                {loading
+                  ? "Looking through the archive..."
+                  : filteredAUs.length === 0
+                  ? "Nothing found"
+                  : `Showing ${firstShown}–${lastShown} of ${filteredAUs.length} works`}
+              </p>
+
+            </div>
+
+
+            <Link
+              to="/submit"
+              className="group shrink-0 rounded-full bg-[color:var(--pink-deep)] px-5 py-2.5 text-[9px] font-bold uppercase tracking-[0.15em] text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+            >
+              + Submit
+            </Link>
+
           </div>
 
-          <Link
-            to="/submit"
-            className="shrink-0 rounded-full bg-[color:var(--pink-deep)] px-5 py-2.5 text-[9px] font-bold uppercase tracking-[0.15em] text-white transition hover:-translate-y-0.5"
-          >
-            + Submit
-          </Link>
+          <div className="mt-5 h-px bg-[color:var(--line)]" />
 
         </div>
 
 
-        {/* AU ENTRIES */}
+        {/* =====================================================
+            AU COLLECTION
+        ===================================================== */}
 
-        <div className="mt-5 space-y-3 pb-10">
+        <div
+          className="mt-6 pb-12"
+          data-testid="au-grid"
+        >
 
-          {loading &&
-            [1, 2, 3, 4].map((item) => (
-              <div
-                key={item}
-                className="h-40 animate-pulse rounded-2xl border border-[color:var(--line)] bg-white"
-              />
-            ))}
+          {/* Loading */}
 
+          {loading && (
+            <div className="space-y-4">
+
+              {[1, 2, 3, 4].map((item) => (
+                <div
+                  key={item}
+                  className="h-40 animate-pulse rounded-[1.5rem] border border-[color:var(--line)] bg-white/70"
+                />
+              ))}
+
+            </div>
+          )}
+
+
+          {/* Empty */}
 
           {!loading &&
             filteredAUs.length === 0 && (
-              <div className="rounded-3xl border border-dashed border-[color:var(--line)] bg-white px-6 py-20 text-center">
+              <div className="relative overflow-hidden rounded-[2rem] border border-dashed border-[color:var(--line)] bg-white/70 px-6 py-24 text-center backdrop-blur">
 
-                <Search
-                  size={22}
-                  className="mx-auto text-[color:var(--pink-deep)]"
-                />
+                <div className="absolute left-8 top-8 text-3xl text-[color:var(--pink-deep)] opacity-10">
+                  ♡
+                </div>
+
+                <div className="absolute bottom-8 right-8 text-2xl text-[color:var(--pink-deep)] opacity-10">
+                  ✦
+                </div>
+
+                <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[color:var(--pink-soft)]">
+
+                  <Search
+                    size={21}
+                    className="text-[color:var(--pink-deep)]"
+                  />
+
+                </div>
 
                 <h2 className="mt-5 font-serif-display text-3xl">
                   Nothing here yet
@@ -611,13 +818,15 @@ export default function AULibrary() {
 
                 <p className="mx-auto mt-3 max-w-sm text-sm leading-6 text-[color:var(--ink-soft)]">
                   Try changing your search or filters.
+                  There might be another little world waiting
+                  for you.
                 </p>
 
                 {hasActiveFilters && (
                   <button
                     type="button"
                     onClick={clearFilters}
-                    className="mt-6 rounded-full bg-[color:var(--ink)] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white"
+                    className="mt-6 rounded-full bg-[color:var(--ink)] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white transition hover:-translate-y-0.5"
                   >
                     Clear filters
                   </button>
@@ -627,44 +836,56 @@ export default function AULibrary() {
             )}
 
 
+          {/* Cards */}
+
           {!loading &&
             visibleAUs.map((au, index) => (
               <Reveal
                 key={au.id}
                 delay={(index % 4) * 0.04}
               >
-                <AUCard
-                  au={au}
-                  index={index}
-                />
+                <div className="mb-4">
+                  <AUCard
+                    au={au}
+                    index={index}
+                  />
+                </div>
               </Reveal>
             ))}
 
         </div>
 
 
-        {/* PAGINATION */}
+        {/* =====================================================
+            PAGINATION
+        ===================================================== */}
 
         {!loading && totalPages > 1 && (
-          <div className="mb-16 flex flex-col items-center gap-4">
+          <div className="mb-20">
 
-            <div className="flex items-center gap-2">
+            <div className="mx-auto flex max-w-xl items-center justify-center gap-2">
 
               <button
                 type="button"
                 disabled={page === 1}
-                onClick={() => goToPage(page - 1)}
-                className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--line)] bg-white disabled:opacity-30"
+                onClick={() =>
+                  goToPage(page - 1)
+                }
+                aria-label="Previous page"
+                className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] transition hover:bg-[color:var(--pink-soft)] disabled:cursor-not-allowed disabled:opacity-30"
               >
                 <ChevronLeft size={15} />
               </button>
+
 
               {Array.from(
                 { length: totalPages },
                 (_, index) => index + 1
               )
                 .filter((number) => {
-                  if (totalPages <= 7) return true;
+                  if (totalPages <= 7) {
+                    return true;
+                  }
 
                   return (
                     number === 1 ||
@@ -683,18 +904,20 @@ export default function AULibrary() {
 
                       {previous &&
                         number - previous > 1 && (
-                          <span className="text-xs text-[color:var(--ink-soft)]">
+                          <span className="px-1 text-xs text-[color:var(--ink-soft)]">
                             …
                           </span>
                         )}
 
                       <button
                         type="button"
-                        onClick={() => goToPage(number)}
-                        className={`grid h-10 min-w-10 place-items-center rounded-full px-3 text-xs font-semibold ${
+                        onClick={() =>
+                          goToPage(number)
+                        }
+                        className={`grid h-10 min-w-10 place-items-center rounded-full px-3 text-xs font-semibold transition duration-300 ${
                           page === number
-                            ? "bg-[color:var(--ink)] text-white"
-                            : "border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)]"
+                            ? "bg-[color:var(--ink)] text-white shadow-lg"
+                            : "border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] hover:-translate-y-0.5 hover:bg-[color:var(--pink-soft)]"
                         }`}
                       >
                         {number}
@@ -704,18 +927,23 @@ export default function AULibrary() {
                   );
                 })}
 
+
               <button
                 type="button"
                 disabled={page === totalPages}
-                onClick={() => goToPage(page + 1)}
-                className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--line)] bg-white disabled:opacity-30"
+                onClick={() =>
+                  goToPage(page + 1)
+                }
+                aria-label="Next page"
+                className="grid h-10 w-10 place-items-center rounded-full border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] transition hover:bg-[color:var(--pink-soft)] disabled:cursor-not-allowed disabled:opacity-30"
               >
                 <ChevronRight size={15} />
               </button>
 
             </div>
 
-            <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink-soft)]">
+
+            <p className="mt-4 text-center text-[9px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink-soft)]">
               Page {page} of {totalPages}
             </p>
 
@@ -731,7 +959,7 @@ export default function AULibrary() {
 
 
 /* ============================================================
-   SMALL COMPONENTS
+   FILTER GROUP
 ============================================================ */
 
 function FilterGroup({
@@ -767,6 +995,10 @@ function FilterGroup({
 }
 
 
+/* ============================================================
+   FILTER BUTTON
+============================================================ */
+
 function FilterButton({
   active,
   onClick,
@@ -776,10 +1008,10 @@ function FilterButton({
     <button
       type="button"
       onClick={onClick}
-      className={`rounded-full px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition ${
+      className={`rounded-full px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition duration-300 ${
         active
-          ? "bg-[color:var(--pink-deep)] text-white"
-          : "border border-[color:var(--line)] text-[color:var(--ink-soft)] hover:bg-[color:var(--pink-soft)]"
+          ? "bg-[color:var(--pink-deep)] text-white shadow-sm"
+          : "border border-[color:var(--line)] bg-white text-[color:var(--ink-soft)] hover:-translate-y-0.5 hover:bg-[color:var(--pink-soft)]"
       }`}
     >
       {children}
