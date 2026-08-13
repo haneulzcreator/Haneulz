@@ -18,7 +18,15 @@ import { Reveal } from "../components/Reveal";
 import AUCard from "../components/AUCard";
 import Footer from "../components/Footer";
 
-const AUS_PER_PAGE = 12;
+// ============================================================
+// PAGINATION
+// ============================================================
+
+const AUS_PER_PAGE = 20;
+
+// ============================================================
+// FILTER OPTIONS
+// ============================================================
 
 const sourceFilters = [
   { key: "all", label: "All stories" },
@@ -41,6 +49,7 @@ const typeFilters = [
   { key: "series", label: "Series" },
 ];
 
+// Tags that should not appear in the filter section
 const hiddenTags = new Set([
   "coffee shop",
   "fated",
@@ -49,6 +58,10 @@ const hiddenTags = new Set([
   "soft",
   "soulmate",
 ]);
+
+// ============================================================
+// HELPERS
+// ============================================================
 
 function normalize(value) {
   return String(value || "").trim().toLowerCase();
@@ -61,6 +74,10 @@ function getStatus(au) {
 function getType(au) {
   return normalize(au.au_type || au.type || "");
 }
+
+// ============================================================
+// AU LIBRARY
+// ============================================================
 
 export default function AULibrary() {
   const [aus, setAus] = useState([]);
@@ -79,6 +96,10 @@ export default function AULibrary() {
 
   const { isSaved, count: savedCount } = useBookmarks();
 
+  // ==========================================================
+  // LOAD AUs
+  // ==========================================================
+
   useEffect(() => {
     api
       .get("/aus")
@@ -93,8 +114,14 @@ export default function AULibrary() {
         console.error("AU loading error:", error);
         setAus([]);
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
+
+  // ==========================================================
+  // GET ALL AVAILABLE TAGS
+  // ==========================================================
 
   const allTags = useMemo(() => {
     const tags = aus.flatMap((au) => au.tags || []);
@@ -112,10 +139,18 @@ export default function AULibrary() {
     ).sort((a, b) => a.localeCompare(b));
   }, [aus]);
 
+  // ==========================================================
+  // FILTER + SEARCH + SORT
+  // ==========================================================
+
   const filteredAUs = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     let result = [...aus];
+
+    // --------------------------------------------------------
+    // SEARCH
+    // --------------------------------------------------------
 
     if (query) {
       result = result.filter((au) => {
@@ -139,59 +174,105 @@ export default function AULibrary() {
       });
     }
 
+    // --------------------------------------------------------
+    // SOURCE
+    // --------------------------------------------------------
+
     if (source !== "all") {
       result = result.filter(
-        (au) => normalize(au.source || "other") === source
+        (au) =>
+          normalize(au.source || "other") === source
       );
     }
+
+    // --------------------------------------------------------
+    // STATUS
+    // --------------------------------------------------------
 
     if (status !== "all") {
       result = result.filter((au) => {
         const value = getStatus(au);
 
         if (status === "completed") {
-          return ["completed", "complete", "finished"].includes(value);
+          return [
+            "completed",
+            "complete",
+            "finished",
+          ].includes(value);
         }
 
         if (status === "ongoing") {
-          return ["ongoing", "in progress", "active"].includes(value);
+          return [
+            "ongoing",
+            "in progress",
+            "active",
+          ].includes(value);
         }
 
         return true;
       });
     }
 
+    // --------------------------------------------------------
+    // TYPE
+    // --------------------------------------------------------
+
     if (type !== "all") {
       result = result.filter((au) => {
         const value = getType(au);
 
         if (type === "social media au") {
-          return ["social media au", "social media"].includes(value);
+          return [
+            "social media au",
+            "social media",
+          ].includes(value);
         }
 
         if (type === "written au") {
-          return ["written au", "written"].includes(value);
+          return [
+            "written au",
+            "written",
+          ].includes(value);
         }
 
         if (type === "one-shot") {
-          return ["one-shot", "oneshot", "one shot"].includes(value);
+          return [
+            "one-shot",
+            "oneshot",
+            "one shot",
+          ].includes(value);
         }
 
         return value === type;
       });
     }
 
+    // --------------------------------------------------------
+    // TAG
+    // --------------------------------------------------------
+
     if (tag !== "all") {
       result = result.filter((au) =>
         (au.tags || []).some(
-          (item) => normalize(item) === normalize(tag)
+          (item) =>
+            normalize(item) === normalize(tag)
         )
       );
     }
 
+    // --------------------------------------------------------
+    // SAVED ONLY
+    // --------------------------------------------------------
+
     if (savedOnly) {
-      result = result.filter((au) => isSaved(au.id));
+      result = result.filter((au) =>
+        isSaved(au.id)
+      );
     }
+
+    // --------------------------------------------------------
+    // SORT
+    // --------------------------------------------------------
 
     result.sort((a, b) => {
       if (sort === "title") {
@@ -213,11 +294,20 @@ export default function AULibrary() {
 
       if (sort === "updated") {
         return (
-          new Date(b.updated_at || b.created_at || 0) -
-          new Date(a.updated_at || a.created_at || 0)
+          new Date(
+            b.updated_at ||
+              b.created_at ||
+              0
+          ) -
+          new Date(
+            a.updated_at ||
+              a.created_at ||
+              0
+          )
         );
       }
 
+      // NEWEST
       return (
         new Date(b.created_at || 0) -
         new Date(a.created_at || 0)
@@ -237,17 +327,25 @@ export default function AULibrary() {
     isSaved,
   ]);
 
+  // ==========================================================
+  // PAGINATION CALCULATIONS
+  // ==========================================================
+
   const totalPages = Math.max(
     1,
-    Math.ceil(filteredAUs.length / AUS_PER_PAGE)
+    Math.ceil(
+      filteredAUs.length / AUS_PER_PAGE
+    )
   );
 
+  // Make sure current page still exists
   useEffect(() => {
     if (page > totalPages) {
       setPage(totalPages);
     }
   }, [page, totalPages]);
 
+  // Reset to page 1 whenever filters/search/sort change
   useEffect(() => {
     setPage(1);
   }, [
@@ -260,7 +358,8 @@ export default function AULibrary() {
     sort,
   ]);
 
-  const startIndex = (page - 1) * AUS_PER_PAGE;
+  const startIndex =
+    (page - 1) * AUS_PER_PAGE;
 
   const visibleAUs = filteredAUs.slice(
     startIndex,
@@ -268,12 +367,18 @@ export default function AULibrary() {
   );
 
   const firstShown =
-    filteredAUs.length === 0 ? 0 : startIndex + 1;
+    filteredAUs.length === 0
+      ? 0
+      : startIndex + 1;
 
   const lastShown = Math.min(
     startIndex + AUS_PER_PAGE,
     filteredAUs.length
   );
+
+  // ==========================================================
+  // ACTIVE FILTER CHECK
+  // ==========================================================
 
   const hasActiveFilters =
     source !== "all" ||
@@ -282,6 +387,10 @@ export default function AULibrary() {
     tag !== "all" ||
     savedOnly ||
     search.trim() !== "";
+
+  // ==========================================================
+  // CLEAR FILTERS
+  // ==========================================================
 
   function clearFilters() {
     setSearch("");
@@ -293,6 +402,10 @@ export default function AULibrary() {
     setSort("newest");
     setPage(1);
   }
+
+  // ==========================================================
+  // PAGE NAVIGATION
+  // ==========================================================
 
   function goToPage(nextPage) {
     const safePage = Math.max(
@@ -307,6 +420,10 @@ export default function AULibrary() {
       behavior: "smooth",
     });
   }
+
+  // ==========================================================
+  // RENDER
+  // ==========================================================
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f8f5ef] text-[#292725]">
@@ -333,11 +450,9 @@ export default function AULibrary() {
 
       </div>
 
-
       <main className="relative pt-28 md:pt-36">
 
         <section className="mx-auto max-w-6xl px-5 md:px-8">
-
 
           {/* =================================================
               EDITORIAL HERO
@@ -347,12 +462,9 @@ export default function AULibrary() {
 
             <div className="relative min-h-[430px] overflow-hidden border-y border-[#292725]/10">
 
-              {/* Decorative corner */}
-
               <div className="absolute right-5 top-5 hidden h-24 w-24 border-r border-t border-[#292725]/10 md:block" />
 
               <div className="absolute bottom-5 left-5 hidden h-24 w-24 border-b border-l border-[#292725]/10 md:block" />
-
 
               <div className="relative grid min-h-[430px] items-center py-16 md:grid-cols-[1fr_280px] md:gap-12 md:py-20">
 
@@ -368,7 +480,6 @@ export default function AULibrary() {
 
                   </div>
 
-
                   <h1 className="mt-7 max-w-4xl font-serif-display text-6xl font-medium leading-[0.88] tracking-[-0.04em] md:text-8xl">
 
                     Little worlds
@@ -379,13 +490,11 @@ export default function AULibrary() {
 
                   </h1>
 
-
                   <p className="mt-8 max-w-xl text-sm leading-7 text-[#716c67] md:text-base">
                     A growing collection of alternate universes,
                     stories, and little ideas created and shared
                     by HANEULZ fans.
                   </p>
-
 
                   <div className="mt-9 flex items-center gap-4">
 
@@ -401,7 +510,6 @@ export default function AULibrary() {
                       />
                     </Link>
 
-
                     <span className="text-[9px] font-semibold uppercase tracking-[0.18em] text-[#918b84]">
                       {aus.length} collected
                     </span>
@@ -409,7 +517,6 @@ export default function AULibrary() {
                   </div>
 
                 </div>
-
 
                 {/* HERO SIDE NOTE */}
 
@@ -430,7 +537,6 @@ export default function AULibrary() {
 
                     </div>
 
-
                     <p className="mt-10 font-serif-display text-2xl leading-tight">
                       stories can make
                       <br />
@@ -439,9 +545,7 @@ export default function AULibrary() {
                       universe.
                     </p>
 
-
                     <div className="mt-8 h-px bg-[#292725]/10" />
-
 
                     <p className="mt-4 text-[8px] uppercase tracking-[0.22em] text-[#918b84]">
                       curated for HANEULZ
@@ -453,8 +557,7 @@ export default function AULibrary() {
 
               </div>
 
-
-              {/* tiny decorative marks */}
+              {/* Decorative marks */}
 
               <div className="absolute bottom-8 right-8 text-lg text-[#d78f9b]">
                 ✦
@@ -467,7 +570,6 @@ export default function AULibrary() {
             </div>
 
           </Reveal>
-
 
           {/* =================================================
               SEARCH
@@ -506,7 +608,6 @@ export default function AULibrary() {
 
           </div>
 
-
           {/* =================================================
               SOURCE NAV
           ================================================= */}
@@ -520,7 +621,9 @@ export default function AULibrary() {
                 <button
                   key={filter.key}
                   type="button"
-                  onClick={() => setSource(filter.key)}
+                  onClick={() =>
+                    setSource(filter.key)
+                  }
                   className={`shrink-0 px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] transition ${
                     source === filter.key
                       ? "bg-[#292725] text-white"
@@ -534,7 +637,6 @@ export default function AULibrary() {
 
             </div>
 
-
             <div className="hidden items-center gap-2 text-[#9a948c] sm:flex">
 
               <span className="h-px w-8 bg-[#292725]/10" />
@@ -546,7 +648,6 @@ export default function AULibrary() {
             </div>
 
           </div>
-
 
           {/* =================================================
               FILTER BAR
@@ -581,12 +682,13 @@ export default function AULibrary() {
                 <ChevronDown
                   size={13}
                   className={`transition ${
-                    filtersOpen ? "rotate-180" : ""
+                    filtersOpen
+                      ? "rotate-180"
+                      : ""
                   }`}
                 />
 
               </button>
-
 
               <div className="flex items-center gap-3">
 
@@ -601,17 +703,30 @@ export default function AULibrary() {
                   }
                   className="bg-transparent text-[9px] font-bold uppercase tracking-[0.12em] outline-none"
                 >
-                  <option value="newest">Newest</option>
-                  <option value="updated">Updated</option>
-                  <option value="liked">Most liked</option>
-                  <option value="bookmarked">Most saved</option>
-                  <option value="title">A–Z</option>
+                  <option value="newest">
+                    Newest
+                  </option>
+
+                  <option value="updated">
+                    Updated
+                  </option>
+
+                  <option value="liked">
+                    Most liked
+                  </option>
+
+                  <option value="bookmarked">
+                    Most saved
+                  </option>
+
+                  <option value="title">
+                    A–Z
+                  </option>
                 </select>
 
               </div>
 
             </div>
-
 
             {filtersOpen && (
 
@@ -632,7 +747,6 @@ export default function AULibrary() {
                   className="mt-7"
                 />
 
-
                 {allTags.length > 0 && (
 
                   <div className="mt-7">
@@ -645,7 +759,9 @@ export default function AULibrary() {
 
                       <FilterButton
                         active={tag === "all"}
-                        onClick={() => setTag("all")}
+                        onClick={() =>
+                          setTag("all")
+                        }
                       >
                         All
                       </FilterButton>
@@ -658,7 +774,9 @@ export default function AULibrary() {
                             normalize(tag) ===
                             normalize(item)
                           }
-                          onClick={() => setTag(item)}
+                          onClick={() =>
+                            setTag(item)
+                          }
                         >
                           {item}
                         </FilterButton>
@@ -671,13 +789,14 @@ export default function AULibrary() {
 
                 )}
 
-
                 <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-[#292725]/10 pt-5">
 
                   <button
                     type="button"
                     onClick={() =>
-                      setSavedOnly((value) => !value)
+                      setSavedOnly(
+                        (value) => !value
+                      )
                     }
                     className={`flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.15em] ${
                       savedOnly
@@ -702,7 +821,6 @@ export default function AULibrary() {
 
                   </button>
 
-
                   {hasActiveFilters && (
 
                     <button
@@ -722,7 +840,6 @@ export default function AULibrary() {
             )}
 
           </div>
-
 
           {/* =================================================
               COLLECTION HEADER
@@ -745,13 +862,11 @@ export default function AULibrary() {
 
               </div>
 
-
               <p className="mt-2 font-serif-display text-3xl md:text-4xl">
                 HANEULZ AUs
               </p>
 
             </div>
-
 
             <p className="text-right text-[8px] uppercase tracking-[0.18em] text-[#9a948c]">
 
@@ -765,30 +880,33 @@ export default function AULibrary() {
 
           </div>
 
-
           {/* =================================================
               AU LIST
           ================================================= */}
 
           <div className="relative mt-6 pb-12">
 
-            {/* vertical editorial line */}
+            {/* Vertical editorial line */}
 
             <div className="pointer-events-none absolute bottom-0 left-2 top-0 hidden w-px bg-[#292725]/[0.07] md:block" />
 
-
             <div className="space-y-5 md:pl-8">
 
+              {/* Loading placeholders */}
+
               {loading &&
-                [1, 2, 3, 4].map((item) => (
+                [1, 2, 3, 4].map(
+                  (item) => (
 
-                  <div
-                    key={item}
-                    className="h-40 animate-pulse border border-[#292725]/10 bg-[#fffdf8]"
-                  />
+                    <div
+                      key={item}
+                      className="h-40 animate-pulse border border-[#292725]/10 bg-[#fffdf8]"
+                    />
 
-                ))}
+                  )
+                )}
 
+              {/* Empty state */}
 
               {!loading &&
                 filteredAUs.length === 0 && (
@@ -824,142 +942,185 @@ export default function AULibrary() {
 
                 )}
 
+              {/* AU CARDS */}
 
               {!loading &&
-                visibleAUs.map((au, index) => (
+                visibleAUs.map(
+                  (au, index) => (
 
-                  <Reveal
-                    key={au.id}
-                    delay={(index % 4) * 0.04}
-                  >
+                    <Reveal
+                      key={au.id}
+                      delay={
+                        (index % 4) * 0.04
+                      }
+                    >
 
-                    <div className="relative">
+                      <div className="relative">
 
-                      {/* little archive number */}
+                        {/* Archive number */}
 
-                      <div className="absolute -left-8 top-5 hidden -translate-x-full font-serif-display text-sm text-[#aaa39b] md:block">
-                        {String(
-                          startIndex + index + 1
-                        ).padStart(2, "0")}
+                        <div className="absolute -left-8 top-5 hidden -translate-x-full font-serif-display text-sm text-[#aaa39b] md:block">
+                          {String(
+                            startIndex +
+                              index +
+                              1
+                          ).padStart(2, "0")}
+                        </div>
+
+                        <AUCard
+                          au={au}
+                          index={index}
+                        />
+
                       </div>
 
-                      <AUCard
-                        au={au}
-                        index={index}
-                      />
+                    </Reveal>
 
-                    </div>
-
-                  </Reveal>
-
-                ))}
+                  )
+                )}
 
             </div>
 
           </div>
 
-
           {/* =================================================
               PAGINATION
           ================================================= */}
 
-          {!loading && totalPages > 1 && (
+          {!loading &&
+            totalPages > 1 && (
 
-            <div className="mb-20 border-t border-[#292725]/10 pt-8">
+              <div className="mb-20 border-t border-[#292725]/10 pt-8">
 
-              <div className="flex flex-col items-center gap-4">
+                <div className="flex flex-col items-center gap-4">
 
-                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2">
 
-                  <button
-                    type="button"
-                    disabled={page === 1}
-                    onClick={() => goToPage(page - 1)}
-                    className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
-                  >
-                    <ChevronLeft size={14} />
-                  </button>
+                    {/* PREVIOUS */}
 
+                    <button
+                      type="button"
+                      disabled={page === 1}
+                      onClick={() =>
+                        goToPage(page - 1)
+                      }
+                      className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
+                    >
+                      <ChevronLeft
+                        size={14}
+                      />
+                    </button>
 
-                  {Array.from(
-                    { length: totalPages },
-                    (_, index) => index + 1
-                  )
-                    .filter((number) => {
-                      if (totalPages <= 7) return true;
+                    {/* PAGE NUMBERS */}
 
-                      return (
-                        number === 1 ||
-                        number === totalPages ||
-                        Math.abs(number - page) <= 1
-                      );
-                    })
-                    .map((number, index, array) => {
+                    {Array.from(
+                      {
+                        length: totalPages,
+                      },
+                      (_, index) =>
+                        index + 1
+                    )
+                      .filter(
+                        (number) => {
+                          if (
+                            totalPages <= 7
+                          ) {
+                            return true;
+                          }
 
-                      const previous =
-                        array[index - 1];
+                          return (
+                            number === 1 ||
+                            number ===
+                              totalPages ||
+                            Math.abs(
+                              number -
+                                page
+                            ) <= 1
+                          );
+                        }
+                      )
+                      .map(
+                        (
+                          number,
+                          index,
+                          array
+                        ) => {
 
-                      return (
-                        <div
-                          key={number}
-                          className="flex items-center gap-2"
-                        >
+                          const previous =
+                            array[
+                              index - 1
+                            ];
 
-                          {previous &&
-                            number - previous > 1 && (
-                              <span className="text-xs text-[#aaa39b]">
-                                …
-                              </span>
-                            )}
+                          return (
+                            <div
+                              key={number}
+                              className="flex items-center gap-2"
+                            >
 
-                          <button
-                            type="button"
-                            onClick={() =>
-                              goToPage(number)
-                            }
-                            className={`grid h-9 min-w-9 place-items-center px-3 text-[10px] font-bold transition ${
-                              page === number
-                                ? "bg-[#292725] text-white"
-                                : "border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] hover:bg-[#f1dfe3]"
-                            }`}
-                          >
-                            {number}
-                          </button>
+                              {previous &&
+                                number -
+                                  previous >
+                                  1 && (
+                                  <span className="text-xs text-[#aaa39b]">
+                                    …
+                                  </span>
+                                )}
 
-                        </div>
-                      );
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  goToPage(
+                                    number
+                                  )
+                                }
+                                className={`grid h-9 min-w-9 place-items-center px-3 text-[10px] font-bold transition ${
+                                  page ===
+                                  number
+                                    ? "bg-[#292725] text-white"
+                                    : "border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] hover:bg-[#f1dfe3]"
+                                }`}
+                              >
+                                {number}
+                              </button>
 
-                    })}
+                            </div>
+                          );
+                        }
+                      )}
 
+                    {/* NEXT */}
 
-                  <button
-                    type="button"
-                    disabled={page === totalPages}
-                    onClick={() =>
-                      goToPage(page + 1)
-                    }
-                    className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
-                  >
-                    <ChevronRight size={14} />
-                  </button>
+                    <button
+                      type="button"
+                      disabled={
+                        page === totalPages
+                      }
+                      onClick={() =>
+                        goToPage(page + 1)
+                      }
+                      className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
+                    >
+                      <ChevronRight
+                        size={14}
+                      />
+                    </button>
+
+                  </div>
+
+                  <p className="text-[8px] font-bold uppercase tracking-[0.22em] text-[#aaa39b]">
+                    Page {page} of{" "}
+                    {totalPages}
+                  </p>
 
                 </div>
 
-
-                <p className="text-[8px] font-bold uppercase tracking-[0.22em] text-[#aaa39b]">
-                  Page {page} of {totalPages}
-                </p>
-
               </div>
 
-            </div>
-
-          )}
+            )}
 
         </section>
 
       </main>
-
 
       <Footer />
 
@@ -967,10 +1128,9 @@ export default function AULibrary() {
   );
 }
 
-
-/* ============================================================
-   FILTER COMPONENTS
-============================================================ */
+// ============================================================
+// FILTER COMPONENTS
+// ============================================================
 
 function FilterGroup({
   title,
@@ -992,8 +1152,12 @@ function FilterGroup({
 
           <FilterButton
             key={option.key}
-            active={value === option.key}
-            onClick={() => onChange(option.key)}
+            active={
+              value === option.key
+            }
+            onClick={() =>
+              onChange(option.key)
+            }
           >
             {option.label}
           </FilterButton>
@@ -1006,6 +1170,9 @@ function FilterGroup({
   );
 }
 
+// ============================================================
+// FILTER BUTTON
+// ============================================================
 
 function FilterButton({
   active,
