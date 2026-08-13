@@ -148,10 +148,7 @@ export default function AULibrary() {
 
     let result = [...aus];
 
-    // --------------------------------------------------------
     // SEARCH
-    // --------------------------------------------------------
-
     if (query) {
       result = result.filter((au) => {
         const searchableText = [
@@ -174,10 +171,7 @@ export default function AULibrary() {
       });
     }
 
-    // --------------------------------------------------------
     // SOURCE
-    // --------------------------------------------------------
-
     if (source !== "all") {
       result = result.filter(
         (au) =>
@@ -185,10 +179,7 @@ export default function AULibrary() {
       );
     }
 
-    // --------------------------------------------------------
     // STATUS
-    // --------------------------------------------------------
-
     if (status !== "all") {
       result = result.filter((au) => {
         const value = getStatus(au);
@@ -213,10 +204,7 @@ export default function AULibrary() {
       });
     }
 
-    // --------------------------------------------------------
     // TYPE
-    // --------------------------------------------------------
-
     if (type !== "all") {
       result = result.filter((au) => {
         const value = getType(au);
@@ -247,10 +235,7 @@ export default function AULibrary() {
       });
     }
 
-    // --------------------------------------------------------
     // TAG
-    // --------------------------------------------------------
-
     if (tag !== "all") {
       result = result.filter((au) =>
         (au.tags || []).some(
@@ -260,20 +245,14 @@ export default function AULibrary() {
       );
     }
 
-    // --------------------------------------------------------
     // SAVED ONLY
-    // --------------------------------------------------------
-
     if (savedOnly) {
       result = result.filter((au) =>
         isSaved(au.id)
       );
     }
 
-    // --------------------------------------------------------
     // SORT
-    // --------------------------------------------------------
-
     result.sort((a, b) => {
       if (sort === "title") {
         return String(a.title || "").localeCompare(
@@ -307,7 +286,6 @@ export default function AULibrary() {
         );
       }
 
-      // NEWEST
       return (
         new Date(b.created_at || 0) -
         new Date(a.created_at || 0)
@@ -328,7 +306,7 @@ export default function AULibrary() {
   ]);
 
   // ==========================================================
-  // PAGINATION CALCULATIONS
+  // PAGINATION
   // ==========================================================
 
   const totalPages = Math.max(
@@ -338,14 +316,12 @@ export default function AULibrary() {
     )
   );
 
-  // Make sure current page still exists
   useEffect(() => {
     if (page > totalPages) {
       setPage(totalPages);
     }
   }, [page, totalPages]);
 
-  // Reset to page 1 whenever filters/search/sort change
   useEffect(() => {
     setPage(1);
   }, [
@@ -428,9 +404,7 @@ export default function AULibrary() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#f8f5ef] text-[#292725]">
 
-      {/* =====================================================
-          BACKGROUND DECOR
-      ===================================================== */}
+      {/* BACKGROUND DECOR */}
 
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
 
@@ -454,9 +428,7 @@ export default function AULibrary() {
 
         <section className="mx-auto max-w-6xl px-5 md:px-8">
 
-          {/* =================================================
-              EDITORIAL HERO
-          ================================================= */}
+          {/* EDITORIAL HERO */}
 
           <Reveal>
 
@@ -557,8 +529,6 @@ export default function AULibrary() {
 
               </div>
 
-              {/* Decorative marks */}
-
               <div className="absolute bottom-8 right-8 text-lg text-[#d78f9b]">
                 ✦
               </div>
@@ -571,9 +541,7 @@ export default function AULibrary() {
 
           </Reveal>
 
-          {/* =================================================
-              SEARCH
-          ================================================= */}
+          {/* SEARCH */}
 
           <div className="mt-10">
 
@@ -598,7 +566,7 @@ export default function AULibrary() {
                 <button
                   type="button"
                   onClick={() => setSearch("")}
-                  className="absolute right-0 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full text-[#8f8982] hover:bg-[#f1dfe3]"
+                  className="absolute right-0 top-1/2 grid h-8 w-8 -translate-y-1/2 rounded-full text-[#8f8982] hover:bg-[#f1dfe3]"
                 >
                   <X size={14} />
                 </button>
@@ -608,9 +576,7 @@ export default function AULibrary() {
 
           </div>
 
-          {/* =================================================
-              SOURCE NAV
-          ================================================= */}
+          {/* SOURCE NAV */}
 
           <div className="mt-6 flex items-center justify-between gap-5">
 
@@ -649,9 +615,7 @@ export default function AULibrary() {
 
           </div>
 
-          {/* =================================================
-              FILTER BAR
-          ================================================= */}
+          {/* FILTER BAR */}
 
           <div className="mt-3 border-y border-[#292725]/10">
 
@@ -841,9 +805,7 @@ export default function AULibrary() {
 
           </div>
 
-          {/* =================================================
-              COLLECTION HEADER
-          ================================================= */}
+          {/* COLLECTION HEADER */}
 
           <div className="mt-14 flex items-end justify-between border-b border-[#292725]/10 pb-4">
 
@@ -869,20 +831,16 @@ export default function AULibrary() {
             </div>
 
             <p className="text-right text-[8px] uppercase tracking-[0.18em] text-[#9a948c]">
-
               {loading
                 ? "Searching..."
                 : filteredAUs.length === 0
                 ? "Nothing found"
                 : `${firstShown}–${lastShown} / ${filteredAUs.length}`}
-
             </p>
 
           </div>
 
-          {/* =================================================
-              AU LIST
-          ================================================= */}
+          {/* AU LIST */}
 
           <div className="relative mt-6 pb-12">
 
@@ -890,19 +848,19 @@ export default function AULibrary() {
 
             <div className="pointer-events-none absolute bottom-0 left-2 top-0 hidden w-px bg-[#292725]/[0.07] md:block" />
 
-            <div className="space-y-5 md:pl-8">
+            {/* Reduced spacing between AUs */}
+
+            <div className="space-y-3 md:pl-8">
 
               {/* Loading placeholders */}
 
               {loading &&
                 [1, 2, 3, 4].map(
                   (item) => (
-
                     <div
                       key={item}
-                      className="h-40 animate-pulse border border-[#292725]/10 bg-[#fffdf8]"
+                      className="h-40 animate-pulse border border-[#292725]/10 bg-[#fffdf8] !rounded-none"
                     />
-
                   )
                 )}
 
@@ -911,7 +869,7 @@ export default function AULibrary() {
               {!loading &&
                 filteredAUs.length === 0 && (
 
-                  <div className="border border-dashed border-[#292725]/15 bg-[#fffdf8] px-6 py-24 text-center">
+                  <div className="border border-dashed border-[#292725]/15 bg-[#fffdf8] px-6 py-24 text-center !rounded-none">
 
                     <div className="mx-auto text-3xl text-[#d78f9b]">
                       ✦
@@ -931,7 +889,7 @@ export default function AULibrary() {
                       <button
                         type="button"
                         onClick={clearFilters}
-                        className="mt-7 bg-[#292725] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white"
+                        className="mt-7 bg-[#292725] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.18em] text-white !rounded-none"
                       >
                         Clear filters
                       </button>
@@ -955,11 +913,13 @@ export default function AULibrary() {
                       }
                     >
 
-                      <div className="relative">
+                      {/* Force all nested AUCard elements to square corners */}
+
+                      <div className="relative [&_*]:!rounded-none">
 
                         {/* Archive number */}
 
-                        <div className="absolute -left-8 top-5 hidden -translate-x-full font-serif-display text-sm text-[#aaa39b] md:block">
+                        <div className="absolute -left-8 top-5 hidden -translate-x-full font-serif-display text-sm text-[#aaa39b]">
                           {String(
                             startIndex +
                               index +
@@ -983,9 +943,7 @@ export default function AULibrary() {
 
           </div>
 
-          {/* =================================================
-              PAGINATION
-          ================================================= */}
+          {/* PAGINATION */}
 
           {!loading &&
             totalPages > 1 && (
@@ -1004,11 +962,9 @@ export default function AULibrary() {
                       onClick={() =>
                         goToPage(page - 1)
                       }
-                      className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
+                      className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25 !rounded-none"
                     >
-                      <ChevronLeft
-                        size={14}
-                      />
+                      <ChevronLeft size={14} />
                     </button>
 
                     {/* PAGE NUMBERS */}
@@ -1073,9 +1029,8 @@ export default function AULibrary() {
                                     number
                                   )
                                 }
-                                className={`grid h-9 min-w-9 place-items-center px-3 text-[10px] font-bold transition ${
-                                  page ===
-                                  number
+                                className={`grid h-9 min-w-9 place-items-center px-3 text-[10px] font-bold transition !rounded-none ${
+                                  page === number
                                     ? "bg-[#292725] text-white"
                                     : "border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] hover:bg-[#f1dfe3]"
                                 }`}
@@ -1098,11 +1053,9 @@ export default function AULibrary() {
                       onClick={() =>
                         goToPage(page + 1)
                       }
-                      className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25"
+                      className="grid h-9 w-9 place-items-center border border-[#292725]/10 bg-[#fffdf8] text-[#827c75] transition hover:bg-[#f1dfe3] disabled:opacity-25 !rounded-none"
                     >
-                      <ChevronRight
-                        size={14}
-                      />
+                      <ChevronRight size={14} />
                     </button>
 
                   </div>
@@ -1152,9 +1105,7 @@ function FilterGroup({
 
           <FilterButton
             key={option.key}
-            active={
-              value === option.key
-            }
+            active={value === option.key}
             onClick={() =>
               onChange(option.key)
             }
@@ -1183,7 +1134,7 @@ function FilterButton({
     <button
       type="button"
       onClick={onClick}
-      className={`border px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition ${
+      className={`border px-4 py-2 text-[9px] font-semibold uppercase tracking-[0.12em] transition !rounded-none ${
         active
           ? "border-[#292725] bg-[#292725] text-white"
           : "border-[#292725]/10 bg-[#fffdf8] text-[#827c75] hover:border-[#d78f9b] hover:text-[#b86f7d]"
