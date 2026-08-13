@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { motion } from "framer-motion";
-import {
-  ArrowLeft,
-  Bookmark,
-  ExternalLink,
-  Heart,
-  Send,
-  Sparkles,
-} from "lucide-react";
+import { ArrowLeft, ExternalLink, Heart, Send } from "lucide-react";
 import { toast } from "sonner";
 
 import {
@@ -153,12 +145,9 @@ export default function AUDetail() {
 
   if (!au) {
     return (
-      <div className="grid min-h-screen place-items-center bg-[color:var(--cream)] text-[color:var(--ink-soft)]">
+      <div className="grid min-h-screen place-items-center bg-[#f8f5ef] text-[#77716b]">
         <div className="text-center">
-          <Sparkles
-            size={20}
-            className="mx-auto mb-4 animate-pulse text-[color:var(--pink-deep)]"
-          />
+          <div className="mx-auto mb-4 h-5 w-5 animate-pulse rounded-full border border-[#b86f7d]/30 border-t-[#b86f7d]" />
 
           <p className="text-[9px] font-bold uppercase tracking-[0.25em]">
             Opening story…
@@ -193,42 +182,22 @@ export default function AUDetail() {
     "";
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[color:var(--cream)] text-[color:var(--ink)]">
+    <div className="min-h-screen bg-[#f8f5ef] text-[#292725]">
 
       {/* =====================================================
-          SOFT BACKGROUND DECOR
+          HEADER
       ===================================================== */}
-
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-
-        <div className="absolute -left-32 top-40 h-80 w-80 rounded-full bg-[color:var(--pink-soft)] opacity-60 blur-3xl" />
-
-        <div className="absolute -right-32 top-[45%] h-96 w-96 rounded-full bg-[color:var(--blue)] opacity-50 blur-3xl" />
-
-        <div className="absolute right-[10%] top-[18%] rotate-12 font-serif-display text-[6rem] text-[color:var(--pink-deep)] opacity-[0.06]">
-          ♡
-        </div>
-
-        <div className="absolute bottom-[20%] left-[8%] font-serif-display text-[7rem] text-[color:var(--ink)] opacity-[0.025]">
-          ✦
-        </div>
-
-      </div>
-
 
       <main className="relative pt-28 md:pt-32">
 
-        <article className="mx-auto max-w-4xl px-5 md:px-8">
+        <article className="mx-auto max-w-5xl px-5 md:px-8">
 
-          {/* =================================================
-              BACK
-          ================================================= */}
+          {/* BACK */}
 
           <Reveal>
-
             <Link
               to="/aus"
-              className="group inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[color:var(--ink-soft)] transition hover:text-[color:var(--pink-deep)]"
+              className="group inline-flex items-center gap-2 text-[9px] font-bold uppercase tracking-[0.2em] text-[#817b74] transition-colors hover:text-[#b86f7d]"
             >
               <ArrowLeft
                 size={13}
@@ -237,142 +206,146 @@ export default function AUDetail() {
 
               Back to library
             </Link>
-
           </Reveal>
 
 
           {/* =================================================
-              STORY HEADER
+              AU INTRO
           ================================================= */}
 
-          <Reveal className="mt-8">
+          <Reveal className="mt-10">
 
-            <div className="relative overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white px-6 py-10 md:px-10 md:py-14">
+            <section className="border-y border-[#292725]/10 py-10 md:py-14">
 
-              <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[color:var(--pink-soft)] opacity-70 blur-3xl" />
+              <div className="grid gap-10 md:grid-cols-[1fr_230px] md:gap-14">
 
-              <div className="relative">
+                {/* LEFT — INFORMATION */}
 
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-col justify-center">
 
-                  <span className="rounded-full bg-[color:var(--pink-soft)] px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.18em] text-[color:var(--pink-deep)]">
-                    {typeLabel}
-                  </span>
+                  {/* META */}
 
-                  {source?.label && (
-                    <span className="rounded-full border border-[color:var(--line)] px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink-soft)]">
-                      {source.label}
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+
+                    <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#b86f7d]">
+                      {typeLabel}
                     </span>
-                  )}
 
-                  {statusLabel && (
-                    <span className="rounded-full border border-[color:var(--line)] px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink-soft)]">
-                      {statusLabel}
+                    <span className="h-1 w-1 rounded-full bg-[#aaa39b]" />
+
+                    <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#817b74]">
+                      {source?.label || "HANEULZ"}
                     </span>
-                  )}
 
-                </div>
+                    {statusLabel && (
+                      <>
+                        <span className="h-1 w-1 rounded-full bg-[#aaa39b]" />
+
+                        <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-[#817b74]">
+                          {statusLabel}
+                        </span>
+                      </>
+                    )}
+
+                  </div>
 
 
-                <div className="mt-7 flex items-start gap-3">
+                  {/* TITLE */}
 
-                  <Sparkles
-                    size={15}
-                    className="mt-3 shrink-0 text-[color:var(--pink-deep)]"
-                  />
-
-                  <h1 className="max-w-3xl font-serif-display text-5xl font-medium leading-[0.95] tracking-[-0.03em] md:text-7xl">
+                  <h1 className="mt-6 max-w-3xl font-serif-display text-5xl font-medium leading-[0.94] tracking-[-0.035em] md:text-7xl">
                     {au.title}
                   </h1>
 
+
+                  {/* AUTHOR */}
+
+                  <p className="mt-5 text-xs text-[#817b74]">
+                    by{" "}
+                    <span className="font-semibold text-[#292725]">
+                      {author}
+                    </span>
+                  </p>
+
+
+                  {/* DESCRIPTION */}
+
+                  {description && (
+                    <p className="mt-7 max-w-2xl font-serif-display text-lg italic leading-relaxed text-[#6f6963] md:text-xl">
+                      {description}
+                    </p>
+                  )}
+
+
+                  {/* TAGS */}
+
+                  {au.tags?.length > 0 && (
+                    <div className="mt-7 flex max-w-2xl flex-wrap gap-x-2 gap-y-2">
+
+                      {au.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="border border-[#292725]/10 bg-[#fffdf8] px-2.5 py-1.5 text-[8px] font-medium uppercase tracking-[0.12em] text-[#817b74]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+
+                    </div>
+                  )}
+
+
+                  {/* ACTIONS */}
+
+                  <div className="mt-8 flex flex-wrap items-center gap-3">
+
+                    {au.source_url && (
+                      <a
+                        href={au.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 bg-[#292725] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.16em] text-white transition hover:bg-[#b86f7d]"
+                      >
+                        <ExternalLink size={12} />
+                        Read Story
+                      </a>
+                    )}
+
+                    <BookmarkButton
+                      id={au.id}
+                      title={au.title}
+                      variant="pill"
+                    />
+
+                  </div>
+
                 </div>
 
 
-                <p className="mt-5 text-xs text-[color:var(--ink-soft)]">
-                  by{" "}
-                  <span className="font-semibold text-[color:var(--ink)]">
-                    {author}
-                  </span>
-                </p>
+                {/* RIGHT — COVER */}
 
+                <div className="order-first mx-auto w-full max-w-[230px] md:order-none md:mx-0">
 
-                {description && (
-                  <p className="mt-7 max-w-2xl font-serif-display text-xl italic leading-relaxed text-[color:var(--ink-soft)] md:text-2xl">
-                    {description}
+                  <div className="overflow-hidden border border-[#292725]/10 bg-[#fffdf8] p-1.5">
+
+                    <img
+                      src={cover}
+                      alt={au.title}
+                      className="aspect-[3/4] w-full object-cover"
+                    />
+
+                  </div>
+
+                  <p className="mt-3 text-center text-[7px] font-semibold uppercase tracking-[0.2em] text-[#aaa39b]">
+                    HANEULZ ARCHIVE
                   </p>
-                )}
+
+                </div>
 
               </div>
 
-            </div>
+            </section>
 
           </Reveal>
-
-
-          {/* =================================================
-              COVER
-          ================================================= */}
-
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 18,
-              scale: 0.985,
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              scale: 1,
-            }}
-            transition={{
-              duration: 0.8,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative mt-7 overflow-hidden rounded-[2rem] border border-[color:var(--line)] bg-white p-2 shadow-[0_24px_70px_-40px_rgba(41,39,37,0.25)]"
-          >
-
-            <div className="relative overflow-hidden rounded-[1.6rem]">
-
-              <img
-                src={cover}
-                alt={au.title}
-                className="max-h-[620px] w-full object-cover"
-              />
-
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
-
-            </div>
-
-          </motion.div>
-
-
-          {/* =================================================
-              META / ACTIONS
-          ================================================= */}
-
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-
-            <div className="flex flex-wrap gap-2">
-
-              {au.tags?.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full bg-[color:var(--blue)] px-3 py-1.5 text-[8px] font-semibold uppercase tracking-[0.12em] text-[color:var(--ink)]"
-                >
-                  {tag}
-                </span>
-              ))}
-
-            </div>
-
-
-            <BookmarkButton
-              id={au.id}
-              title={au.title}
-              variant="pill"
-            />
-
-          </div>
 
 
           {/* =================================================
@@ -382,13 +355,13 @@ export default function AUDetail() {
           {story && (
             <Reveal>
 
-              <section className="mt-12">
+              <section className="mt-14 md:mt-18">
 
                 <div className="mb-7 flex items-center gap-3">
 
-                  <span className="h-px w-8 bg-[color:var(--pink-deep)]" />
+                  <span className="h-px w-7 bg-[#b86f7d]" />
 
-                  <p className="text-[8px] font-bold uppercase tracking-[0.25em] text-[color:var(--pink-deep)]">
+                  <p className="text-[8px] font-bold uppercase tracking-[0.25em] text-[#b86f7d]">
                     The story
                   </p>
 
@@ -396,11 +369,11 @@ export default function AUDetail() {
 
 
                 <div
-                  className="rounded-[2rem] border border-[color:var(--line)] bg-white px-6 py-8 md:px-10 md:py-12"
+                  className="max-w-3xl"
                   data-testid="au-full-story"
                 >
 
-                  <div className="space-y-6 text-[1rem] leading-[1.9] text-[color:var(--ink)] md:text-[1.05rem]">
+                  <div className="space-y-6 font-serif-display text-[1.05rem] leading-[1.9] text-[#403d39] md:text-[1.12rem]">
 
                     {story
                       .split("\n")
@@ -422,25 +395,24 @@ export default function AUDetail() {
 
 
           {/* =================================================
-              READ SOURCE
+              ORIGINAL SOURCE
           ================================================= */}
 
           {au.source_url && (
-
             <Reveal>
 
-              <div className="mt-7 rounded-[2rem] border border-[color:var(--line)] bg-white p-5 md:p-6">
+              <section className="mt-14 border-y border-[#292725]/10 py-6">
 
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
                   <div>
 
-                    <p className="text-[8px] font-bold uppercase tracking-[0.23em] text-[color:var(--pink-deep)]">
+                    <p className="text-[8px] font-bold uppercase tracking-[0.23em] text-[#b86f7d]">
                       Original source
                     </p>
 
-                    <p className="mt-1 text-sm text-[color:var(--ink-soft)]">
-                      Read the original story on{" "}
+                    <p className="mt-1 text-xs text-[#817b74]">
+                      Originally shared on{" "}
                       {source?.label || "the original platform"}.
                     </p>
 
@@ -451,16 +423,15 @@ export default function AUDetail() {
                     href={au.source_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-[color:var(--ink)] px-6 py-3 text-[9px] font-bold uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-[color:var(--pink-deep)]"
+                    className="inline-flex items-center justify-center gap-2 border border-[#292725]/15 bg-[#fffdf8] px-5 py-2.5 text-[8px] font-bold uppercase tracking-[0.16em] text-[#292725] transition hover:border-[#b86f7d] hover:text-[#b86f7d]"
                   >
-                    <ExternalLink size={13} />
-
-                    Read Story
+                    <ExternalLink size={12} />
+                    Original story
                   </a>
 
                 </div>
 
-              </div>
+              </section>
 
             </Reveal>
           )}
@@ -471,7 +442,7 @@ export default function AUDetail() {
           ================================================= */}
 
           <section
-            className="mt-16 border-t border-[color:var(--line)] pt-12"
+            className="mt-16 border-t border-[#292725]/10 pt-12"
             data-testid="comments-section"
           >
 
@@ -482,11 +453,11 @@ export default function AUDetail() {
                 <div className="flex items-center gap-2">
 
                   <Heart
-                    size={13}
-                    className="text-[color:var(--pink-deep)]"
+                    size={12}
+                    className="text-[#b86f7d]"
                   />
 
-                  <p className="text-[8px] font-bold uppercase tracking-[0.25em] text-[color:var(--pink-deep)]">
+                  <p className="text-[8px] font-bold uppercase tracking-[0.25em] text-[#b86f7d]">
                     Fan notes
                   </p>
 
@@ -498,8 +469,9 @@ export default function AUDetail() {
 
               </div>
 
+
               {comments.length > 0 && (
-                <span className="text-[8px] font-bold uppercase tracking-[0.18em] text-[color:var(--ink-soft)]">
+                <span className="text-[8px] font-bold uppercase tracking-[0.18em] text-[#aaa39b]">
                   {comments.length}{" "}
                   {comments.length === 1
                     ? "note"
@@ -510,14 +482,14 @@ export default function AUDetail() {
             </div>
 
 
-            {/* Comment form */}
+            {/* COMMENT FORM */}
 
             <form
               onSubmit={submitComment}
-              className="mt-7 rounded-[2rem] border border-[color:var(--line)] bg-white p-5 md:p-7"
+              className="mt-7 border border-[#292725]/10 bg-[#fffdf8] p-5 md:p-7"
             >
 
-              <p className="text-xs leading-6 text-[color:var(--ink-soft)]">
+              <p className="text-xs leading-6 text-[#817b74]">
                 Loved something about this AU?
                 Leave a little note for the author
                 and other readers. ♡
@@ -531,7 +503,7 @@ export default function AUDetail() {
                 }
                 placeholder="Your name / @handle"
                 data-testid="comment-name-input"
-                className="mt-5 w-full rounded-2xl border border-[color:var(--line)] bg-[color:var(--cream)] px-5 py-3.5 text-sm outline-none transition focus:border-[color:var(--pink-deep)] focus:ring-4 focus:ring-[color:var(--pink-soft)]"
+                className="mt-5 w-full border-b border-[#292725]/15 bg-transparent px-1 py-3 text-sm outline-none transition focus:border-[#b86f7d]"
               />
 
 
@@ -543,20 +515,20 @@ export default function AUDetail() {
                 placeholder="Leave a soft note…"
                 rows={4}
                 data-testid="comment-text-input"
-                className="mt-3 w-full resize-none rounded-[1.4rem] border border-[color:var(--line)] bg-[color:var(--cream)] px-5 py-4 text-sm leading-6 outline-none transition focus:border-[color:var(--pink-deep)] focus:ring-4 focus:ring-[color:var(--pink-soft)]"
+                className="mt-3 w-full resize-none border-b border-[#292725]/15 bg-transparent px-1 py-3 text-sm leading-6 outline-none transition focus:border-[#b86f7d]"
               />
 
 
-              <div className="mt-4 flex justify-end">
+              <div className="mt-5 flex justify-end">
 
                 <button
                   type="submit"
                   disabled={submitting}
                   data-testid="comment-submit-btn"
-                  className="inline-flex items-center gap-2 rounded-full bg-[color:var(--ink)] px-6 py-3 text-[9px] font-bold uppercase tracking-[0.16em] text-white transition hover:-translate-y-0.5 hover:bg-[color:var(--pink-deep)] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex items-center gap-2 bg-[#292725] px-5 py-3 text-[9px] font-bold uppercase tracking-[0.16em] text-white transition hover:bg-[#b86f7d] disabled:cursor-not-allowed disabled:opacity-50"
                 >
 
-                  <Send size={13} />
+                  <Send size={12} />
 
                   {submitting
                     ? "Sending…"
@@ -569,19 +541,19 @@ export default function AUDetail() {
             </form>
 
 
-            {/* Existing comments */}
+            {/* EXISTING COMMENTS */}
 
-            <div className="mt-7 space-y-3">
+            <div className="mt-7 space-y-4">
 
               {comments.length === 0 && (
 
-                <div className="rounded-[2rem] border border-dashed border-[color:var(--line)] bg-white px-6 py-12 text-center">
+                <div className="border border-dashed border-[#292725]/15 px-6 py-12 text-center">
 
-                  <div className="font-serif-display text-3xl text-[color:var(--pink-deep)]">
+                  <div className="font-serif-display text-3xl text-[#b86f7d]">
                     ♡
                   </div>
 
-                  <p className="mt-3 text-sm text-[color:var(--ink-soft)]">
+                  <p className="mt-3 text-sm text-[#817b74]">
                     No notes yet — leave the first one.
                   </p>
 
@@ -594,14 +566,14 @@ export default function AUDetail() {
 
                 <div
                   key={comment.id}
-                  className="rounded-[1.6rem] border border-[color:var(--line)] bg-white px-5 py-5 transition hover:-translate-y-0.5 hover:shadow-[0_15px_40px_-30px_rgba(41,39,37,0.35)]"
+                  className="border-b border-[#292725]/10 py-5"
                   data-testid={`comment-${comment.id}`}
                 >
 
                   <div className="flex items-center gap-2">
 
-                    <div className="grid h-7 w-7 place-items-center rounded-full bg-[color:var(--pink-soft)] text-[color:var(--pink-deep)]">
-                      <Heart size={11} />
+                    <div className="grid h-7 w-7 place-items-center rounded-full bg-[#f1e8e5] text-[#b86f7d]">
+                      <Heart size={10} />
                     </div>
 
                     <p className="text-sm font-semibold">
@@ -610,7 +582,7 @@ export default function AUDetail() {
 
                   </div>
 
-                  <p className="mt-3 pl-9 text-sm leading-6 text-[color:var(--ink-soft)]">
+                  <p className="mt-3 pl-9 text-sm leading-6 text-[#817b74]">
                     {comment.text}
                   </p>
 
