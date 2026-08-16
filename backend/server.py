@@ -1,1075 +1,1219 @@
-import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { Check, X, Trash2, LogOut, Plus } from "lucide-react";
-import { toast } from "sonner";
-import { api } from "../lib/api";
-import { useAuth } from "../context/AuthContext";
+from dotenv import load_dotenv
+from pathlib import Path
+import os
+import uuid
+import logging
+import bcrypt
+import jwt
+import re
 
-function StatusPill({ status }) {
-  const map = {
-    pending: "bg-[color:var(--blue)]",
-    approved: "bg-[color:var(--pink)]",
-    rejected: "bg-[color:var(--line)]",
-  };
+from datetime import datetime, timezone, timedelta
+from typing import List, Optional
 
-  return (
-    <span
-      className={`rounded-full px-3 py-1 text-[0.6rem] uppercase tracking-widest ${
-        map[status] || "bg-[color:var(--line)]"
-      }`}
-    >
-      {status}
-    </span>
-  );
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, File, UploadFile, Form
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.staticfiles import StaticFiles
+from starlette.middleware.cors import CORSMiddleware
+from motor.motor_asyncio import AsyncIOMotorClient
+from pydantic import BaseModel, Field, EmailStr
+
+# =========================
+# ENV
+# =========================
+
+ROOT_DIR = Path(__file__).parent
+load_dotenv(ROOT_DIR / ".env")
+
+mongo_url = os.environ["MONGO_URL"]
+client = AsyncIOMotorClient(mongo_url)
+
+db = client[os.environ["DB_NAME"]]
+
+
+JWT_SECRET = os.environ["JWT_SECRET"]
+JWT_ALGORITHM = "HS256"
+
+# =========================
+# APP
+# =========================
+
+app = FastAPI()
+
+security = HTTPBearer()
+
+api_router = APIRouter(prefix="/api")
+
+
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
+
+# =========================
+# FILE UPLOAD SETUP
+# =========================
+
+UPLOAD_DIR = Path(__file__).parent / "static" / "uploads"
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+app.mount("/static", StaticFiles(directory=ROOT_DIR / "static"), name="static")
+
+# =========================
+# HELPERS
+# =========================
+
+import re
+
+def now_iso():
+    return datetime.now(
+        timezone.utc
+    ).isoformat()
+
+
+def youtube_thumbnail(url: str):
+    if not url:
+        return None
+
+    patterns = [
+        r"youtu\.be\/([^?&]+)",
+        r"youtube\.com\/watch\?v=([^?&]+)",
+        r"youtube\.com\/embed\/([^?&]+)",
+        r"youtube\.com\/shorts\/([^?&]+)",
+    ]
+
+    for pattern in patterns:
+        match = re.search(pattern, url)
+
+        if match:
+            video_id = match.group(1)
+            return f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
+
+    return None
+
+async def save_image(image: UploadFile):
+
+    if not image:
+        return None
+
+    ext = Path(image.filename).suffix
+
+    filename = f"{uuid.uuid4()}{ext}"
+
+    file_path = UPLOAD_DIR / filename
+
+    with open(file_path, "wb") as buffer:
+        buffer.write(await image.read())
+
+    return f"/static/uploads/{filename}"
+
+def hash_password(password: str):
+    return bcrypt.hashpw(
+        password.encode("utf-8"),
+        bcrypt.gensalt()
+    ).decode("utf-8")
+
+
+def verify_password(password, hashed):
+    return bcrypt.checkpw(
+        password.encode("utf-8"),
+        hashed.encode("utf-8")
+    )
+
+
+def create_access_token(user_id, email):
+    payload = {
+        "sub": user_id,
+        "email": email,
+        "exp": datetime.now(timezone.utc) + timedelta(days=7)
+    }
+
+    return jwt.encode(
+        payload,
+        JWT_SECRET,
+        algorithm=JWT_ALGORITHM
+    )
+# =========================
+# AUTH MODEL
+# =========================
+
+class LoginInput(BaseModel):
+    email: EmailStr
+    password: str
+
+# =========================
+# AU MODELS
+# =========================
+
+class AUCreate(BaseModel):
+    title: str
+    short_description: str = ""
+    full_story: str = ""
+    source_url: str
+    tags: List[str] = Field(default_factory=list)
+    au_type: str = "story"
+    source: str = "other"
+
+
+class AU(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    author_name: str = "Anonymous"
+    short_description: str = ""
+    full_story: str = ""
+    cover_image_url: Optional[str] = None
+    source_url: Optional[str] = None
+    tags: List[str] = Field(default_factory=list)
+    au_type: str = "story"
+    source: str = "other"
+    status: str = "pending"
+    likes: int = 0
+    featured: bool = False
+    bookmarked: int = 0
+    created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
+
+# =========================
+# SITE SETTINGS MODEL
+# =========================
+
+class SiteSettings(BaseModel):
+    hero_title: str = "HANEULZ CORNER"
+    hero_subtitle: str = "Your cozy space for all things AHOF & Haneulz"
+    whole_group_title: str = "NOW, THE WHOLE GROUP"
+    whole_group_desc: str = "Spotlighting all nine members of AHOF together."
+    about_title: str = "Our Little Corner"
+    about_subtitle: str = "Welcome to Haneulz Corner ☁️💗"
+    about_letter: str = "Haneulz Corner started as a simple idea from one Hansum who just wanted a place where everything about HANEULZ could be found a little more easily.\n\nLike many fans, I often found myself scrolling through old bookmarks..."
+    about_signoff_text: str = "Made with lots of love, late-night ideas, and a few too many bookmarks."
+    about_signoff_author: str = "— K ☁️💗"
+
+# =========================
+# VARIETY
+# =========================
+
+class VarietyCreate(BaseModel):
+    section: str
+    category: Optional[str] = None
+    show_name: str
+    label: Optional[str] = ""
+    episode: Optional[str] = ""
+    description: str = ""
+    thumbnail: Optional[str] = None
+    youtube_url: Optional[str] = None
+    air_date: Optional[str] = None
+    
+class Variety(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    section: str
+    category: str
+    label: str
+    show_name: str
+    episode: str
+    description: str
+    thumbnail: str | None = None
+    youtube_url: str
+    air_date: str
+    featured: bool = False
+    created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
+
+class PlaylistItemCreate(BaseModel):
+    playlist: str
+    title: str
+    platform: str
+    thumbnail: Optional[str] = None
+    url: str
+
+class PlaylistItem(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    playlist: str
+    title: str
+    platform: str
+    thumbnail: Optional[str] = None
+    description: str = ""
+    url: str
+    created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
+
+# =========================
+# GAMES
+# =========================
+
+class GameCreate(BaseModel):
+    title: str
+    description: str
+    thumbnail: Optional[str] = None
+    game_url: str
+    category: str = "quiz"
+
+
+class Game(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    thumbnail: Optional[str] = None
+    game_url: str
+    category: str = "quiz"
+    created_at: str = Field(default_factory=now_iso)
+    updated_at: str = Field(default_factory=now_iso)
+
+
+# =========================
+# MEMORY GAME CARDS
+# =========================
+
+class MemoryCard(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    image: str
+    created_at: str = Field(default_factory=now_iso)
+    
+# =========================
+# ADMIN AUTH CHECK
+# =========================
+
+async def get_current_admin(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+
+    token = credentials.credentials
+
+    try:
+        payload = jwt.decode(
+            token,
+            JWT_SECRET,
+            algorithms=[JWT_ALGORITHM]
+        )
+
+        if not payload.get("email"):
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+
+        return payload
+
+    except Exception:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token"
+        )
+        
+# =========================
+# AUTH ROUTES
+# =========================
+
+
+@api_router.post("/auth/login")
+async def login(input: LoginInput):
+
+    user = await db.users.find_one(
+        {
+            "email": input.email.lower()
+        }
+    )
+
+
+    if not user or not verify_password(
+        input.password,
+        user["password_hash"]
+    ):
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+
+    token = create_access_token(
+        user["id"],
+        user["email"]
+    )
+
+
+    return {
+
+        "token": token,
+
+        "user": {
+
+            "email": user["email"],
+
+            "name": user.get(
+                "name",
+                "Admin"
+            ),
+
+            "role": user.get(
+                "role",
+                "admin"
+            )
+
+        }
+
+    }
+
+@api_router.get("/auth/me")
+async def me(
+    admin: dict = Depends(get_current_admin)
+):
+
+    return admin
+
+# =========================
+# AU ROUTES
+# =========================
+
+@api_router.post("/aus",response_model=AU)
+
+async def submit_au(
+
+    title: str = Form(...),
+
+    author_name: str = Form("Anonymous"),
+
+    short_description: str = Form(""),
+
+    full_story: str = Form(""),
+
+    source_url: str = Form(...),
+
+    au_type: str = Form("story"),
+
+    source: str = Form("other"),
+
+    image: UploadFile = File(None)
+
+):
+
+    cover_image = None
+
+    if image:
+
+        cover_image = await save_image(image)
+
+    au = AU(
+
+        title=title,
+
+        author_name=author_name or "Anonymous",
+
+        short_description=short_description,
+
+        full_story=full_story,
+
+        source_url=source_url,
+
+        au_type=au_type,
+
+        source=source,
+
+        cover_image_url=cover_image
+
+    )
+
+    await db.aus.insert_one(
+
+        au.model_dump()
+
+    )
+
+    return au
+    
+@api_router.get(
+    "/aus",
+    response_model=List[AU]
+)
+async def list_aus(
+    au_type: Optional[str] = None,
+    source: Optional[str] = None
+):
+
+    query = {
+    "status": "approved"
 }
 
-export default function AdminDashboard() {
-  const { admin, ready, logout } = useAuth();
-  const navigate = useNavigate();
+    if au_type:
 
-  const [tab, setTab] = useState("aus");
+        query["au_type"] = au_type
 
-  const [aus, setAus] = useState([]);
-  const [comments, setComments] = useState([]);
-  const [variety, setVariety] = useState([]);
+    if source:
 
-  const [editingVariety, setEditingVariety] = useState(null);
-  const [editingAU, setEditingAU] = useState(null);
+        query["source"] = source
 
-  const [videoForm, setVideoForm] = useState({
-    section: "haneulz",
-    category: "han-posts",
-    label: "",
-    show_name: "",
-    episode: "",
-    description: "",
-    image: null,
-    youtube_url: "",
-    air_date: "",
-  });
-
-  // =========================================================
-  // LOAD ADMIN DATA
-  // =========================================================
-
-  const load = useCallback(async () => {
-    console.log("BASE URL:", api.defaults.baseURL);
-    console.log(
-      "TOKEN:",
-      localStorage.getItem("haneulz_token")
-    );
-
-    try {
-      const [ausRes, commentsRes] = await Promise.all([
-        api.get("/admin/aus"),
-        api.get("/admin/comments"),
-      ]);
-
-      console.log("ALL ADMIN AUS:", ausRes.data);
-      console.log(
-        "ALL ADMIN COMMENTS:",
-        commentsRes.data
-      );
-
-      setAus(ausRes.data);
-      setComments(commentsRes.data);
-    } catch (error) {
-      console.error(
-        "ADMIN LOAD ERROR:",
-        error.response?.data || error.message
-      );
-
-      if (error.response?.status === 401) {
-        toast.error("Admin session expired. Please log in again.");
-      }
-    }
-  }, []);
-
-  // =========================================================
-  // LOAD VARIETY
-  // =========================================================
-
-  const loadVariety = useCallback(async () => {
-    try {
-      const res = await api.get("/variety");
-
-      console.log("VARIETY:", res.data);
-
-      setVariety(res.data);
-    } catch (error) {
-      console.error(
-        "VARIETY ERROR:",
-        error.response?.data || error.message
-      );
-    }
-  }, []);
-
-  // =========================================================
-  // AUTH CHECK
-  // =========================================================
-
-  useEffect(() => {
-    if (ready && !admin) {
-      navigate("/admin/login");
-    }
-  }, [ready, admin, navigate]);
-
-  // =========================================================
-  // INITIAL ADMIN LOAD
-  // =========================================================
-
-  useEffect(() => {
-    if (admin) {
-      load();
-    }
-  }, [admin, load]);
-
-  // =========================================================
-  // LOAD VARIETY WHEN TAB OPENS
-  // =========================================================
-
-  useEffect(() => {
-    if (admin && tab === "variety") {
-      loadVariety();
-    }
-  }, [admin, tab, loadVariety]);
-
-  // =========================================================
-  // AU ACTIONS
-  // =========================================================
-
-  const setAuStatus = async (id, status) => {
-    try {
-      await api.patch(`/admin/aus/${id}`, {
-        status,
-      });
-
-      toast.success(`AU ${status}`);
-
-      await load();
-    } catch (error) {
-      console.error(
-        "AU STATUS ERROR:",
-        error.response?.data || error.message
-      );
-
-      toast.error("Failed to update AU");
-    }
-  };
-
-  const delAu = async (id) => {
-    try {
-      await api.delete(`/admin/aus/${id}`);
-
-      toast.success("AU deleted");
-
-      await load();
-    } catch (error) {
-      console.error(
-        "AU DELETE ERROR:",
-        error.response?.data || error.message
-      );
-
-      toast.error("Failed to delete AU");
-    }
-  };
-
-  // =========================================================
-  // COMMENT ACTIONS
-  // =========================================================
-
-  const setCommentStatus = async (id, status) => {
-    try {
-      await api.patch(`/admin/comments/${id}`, {
-        status,
-      });
-
-      toast.success(`Note ${status}`);
-
-      await load();
-    } catch (error) {
-      console.error(
-        "COMMENT STATUS ERROR:",
-        error.response?.data || error.message
-      );
-
-      toast.error("Failed to update note");
-    }
-  };
-
-  const delComment = async (id) => {
-    try {
-      await api.delete(`/admin/comments/${id}`);
-
-      toast.success("Note deleted");
-
-      await load();
-    } catch (error) {
-      console.error(
-        "COMMENT DELETE ERROR:",
-        error.response?.data || error.message
-      );
-
-      toast.error("Failed to delete note");
-    }
-  };
-
-  // =========================================================
-  // VARIETY FORM RESET
-  // =========================================================
-
-  const resetVideoForm = () => {
-    setVideoForm({
-      section: "haneulz",
-      category: "han-posts",
-      label: "",
-      show_name: "",
-      episode: "",
-      description: "",
-      image: null,
-      youtube_url: "",
-      air_date: "",
-    });
-  };
-
-  // =========================================================
-  // ADD VARIETY
-  // =========================================================
-
-  const addVariety = async () => {
-    try {
-      const formData = new FormData();
-
-      formData.append(
-        "section",
-        videoForm.section
-      );
-
-      formData.append(
-        "category",
-        videoForm.category
-      );
-
-      formData.append(
-        "label",
-        videoForm.label
-      );
-
-      formData.append(
-        "show_name",
-        videoForm.show_name
-      );
-
-      formData.append(
-        "episode",
-        videoForm.episode
-      );
-
-      formData.append(
-        "description",
-        videoForm.description
-      );
-
-      formData.append(
-        "youtube_url",
-        videoForm.youtube_url
-      );
-
-      formData.append(
-        "air_date",
-        videoForm.air_date
-      );
-
-      if (videoForm.image) {
-        formData.append(
-          "image",
-          videoForm.image
-        );
-      }
-
-      await api.post(
-        "/admin/variety",
-        formData,
+    docs = await db.aus.find(
+        query,
         {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
+            "_id":0
         }
-      );
 
-      toast.success("Video added!");
+    ).sort(
+        "created_at",
+        -1
 
-      resetVideoForm();
+    ).to_list(500)
 
-      await loadVariety();
-    } catch (error) {
-      console.error(
-        "ADD VARIETY ERROR:",
-        error.response?.data || error.message
-      );
 
-      toast.error("Failed to add video");
-    }
-  };
+    return docs
 
-  // =========================================================
-  // UPDATE VARIETY
-  // =========================================================
 
-  const updateVariety = async () => {
-    if (!editingVariety) return;
+@api_router.get(
+    "/aus/{au_id}",
+    response_model=AU
+)
+async def get_au(
+    au_id:str
+):
 
-    try {
-      const formData = new FormData();
-
-      formData.append(
-        "section",
-        videoForm.section
-      );
-
-      formData.append(
-        "category",
-        videoForm.category
-      );
-
-      formData.append(
-        "label",
-        videoForm.label
-      );
-
-      formData.append(
-        "show_name",
-        videoForm.show_name
-      );
-
-      formData.append(
-        "episode",
-        videoForm.episode
-      );
-
-      formData.append(
-        "description",
-        videoForm.description
-      );
-
-      formData.append(
-        "youtube_url",
-        videoForm.youtube_url
-      );
-
-      formData.append(
-        "air_date",
-        videoForm.air_date
-      );
-
-      if (videoForm.image) {
-        formData.append(
-          "image",
-          videoForm.image
-        );
-      }
-
-      await api.put(
-        `/admin/variety/${editingVariety.id}`,
-        formData,
+    doc = await db.aus.find_one(
         {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
+            "id":au_id,
+            "status":"approved"
+        },
+        {
+            "_id":0
         }
-      );
+    )
 
-      toast.success("Video updated");
 
-      setEditingVariety(null);
+    if not doc:
 
-      resetVideoForm();
+        raise HTTPException(
+            status_code=404,
+            detail="AU not found"
+        )
 
-      await loadVariety();
-    } catch (error) {
-      console.error(
-        "UPDATE VARIETY ERROR:",
-        error.response?.data || error.message
-      );
 
-      toast.error("Failed to update video");
+    return doc
+
+
+@api_router.post(
+    "/aus/{au_id}/like"
+)
+async def like_au(
+    au_id:str
+):
+
+    result = await db.aus.update_one(
+
+        {
+            "id":au_id,
+            "status":"approved"
+        },
+
+        {
+            "$inc":{
+                "likes":1
+            }
+        }
+
+    )
+
+
+    if result.matched_count == 0:
+
+        raise HTTPException(
+            status_code=404,
+            detail="AU not found"
+        )
+
+
+
+    doc = await db.aus.find_one(
+        {
+            "id":au_id
+        },
+        {
+            "_id":0
+        }
+    )
+
+
+    return {"likes":doc["likes"]}
+
+# =========================
+# COMMENTS
+# =========================
+
+class CommentCreate(BaseModel):
+    author_name: str = "Anonymous"
+    text: str
+
+
+class Comment(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    au_id: str
+    author_name: str = "Anonymous"
+    text: str
+    status: str = "pending"
+    created_at: str = Field(default_factory=now_iso)
+
+@api_router.post(
+    "/aus/{au_id}/comments",
+    response_model=Comment
+)
+async def submit_comment(
+    au_id: str,
+    input: CommentCreate
+):
+
+    au = await db.aus.find_one({"id": au_id})
+
+    if not au:
+        raise HTTPException(
+            status_code=404,
+            detail="AU not found"
+        )
+
+
+    comment = Comment(
+        au_id=au_id,
+        **input.model_dump()
+    )
+
+
+    await db.comments.insert_one(
+        comment.model_dump()
+    )
+
+
+    return comment
+
+# =========================
+# VARIETY ROUTES
+# =========================
+
+@api_router.get(
+    "/variety",
+    response_model=List[Variety]
+)
+async def list_variety():
+
+    docs = await db.variety.find(
+        {},
+        {
+            "_id":0
+        }
+
+    ).sort(
+        "created_at",
+        -1
+
+    ).to_list(500)
+
+
+    return docs
+
+# =========================
+# ADMIN AU ROUTES
+# =========================
+
+@api_router.get(
+    "/admin/aus",
+    response_model=List[AU]
+)
+async def admin_list_aus(
+    status: Optional[str] = None,
+    admin: dict = Depends(get_current_admin)
+):
+    query = {}
+
+    if status:
+        query["status"] = status
+
+    docs = await db.aus.find(
+        query,
+        {"_id": 0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(1000)
+
+    return docs
+
+@api_router.patch("/admin/aus/{au_id}")
+async def admin_update_au(au_id:str,body:dict,admin:dict = Depends(get_current_admin)):
+    new_status = body.get("status")
+    if new_status not in ("approved","rejected","pending"):
+        raise HTTPException(status_code=400,detail="Invalid status")
+    result = await db.aus.update_one({"id":au_id},
+{"$set":{"status":new_status}})
+
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404,detail="AU not found")
+    return {"ok":True,"status":new_status}
+
+@api_router.put("/admin/aus/{au_id}", response_model=AU)
+async def admin_edit_au(
+    au_id: str,
+    title: str = Form(...),
+    author_name: str = Form("Anonymous"),
+    short_description: str = Form(""),
+    full_story: str = Form(""),
+    source_url: str = Form(...),
+    au_type: str = Form("story"),
+    source: str = Form("other"),
+    image: UploadFile = File(None),
+    admin: dict = Depends(get_current_admin)
+):
+
+    data = {
+        "title": title,
+        "author_name": author_name,
+        "short_description": short_description,
+        "full_story": full_story,
+        "source_url": source_url,
+        "au_type": au_type,
+        "source": source,
+        "updated_at": now_iso()
     }
-  };
 
-  // =========================================================
-  // DELETE VARIETY
-  // =========================================================
+    if image:
+        uploaded_image = await save_image(image)
 
-  const deleteVariety = async (id) => {
-    try {
-      await api.delete(
-        `/admin/variety/${id}`
-      );
+        if uploaded_image:
+            data["cover_image_url"] = uploaded_image
 
-      toast.success("Video deleted");
 
-      await loadVariety();
-    } catch (error) {
-      console.error(
-        "DELETE VARIETY ERROR:",
-        error.response?.data || error.message
-      );
+    result = await db.aus.update_one(
+        {"id": au_id},
+        {
+            "$set": data
+        }
+    )
 
-      toast.error("Failed to delete video");
+
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="AU not found"
+        )
+
+
+    return await db.aus.find_one(
+        {"id": au_id},
+        {"_id":0}
+    )
+    
+@api_router.delete("/admin/aus/{au_id}")
+async def admin_delete_au(au_id:str,admin:dict = Depends(get_current_admin)):
+    await db.aus.delete_one({"id":au_id})
+    await db.comments.delete_many({"au_id":au_id})
+    return {"ok":True}
+
+# =========================
+# ADMIN COMMENTS
+# =========================
+
+@api_router.get(
+    "/admin/comments",
+    response_model=List[Comment]
+)
+async def admin_list_comments(
+    status:Optional[str]=None,
+    admin:dict=Depends(get_current_admin)
+):
+
+    query = {}
+
+
+    if status:
+
+        query["status"] = status
+
+
+
+    docs = await db.comments.find(
+        query,
+        {
+            "_id":0
+        }
+
+    ).sort(
+        "created_at",
+        -1
+
+    ).to_list(1000)
+
+
+    return docs
+
+@api_router.patch(
+    "/admin/comments/{comment_id}"
+)
+async def admin_update_comment(
+    comment_id:str,
+    body:dict,
+    admin:dict=Depends(get_current_admin)
+):
+
+    new_status = body.get(
+        "status"
+    )
+
+
+    if new_status not in (
+        "approved",
+        "rejected",
+        "pending"
+    ):
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid status"
+        )
+
+
+    result = await db.comments.update_one({"id":comment_id},
+        {"$set":{"status":new_status}})
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404,detail="Comment not found")
+
+    return {"ok":True,"status":new_status}
+
+@api_router.delete("/admin/comments/{comment_id}")
+async def admin_delete_comment(comment_id:str,admin:dict=Depends(get_current_admin)):
+    await db.comments.delete_one({"id":comment_id})
+    return {"ok":True}
+
+# =========================
+# ADMIN VARIETY ROUTES
+# =========================
+
+@api_router.post("/admin/variety", response_model=Variety)
+async def admin_create_variety(
+    section: str = Form(...),
+    category: str = Form(""),
+    show_name: str = Form(...),
+    label: str = Form(""),
+    episode: str = Form(""),
+    description: str = Form(""),
+    youtube_url: str = Form(""),
+    air_date: str = Form(""),
+    image: UploadFile = File(None),
+    admin: dict = Depends(get_current_admin)
+):
+
+    thumbnail = None
+
+    if image:
+        thumbnail = await save_image(image)
+
+    elif youtube_url:
+        thumbnail = youtube_thumbnail(youtube_url)
+
+    variety = Variety(
+        id=str(uuid.uuid4()),
+        section=section,
+        category=category,
+        show_name=show_name,
+        label=label,
+        episode=episode,
+        description=description,
+        youtube_url=youtube_url,
+        air_date=air_date,
+        thumbnail=thumbnail
+    )
+
+    await db.variety.insert_one(variety.model_dump())
+
+    return variety
+    
+@api_router.put("/admin/variety/{variety_id}", response_model=Variety)
+async def admin_update_variety(
+    variety_id: str,
+
+    section: str = Form(...),
+    category: str = Form(""),
+    show_name: str = Form(...),
+    label: str = Form(""),
+    episode: str = Form(""),
+    description: str = Form(""),
+    youtube_url: str = Form(""),
+    air_date: str = Form(""),
+
+    image: UploadFile = File(None),
+
+    admin: dict = Depends(get_current_admin)
+):
+
+    data = {
+        "section": section,
+        "category": category,
+        "show_name": show_name,
+        "label": label,
+        "episode": episode,
+        "description": description,
+        "youtube_url": youtube_url,
+        "air_date": air_date,
+        "updated_at": now_iso()
     }
-  };
-
-  // =========================================================
-  // EDIT VARIETY
-  // =========================================================
-
-  const editVariety = (v) => {
-    setEditingVariety(v);
-
-    setVideoForm({
-      section: v.section || "haneulz",
-      category: v.category || "han-posts",
-      label: v.label || "",
-      show_name: v.show_name || "",
-      episode: v.episode || "",
-      description: v.description || "",
-      image: null,
-      youtube_url: v.youtube_url || "",
-      air_date: v.air_date || "",
-    });
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
-  // =========================================================
-  // CANCEL VARIETY EDIT
-  // =========================================================
-
-  const cancelVarietyEdit = () => {
-    setEditingVariety(null);
-    resetVideoForm();
-  };
-
-  // =========================================================
-  // LOADING
-  // =========================================================
-
-  if (!ready || !admin) {
-    return (
-      <div className="grid min-h-screen place-items-center text-[color:var(--ink-soft)]">
-        Loading…
-      </div>
-    );
-  }
-
-  // =========================================================
-  // COUNTS
-  // =========================================================
-
-  const pendingAus = aus.filter(
-    (a) => a.status === "pending"
-  ).length;
-
-  const pendingComments = comments.filter(
-    (c) => c.status === "pending"
-  ).length;
-
-  // =========================================================
-  // UI
-  // =========================================================
-
-  return (
-    <div className="min-h-screen px-6 pt-28 pb-20">
-      <div className="mx-auto max-w-5xl">
-
-        {/* HEADER */}
-
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-serif-display text-5xl font-medium">
-              Moderation
-            </h1>
-
-            <p className="mt-1 text-sm text-[color:var(--ink-soft)]">
-              Signed in as {admin.email}
-            </p>
-          </div>
-
-          <button
-            onClick={() => {
-              logout();
-              navigate("/");
-            }}
-            data-testid="admin-logout-btn"
-            className="pill-btn flex items-center gap-2 rounded-full border border-[color:var(--line)] px-5 py-2 text-xs uppercase tracking-widest"
-          >
-            <LogOut size={14} />
-            Logout
-          </button>
-        </div>
-
-        {/* TABS */}
-
-        <div className="mt-8 flex flex-wrap gap-3">
-
-          <button
-            onClick={() => setTab("aus")}
-            data-testid="tab-aus"
-            className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
-              tab === "aus"
-                ? "bg-[color:var(--ink)] text-white"
-                : "border border-[color:var(--line)]"
-            }`}
-          >
-            AUs{" "}
-            {pendingAus > 0 &&
-              `(${pendingAus})`}
-          </button>
-
-          <button
-            onClick={() => setTab("comments")}
-            data-testid="tab-comments"
-            className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
-              tab === "comments"
-                ? "bg-[color:var(--ink)] text-white"
-                : "border border-[color:var(--line)]"
-            }`}
-          >
-            Notes{" "}
-            {pendingComments > 0 &&
-              `(${pendingComments})`}
-          </button>
-
-          <button
-            onClick={() => setTab("variety")}
-            className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
-              tab === "variety"
-                ? "bg-[color:var(--ink)] text-white"
-                : "border border-[color:var(--line)]"
-            }`}
-          >
-            Variety
-          </button>
-        </div>
-
-        {/* =================================================
-            AUS
-        ================================================= */}
-
-        {tab === "aus" && (
-          <div
-            className="mt-8 space-y-4"
-            data-testid="admin-au-list"
-          >
-
-            <p>
-              Total AUs: {aus.length}
-            </p>
-
-            {aus.length === 0 && (
-              <p className="text-[color:var(--ink-soft)]">
-                No submissions yet.
-              </p>
-            )}
-
-            {aus.map((au) => (
-              <div
-                key={au.id}
-                className="glass rounded-[1.75rem] p-6"
-              >
-
-                <div className="flex flex-wrap items-center justify-between gap-3">
-
-                  <div className="flex items-center gap-3">
-
-                    <StatusPill
-                      status={au.status}
-                    />
-
-                    <span className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
-                      {au.au_type}
-                    </span>
-
-                  </div>
-
-                  <div className="flex gap-2">
-
-                    {au.status !==
-                      "approved" && (
-                      <button
-                        onClick={() =>
-                          setAuStatus(
-                            au.id,
-                            "approved"
-                          )
-                        }
-                        className="pill-btn flex items-center gap-1 rounded-full bg-[color:var(--pink-deep)] px-4 py-2 text-xs text-white"
-                      >
-                        <Check size={13} />
-                        Approve
-                      </button>
-                    )}
-
-                    {au.status !==
-                      "rejected" && (
-                      <button
-                        onClick={() =>
-                          setAuStatus(
-                            au.id,
-                            "rejected"
-                          )
-                        }
-                        className="pill-btn flex items-center gap-1 rounded-full border px-4 py-2 text-xs"
-                      >
-                        <X size={13} />
-                        Reject
-                      </button>
-                    )}
-
-                    <button
-                      onClick={() =>
-                        delAu(au.id)
-                      }
-                      className="pill-btn flex items-center gap-1 rounded-full border px-4 py-2 text-xs"
-                    >
-                      <Trash2
-                        size={13}
-                      />
-                    </button>
-
-                  </div>
-                </div>
-
-                <h3 className="mt-4 font-serif-display text-2xl">
-                  {au.title}
-                </h3>
-
-                <p className="text-xs text-[color:var(--ink-soft)]">
-                  by {au.author_name}
-                </p>
-
-                <p className="mt-2 text-sm text-[color:var(--ink-soft)]">
-                  {au.short_description}
-                </p>
-
-                {au.source_url && (
-                  <a
-                    href={au.source_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-3 inline-block text-xs underline"
-                  >
-                    View source
-                  </a>
-                )}
-
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* =================================================
-            VARIETY
-        ================================================= */}
-
-        {tab === "variety" && (
-          <div className="mt-8 glass rounded-[1.75rem] p-6">
-
-            <div className="flex items-center justify-between gap-3">
-
-              <h2 className="font-serif-display text-3xl">
-                {editingVariety
-                  ? "Edit Variety Video"
-                  : "Add Variety Video"}
-              </h2>
-
-              {editingVariety && (
-                <button
-                  onClick={
-                    cancelVarietyEdit
-                  }
-                  className="rounded-full border px-4 py-2 text-xs"
-                >
-                  Cancel
-                </button>
-              )}
-
-            </div>
-
-            {/* SECTION */}
-
-            <select
-              className="mt-4 w-full rounded-xl border p-3"
-              value={videoForm.section}
-              onChange={(e) =>
-                setVideoForm({
-                  ...videoForm,
-                  section:
-                    e.target.value,
-                })
-              }
-            >
-              <option value="haneulz">
-                📸💗 HANEULZ 💙🌩️
-              </option>
-
-              <option value="duets">
-                Their Duets
-              </option>
-
-              <option value="whole-group">
-                NOW, THE WHOLE GROUP
-              </option>
-            </select>
-
-            {/* CATEGORY */}
-
-            {videoForm.section ===
-              "haneulz" && (
-              <select
-                className="mt-3 w-full rounded-xl border p-3"
-                value={
-                  videoForm.category
-                }
-                onChange={(e) =>
-                  setVideoForm({
-                    ...videoForm,
-                    category:
-                      e.target.value,
-                  })
-                }
-              >
-                <option value="yence-posts">
-                  🦌 Yence Posts
-                </option>
-
-                <option value="han-posts">
-                  🐈‍⬛ Han Posts
-                </option>
-
-                <option value="haneulz-dc">
-                  🎬 HANEULZ DC
-                </option>
-              </select>
-            )}
-
-            {/* LABEL */}
-
-            <select
-              className="mt-3 w-full rounded-xl border p-3"
-              value={videoForm.label}
-              onChange={(e) =>
-                setVideoForm({
-                  ...videoForm,
-                  label:
-                    e.target.value,
-                })
-              }
-            >
-              <option value="">
-                No Label
-              </option>
-
-              <option value="EP">
-                EP
-              </option>
-
-              <option value="Playlist">
-                Playlist
-              </option>
-            </select>
-
-            {/* SHOW NAME */}
-
-            <input
-              className="mt-4 w-full rounded-xl border p-3"
-              placeholder="Show name"
-              value={
-                videoForm.show_name
-              }
-              onChange={(e) =>
-                setVideoForm({
-                  ...videoForm,
-                  show_name:
-                    e.target.value,
-                })
-              }
-            />
-
-            {/* EPISODE */}
-
-            <input
-              className="mt-3 w-full rounded-xl border p-3"
-              placeholder="Episode"
-              value={
-                videoForm.episode
-              }
-              onChange={(e) =>
-                setVideoForm({
-                  ...videoForm,
-                  episode:
-                    e.target.value,
-                })
-              }
-            />
-
-            {/* DESCRIPTION */}
-
-            <textarea
-              className="mt-3 w-full rounded-xl border p-3"
-              placeholder="Description"
-              rows={4}
-              value={
-                videoForm.description
-              }
-              onChange={(e) =>
-                setVideoForm({
-                  ...videoForm,
-                  description:
-                    e.target.value,
-                })
-              }
-            />
-
-            {/* YOUTUBE */}
-
-            <input
-              className="mt-3 w-full rounded-xl border p-3"
-              placeholder="YouTube link"
-              value={
-                videoForm.youtube_url
-              }
-              onChange={(e) =>
-                setVideoForm({
-                  ...videoForm,
-                  youtube_url:
-                    e.target.value,
-                })
-              }
-            />
-
-            {/* IMAGE */}
-
-            <input
-              type="file"
-              accept="image/jpeg,image/png"
-              className="mt-3 w-full rounded-xl border p-3"
-              onChange={(e) =>
-                setVideoForm({
-                  ...videoForm,
-                  image:
-                    e.target.files?.[0] ||
-                    null,
-                })
-              }
-            />
-
-            <p className="mt-2 text-xs text-[color:var(--ink-soft)]">
-              Optional — if you don't upload an image,
-              the backend will use the YouTube thumbnail.
-            </p>
-
-            {/* SAVE */}
-
-            <button
-              onClick={
-                editingVariety
-                  ? updateVariety
-                  : addVariety
-              }
-              className="mt-5 flex items-center gap-2 rounded-full bg-black px-6 py-3 text-white"
-            >
-              <Plus size={14} />
-
-              {editingVariety
-                ? "Save Changes"
-                : "Add Video"}
-            </button>
-
-            {/* VARIETY LIST */}
-
-            <div className="mt-8 space-y-4">
-
-              {variety.length === 0 && (
-                <p className="text-sm text-[color:var(--ink-soft)]">
-                  No variety videos yet.
-                </p>
-              )}
-
-              {variety.map((v) => (
-                <div
-                  key={v.id}
-                  className="glass rounded-[1.75rem] p-5"
-                >
-
-                  <div className="flex gap-4">
-
-                    {v.thumbnail && (
-                      <img
-                        src={v.thumbnail}
-                        alt=""
-                        className="h-24 w-36 rounded-xl object-cover"
-                      />
-                    )}
-
-                    <div className="min-w-0 flex-1">
-
-                      <h3 className="font-serif-display text-xl">
-                        {v.show_name}
-                      </h3>
-
-                      {v.label && (
-                        <p className="mt-1 text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
-                          {v.label}
-                        </p>
-                      )}
-
-                      <p className="text-sm">
-                        Episode:{" "}
-                        {v.episode || "—"}
-                      </p>
-
-                      <p className="mt-2 text-sm text-[color:var(--ink-soft)]">
-                        {v.description}
-                      </p>
-
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex gap-2">
-
-                    <button
-                      onClick={() =>
-                        editVariety(v)
-                      }
-                      className="rounded-full border px-4 py-2 text-xs"
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        deleteVariety(
-                          v.id
-                        )
-                      }
-                      className="rounded-full border px-4 py-2 text-xs"
-                    >
-                      Delete
-                    </button>
-
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* =================================================
-            COMMENTS
-        ================================================= */}
-
-        {tab === "comments" && (
-          <div
-            className="mt-8 space-y-4"
-            data-testid="admin-comment-list"
-          >
-
-            {comments.length === 0 && (
-              <p className="text-[color:var(--ink-soft)]">
-                No notes yet.
-              </p>
-            )}
-
-            {comments.map((c) => (
-              <div
-                key={c.id}
-                className="glass rounded-[1.75rem] p-6"
-                data-testid={`admin-comment-${c.id}`}
-              >
-
-                <div className="flex items-center justify-between gap-3">
-
-                  <div className="flex items-center gap-3">
-
-                    <StatusPill
-                      status={c.status}
-                    />
-
-                    <span className="text-sm font-medium">
-                      {c.author_name}
-                    </span>
-
-                  </div>
-
-                  <div className="flex gap-2">
-
-                    {c.status !==
-                      "approved" && (
-                      <button
-                        onClick={() =>
-                          setCommentStatus(
-                            c.id,
-                            "approved"
-                          )
-                        }
-                        data-testid={`approve-comment-${c.id}`}
-                        className="pill-btn flex items-center gap-1 rounded-full bg-[color:var(--pink-deep)] px-4 py-2 text-[0.65rem] uppercase tracking-widest text-white"
-                      >
-                        <Check
-                          size={13}
-                        />
-                        Approve
-                      </button>
-                    )}
-
-                    {c.status !==
-                      "rejected" && (
-                      <button
-                        onClick={() =>
-                          setCommentStatus(
-                            c.id,
-                            "rejected"
-                          )
-                        }
-                        data-testid={`reject-comment-${c.id}`}
-                        className="pill-btn flex items-center gap-1 rounded-full border border-[color:var(--line)] px-4 py-2 text-[0.65rem] uppercase tracking-widest"
-                      >
-                        <X size={13} />
-                        Reject
-                      </button>
-                    )}
-
-                    <button
-                      onClick={() =>
-                        delComment(c.id)
-                      }
-                      data-testid={`delete-comment-${c.id}`}
-                      className="pill-btn flex items-center gap-1 rounded-full border border-[color:var(--line)] px-4 py-2 text-[0.65rem] uppercase tracking-widest text-[color:var(--destructive,#d9534f)]"
-                    >
-                      <Trash2
-                        size={13}
-                      />
-                    </button>
-
-                  </div>
-                </div>
-
-                <p className="mt-3 text-sm leading-relaxed text-[color:var(--ink-soft)]">
-                  {c.text}
-                </p>
-
-              </div>
-            ))}
-          </div>
-        )}
-
-      </div>
-    </div>
-  );
-}
+
+    if image:
+        data["thumbnail"] = await save_image(image)
+
+    elif youtube_url:
+        data["thumbnail"] = youtube_thumbnail(youtube_url)
+
+    await db.variety.update_one(
+        {"id": variety_id},
+        {"$set": data}
+    )
+
+    return await db.variety.find_one(
+        {"id": variety_id},
+        {"_id":0}
+    )
+
+
+@api_router.delete("/admin/variety/{variety_id}")
+async def admin_delete_variety(
+    variety_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+    await db.variety.delete_one(
+        {"id": variety_id}
+    )
+
+    return {"ok": True}
+
+# =========================
+# FAN POSTS / DC PLAYLIST
+# =========================
+
+class FanPostCreate(BaseModel):
+    category: str   # yence-posts, han-posts, haneulz-dc
+    platform: str   # instagram, x, tiktok
+    thumbnail: str
+    url: str
+    caption: str = ""
+
+
+class FanPost(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    category: str
+    platform: str
+    thumbnail: str
+    url: str
+    caption: str = ""
+    created_at: str = Field(default_factory=now_iso)
+
+# =========================
+# FAN POST ROUTES
+# =========================
+
+@api_router.get("/fanposts/{category}")
+async def get_fan_posts(category: str):
+
+    posts = await db.fanposts.find(
+        {"category": category},
+        {"_id":0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return posts
+
+
+@api_router.post("/admin/fanposts", response_model=FanPost)
+async def admin_create_fan_post(
+    input: FanPostCreate,
+    admin: dict = Depends(get_current_admin)
+):
+
+    post = FanPost(
+        **input.model_dump()
+    )
+
+    await db.fanposts.insert_one(
+        post.model_dump()
+    )
+
+    return post
+
+
+@api_router.delete("/admin/fanposts/{post_id}")
+async def admin_delete_fan_post(
+    post_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.fanposts.delete_one(
+        {"id": post_id}
+    )
+
+    return {"ok": True}
+    
+# =========================
+# PLAYLIST ROUTES
+# =========================
+
+@api_router.get("/playlists/{playlist}")
+async def get_playlist(playlist: str):
+    docs = await db.playlists.find(
+        {"playlist": playlist},
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(500)
+
+    return docs
+
+@api_router.post("/admin/playlists", response_model=PlaylistItem)
+async def admin_add_playlist_item(
+    input: PlaylistItemCreate,
+    admin: dict = Depends(get_current_admin)
+):
+    item = PlaylistItem(**input.model_dump())
+
+    await db.playlists.insert_one(item.model_dump())
+
+    return item
+
+@api_router.delete("/admin/playlists/{item_id}")
+async def admin_delete_playlist_item(
+    item_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+    await db.playlists.delete_one({"id": item_id})
+
+    return {"ok": True}
+
+# =========================
+# GAME ROUTES
+# =========================
+
+@api_router.get("/games", response_model=List[Game])
+async def get_games():
+
+    docs = await db.games.find(
+        {},
+        {"_id": 0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return docs
+
+
+@api_router.post("/admin/games", response_model=Game)
+async def admin_create_game(
+    input: GameCreate,
+    admin: dict = Depends(get_current_admin)
+):
+
+    game = Game(**input.model_dump())
+
+    await db.games.insert_one(
+        game.model_dump()
+    )
+
+    return game
+
+
+@api_router.put("/admin/games/{game_id}", response_model=Game)
+async def admin_update_game(
+    game_id: str,
+    input: GameCreate,
+    admin: dict = Depends(get_current_admin)
+):
+
+    data = input.model_dump()
+    data["updated_at"] = now_iso()
+
+    await db.games.update_one(
+        {"id": game_id},
+        {"$set": data}
+    )
+
+    return await db.games.find_one(
+        {"id": game_id},
+        {"_id": 0}
+    )
+
+
+@api_router.delete("/admin/games/{game_id}")
+async def admin_delete_game(
+    game_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.games.delete_one(
+        {"id": game_id}
+    )
+
+    return {"ok": True}
+
+@api_router.delete("/admin/games/{game_id}")
+async def admin_delete_game(
+    game_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.games.delete_one(
+        {"id": game_id}
+    )
+
+    return {"ok": True}
+
+# =========================
+# MEMORY GAME ROUTES
+# =========================
+
+@api_router.get("/memory-cards")
+async def get_memory_cards():
+
+    cards = await db.memory_cards.find(
+        {},
+        {"_id": 0}
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return cards
+
+
+@api_router.post("/admin/memory-cards")
+async def admin_add_memory_card(
+    title: str = Form(...),
+    image: UploadFile = File(...),
+    admin: dict = Depends(get_current_admin)
+):
+
+    image_url = await save_image(image)
+
+    card = MemoryCard(
+        title=title,
+        image=image_url
+    )
+
+    await db.memory_cards.insert_one(
+        card.model_dump()
+    )
+
+    return card
+
+
+@api_router.delete("/admin/memory-cards/{card_id}")
+async def admin_delete_memory_card(
+    card_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+
+    await db.memory_cards.delete_one(
+        {"id": card_id}
+    )
+
+    return {"ok": True}
+    
+# =========================
+# SITE SETTINGS ROUTES
+# =========================
+
+@api_router.get("/settings")
+async def get_settings():
+    settings = await db.settings.find_one({"_id": "site_content"}, {"_id": 0})
+    if not settings:
+        default_settings = {
+            "hero_title": "HANEULZ CORNER",
+            "hero_subtitle": "Your cozy space for all things AHOF & Haneulz",
+            "whole_group_title": "NOW, THE WHOLE GROUP",
+            "whole_group_desc": "Spotlighting all nine members of AHOF together.",
+            "about_title": "Our Little Corner",
+            "about_subtitle": "Welcome to Haneulz Corner ☁️💗",
+            "about_letter": "Haneulz Corner started as a simple idea from one Hansum who just wanted a place where everything about HANEULZ could be found a little more easily.\n\nLike many fans, I often found myself scrolling through old bookmarks...",
+            "about_signoff_text": "Made with lots of love, late-night ideas, and a few too many bookmarks.",
+            "about_signoff_author": "— K ☁️💗"
+        }
+        await db.settings.insert_one({"_id": "site_content", **default_settings})
+        return default_settings
+
+    return settings
+
+
+@api_router.post("/admin/settings")
+async def update_settings(
+    settings: SiteSettings,
+    admin: dict = Depends(get_current_admin)
+):
+    data = settings.model_dump()
+    await db.settings.update_one(
+        {"_id": "site_content"},
+        {"$set": data},
+        upsert=True
+    )
+    return {"message": "Settings updated successfully! ☁️💗", "settings": data}
+
+# =========================
+# ROOT
+# =========================
+
+@api_router.get("/")
+async def root():
+
+    return {"message":"HANEULZ API"}
+
+# =========================
+# UPLOAD ROUTE
+# =========================
+
+@api_router.post("/upload-thumbnail")
+async def upload_thumbnail(
+    file: UploadFile = File(...),
+    admin: dict = Depends(get_current_admin)
+):
+    try:
+        # Generate a unique filename so photos never overwrite each other
+        file_extension = Path(file.filename).suffix
+        unique_filename = f"{uuid.uuid4()}{file_extension}"
+        file_path = UPLOAD_DIR / unique_filename
+
+        with open(file_path, "wb") as buffer:
+            buffer.write(await file.read())
+
+        # Returns the path that will be stored in MongoDB for the post
+        return {"url": f"/static/uploads/{unique_filename}"}
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Failed to upload image: {str(e)}"
+        )
+# =========================
+# INCLUDE ROUTER
+# =========================
+
+app.include_router(api_router)
+
+# =========================
+# CORS
+# =========================
+
+app.add_middleware(CORSMiddleware,allow_credentials=True,allow_origins=os.environ.get("CORS_ORIGINS","*").split(","),
+    allow_methods=["*"],
+    allow_headers=["*"])
+
+# =========================
+# DATABASE STARTUP
+# =========================
+
+async def seed():
+    admin_email = os.environ.get("ADMIN_EMAIL","admin@haneulz.com").lower()
+    admin_password = os.environ.get("ADMIN_PASSWORD","haneulz2025")
+    existing = await db.users.find_one({"email":admin_email})
+
+    if existing is None:
+        await db.users.insert_one({"id":str(uuid.uuid4()),"email":admin_email,"password_hash":hash_password(admin_password),
+            "name":"HANEULZ Admin",
+            "role":"admin",
+            "created_at":now_iso()})
+        logger.info("Seeded admin user")
+
+@app.on_event("startup")
+async def on_startup():
+    await db.users.create_index("email",unique=True)
+    await seed()
+
+@app.on_event("shutdown")
+async def shutdown_db_client():
+
+    client.close()
