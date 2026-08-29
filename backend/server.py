@@ -19,6 +19,7 @@ from fastapi import (
     UploadFile,
     Form,
 )
+
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
@@ -50,7 +51,7 @@ db = client[DB_NAME]
 
 app = FastAPI(
     title="HANEULZ API",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 api_router = APIRouter(prefix="/api")
@@ -62,26 +63,19 @@ logger = logging.getLogger(__name__)
 
 
 # =========================================================
-# STATIC UPLOADS
+# STATIC FILES
 # =========================================================
 
 STATIC_DIR = ROOT_DIR / "static"
 UPLOAD_DIR = STATIC_DIR / "uploads"
 
-STATIC_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
-
-UPLOAD_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
+STATIC_DIR.mkdir(parents=True, exist_ok=True)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 app.mount(
     "/static",
     StaticFiles(directory=STATIC_DIR),
-    name="static"
+    name="static",
 )
 
 
@@ -90,9 +84,15 @@ app.mount(
 # =========================================================
 
 def now_iso() -> str:
-    return datetime.now(
-        timezone.utc
-    ).isoformat()
+    return datetime.now(timezone.utc).isoformat()
+
+
+def clean_document(document):
+    if document is None:
+        return None
+
+    document.pop("_id", None)
+    return document
 
 
 def youtube_thumbnail(url: str) -> Optional[str]:
@@ -109,10 +109,7 @@ def youtube_thumbnail(url: str) -> Optional[str]:
 
     for pattern in patterns:
 
-        match = re.search(
-            pattern,
-            url
-        )
+        match = re.search(pattern, url)
 
         if match:
 
@@ -127,7 +124,7 @@ def youtube_thumbnail(url: str) -> Optional[str]:
 
 
 async def save_image(
-    image: Optional[UploadFile]
+    image: Optional[UploadFile],
 ) -> Optional[str]:
 
     if image is None:
@@ -145,7 +142,7 @@ async def save_image(
         ".jpeg",
         ".png",
         ".webp",
-        ".gif"
+        ".gif",
     }
 
     if extension not in allowed_extensions:
@@ -156,47 +153,38 @@ async def save_image(
         f"{extension}"
     )
 
-    file_path = (
-        UPLOAD_DIR / filename
-    )
+    file_path = UPLOAD_DIR / filename
 
     contents = await image.read()
 
-    with open(
-        file_path,
-        "wb"
-    ) as buffer:
+    with open(file_path, "wb") as buffer:
         buffer.write(contents)
 
-    return (
-        f"/static/uploads/{filename}"
-    )
+    return f"/static/uploads/{filename}"
 
 
-def hash_password(
-    password: str
-) -> str:
+def hash_password(password: str) -> str:
 
     return bcrypt.hashpw(
         password.encode("utf-8"),
-        bcrypt.gensalt()
+        bcrypt.gensalt(),
     ).decode("utf-8")
 
 
 def verify_password(
     password: str,
-    hashed: str
+    hashed: str,
 ) -> bool:
 
     return bcrypt.checkpw(
         password.encode("utf-8"),
-        hashed.encode("utf-8")
+        hashed.encode("utf-8"),
     )
 
 
 def create_access_token(
     user_id: str,
-    email: str
+    email: str,
 ) -> str:
 
     payload = {
@@ -205,27 +193,14 @@ def create_access_token(
         "exp": (
             datetime.now(timezone.utc)
             + timedelta(days=7)
-        )
+        ),
     }
 
     return jwt.encode(
         payload,
         JWT_SECRET,
-        algorithm=JWT_ALGORITHM
+        algorithm=JWT_ALGORITHM,
     )
-
-
-def clean_document(document):
-
-    if document is None:
-        return None
-
-    document.pop(
-        "_id",
-        None
-    )
-
-    return document
 
 
 # =========================================================
@@ -233,7 +208,6 @@ def clean_document(document):
 # =========================================================
 
 class LoginInput(BaseModel):
-
     email: EmailStr
     password: str
 
@@ -241,7 +215,7 @@ class LoginInput(BaseModel):
 async def get_current_admin(
     credentials: HTTPAuthorizationCredentials = Depends(
         security
-    )
+    ),
 ):
 
     token = credentials.credentials
@@ -251,7 +225,7 @@ async def get_current_admin(
         payload = jwt.decode(
             token,
             JWT_SECRET,
-            algorithms=[JWT_ALGORITHM]
+            algorithms=[JWT_ALGORITHM],
         )
 
         email = payload.get("email")
@@ -259,25 +233,25 @@ async def get_current_admin(
         if not email:
             raise HTTPException(
                 status_code=401,
-                detail="Invalid token"
+                detail="Invalid token",
             )
 
         user = await db.users.find_one(
             {
-                "email": email.lower()
+                "email": email.lower(),
             }
         )
 
         if not user:
             raise HTTPException(
                 status_code=401,
-                detail="Admin account not found"
+                detail="Admin account not found",
             )
 
         if user.get("role") != "admin":
             raise HTTPException(
                 status_code=403,
-                detail="Admin access required"
+                detail="Admin access required",
             )
 
         return payload
@@ -286,19 +260,19 @@ async def get_current_admin(
 
         raise HTTPException(
             status_code=401,
-            detail="Token expired"
+            detail="Token expired",
         )
 
     except jwt.InvalidTokenError:
 
         raise HTTPException(
             status_code=401,
-            detail="Invalid token"
+            detail="Invalid token",
         )
 
 
 # =========================================================
-# AU MODELS
+# AU
 # =========================================================
 
 class AU(BaseModel):
@@ -308,15 +282,10 @@ class AU(BaseModel):
     )
 
     title: str
-
     author_name: str = "Anonymous"
-
     short_description: str = ""
-
     full_story: str = ""
-
     cover_image_url: Optional[str] = None
-
     source_url: Optional[str] = None
 
     tags: List[str] = Field(
@@ -324,15 +293,11 @@ class AU(BaseModel):
     )
 
     au_type: str = "story"
-
     source: str = "other"
-
     status: str = "pending"
 
     likes: int = 0
-
     featured: bool = False
-
     bookmarked: int = 0
 
     created_at: str = Field(
@@ -347,7 +312,6 @@ class AU(BaseModel):
 class CommentCreate(BaseModel):
 
     author_name: str = "Anonymous"
-
     text: str
 
 
@@ -358,11 +322,8 @@ class Comment(BaseModel):
     )
 
     au_id: str
-
     author_name: str = "Anonymous"
-
     text: str
-
     status: str = "pending"
 
     created_at: str = Field(
@@ -370,99 +331,66 @@ class Comment(BaseModel):
     )
 
 
-# =========================================================
-# AU SUBMISSION
-# =========================================================
-
 @api_router.post(
     "/aus",
-    response_model=AU
+    response_model=AU,
 )
 async def submit_au(
 
     title: str = Form(...),
-
     author_name: str = Form("Anonymous"),
-
     short_description: str = Form(""),
-
     full_story: str = Form(""),
-
     source_url: str = Form(""),
-
     au_type: str = Form("story"),
-
     source: str = Form("other"),
-
     tags: str = Form(""),
-
-    image: Optional[UploadFile] = File(None)
+    image: Optional[UploadFile] = File(None),
 
 ):
 
     title = title.strip()
 
     if not title:
-
         raise HTTPException(
             status_code=400,
-            detail="Title is required"
+            detail="Title is required",
         )
 
-    parsed_tags = []
-
-    if tags:
-
-        parsed_tags = [
-            tag.strip()
-            for tag in tags.split(",")
-            if tag.strip()
-        ]
+    parsed_tags = [
+        tag.strip()
+        for tag in tags.split(",")
+        if tag.strip()
+    ] if tags else []
 
     cover_image = None
 
     if image:
-
-        cover_image = await save_image(
-            image
-        )
+        cover_image = await save_image(image)
 
     au = AU(
-
         title=title,
-
         author_name=(
             author_name.strip()
             or "Anonymous"
         ),
-
-        short_description=(
-            short_description.strip()
-        ),
-
+        short_description=short_description.strip(),
         full_story=full_story,
-
         source_url=(
             source_url.strip()
             or None
         ),
-
         tags=parsed_tags,
-
         au_type=(
             au_type.strip()
             or "story"
         ),
-
         source=(
             source.strip()
             or "other"
         ),
-
         status="pending",
-
-        cover_image_url=cover_image
-
+        cover_image_url=cover_image,
     )
 
     await db.aus.insert_one(
@@ -472,24 +400,17 @@ async def submit_au(
     return au
 
 
-# =========================================================
-# PUBLIC AU LIST
-# =========================================================
-
 @api_router.get(
     "/aus",
-    response_model=List[AU]
+    response_model=List[AU],
 )
 async def list_aus(
-
     au_type: Optional[str] = None,
-
-    source: Optional[str] = None
-
+    source: Optional[str] = None,
 ):
 
     query = {
-        "status": "approved"
+        "status": "approved",
     }
 
     if au_type:
@@ -498,98 +419,68 @@ async def list_aus(
     if source:
         query["source"] = source
 
-    docs = await db.aus.find(
+    return await db.aus.find(
         query,
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(500)
 
-    return docs
-
-
-# =========================================================
-# SINGLE PUBLIC AU
-# =========================================================
 
 @api_router.get(
     "/aus/{au_id}",
-    response_model=AU
+    response_model=AU,
 )
-async def get_au(
-    au_id: str
-):
+async def get_au(au_id: str):
 
     doc = await db.aus.find_one(
         {
             "id": au_id,
-            "status": "approved"
+            "status": "approved",
         },
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     )
 
     if not doc:
-
         raise HTTPException(
             status_code=404,
-            detail="AU not found"
+            detail="AU not found",
         )
 
     return doc
 
 
-# =========================================================
-# LIKE AU
-# =========================================================
-
 @api_router.post(
-    "/aus/{au_id}/like"
+    "/aus/{au_id}/like",
 )
-async def like_au(
-    au_id: str
-):
+async def like_au(au_id: str):
 
     result = await db.aus.update_one(
-
         {
             "id": au_id,
-            "status": "approved"
+            "status": "approved",
         },
-
         {
             "$inc": {
-                "likes": 1
+                "likes": 1,
             }
-        }
-
+        },
     )
 
     if result.matched_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="AU not found"
+            detail="AU not found",
         )
 
     doc = await db.aus.find_one(
-        {
-            "id": au_id
-        },
-        {
-            "_id": 0
-        }
+        {"id": au_id},
+        {"_id": 0},
     )
 
     return {
-        "likes": doc.get(
-            "likes",
-            0
-        )
+        "likes": doc.get("likes", 0)
     }
 
 
@@ -599,43 +490,34 @@ async def like_au(
 
 @api_router.post(
     "/aus/{au_id}/comments",
-    response_model=Comment
+    response_model=Comment,
 )
 async def submit_comment(
-
     au_id: str,
-
-    input: CommentCreate
-
+    input: CommentCreate,
 ):
 
     au = await db.aus.find_one(
         {
             "id": au_id,
-            "status": "approved"
+            "status": "approved",
         }
     )
 
     if not au:
-
         raise HTTPException(
             status_code=404,
-            detail="AU not found"
+            detail="AU not found",
         )
 
     comment = Comment(
-
         au_id=au_id,
-
         author_name=(
             input.author_name.strip()
             or "Anonymous"
         ),
-
         text=input.text.strip(),
-
-        status="pending"
-
+        status="pending",
     )
 
     await db.comments.insert_one(
@@ -646,44 +528,33 @@ async def submit_comment(
 
 
 @api_router.get(
-    "/aus/{au_id}/comments"
+    "/aus/{au_id}/comments",
 )
-async def get_comments(
-    au_id: str
-):
+async def get_comments(au_id: str):
 
-    docs = await db.comments.find(
+    return await db.comments.find(
         {
             "au_id": au_id,
-            "status": "approved"
+            "status": "approved",
         },
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(500)
-
-    return docs
 
 
 # =========================================================
-# ADMIN AU LIST
+# ADMIN AU
 # =========================================================
 
 @api_router.get(
     "/admin/aus",
-    response_model=List[AU]
+    response_model=List[AU],
 )
 async def admin_list_aus(
-
     status: Optional[str] = None,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     query = {}
@@ -691,246 +562,82 @@ async def admin_list_aus(
     if status:
         query["status"] = status
 
-    docs = await db.aus.find(
+    return await db.aus.find(
         query,
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(1000)
 
-    return docs
-
-
-# =========================================================
-# ADMIN AU STATUS
-# =========================================================
 
 @api_router.patch(
-    "/admin/aus/{au_id}"
+    "/admin/aus/{au_id}",
 )
 async def admin_update_au(
-
     au_id: str,
-
     body: dict,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
-    new_status = body.get(
-        "status"
-    )
+    new_status = body.get("status")
 
     if new_status not in {
         "approved",
         "rejected",
-        "pending"
+        "pending",
     }:
-
         raise HTTPException(
             status_code=400,
-            detail="Invalid status"
+            detail="Invalid status",
         )
 
     result = await db.aus.update_one(
-
-        {
-            "id": au_id
-        },
-
+        {"id": au_id},
         {
             "$set": {
                 "status": new_status,
-                "updated_at": now_iso()
+                "updated_at": now_iso(),
             }
-        }
-
+        },
     )
 
     if result.matched_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="AU not found"
+            detail="AU not found",
         )
 
     return {
         "ok": True,
         "id": au_id,
-        "status": new_status
+        "status": new_status,
     }
 
-
-# =========================================================
-# ADMIN EDIT AU
-# =========================================================
-
-@api_router.put(
-    "/admin/aus/{au_id}",
-    response_model=AU
-)
-async def admin_edit_au(
-
-    au_id: str,
-
-    title: str = Form(...),
-
-    author_name: str = Form("Anonymous"),
-
-    short_description: str = Form(""),
-
-    full_story: str = Form(""),
-
-    source_url: str = Form(""),
-
-    au_type: str = Form("story"),
-
-    source: str = Form("other"),
-
-    tags: str = Form(""),
-
-    image: Optional[UploadFile] = File(None),
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
-):
-
-    parsed_tags = []
-
-    if tags:
-
-        parsed_tags = [
-            tag.strip()
-            for tag in tags.split(",")
-            if tag.strip()
-        ]
-
-    data = {
-
-        "title": title.strip(),
-
-        "author_name": (
-            author_name.strip()
-            or "Anonymous"
-        ),
-
-        "short_description": (
-            short_description.strip()
-        ),
-
-        "full_story": full_story,
-
-        "source_url": (
-            source_url.strip()
-            or None
-        ),
-
-        "au_type": (
-            au_type.strip()
-            or "story"
-        ),
-
-        "source": (
-            source.strip()
-            or "other"
-        ),
-
-        "tags": parsed_tags,
-
-        "updated_at": now_iso()
-
-    }
-
-    if image:
-
-        uploaded_image = await save_image(
-            image
-        )
-
-        if uploaded_image:
-
-            data[
-                "cover_image_url"
-            ] = uploaded_image
-
-    result = await db.aus.update_one(
-
-        {
-            "id": au_id
-        },
-
-        {
-            "$set": data
-        }
-
-    )
-
-    if result.matched_count == 0:
-
-        raise HTTPException(
-            status_code=404,
-            detail="AU not found"
-        )
-
-    updated = await db.aus.find_one(
-        {
-            "id": au_id
-        },
-        {
-            "_id": 0
-        }
-    )
-
-    return updated
-
-
-# =========================================================
-# ADMIN DELETE AU
-# =========================================================
 
 @api_router.delete(
-    "/admin/aus/{au_id}"
+    "/admin/aus/{au_id}",
 )
 async def admin_delete_au(
-
     au_id: str,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     result = await db.aus.delete_one(
-        {
-            "id": au_id
-        }
+        {"id": au_id}
     )
 
     await db.comments.delete_many(
-        {
-            "au_id": au_id
-        }
+        {"au_id": au_id}
     )
 
     if result.deleted_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="AU not found"
+            detail="AU not found",
         )
 
-    return {
-        "ok": True
-    }
+    return {"ok": True}
 
 
 # =========================================================
@@ -939,16 +646,11 @@ async def admin_delete_au(
 
 @api_router.get(
     "/admin/comments",
-    response_model=List[Comment]
+    response_model=List[Comment],
 )
 async def admin_list_comments(
-
     status: Optional[str] = None,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     query = {}
@@ -956,105 +658,76 @@ async def admin_list_comments(
     if status:
         query["status"] = status
 
-    docs = await db.comments.find(
+    return await db.comments.find(
         query,
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(1000)
-
-    return docs
 
 
 @api_router.patch(
-    "/admin/comments/{comment_id}"
+    "/admin/comments/{comment_id}",
 )
 async def admin_update_comment(
-
     comment_id: str,
-
     body: dict,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
-    new_status = body.get(
-        "status"
-    )
+    new_status = body.get("status")
 
     if new_status not in {
         "approved",
         "rejected",
-        "pending"
+        "pending",
     }:
-
         raise HTTPException(
             status_code=400,
-            detail="Invalid status"
+            detail="Invalid status",
         )
 
     result = await db.comments.update_one(
-
-        {
-            "id": comment_id
-        },
-
+        {"id": comment_id},
         {
             "$set": {
                 "status": new_status
             }
-        }
-
+        },
     )
 
     if result.matched_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="Comment not found"
+            detail="Comment not found",
         )
 
     return {
         "ok": True,
-        "status": new_status
+        "status": new_status,
     }
 
 
 @api_router.delete(
-    "/admin/comments/{comment_id}"
+    "/admin/comments/{comment_id}",
 )
 async def admin_delete_comment(
-
     comment_id: str,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     result = await db.comments.delete_one(
-        {
-            "id": comment_id
-        }
+        {"id": comment_id}
     )
 
     if result.deleted_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="Comment not found"
+            detail="Comment not found",
         )
 
-    return {
-        "ok": True
-    }
+    return {"ok": True}
 
 
 # =========================================================
@@ -1068,23 +741,14 @@ class Variety(BaseModel):
     )
 
     section: str
-
     category: str = ""
-
     show_name: str
-
     label: str = ""
-
     episode: str = ""
-
     description: str = ""
-
     thumbnail: Optional[str] = None
-
     youtube_url: str = ""
-
     air_date: str = ""
-
     featured: bool = False
 
     created_at: str = Field(
@@ -1098,87 +762,59 @@ class Variety(BaseModel):
 
 @api_router.get(
     "/variety",
-    response_model=List[Variety]
+    response_model=List[Variety],
 )
 async def list_variety():
 
-    docs = await db.variety.find(
+    return await db.variety.find(
         {},
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(500)
-
-    return docs
 
 
 @api_router.post(
     "/admin/variety",
-    response_model=Variety
+    response_model=Variety,
 )
 async def admin_create_variety(
 
     section: str = Form(...),
-
     category: str = Form(""),
-
     show_name: str = Form(...),
-
     label: str = Form(""),
-
     episode: str = Form(""),
-
     description: str = Form(""),
-
     youtube_url: str = Form(""),
-
     air_date: str = Form(""),
-
     image: Optional[UploadFile] = File(None),
 
-    admin: dict = Depends(
-        get_current_admin
-    )
+    admin: dict = Depends(get_current_admin),
 
 ):
 
     thumbnail = None
 
     if image:
-
-        thumbnail = await save_image(
-            image
-        )
+        thumbnail = await save_image(image)
 
     elif youtube_url:
-
         thumbnail = youtube_thumbnail(
             youtube_url
         )
 
     variety = Variety(
-
         section=section,
-
         category=category,
-
         show_name=show_name,
-
         label=label,
-
         episode=episode,
-
         description=description,
-
         thumbnail=thumbnail,
-
         youtube_url=youtube_url,
-
-        air_date=air_date
-
+        air_date=air_date,
     )
 
     await db.variety.insert_one(
@@ -1190,132 +826,82 @@ async def admin_create_variety(
 
 @api_router.put(
     "/admin/variety/{variety_id}",
-    response_model=Variety
+    response_model=Variety,
 )
 async def admin_update_variety(
 
     variety_id: str,
 
     section: str = Form(...),
-
     category: str = Form(""),
-
     show_name: str = Form(...),
-
     label: str = Form(""),
-
     episode: str = Form(""),
-
     description: str = Form(""),
-
     youtube_url: str = Form(""),
-
     air_date: str = Form(""),
-
     image: Optional[UploadFile] = File(None),
 
-    admin: dict = Depends(
-        get_current_admin
-    )
+    admin: dict = Depends(get_current_admin),
 
 ):
 
     data = {
-
         "section": section,
-
         "category": category,
-
         "show_name": show_name,
-
         "label": label,
-
         "episode": episode,
-
         "description": description,
-
         "youtube_url": youtube_url,
-
         "air_date": air_date,
-
-        "updated_at": now_iso()
-
+        "updated_at": now_iso(),
     }
 
     if image:
-
-        data[
-            "thumbnail"
-        ] = await save_image(
-            image
-        )
+        data["thumbnail"] = await save_image(image)
 
     elif youtube_url:
-
-        data[
-            "thumbnail"
-        ] = youtube_thumbnail(
+        data["thumbnail"] = youtube_thumbnail(
             youtube_url
         )
 
     result = await db.variety.update_one(
-
-        {
-            "id": variety_id
-        },
-
-        {
-            "$set": data
-        }
-
+        {"id": variety_id},
+        {"$set": data},
     )
 
     if result.matched_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="Variety video not found"
+            detail="Variety video not found",
         )
 
     return await db.variety.find_one(
-        {
-            "id": variety_id
-        },
-        {
-            "_id": 0
-        }
+        {"id": variety_id},
+        {"_id": 0},
     )
 
 
 @api_router.delete(
-    "/admin/variety/{variety_id}"
+    "/admin/variety/{variety_id}",
 )
 async def admin_delete_variety(
-
     variety_id: str,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     result = await db.variety.delete_one(
-        {
-            "id": variety_id
-        }
+        {"id": variety_id}
     )
 
     if result.deleted_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="Variety video not found"
+            detail="Variety video not found",
         )
 
-    return {
-        "ok": True
-    }
+    return {"ok": True}
 
 
 # =========================================================
@@ -1329,13 +915,9 @@ class FanPost(BaseModel):
     )
 
     category: str
-
     platform: str
-
     thumbnail: str
-
     url: str
-
     caption: str = ""
 
     created_at: str = Field(
@@ -1346,48 +928,33 @@ class FanPost(BaseModel):
 class FanPostCreate(BaseModel):
 
     category: str
-
     platform: str
-
     thumbnail: str
-
     url: str
-
     caption: str = ""
 
 
 @api_router.get(
-    "/fanposts/{category}"
+    "/fanposts/{category}",
 )
-async def get_fan_posts(
-    category: str
-):
+async def get_fan_posts(category: str):
 
     return await db.fanposts.find(
-        {
-            "category": category
-        },
-        {
-            "_id": 0
-        }
+        {"category": category},
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(500)
 
 
 @api_router.post(
     "/admin/fanposts",
-    response_model=FanPost
+    response_model=FanPost,
 )
 async def admin_create_fan_post(
-
     input: FanPostCreate,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     post = FanPost(
@@ -1402,27 +969,18 @@ async def admin_create_fan_post(
 
 
 @api_router.delete(
-    "/admin/fanposts/{post_id}"
+    "/admin/fanposts/{post_id}",
 )
 async def admin_delete_fan_post(
-
     post_id: str,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     await db.fanposts.delete_one(
-        {
-            "id": post_id
-        }
+        {"id": post_id}
     )
 
-    return {
-        "ok": True
-    }
+    return {"ok": True}
 
 
 # =========================================================
@@ -1436,15 +994,10 @@ class PlaylistItem(BaseModel):
     )
 
     playlist: str
-
     title: str
-
     platform: str
-
     thumbnail: Optional[str] = None
-
     description: str = ""
-
     url: str
 
     created_at: str = Field(
@@ -1459,48 +1012,33 @@ class PlaylistItem(BaseModel):
 class PlaylistItemCreate(BaseModel):
 
     playlist: str
-
     title: str
-
     platform: str
-
     thumbnail: Optional[str] = None
-
     url: str
 
 
 @api_router.get(
-    "/playlists/{playlist}"
+    "/playlists/{playlist}",
 )
-async def get_playlist(
-    playlist: str
-):
+async def get_playlist(playlist: str):
 
     return await db.playlists.find(
-        {
-            "playlist": playlist
-        },
-        {
-            "_id": 0
-        }
+        {"playlist": playlist},
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(500)
 
 
 @api_router.post(
     "/admin/playlists",
-    response_model=PlaylistItem
+    response_model=PlaylistItem,
 )
 async def admin_add_playlist_item(
-
     input: PlaylistItemCreate,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     item = PlaylistItem(
@@ -1515,27 +1053,18 @@ async def admin_add_playlist_item(
 
 
 @api_router.delete(
-    "/admin/playlists/{item_id}"
+    "/admin/playlists/{item_id}",
 )
 async def admin_delete_playlist_item(
-
     item_id: str,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     await db.playlists.delete_one(
-        {
-            "id": item_id
-        }
+        {"id": item_id}
     )
 
-    return {
-        "ok": True
-    }
+    return {"ok": True}
 
 
 # =========================================================
@@ -1549,13 +1078,9 @@ class Game(BaseModel):
     )
 
     title: str
-
     description: str
-
     thumbnail: Optional[str] = None
-
     game_url: str
-
     category: str = "quiz"
 
     created_at: str = Field(
@@ -1570,45 +1095,34 @@ class Game(BaseModel):
 class GameCreate(BaseModel):
 
     title: str
-
     description: str
-
     thumbnail: Optional[str] = None
-
     game_url: str
-
     category: str = "quiz"
 
 
 @api_router.get(
     "/games",
-    response_model=List[Game]
+    response_model=List[Game],
 )
 async def get_games():
 
     return await db.games.find(
         {},
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(500)
 
 
 @api_router.post(
     "/admin/games",
-    response_model=Game
+    response_model=Game,
 )
 async def admin_create_game(
-
     input: GameCreate,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     game = Game(
@@ -1624,82 +1138,53 @@ async def admin_create_game(
 
 @api_router.put(
     "/admin/games/{game_id}",
-    response_model=Game
+    response_model=Game,
 )
 async def admin_update_game(
-
     game_id: str,
-
     input: GameCreate,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     data = input.model_dump()
-
     data["updated_at"] = now_iso()
 
     result = await db.games.update_one(
-
-        {
-            "id": game_id
-        },
-
-        {
-            "$set": data
-        }
-
+        {"id": game_id},
+        {"$set": data},
     )
 
     if result.matched_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="Game not found"
+            detail="Game not found",
         )
 
     return await db.games.find_one(
-        {
-            "id": game_id
-        },
-        {
-            "_id": 0
-        }
+        {"id": game_id},
+        {"_id": 0},
     )
 
 
 @api_router.delete(
-    "/admin/games/{game_id}"
+    "/admin/games/{game_id}",
 )
 async def admin_delete_game(
-
     game_id: str,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     result = await db.games.delete_one(
-        {
-            "id": game_id
-        }
+        {"id": game_id}
     )
 
     if result.deleted_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="Game not found"
+            detail="Game not found",
         )
 
-    return {
-        "ok": True
-    }
+    return {"ok": True}
 
 
 # =========================================================
@@ -1713,7 +1198,6 @@ class MemoryCard(BaseModel):
     )
 
     title: str
-
     image: str
 
     created_at: str = Field(
@@ -1722,50 +1206,42 @@ class MemoryCard(BaseModel):
 
 
 @api_router.get(
-    "/memory-cards"
+    "/memory-cards",
 )
 async def get_memory_cards():
 
     return await db.memory_cards.find(
         {},
-        {
-            "_id": 0
-        }
+        {"_id": 0},
     ).sort(
         "created_at",
-        -1
+        -1,
     ).to_list(500)
 
 
 @api_router.post(
-    "/admin/memory-cards"
+    "/admin/memory-cards",
 )
 async def admin_add_memory_card(
 
     title: str = Form(...),
-
     image: UploadFile = File(...),
 
-    admin: dict = Depends(
-        get_current_admin
-    )
+    admin: dict = Depends(get_current_admin),
 
 ):
 
-    image_url = await save_image(
-        image
-    )
+    image_url = await save_image(image)
 
     if not image_url:
-
         raise HTTPException(
             status_code=400,
-            detail="Image upload failed"
+            detail="Image upload failed",
         )
 
     card = MemoryCard(
         title=title,
-        image=image_url
+        image=image_url,
     )
 
     await db.memory_cards.insert_one(
@@ -1776,39 +1252,172 @@ async def admin_add_memory_card(
 
 
 @api_router.delete(
-    "/admin/memory-cards/{card_id}"
+    "/admin/memory-cards/{card_id}",
 )
 async def admin_delete_memory_card(
-
     card_id: str,
-
-    admin: dict = Depends(
-        get_current_admin
-    )
-
+    admin: dict = Depends(get_current_admin),
 ):
 
     result = await db.memory_cards.delete_one(
-        {
-            "id": card_id
-        }
+        {"id": card_id}
     )
 
     if result.deleted_count == 0:
-
         raise HTTPException(
             status_code=404,
-            detail="Memory card not found"
+            detail="Memory card not found",
         )
 
-    return {
-        "ok": True
-    }
+    return {"ok": True}
 
 
 # =========================================================
-# SETTINGS
+# NOTES
 # =========================================================
+
+class Note(BaseModel):
+
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4())
+    )
+
+    title: str
+    content: str = ""
+    category: str = "general"
+
+    created_at: str = Field(
+        default_factory=now_iso
+    )
+
+    updated_at: str = Field(
+        default_factory=now_iso
+    )
+
+
+class NoteCreate(BaseModel):
+
+    title: str
+    content: str = ""
+    category: str = "general"
+
+
+@api_router.get(
+    "/notes",
+    response_model=List[Note],
+)
+async def get_notes():
+
+    return await db.notes.find(
+        {},
+        {"_id": 0},
+    ).sort(
+        "created_at",
+        -1,
+    ).to_list(500)
+
+
+@api_router.get(
+    "/admin/notes",
+    response_model=List[Note],
+)
+async def admin_get_notes(
+    admin: dict = Depends(get_current_admin),
+):
+
+    return await db.notes.find(
+        {},
+        {"_id": 0},
+    ).sort(
+        "created_at",
+        -1,
+    ).to_list(500)
+
+
+@api_router.post(
+    "/admin/notes",
+    response_model=Note,
+)
+async def admin_create_note(
+    input: NoteCreate,
+    admin: dict = Depends(get_current_admin),
+):
+
+    note = Note(
+        **input.model_dump()
+    )
+
+    await db.notes.insert_one(
+        note.model_dump()
+    )
+
+    return note
+
+
+@api_router.put(
+    "/admin/notes/{note_id}",
+    response_model=Note,
+)
+async def admin_update_note(
+    note_id: str,
+    input: NoteCreate,
+    admin: dict = Depends(get_current_admin),
+):
+
+    data = input.model_dump()
+    data["updated_at"] = now_iso()
+
+    result = await db.notes.update_one(
+        {"id": note_id},
+        {"$set": data},
+    )
+
+    if result.matched_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Note not found",
+        )
+
+    return await db.notes.find_one(
+        {"id": note_id},
+        {"_id": 0},
+    )
+
+
+@api_router.delete(
+    "/admin/notes/{note_id}",
+)
+async def admin_delete_note(
+    note_id: str,
+    admin: dict = Depends(get_current_admin),
+):
+
+    result = await db.notes.delete_one(
+        {"id": note_id}
+    )
+
+    if result.deleted_count == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Note not found",
+        )
+
+    return {"ok": True}
+
+
+# =========================================================
+# HANEULZ STORY SETTINGS
+# =========================================================
+
+STORY_IMAGE_FIELDS = {
+    "story_cover_image",
+    "story_han_siren_image",
+    "story_little_prince_image",
+    "story_group_image",
+    "story_little_moments_image",
+    "story_final_image",
+}
+
 
 class SiteSettings(BaseModel):
 
@@ -1848,104 +1457,175 @@ class SiteSettings(BaseModel):
         "— K ☁️💗"
     )
 
+    story_cover_image: Optional[str] = None
+    story_han_siren_image: Optional[str] = None
+    story_little_prince_image: Optional[str] = None
+    story_group_image: Optional[str] = None
+    story_little_moments_image: Optional[str] = None
+    story_final_image: Optional[str] = None
+
 
 @api_router.get(
-    "/settings"
+    "/settings",
 )
 async def get_settings():
 
     settings = await db.settings.find_one(
-        {
-            "_id": "site_content"
-        },
-        {
-            "_id": 0
-        }
+        {"_id": "site_content"},
+        {"_id": 0},
     )
-
-    if settings:
-        return settings
 
     defaults = SiteSettings().model_dump()
 
+    if settings:
+
+        for key, value in defaults.items():
+
+            if key not in settings:
+                settings[key] = value
+
+        return settings
+
     await db.settings.update_one(
-
-        {
-            "_id": "site_content"
-        },
-
-        {
-            "$set": defaults
-        },
-
-        upsert=True
-
+        {"_id": "site_content"},
+        {"$set": defaults},
+        upsert=True,
     )
 
     return defaults
 
 
 @api_router.post(
-    "/admin/settings"
+    "/admin/settings",
 )
 async def update_settings(
 
     settings: SiteSettings,
 
-    admin: dict = Depends(
-        get_current_admin
-    )
+    admin: dict = Depends(get_current_admin),
 
 ):
 
     data = settings.model_dump()
 
     await db.settings.update_one(
-
-        {
-            "_id": "site_content"
-        },
-
-        {
-            "$set": data
-        },
-
-        upsert=True
-
+        {"_id": "site_content"},
+        {"$set": data},
+        upsert=True,
     )
 
     return {
         "message": "Settings updated successfully",
-        "settings": data
+        "settings": data,
     }
 
 
 # =========================================================
-# UPLOAD THUMBNAIL
+# STORY IMAGE UPLOAD
 # =========================================================
 
 @api_router.post(
-    "/upload-thumbnail"
+    "/admin/story-images/{field_name}",
 )
-async def upload_thumbnail(
+async def upload_story_image(
 
-    file: UploadFile = File(...),
+    field_name: str,
 
-    admin: dict = Depends(
-        get_current_admin
-    )
+    image: UploadFile = File(...),
+
+    admin: dict = Depends(get_current_admin),
 
 ):
 
-    image_url = await save_image(
-        file
-    )
+    if field_name not in STORY_IMAGE_FIELDS:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid story image field",
+        )
+
+    image_url = await save_image(image)
 
     if not image_url:
 
         raise HTTPException(
             status_code=400,
-            detail="Image upload failed"
+            detail="Image upload failed",
+        )
+
+    await db.settings.update_one(
+        {"_id": "site_content"},
+        {
+            "$set": {
+                field_name: image_url
+            }
+        },
+        upsert=True,
+    )
+
+    return {
+        "ok": True,
+        "field": field_name,
+        "url": image_url,
+    }
+
+
+@api_router.delete(
+    "/admin/story-images/{field_name}",
+)
+async def delete_story_image(
+
+    field_name: str,
+
+    admin: dict = Depends(get_current_admin),
+
+):
+
+    if field_name not in STORY_IMAGE_FIELDS:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid story image field",
+        )
+
+    await db.settings.update_one(
+        {"_id": "site_content"},
+        {
+            "$set": {
+                field_name: None
+            }
+        },
+        upsert=True,
+    )
+
+    return {
+        "ok": True,
+        "field": field_name,
+    }
+
+
+# =========================================================
+# GENERAL THUMBNAIL UPLOAD
+# =========================================================
+
+@api_router.post(
+    "/upload-thumbnail",
+)
+async def upload_thumbnail(
+
+    file: UploadFile = File(...),
+
+    admin: dict = Depends(get_current_admin),
+
+):
+
+    image_url = await save_image(file)
+
+    if not image_url:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Image upload failed",
         )
 
     return {
@@ -1958,72 +1638,61 @@ async def upload_thumbnail(
 # =========================================================
 
 @api_router.post(
-    "/auth/login"
+    "/auth/login",
 )
 async def login(
-    input: LoginInput
+    input: LoginInput,
 ):
 
     email = input.email.lower()
 
     user = await db.users.find_one(
-        {
-            "email": email
-        }
+        {"email": email}
     )
 
     if not user:
 
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password"
+            detail="Invalid email or password",
         )
 
     if not verify_password(
         input.password,
-        user["password_hash"]
+        user["password_hash"],
     ):
 
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password"
+            detail="Invalid email or password",
         )
 
     token = create_access_token(
         user["id"],
-        user["email"]
+        user["email"],
     )
 
     return {
-
         "token": token,
-
         "user": {
-
             "email": user["email"],
-
             "name": user.get(
                 "name",
-                "Admin"
+                "Admin",
             ),
-
             "role": user.get(
                 "role",
-                "admin"
-            )
-
-        }
-
+                "admin",
+            ),
+        },
     }
 
 
 @api_router.get(
-    "/auth/me"
+    "/auth/me",
 )
 async def me(
-    admin: dict = Depends(
-        get_current_admin
-    )
+    admin: dict = Depends(get_current_admin),
 ):
 
     return admin
@@ -2038,17 +1707,15 @@ async def root():
 
     return {
         "message": "HANEULZ API",
-        "status": "online"
+        "status": "online",
     }
 
 
 # =========================================================
-# INCLUDE ROUTER
+# ROUTER
 # =========================================================
 
-app.include_router(
-    api_router
-)
+app.include_router(api_router)
 
 
 # =========================================================
@@ -2057,7 +1724,7 @@ app.include_router(
 
 cors_origins = os.environ.get(
     "CORS_ORIGINS",
-    "*"
+    "*",
 )
 
 if cors_origins.strip() == "*":
@@ -2074,17 +1741,11 @@ else:
 
 
 app.add_middleware(
-
     CORSMiddleware,
-
     allow_origins=allowed_origins,
-
     allow_credentials=True,
-
     allow_methods=["*"],
-
-    allow_headers=["*"]
-
+    allow_headers=["*"],
 )
 
 
@@ -2096,18 +1757,16 @@ async def seed():
 
     admin_email = os.environ.get(
         "ADMIN_EMAIL",
-        "admin@haneulz.com"
+        "admin@haneulz.com",
     ).lower()
 
     admin_password = os.environ.get(
         "ADMIN_PASSWORD",
-        "haneulz2025"
+        "haneulz2025",
     )
 
     existing = await db.users.find_one(
-        {
-            "email": admin_email
-        }
+        {"email": admin_email}
     )
 
     if existing is None:
@@ -2126,7 +1785,7 @@ async def seed():
 
             "role": "admin",
 
-            "created_at": now_iso()
+            "created_at": now_iso(),
 
         })
 
@@ -2140,7 +1799,7 @@ async def on_startup():
 
     await db.users.create_index(
         "email",
-        unique=True
+        unique=True,
     )
 
     await seed()
