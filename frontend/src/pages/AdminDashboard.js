@@ -13,6 +13,10 @@ import { toast } from "sonner";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
 
+// =========================================================
+// STATUS PILL
+// =========================================================
+
 function StatusPill({ status }) {
   const map = {
     pending: "bg-[color:var(--blue)]",
@@ -31,6 +35,10 @@ function StatusPill({ status }) {
   );
 }
 
+// =========================================================
+// EMPTY VIDEO FORM
+// =========================================================
+
 const EMPTY_VIDEO_FORM = {
   section: "haneulz",
   category: "han-posts",
@@ -43,50 +51,58 @@ const EMPTY_VIDEO_FORM = {
   air_date: "",
 };
 
+// =========================================================
+// STORY IMAGE FIELDS
+// =========================================================
+
 const STORY_IMAGE_FIELDS = [
   {
     key: "story_cover_image",
     title: "HANEULZ Cover",
-    description: "Main cover image at the beginning of the HANEULZ story.",
+    description:
+      "Main cover image at the beginning of the HANEULZ story.",
     ratio: "16:9",
   },
   {
     key: "story_han_siren_image",
     title: "HAN · SIREN",
-    description: "Image for Han's Siren section.",
-    ratio: "4:3",
-  },
-  {
-    key: "story_jl_one_and_only_image",
-    title: "JL · ONE AND ONLY",
-    description: "Image for JL's One and Only section.",
+    description:
+      "Image for Han's Siren section.",
     ratio: "4:3",
   },
   {
     key: "story_little_prince_image",
     title: "THE LITTLE PRINCE",
-    description: "Image for The Little Prince section.",
+    description:
+      "Image for The Little Prince section.",
     ratio: "4:3",
   },
   {
     key: "story_group_image",
     title: "AHOF · GROUP PHOTO",
-    description: "Group image for the AHOF debut section.",
+    description:
+      "Group image for the AHOF debut section.",
     ratio: "16:9",
   },
   {
     key: "story_little_moments_image",
     title: "LITTLE MOMENTS",
-    description: "Image for the Little Things section.",
+    description:
+      "Image for the Little Moments section.",
     ratio: "4:3",
   },
   {
     key: "story_final_image",
     title: "HANEULZ · ALWAYS",
-    description: "Final image at the bottom of the story.",
+    description:
+      "Final image at the bottom of the story.",
     ratio: "16:9",
   },
 ];
+
+// =========================================================
+// ADMIN DASHBOARD
+// =========================================================
 
 export default function AdminDashboard() {
   const { admin, ready, logout } = useAuth();
@@ -98,14 +114,18 @@ export default function AdminDashboard() {
   const [comments, setComments] = useState([]);
   const [variety, setVariety] = useState([]);
 
-  const [editingVariety, setEditingVariety] = useState(null);
+  const [editingVariety, setEditingVariety] =
+    useState(null);
 
   const [videoForm, setVideoForm] =
     useState(EMPTY_VIDEO_FORM);
 
-  const [storyImages, setStoryImages] = useState({});
+  const [storyImages, setStoryImages] =
+    useState({});
+
   const [storyImageFiles, setStoryImageFiles] =
     useState({});
+
   const [uploadingStoryImage, setUploadingStoryImage] =
     useState(null);
 
@@ -140,7 +160,8 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error(
         "ADMIN AU ERROR:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
 
       if (error.response?.status === 401) {
@@ -167,7 +188,8 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error(
         "ADMIN COMMENTS ERROR:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
 
       if (error.response?.status === 401) {
@@ -199,7 +221,8 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error(
         "VARIETY ERROR:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
 
       if (error.response?.status === 401) {
@@ -235,7 +258,8 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error(
         "STORY IMAGES ERROR:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
 
       if (error.response?.status === 401) {
@@ -270,7 +294,7 @@ export default function AdminDashboard() {
   ]);
 
   // =========================================================
-  // INITIAL ADMIN LOAD
+  // INITIAL LOAD
   // =========================================================
 
   useEffect(() => {
@@ -408,7 +432,7 @@ export default function AdminDashboard() {
   };
 
   // =========================================================
-  // VIDEO FORM RESET
+  // RESET VIDEO FORM
   // =========================================================
 
   const resetVideoForm = () => {
@@ -424,6 +448,14 @@ export default function AdminDashboard() {
   // =========================================================
 
   const addVariety = async () => {
+    if (!videoForm.show_name.trim()) {
+      toast.error(
+        "Show name is required."
+      );
+
+      return;
+    }
+
     try {
       const formData =
         new FormData();
@@ -565,7 +597,7 @@ export default function AdminDashboard() {
       );
 
       toast.success(
-        "Video updated"
+        "Video updated!"
       );
 
       resetVideoForm();
@@ -589,9 +621,7 @@ export default function AdminDashboard() {
   // DELETE VARIETY
   // =========================================================
 
-  const deleteVariety = async (
-    id
-  ) => {
+  const deleteVariety = async (id) => {
     try {
       await api.delete(
         `/admin/variety/${id}`
@@ -663,17 +693,19 @@ export default function AdminDashboard() {
   };
 
   // =========================================================
-  // STORY IMAGE FILE SELECT
+  // SELECT STORY IMAGE
   // =========================================================
 
   const selectStoryImage = (
     key,
     file
   ) => {
-    setStoryImageFiles((previous) => ({
-      ...previous,
-      [key]: file || null,
-    }));
+    setStoryImageFiles(
+      (previous) => ({
+        ...previous,
+        [key]: file || null,
+      })
+    );
   };
 
   // =========================================================
@@ -701,18 +733,23 @@ export default function AdminDashboard() {
         new FormData();
 
       formData.append(
-        "file",
+        "image",
         file
       );
 
-      formData.append(
-        "setting_key",
-        key
-      );
+      /*
+       * IMPORTANT:
+       * Backend endpoint is:
+       *
+       * /admin/story-images/{field_name}
+       *
+       * So the field key must be part
+       * of the URL.
+       */
 
       const response =
         await api.post(
-          "/admin/story-images",
+          `/admin/story-images/${key}`,
           formData
         );
 
@@ -811,6 +848,15 @@ export default function AdminDashboard() {
       return url;
     }
 
+    /*
+     * Your backend returns paths such as:
+     *
+     * /static/uploads/example.jpg
+     *
+     * The API client/base URL should handle
+     * the backend host.
+     */
+
     return url;
   };
 
@@ -830,7 +876,7 @@ export default function AdminDashboard() {
   };
 
   // =========================================================
-  // WAIT
+  // WAIT FOR AUTH
   // =========================================================
 
   if (!ready) {
@@ -860,14 +906,14 @@ export default function AdminDashboard() {
 
   const pendingAus =
     aus.filter(
-      (a) =>
-        a.status === "pending"
+      (au) =>
+        au.status === "pending"
     ).length;
 
   const pendingComments =
     comments.filter(
-      (c) =>
-        c.status === "pending"
+      (comment) =>
+        comment.status === "pending"
     ).length;
 
   // =========================================================
@@ -878,9 +924,12 @@ export default function AdminDashboard() {
     <div className="min-h-screen px-6 pt-28 pb-20">
       <div className="mx-auto max-w-5xl">
 
-        {/* HEADER */}
+        {/* ===================================================
+            HEADER
+        =================================================== */}
 
         <div className="flex items-center justify-between gap-6">
+
           <div>
             <h1 className="font-serif-display text-5xl font-medium">
               Moderation
@@ -900,9 +949,12 @@ export default function AdminDashboard() {
             <LogOut size={14} />
             Logout
           </button>
+
         </div>
 
-        {/* TABS */}
+        {/* ===================================================
+            TABS
+        =================================================== */}
 
         <div className="mt-8 flex flex-wrap gap-3">
 
@@ -976,6 +1028,7 @@ export default function AdminDashboard() {
             className="mt-8 space-y-4"
             data-testid="admin-au-list"
           >
+
             <p>
               Total AUs:{" "}
               {aus.length}
@@ -996,6 +1049,7 @@ export default function AdminDashboard() {
                 <div className="flex flex-wrap items-center justify-between gap-3">
 
                   <div className="flex items-center gap-3">
+
                     <StatusPill
                       status={
                         au.status
@@ -1005,6 +1059,7 @@ export default function AdminDashboard() {
                     <span className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                       {au.au_type}
                     </span>
+
                   </div>
 
                   <div className="flex gap-2">
@@ -1057,6 +1112,7 @@ export default function AdminDashboard() {
                     </button>
 
                   </div>
+
                 </div>
 
                 <h3 className="mt-4 font-serif-display text-2xl">
@@ -1076,6 +1132,7 @@ export default function AdminDashboard() {
 
               </div>
             ))}
+
           </div>
         )}
 
@@ -1198,6 +1255,8 @@ export default function AdminDashboard() {
                 : "Add Variety Video"}
             </h2>
 
+            {/* SECTION */}
+
             <select
               className="mt-4 w-full rounded-xl border p-3"
               value={
@@ -1223,6 +1282,8 @@ export default function AdminDashboard() {
                 NOW, THE WHOLE GROUP
               </option>
             </select>
+
+            {/* CATEGORY */}
 
             {videoForm.section ===
               "haneulz" && (
@@ -1253,6 +1314,8 @@ export default function AdminDashboard() {
               </select>
             )}
 
+            {/* LABEL */}
+
             <select
               className="mt-3 w-full rounded-xl border p-3"
               value={
@@ -1279,6 +1342,8 @@ export default function AdminDashboard() {
               </option>
             </select>
 
+            {/* SHOW NAME */}
+
             <input
               className="mt-4 w-full rounded-xl border p-3"
               placeholder="Show name"
@@ -1293,6 +1358,8 @@ export default function AdminDashboard() {
                 })
               }
             />
+
+            {/* EPISODE */}
 
             <input
               className="mt-3 w-full rounded-xl border p-3"
@@ -1309,6 +1376,8 @@ export default function AdminDashboard() {
               }
             />
 
+            {/* DESCRIPTION */}
+
             <textarea
               className="mt-3 w-full rounded-xl border p-3"
               placeholder="Description"
@@ -1323,6 +1392,8 @@ export default function AdminDashboard() {
                 })
               }
             />
+
+            {/* YOUTUBE */}
 
             <input
               className="mt-3 w-full rounded-xl border p-3"
@@ -1339,9 +1410,11 @@ export default function AdminDashboard() {
               }
             />
 
+            {/* IMAGE */}
+
             <input
               type="file"
-              accept="image/jpeg,image/png,image/webp"
+              accept="image/jpeg,image/png,image/webp,image/gif"
               className="mt-3 w-full rounded-xl border p-3"
               onChange={(e) =>
                 setVideoForm({
@@ -1352,6 +1425,8 @@ export default function AdminDashboard() {
                 })
               }
             />
+
+            {/* ACTIONS */}
 
             <div className="mt-5 flex gap-3">
 
@@ -1387,6 +1462,8 @@ export default function AdminDashboard() {
 
             </div>
 
+            {/* VIDEO LIST */}
+
             <div className="mt-8 space-y-4">
 
               {variety.length === 0 && (
@@ -1410,7 +1487,8 @@ export default function AdminDashboard() {
                   <p className="text-sm">
                     Episode:{" "}
                     {
-                      video.episode
+                      video.episode ||
+                        "—"
                     }
                   </p>
 
@@ -1461,6 +1539,8 @@ export default function AdminDashboard() {
         {tab === "story-images" && (
           <div className="mt-8">
 
+            {/* INTRO */}
+
             <div className="glass rounded-[1.75rem] p-6">
 
               <div className="flex items-start gap-4">
@@ -1470,14 +1550,16 @@ export default function AdminDashboard() {
                 </div>
 
                 <div>
+
                   <h2 className="font-serif-display text-3xl">
                     HANEULZ Story Images
                   </h2>
 
                   <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink-soft)]">
-                    Upload the photos used in the HANEULZ story.
-                    These replace the colored placeholders on the
-                    public HANEULZ page.
+                    Upload the photos used in
+                    the HANEULZ story. These
+                    replace the image placeholders
+                    on the public HANEULZ page.
                   </p>
 
                 </div>
@@ -1485,6 +1567,8 @@ export default function AdminDashboard() {
               </div>
 
             </div>
+
+            {/* IMAGE CARDS */}
 
             <div className="mt-6 grid gap-6 md:grid-cols-2">
 
@@ -1511,7 +1595,7 @@ export default function AdminDashboard() {
                       className="glass overflow-hidden rounded-[1.75rem]"
                     >
 
-                      {/* IMAGE PREVIEW */}
+                      {/* PREVIEW */}
 
                       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[color:var(--line)]">
 
@@ -1549,6 +1633,7 @@ export default function AdminDashboard() {
                         <div className="flex items-start justify-between gap-4">
 
                           <div>
+
                             <h3 className="font-serif-display text-2xl">
                               {
                                 field.title
@@ -1572,6 +1657,8 @@ export default function AdminDashboard() {
                           }
                         </p>
 
+                        {/* FILE INPUT */}
+
                         <input
                           type="file"
                           accept="image/jpeg,image/png,image/webp,image/gif"
@@ -1585,6 +1672,8 @@ export default function AdminDashboard() {
                           }
                         />
 
+                        {/* SELECTED FILE */}
+
                         {selectedFile && (
                           <p className="mt-2 truncate text-xs text-[color:var(--ink-soft)]">
                             Selected:{" "}
@@ -1593,6 +1682,8 @@ export default function AdminDashboard() {
                             }
                           </p>
                         )}
+
+                        {/* BUTTONS */}
 
                         <div className="mt-4 flex flex-wrap gap-2">
 
