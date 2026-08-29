@@ -11,46 +11,26 @@ export function AuthProvider({ children }) {
   const [admin, setAdmin] = useState(null);
   const [ready, setReady] = useState(false);
   // =========================================================
-  // RESTORE LOGIN SESSION
+  // RESTORE SAVED LOGIN
   // =========================================================
   useEffect(() => {
-    let cancelled = false;
-    const restoreSession = async () => {
-      const token = localStorage.getItem(TOKEN_KEY);
-      // No saved login
-      if (!token) {
-        if (!cancelled) {
-          setAdmin(false);
-          setReady(true);
-        }
-        return;
-      }
-      // Attach token immediately
-      api.defaults.headers.common.Authorization =
-        `Bearer ${token}`;
-      try {
-        const response = await api.get("/auth/me");
-        if (cancelled) return;
-        setAdmin(response.data);
-      } catch (error) {
-        console.error(
-          "AUTH SESSION ERROR:",
-          error.response?.data || error.message
-        );
-        if (cancelled) return;
-        localStorage.removeItem(TOKEN_KEY);
-        delete api.defaults.headers.common.Authorization;
-        setAdmin(false);
-      } finally {
-        if (!cancelled) {
-          setReady(true);
-        }
-      }
-    };
-    restoreSession();
-    return () => {
-      cancelled = true;
-    };
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      setAdmin(false);
+      setReady(true);
+      return;
+    }
+    // Restore token immediately
+    api.defaults.headers.common.Authorization =
+      `Bearer ${token}`;
+    // Treat the saved token as authenticated.
+    // The admin API requests will tell us if the token
+    // is actually invalid.
+    setAdmin({
+      email: "Admin",
+      role: "admin",
+    });
+    setReady(true);
   }, []);
   // =========================================================
   // LOGIN
@@ -66,12 +46,12 @@ export function AuthProvider({ children }) {
         "Login succeeded but no token was returned."
       );
     }
-    // Save token BEFORE changing authentication state
+    // Save token
     localStorage.setItem(
       TOKEN_KEY,
       data.token
     );
-    // Set axios authorization
+    // Attach token to every future API request
     api.defaults.headers.common.Authorization =
       `Bearer ${data.token}`;
     const loggedInUser =
@@ -80,9 +60,8 @@ export function AuthProvider({ children }) {
         role: "admin",
         name: "Admin",
       };
-    // Set authenticated user
+    // Update auth state
     setAdmin(loggedInUser);
-    // Authentication is ready
     setReady(true);
     return loggedInUser;
   };
