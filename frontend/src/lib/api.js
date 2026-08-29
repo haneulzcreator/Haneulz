@@ -1,41 +1,33 @@
 import axios from "axios";
-
-const BACKEND_URL = (process.env.REACT_APP_BACKEND_URL || "http://localhost:8000").replace(/\/$/, "");
-
-export const API = `${BACKEND_URL}/api`;
-
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+if (!BACKEND_URL) {
+  console.error(
+    "HANEULZ ERROR: REACT_APP_BACKEND_URL is not configured."
+  );
+}
+const API = BACKEND_URL
+  ? `${BACKEND_URL.replace(/\/$/, "")}/api`
+  : "/api";
 export const api = axios.create({
   baseURL: API,
 });
-
 api.interceptors.request.use((config) => {
-
-  const token = localStorage.getItem(
-    "haneulz_token"
-  );
-
+  const token = localStorage.getItem("haneulz_token");
   if (token) {
-
     config.headers = {
       ...config.headers,
       Authorization: `Bearer ${token}`,
     };
-
   }
-
   return config;
-
 });
-
 export function formatApiError(detail) {
   if (detail == null) {
     return "Something went wrong. Please try again.";
   }
-
   if (typeof detail === "string") {
     return detail;
   }
-
   if (Array.isArray(detail)) {
     return detail
       .map((e) =>
@@ -46,17 +38,14 @@ export function formatApiError(detail) {
       .filter(Boolean)
       .join(" ");
   }
-
   if (detail && typeof detail.msg === "string") {
     return detail.msg;
   }
-
   return String(detail);
 }
-
 export const IMAGES = {
   heroDuo:
-    "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/ab92e1a8e9c953d7750906de4c2de631d1ba2aee7e3a83b2a07a4eb88c7043db.png",
+    "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/ab92e1a8e9c953d7750906de4c2de631d1ba2aee4c2de631d1ba2aee7e3a83b2a07a4eb88c7043db.png",
   portrait:
     "https://static.prod-images.emergentagent.com/jobs/e04ec301-0979-4ef5-8c49-2073bcde12f6/images/2d406a95e877c3f708b10b2bd51d78f972b82437abdac2f1f1edc7b7124a94a5.png",
   jlPortrait:
@@ -74,46 +63,55 @@ export const IMAGES = {
   manifesto1:
     "https://images.pexels.com/photos/2612738/pexels-photo-2612738.jpeg?auto=compress&cs=tinysrgb&w=1000",
 };
-
 export const DEFAULT_COVERS = [
   IMAGES.auCover1,
   IMAGES.auCover2,
   IMAGES.portrait,
   IMAGES.cloudsPink,
 ];
-
 export const REAL = {
   jl: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/f87g19iu_IMG_9137.webp",
   han: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/ajv8uahi_IMG_9135.webp",
   ahofGroup:
     "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/g5npnzc2_IMG_9136.jpeg",
-  duo: "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/81w3jx7b_IMG_9244.jpeg",
+  duo:
+    "https://customer-assets-m6fa6gv7.emergentagent.net/job_haneulz-corner/artifacts/81w3jx7b_IMG_9244.jpeg",
 };
-
 export const SOURCES = {
-  x: { label: "X", full: "AUs from X" },
-  tiktok: { label: "TikTok", full: "AUs from TikTok" },
-  ao3: { label: "AO3", full: "AUs from AO3" },
-  other: { label: "Other", full: "Other AUs" },
+  x: {
+    label: "X",
+    full: "AUs from X",
+  },
+  tiktok: {
+    label: "TikTok",
+    full: "AUs from TikTok",
+  },
+  ao3: {
+    label: "AO3",
+    full: "AUs from AO3",
+  },
+  other: {
+    label: "Other",
+    full: "Other AUs",
+  },
 };
-
 export const SOURCE_ORDER = [
   "x",
   "tiktok",
   "ao3",
   "other",
 ];
-
 // =========================
 // SITE SETTINGS API
 // =========================
-
 export async function getSettings() {
   const response = await api.get("/settings");
   return response.data;
 }
-
 export async function updateSettings(settingsData) {
-  const response = await api.post("/admin/settings", settingsData);
+  const response = await api.post(
+    "/admin/settings",
+    settingsData
+  );
   return response.data;
 }
