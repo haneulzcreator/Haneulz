@@ -8,33 +8,50 @@ import { api } from "../lib/api";
 const AuthContext = createContext(null);
 const TOKEN_KEY = "haneulz_token";
 export function AuthProvider({ children }) {
+  // null = still checking
+  // false = definitely not logged in
+  // object = logged in
   const [admin, setAdmin] = useState(null);
   const [ready, setReady] = useState(false);
-  // =========================================================
-  // RESTORE SAVED LOGIN
-  // =========================================================
   useEffect(() => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
-      setAdmin(false);
-      setReady(true);
-      return;
-    }
-    // Restore token immediately
-    api.defaults.headers.common.Authorization =
-      `Bearer ${token}`;
-    // Treat the saved token as authenticated.
-    // The admin API requests will tell us if the token
-    // is actually invalid.
-    setAdmin({
-      email: "Admin",
-      role: "admin",
-    });
-    setReady(true);
+    let cancelled = false;
+    const restoreSession = async () => {
+      const token = localStorage.getItem(TOKEN_KEY);
+      // No token = not logged in
+      if (!token) {
+        if (!cancelled) {
+          setAdmin(false);
+          setReady(true);
+        }
+        return;
+      }
+      // Attach saved token
+      api.defaults.headers.common.Authorization =
+        `Bearer ${token}`;
+      try {
+        const response = await api.get("/auth/me");
+        if (cancelled) return;
+        setAdmin(response.data);
+      } catch (error) {
+        console.error(
+          "AUTH SESSION ERROR:",
+          error.response?.data || error.message
+        );
+        if (cancelled) return;
+        localStorage.removeItem(TOKEN_KEY);
+        delete api.defaults.headers.common.Authorization;
+        setAdmin(false);
+      } finally {
+        if (!cancelled) {
+          setReady(true);
+        }
+      }
+    };
+    restoreSession();
+    return () => {
+      cancelled = true;
+    };
   }, []);
-  // =========================================================
-  // LOGIN
-  // =========================================================
   const login = async (email, password) => {
     const response = await api.post("/auth/login", {
       email,
@@ -46,12 +63,10 @@ export function AuthProvider({ children }) {
         "Login succeeded but no token was returned."
       );
     }
-    // Save token
     localStorage.setItem(
       TOKEN_KEY,
       data.token
     );
-    // Attach token to every future API request
     api.defaults.headers.common.Authorization =
       `Bearer ${data.token}`;
     const loggedInUser =
@@ -60,23 +75,16 @@ export function AuthProvider({ children }) {
         role: "admin",
         name: "Admin",
       };
-    // Update auth state
     setAdmin(loggedInUser);
     setReady(true);
     return loggedInUser;
   };
-  // =========================================================
-  // LOGOUT
-  // =========================================================
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY);
     delete api.defaults.headers.common.Authorization;
     setAdmin(false);
     setReady(true);
   };
-  // =========================================================
-  // PROVIDER
-  // =========================================================
   return (
     <AuthContext.Provider
       value={{
@@ -90,9 +98,6 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
-// =========================================================
-// HOOK
-// =========================================================
 export function useAuth() {
   return useContext(AuthContext);
 }
