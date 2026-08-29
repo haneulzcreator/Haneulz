@@ -4,11 +4,12 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import { ReactLenis } from "lenis/react";
 import { Toaster } from "sonner";
 import { useEffect } from "react";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
@@ -33,14 +34,35 @@ function ScrollTop() {
   return null;
 }
 
+function AdminRoute({ children }) {
+  const { admin, ready } = useAuth();
+
+  // Don't render ANY admin page until authentication is known.
+  if (!ready) {
+    return (
+      <div className="grid min-h-screen place-items-center text-[color:var(--ink-soft)]">
+        Loading…
+      </div>
+    );
+  }
+
+  // Not logged in → redirect before rendering dashboard.
+  if (!admin) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  return children;
+}
+
 function Shell() {
   const { pathname } = useLocation();
 
-  const hideNav = pathname === "/admin/login";
+  // Hide public navigation on every admin page.
+  const isAdminPage = pathname.startsWith("/admin");
 
   return (
     <>
-      {!hideNav && <Nav />}
+      {!isAdminPage && <Nav />}
 
       <ScrollTop />
 
@@ -51,7 +73,6 @@ function Shell() {
         <Route path="/aus/:id" element={<AUDetail />} />
         <Route path="/variety" element={<Variety />} />
         <Route path="/submit" element={<Submit />} />
-
         <Route path="/game" element={<GameRoom />} />
 
         <Route
@@ -71,7 +92,11 @@ function Shell() {
 
         <Route
           path="/admin"
-          element={<AdminDashboard />}
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
         />
       </Routes>
     </>
