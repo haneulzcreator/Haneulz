@@ -27,42 +27,51 @@ from pydantic import BaseModel, Field, EmailStr
 
 
 # =========================================================
-# ENV
+# ENVIRONMENT
 # =========================================================
 
 ROOT_DIR = Path(__file__).parent
 
 load_dotenv(ROOT_DIR / ".env")
 
-mongo_url = os.environ["MONGO_URL"]
-
-client = AsyncIOMotorClient(mongo_url)
-
-db = client[os.environ["DB_NAME"]]
-
+MONGO_URL = os.environ["MONGO_URL"]
+DB_NAME = os.environ["DB_NAME"]
 JWT_SECRET = os.environ["JWT_SECRET"]
+
 JWT_ALGORITHM = "HS256"
+
+client = AsyncIOMotorClient(MONGO_URL)
+db = client[DB_NAME]
 
 
 # =========================================================
 # APP
 # =========================================================
 
-app = FastAPI()
-
-security = HTTPBearer()
+app = FastAPI(
+    title="HANEULZ API",
+    version="1.0.0"
+)
 
 api_router = APIRouter(prefix="/api")
+
+security = HTTPBearer()
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
 # =========================================================
-# FILE UPLOAD SETUP
+# STATIC UPLOADS
 # =========================================================
 
-UPLOAD_DIR = ROOT_DIR / "static" / "uploads"
+STATIC_DIR = ROOT_DIR / "static"
+UPLOAD_DIR = STATIC_DIR / "uploads"
+
+STATIC_DIR.mkdir(
+    parents=True,
+    exist_ok=True
+)
 
 UPLOAD_DIR.mkdir(
     parents=True,
@@ -71,7 +80,7 @@ UPLOAD_DIR.mkdir(
 
 app.mount(
     "/static",
-    StaticFiles(directory=ROOT_DIR / "static"),
+    StaticFiles(directory=STATIC_DIR),
     name="static"
 )
 
@@ -80,16 +89,13 @@ app.mount(
 # HELPERS
 # =========================================================
 
-def now_iso():
+def now_iso() -> str:
     return datetime.now(
         timezone.utc
     ).isoformat()
 
 
-def youtube_thumbnail(url: str):
-    """
-    Convert common YouTube URLs into a YouTube thumbnail URL.
-    """
+def youtube_thumbnail(url: str) -> Optional[str]:
 
     if not url:
         return None
@@ -113,47 +119,63 @@ def youtube_thumbnail(url: str):
             video_id = match.group(1)
 
             return (
-                f"https://img.youtube.com/vi/"
+                "https://img.youtube.com/vi/"
                 f"{video_id}/maxresdefault.jpg"
             )
 
     return None
 
 
-async def save_image(image: UploadFile):
+async def save_image(
+    image: Optional[UploadFile]
+) -> Optional[str]:
 
-    if not image:
+    if image is None:
         return None
 
-    original_filename = image.filename or ""
+    if not image.filename:
+        return None
 
-    ext = Path(
-        original_filename
+    extension = Path(
+        image.filename
     ).suffix.lower()
 
+    allowed_extensions = {
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp",
+        ".gif"
+    }
+
+    if extension not in allowed_extensions:
+        extension = ".jpg"
+
     filename = (
-        f"{uuid.uuid4()}{ext}"
+        f"{uuid.uuid4()}"
+        f"{extension}"
     )
 
     file_path = (
         UPLOAD_DIR / filename
     )
 
+    contents = await image.read()
+
     with open(
         file_path,
         "wb"
     ) as buffer:
-
-        buffer.write(
-            await image.read()
-        )
+        buffer.write(contents)
 
     return (
         f"/static/uploads/{filename}"
     )
 
 
-def hash_password(password: str):
+def hash_password(
+    password: str
+) -> str:
 
     return bcrypt.hashpw(
         password.encode("utf-8"),
@@ -164,7 +186,7 @@ def hash_password(password: str):
 def verify_password(
     password: str,
     hashed: str
-):
+) -> bool:
 
     return bcrypt.checkpw(
         password.encode("utf-8"),
@@ -173,9 +195,9 @@ def verify_password(
 
 
 def create_access_token(
-    user_id,
-    email
-):
+    user_id: str,
+    email: str
+) -> str:
 
     payload = {
         "sub": user_id,
@@ -193,8 +215,21 @@ def create_access_token(
     )
 
 
+def clean_document(document):
+
+    if document is None:
+        return None
+
+    document.pop(
+        "_id",
+        None
+    )
+
+    return document
+
+
 # =========================================================
-# AUTH MODEL
+# AUTH
 # =========================================================
 
 class LoginInput(BaseModel):
@@ -203,22 +238,68 @@ class LoginInput(BaseModel):
     password: str
 
 
+async def get_current_admin(
+    credentials: HTTPAuthorizationCredentials = Depends(
+        security
+    )
+):
+
+    token = credentials.credentials
+
+    try:
+
+        payload = jwt.decode(
+            token,
+            JWT_SECRET,
+            algorithms=[JWT_ALGORITHM]
+        )
+
+        email = payload.get("email")
+
+        if not email:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid token"
+            )
+
+        user = await db.users.find_one(
+            {
+                "email": email.lower()
+            }
+        )
+
+        if not user:
+            raise HTTPException(
+                status_code=401,
+                detail="Admin account not found"
+            )
+
+        if user.get("role") != "admin":
+            raise HTTPException(
+                status_code=403,
+                detail="Admin access required"
+            )
+
+        return payload
+
+    except jwt.ExpiredSignatureError:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Token expired"
+        )
+
+    except jwt.InvalidTokenError:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token"
+        )
+
+
 # =========================================================
 # AU MODELS
 # =========================================================
-
-class AUCreate(BaseModel):
-
-    title: str
-    short_description: str = ""
-    full_story: str = ""
-    source_url: str
-    tags: List[str] = Field(
-        default_factory=list
-    )
-    au_type: str = "story"
-    source: str = "other"
-
 
 class AU(BaseModel):
 
@@ -263,210 +344,26 @@ class AU(BaseModel):
     )
 
 
-# =========================================================
-# SITE SETTINGS
-# =========================================================
+class CommentCreate(BaseModel):
 
-class SiteSettings(BaseModel):
+    author_name: str = "Anonymous"
 
-    hero_title: str = "HANEULZ CORNER"
-
-    hero_subtitle: str = (
-        "Your cozy space for all things AHOF & Haneulz"
-    )
-
-    whole_group_title: str = (
-        "NOW, THE WHOLE GROUP"
-    )
-
-    whole_group_desc: str = (
-        "Spotlighting all nine members of AHOF together."
-    )
-
-    about_title: str = "Our Little Corner"
-
-    about_subtitle: str = (
-        "Welcome to Haneulz Corner ☁️💗"
-    )
-
-    about_letter: str = (
-        "Haneulz Corner started as a simple idea "
-        "from one Hansum who just wanted a place "
-        "where everything about HANEULZ could be "
-        "found a little more easily.\n\n"
-        "Like many fans, I often found myself "
-        "scrolling through old bookmarks..."
-    )
-
-    about_signoff_text: str = (
-        "Made with lots of love, late-night ideas, "
-        "and a few too many bookmarks."
-    )
-
-    about_signoff_author: str = (
-        "— K ☁️💗"
-    )
+    text: str
 
 
-# =========================================================
-# VARIETY
-# =========================================================
-
-class VarietyCreate(BaseModel):
-
-    section: str
-
-    category: Optional[str] = None
-
-    show_name: str
-
-    label: Optional[str] = ""
-
-    episode: Optional[str] = ""
-
-    description: str = ""
-
-    thumbnail: Optional[str] = None
-
-    youtube_url: Optional[str] = None
-
-    air_date: Optional[str] = None
-
-
-class Variety(BaseModel):
+class Comment(BaseModel):
 
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4())
     )
 
-    section: str
+    au_id: str
 
-    category: str = ""
+    author_name: str = "Anonymous"
 
-    label: str = ""
+    text: str
 
-    show_name: str
-
-    episode: str = ""
-
-    description: str = ""
-
-    thumbnail: Optional[str] = None
-
-    youtube_url: str = ""
-
-    air_date: str = ""
-
-    featured: bool = False
-
-    created_at: str = Field(
-        default_factory=now_iso
-    )
-
-    updated_at: str = Field(
-        default_factory=now_iso
-    )
-
-
-# =========================================================
-# PLAYLIST
-# =========================================================
-
-class PlaylistItemCreate(BaseModel):
-
-    playlist: str
-
-    title: str
-
-    platform: str
-
-    thumbnail: Optional[str] = None
-
-    url: str
-
-
-class PlaylistItem(BaseModel):
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4())
-    )
-
-    playlist: str
-
-    title: str
-
-    platform: str
-
-    thumbnail: Optional[str] = None
-
-    description: str = ""
-
-    url: str
-
-    created_at: str = Field(
-        default_factory=now_iso
-    )
-
-    updated_at: str = Field(
-        default_factory=now_iso
-    )
-
-
-# =========================================================
-# GAMES
-# =========================================================
-
-class GameCreate(BaseModel):
-
-    title: str
-
-    description: str
-
-    thumbnail: Optional[str] = None
-
-    game_url: str
-
-    category: str = "quiz"
-
-
-class Game(BaseModel):
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4())
-    )
-
-    title: str
-
-    description: str
-
-    thumbnail: Optional[str] = None
-
-    game_url: str
-
-    category: str = "quiz"
-
-    created_at: str = Field(
-        default_factory=now_iso
-    )
-
-    updated_at: str = Field(
-        default_factory=now_iso
-    )
-
-
-# =========================================================
-# MEMORY GAME
-# =========================================================
-
-class MemoryCard(BaseModel):
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4())
-    )
-
-    title: str
-
-    image: str
+    status: str = "pending"
 
     created_at: str = Field(
         default_factory=now_iso
@@ -474,117 +371,7 @@ class MemoryCard(BaseModel):
 
 
 # =========================================================
-# ADMIN AUTH
-# =========================================================
-
-async def get_current_admin(
-    credentials: HTTPAuthorizationCredentials = Depends(security)
-):
-
-    token = credentials.credentials
-
-    try:
-
-        payload = jwt.decode(
-            token,
-            JWT_SECRET,
-            algorithms=[JWT_ALGORITHM]
-        )
-
-        if not payload.get("email"):
-
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid token"
-            )
-
-        return payload
-
-    except jwt.ExpiredSignatureError:
-
-        raise HTTPException(
-            status_code=401,
-            detail="Token expired"
-        )
-
-    except jwt.InvalidTokenError:
-
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid token"
-        )
-
-
-# =========================================================
-# AUTH ROUTES
-# =========================================================
-
-@api_router.post("/auth/login")
-async def login(
-    input: LoginInput
-):
-
-    user = await db.users.find_one(
-        {
-            "email": input.email.lower()
-        }
-    )
-
-    if not user:
-
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
-        )
-
-    if not verify_password(
-        input.password,
-        user["password_hash"]
-    ):
-
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
-        )
-
-    token = create_access_token(
-        user["id"],
-        user["email"]
-    )
-
-    return {
-
-        "token": token,
-
-        "user": {
-
-            "email": user["email"],
-
-            "name": user.get(
-                "name",
-                "Admin"
-            ),
-
-            "role": user.get(
-                "role",
-                "admin"
-            )
-
-        }
-
-    }
-
-
-@api_router.get("/auth/me")
-async def me(
-    admin: dict = Depends(get_current_admin)
-):
-
-    return admin
-
-
-# =========================================================
-# AU ROUTES
+# AU SUBMISSION
 # =========================================================
 
 @api_router.post(
@@ -601,15 +388,36 @@ async def submit_au(
 
     full_story: str = Form(""),
 
-    source_url: str = Form(...),
+    source_url: str = Form(""),
 
     au_type: str = Form("story"),
 
     source: str = Form("other"),
 
-    image: UploadFile = File(None)
+    tags: str = Form(""),
+
+    image: Optional[UploadFile] = File(None)
 
 ):
+
+    title = title.strip()
+
+    if not title:
+
+        raise HTTPException(
+            status_code=400,
+            detail="Title is required"
+        )
+
+    parsed_tags = []
+
+    if tags:
+
+        parsed_tags = [
+            tag.strip()
+            for tag in tags.split(",")
+            if tag.strip()
+        ]
 
     cover_image = None
 
@@ -628,15 +436,30 @@ async def submit_au(
             or "Anonymous"
         ),
 
-        short_description=short_description,
+        short_description=(
+            short_description.strip()
+        ),
 
         full_story=full_story,
 
-        source_url=source_url,
+        source_url=(
+            source_url.strip()
+            or None
+        ),
 
-        au_type=au_type,
+        tags=parsed_tags,
 
-        source=source,
+        au_type=(
+            au_type.strip()
+            or "story"
+        ),
+
+        source=(
+            source.strip()
+            or "other"
+        ),
+
+        status="pending",
 
         cover_image_url=cover_image
 
@@ -648,6 +471,10 @@ async def submit_au(
 
     return au
 
+
+# =========================================================
+# PUBLIC AU LIST
+# =========================================================
 
 @api_router.get(
     "/aus",
@@ -666,11 +493,9 @@ async def list_aus(
     }
 
     if au_type:
-
         query["au_type"] = au_type
 
     if source:
-
         query["source"] = source
 
     docs = await db.aus.find(
@@ -685,6 +510,10 @@ async def list_aus(
 
     return docs
 
+
+# =========================================================
+# SINGLE PUBLIC AU
+# =========================================================
 
 @api_router.get(
     "/aus/{au_id}",
@@ -713,6 +542,10 @@ async def get_au(
 
     return doc
 
+
+# =========================================================
+# LIKE AU
+# =========================================================
 
 @api_router.post(
     "/aus/{au_id}/like"
@@ -753,39 +586,16 @@ async def like_au(
     )
 
     return {
-        "likes": doc["likes"]
+        "likes": doc.get(
+            "likes",
+            0
+        )
     }
 
 
 # =========================================================
 # COMMENTS
 # =========================================================
-
-class CommentCreate(BaseModel):
-
-    author_name: str = "Anonymous"
-
-    text: str
-
-
-class Comment(BaseModel):
-
-    id: str = Field(
-        default_factory=lambda: str(uuid.uuid4())
-    )
-
-    au_id: str
-
-    author_name: str = "Anonymous"
-
-    text: str
-
-    status: str = "pending"
-
-    created_at: str = Field(
-        default_factory=now_iso
-    )
-
 
 @api_router.post(
     "/aus/{au_id}/comments",
@@ -801,7 +611,8 @@ async def submit_comment(
 
     au = await db.aus.find_one(
         {
-            "id": au_id
+            "id": au_id,
+            "status": "approved"
         }
     )
 
@@ -813,8 +624,18 @@ async def submit_comment(
         )
 
     comment = Comment(
+
         au_id=au_id,
-        **input.model_dump()
+
+        author_name=(
+            input.author_name.strip()
+            or "Anonymous"
+        ),
+
+        text=input.text.strip(),
+
+        status="pending"
+
     )
 
     await db.comments.insert_one(
@@ -824,18 +645,18 @@ async def submit_comment(
     return comment
 
 
-# =========================================================
-# VARIETY PUBLIC ROUTE
-# =========================================================
-
 @api_router.get(
-    "/variety",
-    response_model=List[Variety]
+    "/aus/{au_id}/comments"
 )
-async def list_variety():
+async def get_comments(
+    au_id: str
+):
 
-    docs = await db.variety.find(
-        {},
+    docs = await db.comments.find(
+        {
+            "au_id": au_id,
+            "status": "approved"
+        },
         {
             "_id": 0
         }
@@ -848,7 +669,7 @@ async def list_variety():
 
 
 # =========================================================
-# ADMIN AU ROUTES
+# ADMIN AU LIST
 # =========================================================
 
 @api_router.get(
@@ -868,7 +689,6 @@ async def admin_list_aus(
     query = {}
 
     if status:
-
         query["status"] = status
 
     docs = await db.aus.find(
@@ -883,6 +703,10 @@ async def admin_list_aus(
 
     return docs
 
+
+# =========================================================
+# ADMIN AU STATUS
+# =========================================================
 
 @api_router.patch(
     "/admin/aus/{au_id}"
@@ -903,11 +727,11 @@ async def admin_update_au(
         "status"
     )
 
-    if new_status not in (
+    if new_status not in {
         "approved",
         "rejected",
         "pending"
-    ):
+    }:
 
         raise HTTPException(
             status_code=400,
@@ -938,9 +762,14 @@ async def admin_update_au(
 
     return {
         "ok": True,
+        "id": au_id,
         "status": new_status
     }
 
+
+# =========================================================
+# ADMIN EDIT AU
+# =========================================================
 
 @api_router.put(
     "/admin/aus/{au_id}",
@@ -958,13 +787,15 @@ async def admin_edit_au(
 
     full_story: str = Form(""),
 
-    source_url: str = Form(...),
+    source_url: str = Form(""),
 
     au_type: str = Form("story"),
 
     source: str = Form("other"),
 
-    image: UploadFile = File(None),
+    tags: str = Form(""),
+
+    image: Optional[UploadFile] = File(None),
 
     admin: dict = Depends(
         get_current_admin
@@ -972,24 +803,47 @@ async def admin_edit_au(
 
 ):
 
+    parsed_tags = []
+
+    if tags:
+
+        parsed_tags = [
+            tag.strip()
+            for tag in tags.split(",")
+            if tag.strip()
+        ]
+
     data = {
 
-        "title": title,
+        "title": title.strip(),
 
         "author_name": (
             author_name.strip()
             or "Anonymous"
         ),
 
-        "short_description": short_description,
+        "short_description": (
+            short_description.strip()
+        ),
 
         "full_story": full_story,
 
-        "source_url": source_url,
+        "source_url": (
+            source_url.strip()
+            or None
+        ),
 
-        "au_type": au_type,
+        "au_type": (
+            au_type.strip()
+            or "story"
+        ),
 
-        "source": source,
+        "source": (
+            source.strip()
+            or "other"
+        ),
+
+        "tags": parsed_tags,
 
         "updated_at": now_iso()
 
@@ -1003,9 +857,9 @@ async def admin_edit_au(
 
         if uploaded_image:
 
-            data["cover_image_url"] = (
-                uploaded_image
-            )
+            data[
+                "cover_image_url"
+            ] = uploaded_image
 
     result = await db.aus.update_one(
 
@@ -1026,7 +880,7 @@ async def admin_edit_au(
             detail="AU not found"
         )
 
-    return await db.aus.find_one(
+    updated = await db.aus.find_one(
         {
             "id": au_id
         },
@@ -1035,6 +889,12 @@ async def admin_edit_au(
         }
     )
 
+    return updated
+
+
+# =========================================================
+# ADMIN DELETE AU
+# =========================================================
 
 @api_router.delete(
     "/admin/aus/{au_id}"
@@ -1094,7 +954,6 @@ async def admin_list_comments(
     query = {}
 
     if status:
-
         query["status"] = status
 
     docs = await db.comments.find(
@@ -1129,11 +988,11 @@ async def admin_update_comment(
         "status"
     )
 
-    if new_status not in (
+    if new_status not in {
         "approved",
         "rejected",
         "pending"
-    ):
+    }:
 
         raise HTTPException(
             status_code=400,
@@ -1199,8 +1058,62 @@ async def admin_delete_comment(
 
 
 # =========================================================
-# ADMIN VARIETY
+# VARIETY
 # =========================================================
+
+class Variety(BaseModel):
+
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4())
+    )
+
+    section: str
+
+    category: str = ""
+
+    show_name: str
+
+    label: str = ""
+
+    episode: str = ""
+
+    description: str = ""
+
+    thumbnail: Optional[str] = None
+
+    youtube_url: str = ""
+
+    air_date: str = ""
+
+    featured: bool = False
+
+    created_at: str = Field(
+        default_factory=now_iso
+    )
+
+    updated_at: str = Field(
+        default_factory=now_iso
+    )
+
+
+@api_router.get(
+    "/variety",
+    response_model=List[Variety]
+)
+async def list_variety():
+
+    docs = await db.variety.find(
+        {},
+        {
+            "_id": 0
+        }
+    ).sort(
+        "created_at",
+        -1
+    ).to_list(500)
+
+    return docs
+
 
 @api_router.post(
     "/admin/variety",
@@ -1224,7 +1137,7 @@ async def admin_create_variety(
 
     air_date: str = Form(""),
 
-    image: UploadFile = File(None),
+    image: Optional[UploadFile] = File(None),
 
     admin: dict = Depends(
         get_current_admin
@@ -1248,8 +1161,6 @@ async def admin_create_variety(
 
     variety = Variety(
 
-        id=str(uuid.uuid4()),
-
         section=section,
 
         category=category,
@@ -1262,11 +1173,11 @@ async def admin_create_variety(
 
         description=description,
 
+        thumbnail=thumbnail,
+
         youtube_url=youtube_url,
 
-        air_date=air_date,
-
-        thumbnail=thumbnail
+        air_date=air_date
 
     )
 
@@ -1301,7 +1212,7 @@ async def admin_update_variety(
 
     air_date: str = Form(""),
 
-    image: UploadFile = File(None),
+    image: Optional[UploadFile] = File(None),
 
     admin: dict = Depends(
         get_current_admin
@@ -1333,13 +1244,17 @@ async def admin_update_variety(
 
     if image:
 
-        data["thumbnail"] = await save_image(
+        data[
+            "thumbnail"
+        ] = await save_image(
             image
         )
 
     elif youtube_url:
 
-        data["thumbnail"] = youtube_thumbnail(
+        data[
+            "thumbnail"
+        ] = youtube_thumbnail(
             youtube_url
         )
 
@@ -1362,7 +1277,7 @@ async def admin_update_variety(
             detail="Variety video not found"
         )
 
-    updated = await db.variety.find_one(
+    return await db.variety.find_one(
         {
             "id": variety_id
         },
@@ -1370,8 +1285,6 @@ async def admin_update_variety(
             "_id": 0
         }
     )
-
-    return updated
 
 
 @api_router.delete(
@@ -1409,19 +1322,6 @@ async def admin_delete_variety(
 # FAN POSTS
 # =========================================================
 
-class FanPostCreate(BaseModel):
-
-    category: str
-
-    platform: str
-
-    thumbnail: str
-
-    url: str
-
-    caption: str = ""
-
-
 class FanPost(BaseModel):
 
     id: str = Field(
@@ -1443,6 +1343,19 @@ class FanPost(BaseModel):
     )
 
 
+class FanPostCreate(BaseModel):
+
+    category: str
+
+    platform: str
+
+    thumbnail: str
+
+    url: str
+
+    caption: str = ""
+
+
 @api_router.get(
     "/fanposts/{category}"
 )
@@ -1450,7 +1363,7 @@ async def get_fan_posts(
     category: str
 ):
 
-    posts = await db.fanposts.find(
+    return await db.fanposts.find(
         {
             "category": category
         },
@@ -1461,8 +1374,6 @@ async def get_fan_posts(
         "created_at",
         -1
     ).to_list(500)
-
-    return posts
 
 
 @api_router.post(
@@ -1518,6 +1429,46 @@ async def admin_delete_fan_post(
 # PLAYLIST
 # =========================================================
 
+class PlaylistItem(BaseModel):
+
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4())
+    )
+
+    playlist: str
+
+    title: str
+
+    platform: str
+
+    thumbnail: Optional[str] = None
+
+    description: str = ""
+
+    url: str
+
+    created_at: str = Field(
+        default_factory=now_iso
+    )
+
+    updated_at: str = Field(
+        default_factory=now_iso
+    )
+
+
+class PlaylistItemCreate(BaseModel):
+
+    playlist: str
+
+    title: str
+
+    platform: str
+
+    thumbnail: Optional[str] = None
+
+    url: str
+
+
 @api_router.get(
     "/playlists/{playlist}"
 )
@@ -1525,7 +1476,7 @@ async def get_playlist(
     playlist: str
 ):
 
-    docs = await db.playlists.find(
+    return await db.playlists.find(
         {
             "playlist": playlist
         },
@@ -1536,8 +1487,6 @@ async def get_playlist(
         "created_at",
         -1
     ).to_list(500)
-
-    return docs
 
 
 @api_router.post(
@@ -1593,13 +1542,51 @@ async def admin_delete_playlist_item(
 # GAMES
 # =========================================================
 
+class Game(BaseModel):
+
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4())
+    )
+
+    title: str
+
+    description: str
+
+    thumbnail: Optional[str] = None
+
+    game_url: str
+
+    category: str = "quiz"
+
+    created_at: str = Field(
+        default_factory=now_iso
+    )
+
+    updated_at: str = Field(
+        default_factory=now_iso
+    )
+
+
+class GameCreate(BaseModel):
+
+    title: str
+
+    description: str
+
+    thumbnail: Optional[str] = None
+
+    game_url: str
+
+    category: str = "quiz"
+
+
 @api_router.get(
     "/games",
     response_model=List[Game]
 )
 async def get_games():
 
-    docs = await db.games.find(
+    return await db.games.find(
         {},
         {
             "_id": 0
@@ -1608,8 +1595,6 @@ async def get_games():
         "created_at",
         -1
     ).to_list(500)
-
-    return docs
 
 
 @api_router.post(
@@ -1718,15 +1703,30 @@ async def admin_delete_game(
 
 
 # =========================================================
-# MEMORY GAME
+# MEMORY CARDS
 # =========================================================
+
+class MemoryCard(BaseModel):
+
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4())
+    )
+
+    title: str
+
+    image: str
+
+    created_at: str = Field(
+        default_factory=now_iso
+    )
+
 
 @api_router.get(
     "/memory-cards"
 )
 async def get_memory_cards():
 
-    cards = await db.memory_cards.find(
+    return await db.memory_cards.find(
         {},
         {
             "_id": 0
@@ -1735,8 +1735,6 @@ async def get_memory_cards():
         "created_at",
         -1
     ).to_list(500)
-
-    return cards
 
 
 @api_router.post(
@@ -1809,8 +1807,47 @@ async def admin_delete_memory_card(
 
 
 # =========================================================
-# SITE SETTINGS
+# SETTINGS
 # =========================================================
+
+class SiteSettings(BaseModel):
+
+    hero_title: str = "HANEULZ CORNER"
+
+    hero_subtitle: str = (
+        "Your cozy space for all things AHOF & Haneulz"
+    )
+
+    whole_group_title: str = (
+        "NOW, THE WHOLE GROUP"
+    )
+
+    whole_group_desc: str = (
+        "Spotlighting all nine members of AHOF together."
+    )
+
+    about_title: str = "Our Little Corner"
+
+    about_subtitle: str = (
+        "Welcome to Haneulz Corner ☁️💗"
+    )
+
+    about_letter: str = (
+        "Haneulz Corner started as a simple idea "
+        "from one Hansum who just wanted a place "
+        "where everything about HANEULZ could be "
+        "found a little more easily."
+    )
+
+    about_signoff_text: str = (
+        "Made with lots of love, late-night ideas, "
+        "and a few too many bookmarks."
+    )
+
+    about_signoff_author: str = (
+        "— K ☁️💗"
+    )
+
 
 @api_router.get(
     "/settings"
@@ -1826,65 +1863,26 @@ async def get_settings():
         }
     )
 
-    if not settings:
+    if settings:
+        return settings
 
-        default_settings = {
+    defaults = SiteSettings().model_dump()
 
-            "hero_title": "HANEULZ CORNER",
+    await db.settings.update_one(
 
-            "hero_subtitle": (
-                "Your cozy space for all things "
-                "AHOF & Haneulz"
-            ),
+        {
+            "_id": "site_content"
+        },
 
-            "whole_group_title": (
-                "NOW, THE WHOLE GROUP"
-            ),
+        {
+            "$set": defaults
+        },
 
-            "whole_group_desc": (
-                "Spotlighting all nine members "
-                "of AHOF together."
-            ),
+        upsert=True
 
-            "about_title": (
-                "Our Little Corner"
-            ),
+    )
 
-            "about_subtitle": (
-                "Welcome to Haneulz Corner ☁️💗"
-            ),
-
-            "about_letter": (
-                "Haneulz Corner started as a simple "
-                "idea from one Hansum who just wanted "
-                "a place where everything about HANEULZ "
-                "could be found a little more easily."
-                "\n\n"
-                "Like many fans, I often found myself "
-                "scrolling through old bookmarks..."
-            ),
-
-            "about_signoff_text": (
-                "Made with lots of love, late-night "
-                "ideas, and a few too many bookmarks."
-            ),
-
-            "about_signoff_author": (
-                "— K ☁️💗"
-            )
-
-        }
-
-        await db.settings.insert_one(
-            {
-                "_id": "site_content",
-                **default_settings
-            }
-        )
-
-        return default_settings
-
-    return settings
+    return defaults
 
 
 @api_router.post(
@@ -1917,25 +1915,8 @@ async def update_settings(
     )
 
     return {
-
-        "message": (
-            "Settings updated successfully! ☁️💗"
-        ),
-
+        "message": "Settings updated successfully",
         "settings": data
-
-    }
-
-
-# =========================================================
-# ROOT
-# =========================================================
-
-@api_router.get("/")
-async def root():
-
-    return {
-        "message": "HANEULZ API"
     }
 
 
@@ -1956,53 +1937,109 @@ async def upload_thumbnail(
 
 ):
 
-    try:
+    image_url = await save_image(
+        file
+    )
 
-        original_filename = (
-            file.filename or ""
-        )
-
-        file_extension = Path(
-            original_filename
-        ).suffix.lower()
-
-        unique_filename = (
-            f"{uuid.uuid4()}{file_extension}"
-        )
-
-        file_path = (
-            UPLOAD_DIR / unique_filename
-        )
-
-        with open(
-            file_path,
-            "wb"
-        ) as buffer:
-
-            buffer.write(
-                await file.read()
-            )
-
-        return {
-            "url": (
-                f"/static/uploads/"
-                f"{unique_filename}"
-            )
-        }
-
-    except Exception as e:
-
-        logger.exception(
-            "Failed to upload image"
-        )
+    if not image_url:
 
         raise HTTPException(
-            status_code=500,
-            detail=(
-                "Failed to upload image: "
-                f"{str(e)}"
-            )
+            status_code=400,
+            detail="Image upload failed"
         )
+
+    return {
+        "url": image_url
+    }
+
+
+# =========================================================
+# AUTH ROUTES
+# =========================================================
+
+@api_router.post(
+    "/auth/login"
+)
+async def login(
+    input: LoginInput
+):
+
+    email = input.email.lower()
+
+    user = await db.users.find_one(
+        {
+            "email": email
+        }
+    )
+
+    if not user:
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    if not verify_password(
+        input.password,
+        user["password_hash"]
+    ):
+
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
+
+    token = create_access_token(
+        user["id"],
+        user["email"]
+    )
+
+    return {
+
+        "token": token,
+
+        "user": {
+
+            "email": user["email"],
+
+            "name": user.get(
+                "name",
+                "Admin"
+            ),
+
+            "role": user.get(
+                "role",
+                "admin"
+            )
+
+        }
+
+    }
+
+
+@api_router.get(
+    "/auth/me"
+)
+async def me(
+    admin: dict = Depends(
+        get_current_admin
+    )
+):
+
+    return admin
+
+
+# =========================================================
+# ROOT
+# =========================================================
+
+@api_router.get("/")
+async def root():
+
+    return {
+        "message": "HANEULZ API",
+        "status": "online"
+    }
 
 
 # =========================================================
@@ -2037,15 +2074,17 @@ else:
 
 
 app.add_middleware(
+
     CORSMiddleware,
 
-    allow_credentials=True,
-
     allow_origins=allowed_origins,
+
+    allow_credentials=True,
 
     allow_methods=["*"],
 
     allow_headers=["*"]
+
 )
 
 
