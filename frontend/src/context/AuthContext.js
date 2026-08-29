@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
     let cancelled = false;
     const restoreSession = async () => {
       const token = localStorage.getItem(TOKEN_KEY);
+      // No saved token
       if (!token) {
         if (!cancelled) {
           setAdmin(false);
@@ -24,9 +25,11 @@ export function AuthProvider({ children }) {
         }
         return;
       }
+      // Set token on Axios immediately
       api.defaults.headers.common.Authorization =
         `Bearer ${token}`;
       try {
+        // Verify saved token with backend
         const response = await api.get("/auth/me");
         if (cancelled) return;
         setAdmin(response.data);
@@ -36,6 +39,7 @@ export function AuthProvider({ children }) {
           error.response?.data || error.message
         );
         if (cancelled) return;
+        // Saved token is invalid/expired
         localStorage.removeItem(TOKEN_KEY);
         delete api.defaults.headers.common.Authorization;
         setAdmin(false);
@@ -59,27 +63,30 @@ export function AuthProvider({ children }) {
       password,
     });
     const data = response.data;
+    // Make sure backend actually returned a token
     if (!data?.token) {
       throw new Error(
         "Login succeeded but no token was returned."
       );
     }
     // Save token
-    localStorage.setItem(TOKEN_KEY, data.token);
-    // Set Axios authorization immediately
+    localStorage.setItem(
+      TOKEN_KEY,
+      data.token
+    );
+    // Set Axios default authorization
     api.defaults.headers.common.Authorization =
       `Bearer ${data.token}`;
-    // Use the user returned by login.
-    // Do NOT require /auth/me to complete login.
-    const loggedInAdmin =
-      data.user ||
-      data.admin ||
-      {
+    // Use the user returned from login
+    setAdmin(
+      data.user || {
         email,
-      };
-    setAdmin(loggedInAdmin);
+        role: "admin",
+        name: "Admin",
+      }
+    );
     setReady(true);
-    return loggedInAdmin;
+    return data.user;
   };
   // =========================================================
   // LOGOUT
