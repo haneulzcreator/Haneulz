@@ -30,7 +30,9 @@ function ScrollTop() {
 }
 function Shell() {
   const { pathname } = useLocation();
-  const hideNav = pathname === "/admin/login";
+  const hideNav =
+    pathname === "/admin/login" ||
+    pathname === "/admin";
   return (
     <>
       {!hideNav && <Nav />}
@@ -113,11 +115,11 @@ function App() {
           smoothWheel: true,
         }}
       >
-        <AuthProvider>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AuthProvider>
             <Shell />
-          </BrowserRouter>
-        </AuthProvider>
+          </AuthProvider>
+        </BrowserRouter>
       </ReactLenis>
     </div>
   );
