@@ -1152,12 +1152,13 @@ async def update_settings(
 # =========================================================
 # STORY IMAGE UPLOAD
 # =========================================================
+
 @api_router.post(
-    "/admin/story-images",
+    "/admin/story-images/{setting_key}",
 )
 async def upload_story_image(
-    file: UploadFile = File(...),
-    setting_key: str = Form(...),
+    setting_key: str,
+    image: UploadFile = File(...),
     admin: dict = Depends(get_current_admin),
 ):
     if setting_key not in STORY_IMAGE_FIELDS:
@@ -1165,12 +1166,15 @@ async def upload_story_image(
             status_code=400,
             detail="Invalid story image field",
         )
-    image_url = await save_image(file)
+
+    image_url = await save_image(image)
+
     if not image_url:
         raise HTTPException(
             status_code=400,
             detail="Image upload failed",
         )
+
     await db.settings.update_one(
         {"_id": "site_content"},
         {
@@ -1180,11 +1184,14 @@ async def upload_story_image(
         },
         upsert=True,
     )
+
     return {
         "ok": True,
         "field": setting_key,
         "url": image_url,
     }
+
+
 @api_router.delete(
     "/admin/story-images/{field_name}",
 )
@@ -1197,6 +1204,7 @@ async def delete_story_image(
             status_code=400,
             detail="Invalid story image field",
         )
+
     await db.settings.update_one(
         {"_id": "site_content"},
         {
@@ -1206,6 +1214,7 @@ async def delete_story_image(
         },
         upsert=True,
     )
+
     return {
         "ok": True,
         "field": field_name,
