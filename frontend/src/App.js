@@ -10,7 +10,6 @@ import { ReactLenis } from "lenis/react";
 import { Toaster } from "sonner";
 import { useEffect } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
-
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -23,20 +22,16 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AboutWebsite from "./pages/AboutWebsite";
 import OurLittleCorner from "./pages/OurLittleCorner";
 import GameRoom from "./pages/GameRoom";
-
+import JLStory from "./pages/JLStory";
 function ScrollTop() {
   const { pathname } = useLocation();
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
-
   return null;
 }
-
 function AdminRoute({ children }) {
   const { admin, ready } = useAuth();
-
   // Don't render ANY admin page until authentication is known.
   if (!ready) {
     return (
@@ -45,27 +40,20 @@ function AdminRoute({ children }) {
       </div>
     );
   }
-
   // Not logged in → redirect before rendering dashboard.
   if (!admin) {
     return <Navigate to="/admin/login" replace />;
   }
-
   return children;
 }
-
 function Shell() {
   const { pathname } = useLocation();
-
   // Hide public navigation on every admin page.
   const isAdminPage = pathname.startsWith("/admin");
-
   return (
     <>
       {!isAdminPage && <Nav />}
-
       <ScrollTop />
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -74,22 +62,22 @@ function Shell() {
         <Route path="/variety" element={<Variety />} />
         <Route path="/submit" element={<Submit />} />
         <Route path="/game" element={<GameRoom />} />
-
         <Route
           path="/our-little-corner"
           element={<OurLittleCorner />}
         />
-
         <Route
           path="/about-haneulz"
           element={<AboutWebsite />}
         />
-
+        <Route
+          path="/jl-story"
+          element={<JLStory />}
+        />
         <Route
           path="/admin/login"
           element={<AdminLogin />}
         />
-
         <Route
           path="/admin"
           element={
@@ -102,7 +90,6 @@ function Shell() {
     </>
   );
 }
-
 function App() {
   return (
     <BrowserRouter>
@@ -112,7 +99,6 @@ function App() {
             position="top-center"
             richColors
           />
-
           <ReactLenis
             root
             options={{
@@ -127,5 +113,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;
