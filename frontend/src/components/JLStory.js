@@ -11,16 +11,12 @@ export default function JLStory() {
   const [photoCount, setPhotoCount] = useState(9);
   /*
     ============================================================
-    JL PROFILE & STORY COVER PHOTOS
+    JL PROFILE PHOTO
     ============================================================
-    JL Story Cover:
-    The wide cover image displayed inside the JL Profile section.
-    JL Profile Photo:
-    JL's profile/portrait image displayed underneath the cover.
-    Replace the placeholder URLs with your actual image URLs
-    when the images are available.
+    Replace this with the direct URL of JL's profile picture.
+    Example:
+    const jlProfilePhoto = "https://your-image-url.com/jl.jpg";
   */
-  const jlStoryCover = "YOUR_JL_STORY_COVER_IMAGE_URL";
   const jlProfilePhoto = "YOUR_JL_PROFILE_IMAGE_URL";
   /*
     ============================================================
@@ -64,6 +60,7 @@ export default function JLStory() {
       image: "https://example.com/photo.jpg",
       link: "https://x.com/example/status/123456789"
     }
+    You can use X, TikTok, Instagram, etc.
   */
   const photos = [
     {
@@ -234,6 +231,29 @@ export default function JLStory() {
         </div>
       </section>
       {/* =====================================================
+          HERO PHOTO
+      ===================================================== */}
+      <section className="px-5 sm:px-10 md:px-16 lg:px-24">
+        <div className="relative">
+          <div className="absolute -inset-4 rounded-[3rem] bg-[#765bd6]/10 blur-3xl" />
+          <div className="relative aspect-[16/9] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045]">
+            {jlProfilePhoto &&
+            jlProfilePhoto !== "YOUR_JL_PROFILE_IMAGE_URL" ? (
+              <img
+                src={jlProfilePhoto}
+                alt="JL"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <ImagePlaceholder
+                label="JL"
+                large
+              />
+            )}
+          </div>
+        </div>
+      </section>
+      {/* =====================================================
           PROFILE
       ===================================================== */}
       <section className="px-6 py-20 sm:px-10 md:px-16 lg:px-24">
@@ -242,78 +262,31 @@ export default function JLStory() {
           eyebrow="the basics"
           title="Profile"
         />
-        {/* =================================================
-            JL STORY COVER
-        ================================================= */}
-        <div className="mt-10">
-          <div className="relative">
-            <div className="absolute -inset-4 rounded-[3rem] bg-[#765bd6]/10 blur-3xl" />
-            <div className="relative aspect-[16/7] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045]">
-              {jlStoryCover &&
-              jlStoryCover !== "YOUR_JL_STORY_COVER_IMAGE_URL" ? (
-                <img
-                  src={jlStoryCover}
-                  alt="JL Story Cover"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <ImagePlaceholder
-                  label="JL STORY COVER"
-                  large
-                />
-              )}
-            </div>
-          </div>
-        </div>
-        {/* =================================================
-            PROFILE PHOTO + INFORMATION
-        ================================================= */}
-        <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr] lg:items-start">
-          {/* PROFILE PHOTO */}
-          <div className="relative">
-            <div className="absolute -inset-3 rounded-[2.5rem] bg-[#e89ab8]/10 blur-2xl" />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045]">
-              {jlProfilePhoto &&
-              jlProfilePhoto !== "YOUR_JL_PROFILE_IMAGE_URL" ? (
-                <img
-                  src={jlProfilePhoto}
-                  alt="JL"
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <ImagePlaceholder
-                  label="JL PROFILE PHOTO"
-                />
-              )}
-            </div>
-          </div>
-          {/* PROFILE INFORMATION */}
-          <div className="grid gap-px overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 sm:grid-cols-2">
-            <ProfileItem
-              label="Full Name"
-              value={profile.fullName}
-            />
-            <ProfileItem
-              label="Known As"
-              value={profile.knownAs}
-            />
-            <ProfileItem
-              label="Nicknames"
-              value={profile.nicknames}
-            />
-            <ProfileItem
-              label="Birthday"
-              value={profile.birthday}
-            />
-            <ProfileItem
-              label="Nationality"
-              value={profile.nationality}
-            />
-            <ProfileItem
-              label="Hobbies"
-              value={profile.hobbies}
-            />
-          </div>
+        <div className="mt-10 grid gap-px overflow-hidden rounded-[2rem] border border-white/10 bg-white/10 sm:grid-cols-2">
+          <ProfileItem
+            label="Full Name"
+            value={profile.fullName}
+          />
+          <ProfileItem
+            label="Known As"
+            value={profile.knownAs}
+          />
+          <ProfileItem
+            label="Nicknames"
+            value={profile.nicknames}
+          />
+          <ProfileItem
+            label="Birthday"
+            value={profile.birthday}
+          />
+          <ProfileItem
+            label="Nationality"
+            value={profile.nationality}
+          />
+          <ProfileItem
+            label="Hobbies"
+            value={profile.hobbies}
+          />
         </div>
       </section>
       {/* =====================================================
