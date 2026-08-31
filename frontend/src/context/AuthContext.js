@@ -8,7 +8,7 @@ import { api } from "../lib/api";
 const AuthContext = createContext(null);
 const TOKEN_KEY = "haneulz_token";
 export function AuthProvider({ children }) {
-  // null = still checking
+  // null = still checking authentication
   // false = definitely not logged in
   // object = logged in
   const [admin, setAdmin] = useState(null);
@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
     let cancelled = false;
     const restoreSession = async () => {
       const token = localStorage.getItem(TOKEN_KEY);
-      // No token = not logged in
+      // No saved token
       if (!token) {
         if (!cancelled) {
           setAdmin(false);
@@ -25,41 +25,23 @@ export function AuthProvider({ children }) {
         }
         return;
       }
-      // Attach saved token
+      // Attach saved token before checking session
       api.defaults.headers.common.Authorization =
         `Bearer ${token}`;
       try {
         const response = await api.get("/auth/me");
         if (cancelled) return;
         setAdmin(response.data);
-     } catch (error) {
-  console.error(
-    "AUTH SESSION ERROR:",
-    error.response?.status,
-    error.response?.data || error.message
-  );
-
-  if (cancelled) return;
-
-  // Only remove the token if the backend
-  // explicitly says the token is invalid.
-  if (
-    error.response?.status === 401 ||
-    error.response?.status === 403
-  ) {
-    localStorage.removeItem(TOKEN_KEY);
-    delete api.defaults.headers.common.Authorization;
-    setAdmin(false);
-  } else {
-    // Keep the session for temporary errors.
-    setAdmin({
-      email: "Admin",
-      role: "admin",
-      name: "Admin",
-    });
-  }
-}
-      finally {
+      } catch (error) {
+        console.error(
+          "AUTH SESSION ERROR:",
+          error.response?.data || error.message
+        );
+        if (cancelled) return;
+        localStorage.removeItem(TOKEN_KEY);
+        delete api.defaults.headers.common.Authorization;
+        setAdmin(false);
+      } finally {
         if (!cancelled) {
           setReady(true);
         }
