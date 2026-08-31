@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import {
   Check,
   X,
@@ -13,18 +13,15 @@ import {
 import { toast } from "sonner";
 import { api } from "../lib/api";
 import { useAuth } from "../context/AuthContext";
-
 // =========================================================
 // STATUS PILL
 // =========================================================
-
 function StatusPill({ status }) {
   const map = {
     pending: "bg-[color:var(--blue)]",
     approved: "bg-[color:var(--pink)]",
     rejected: "bg-[color:var(--line)]",
   };
-
   return (
     <span
       className={`rounded-full px-3 py-1 text-[0.6rem] uppercase tracking-widest ${
@@ -35,11 +32,9 @@ function StatusPill({ status }) {
     </span>
   );
 }
-
 // =========================================================
 // EMPTY VIDEO FORM
 // =========================================================
-
 const EMPTY_VIDEO_FORM = {
   section: "haneulz",
   category: "han-posts",
@@ -51,11 +46,9 @@ const EMPTY_VIDEO_FORM = {
   youtube_url: "",
   air_date: "",
 };
-
 // =========================================================
 // JL PROFILE
 // =========================================================
-
 const EMPTY_JL_PROFILE = {
   fullName: "Jay Lawrence Gaspar",
   knownAs: "JL",
@@ -72,11 +65,9 @@ const EMPTY_JL_PROFILE = {
   tags: "JL, Yence, Jaeyel",
   facts: ["", "", "", "", ""],
 };
-
 // =========================================================
 // STORY IMAGE FIELDS
 // =========================================================
-
 const STORY_IMAGE_FIELDS = [
   {
     key: "story_cover_image",
@@ -116,237 +107,207 @@ const STORY_IMAGE_FIELDS = [
     ratio: "16:9",
   },
 ];
-
 // =========================================================
 // ADMIN DASHBOARD
 // =========================================================
-
 export default function AdminDashboard() {
   const { admin, ready, logout } = useAuth();
-
+  const navigate = useNavigate();
   // =======================================================
   // TAB
   // =======================================================
-
   const [tab, setTab] = useState("aus");
-
   // =======================================================
   // DATA
   // =======================================================
-
   const [aus, setAus] = useState([]);
   const [comments, setComments] = useState([]);
   const [variety, setVariety] = useState([]);
-
   // =======================================================
   // VARIETY
   // =======================================================
-
   const [editingVariety, setEditingVariety] = useState(null);
   const [videoForm, setVideoForm] = useState({
     ...EMPTY_VIDEO_FORM,
   });
-
   // =======================================================
   // STORY IMAGES
   // =======================================================
-
   const [storyImages, setStoryImages] = useState({});
   const [storyImageFiles, setStoryImageFiles] = useState({});
   const [uploadingStoryImage, setUploadingStoryImage] =
     useState(null);
-
   // =======================================================
   // JL PROFILE
   // =======================================================
-
   const [jlProfile, setJlProfile] = useState({
     ...EMPTY_JL_PROFILE,
     facts: [...EMPTY_JL_PROFILE.facts],
   });
-
   const [savingJlProfile, setSavingJlProfile] = useState(false);
-
+  // =========================================================
+  // AUTH REDIRECT
+  // =========================================================
+  useEffect(() => {
+    if (!ready) return;
+    if (!admin) {
+      navigate("/admin/login", {
+        replace: true,
+      });
+    }
+  }, [ready, admin, navigate]);
   // =========================================================
   // AUTH ERROR HANDLER
   // =========================================================
-
   const handleAuthError = useCallback(
     (error) => {
       if (error?.response?.status === 401) {
         logout();
-
         navigate("/admin/login", {
           replace: true,
         });
-
         return true;
       }
-
       return false;
     },
-    [logout, navigate]
+    [logout]
   );
-
   // =========================================================
   // LOAD AUs
   // =========================================================
-
   const loadAus = useCallback(async () => {
     try {
       const response = await api.get("/admin/aus");
-
-      setAus(Array.isArray(response.data) ? response.data : []);
-
+      setAus(
+        Array.isArray(response.data)
+          ? response.data
+          : []
+      );
       console.log("ADMIN AUs:", response.data);
     } catch (error) {
       console.error(
         "ADMIN AU ERROR:",
         error.response?.data || error.message
       );
-
       handleAuthError(error);
     }
   }, [handleAuthError]);
-
   // =========================================================
   // LOAD COMMENTS
   // =========================================================
-
   const loadComments = useCallback(async () => {
     try {
-      const response = await api.get("/admin/comments");
-
+      const response = await api.get(
+        "/admin/comments"
+      );
       setComments(
-        Array.isArray(response.data) ? response.data : []
+        Array.isArray(response.data)
+          ? response.data
+          : []
       );
     } catch (error) {
       console.error(
         "ADMIN COMMENTS ERROR:",
         error.response?.data || error.message
       );
-
       handleAuthError(error);
     }
   }, [handleAuthError]);
-
   // =========================================================
   // LOAD VARIETY
   // =========================================================
-
   const loadVariety = useCallback(async () => {
     try {
       const response = await api.get("/variety");
-
       setVariety(
-        Array.isArray(response.data) ? response.data : []
+        Array.isArray(response.data)
+          ? response.data
+          : []
       );
-
       console.log("VARIETY:", response.data);
     } catch (error) {
       console.error(
         "VARIETY ERROR:",
         error.response?.data || error.message
       );
-
       handleAuthError(error);
     }
   }, [handleAuthError]);
-
   // =========================================================
   // LOAD STORY IMAGES
   // =========================================================
-
   const loadStoryImages = useCallback(async () => {
     try {
       const response = await api.get("/settings");
-
       const data = response.data || {};
       const loadedImages = {};
-
       STORY_IMAGE_FIELDS.forEach((field) => {
-        loadedImages[field.key] = data[field.key] || "";
+        loadedImages[field.key] =
+          data[field.key] || "";
       });
-
       setStoryImages(loadedImages);
     } catch (error) {
       console.error(
         "STORY IMAGES ERROR:",
         error.response?.data || error.message
       );
-
       handleAuthError(error);
     }
   }, [handleAuthError]);
-
   // =========================================================
   // LOAD JL PROFILE
   // =========================================================
-
   const loadJlProfile = useCallback(async () => {
     try {
-      const response = await api.get("/settings/jl-profile");
-
+      const response = await api.get(
+        "/settings/jl-profile"
+      );
       const data = response.data || {};
-
       setJlProfile({
         fullName:
           data.fullName ??
           data.full_name ??
           EMPTY_JL_PROFILE.fullName,
-
         knownAs:
           data.knownAs ??
           data.known_as ??
           EMPTY_JL_PROFILE.knownAs,
-
         nickname:
           data.nickname ??
           EMPTY_JL_PROFILE.nickname,
-
         alsoKnownAs:
           data.alsoKnownAs ??
           data.also_known_as ??
           EMPTY_JL_PROFILE.alsoKnownAs,
-
         birthday:
           data.birthday ??
           EMPTY_JL_PROFILE.birthday,
-
         nationality:
           data.nationality ??
           EMPTY_JL_PROFILE.nationality,
-
         hobbies:
           data.hobbies ??
           EMPTY_JL_PROFILE.hobbies,
-
         interests:
           data.interests ??
           EMPTY_JL_PROFILE.interests,
-
         favorites:
           data.favorites ??
           EMPTY_JL_PROFILE.favorites,
-
         mbti:
           data.mbti ??
           EMPTY_JL_PROFILE.mbti,
-
         aboutMain:
           data.aboutMain ??
           data.about_main ??
           EMPTY_JL_PROFILE.aboutMain,
-
         aboutSecond:
           data.aboutSecond ??
           data.about_second ??
           EMPTY_JL_PROFILE.aboutSecond,
-
         tags:
           data.tags ??
           EMPTY_JL_PROFILE.tags,
-
         facts: Array.isArray(data.facts)
           ? [
               data.facts[0] || "",
@@ -362,11 +323,9 @@ export default function AdminDashboard() {
         "JL PROFILE LOAD ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) {
         return;
       }
-
       if (error.response?.status === 404) {
         setJlProfile({
           ...EMPTY_JL_PROFILE,
@@ -375,14 +334,11 @@ export default function AdminDashboard() {
       }
     }
   }, [handleAuthError]);
-
   // =========================================================
   // LOAD EVERYTHING
   // =========================================================
-
   const loadAll = useCallback(async () => {
     if (!admin) return;
-
     await Promise.all([
       loadAus(),
       loadComments(),
@@ -398,524 +354,459 @@ export default function AdminDashboard() {
     loadStoryImages,
     loadJlProfile,
   ]);
-
   // =========================================================
   // INITIAL LOAD
   // =========================================================
-
   useEffect(() => {
     if (!ready || !admin) return;
-
     loadAll();
   }, [ready, admin, loadAll]);
-
   // =========================================================
   // AU STATUS
   // =========================================================
-
   const setAuStatus = async (id, status) => {
     try {
       await api.patch(`/admin/aus/${id}`, {
         status,
       });
-
       toast.success(`AU ${status}`);
-
       await loadAus();
     } catch (error) {
       console.error(
         "AU STATUS ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) return;
-
       toast.error(
         error.response?.data?.detail ||
           "Unable to update AU"
       );
     }
   };
-
   // =========================================================
   // DELETE AU
   // =========================================================
-
   const delAu = async (id) => {
     try {
       await api.delete(`/admin/aus/${id}`);
-
       toast.success("AU deleted");
-
       await loadAus();
     } catch (error) {
       console.error(
         "DELETE AU ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) return;
-
       toast.error(
         error.response?.data?.detail ||
           "Unable to delete AU"
       );
     }
   };
-
   // =========================================================
   // COMMENT STATUS
   // =========================================================
-
-  const setCommentStatus = async (id, status) => {
+  const setCommentStatus = async (
+    id,
+    status
+  ) => {
     try {
-      await api.patch(`/admin/comments/${id}`, {
-        status,
-      });
-
+      await api.patch(
+        `/admin/comments/${id}`,
+        {
+          status,
+        }
+      );
       toast.success(`Note ${status}`);
-
       await loadComments();
     } catch (error) {
       console.error(
         "COMMENT STATUS ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) return;
-
       toast.error(
         error.response?.data?.detail ||
           "Unable to update note"
       );
     }
   };
-
   // =========================================================
   // DELETE COMMENT
   // =========================================================
-
   const delComment = async (id) => {
     try {
-      await api.delete(`/admin/comments/${id}`);
-
+      await api.delete(
+        `/admin/comments/${id}`
+      );
       toast.success("Note deleted");
-
       await loadComments();
     } catch (error) {
       console.error(
         "DELETE COMMENT ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) return;
-
       toast.error(
         error.response?.data?.detail ||
           "Unable to delete note"
       );
     }
   };
-
   // =========================================================
   // RESET VIDEO FORM
   // =========================================================
-
   const resetVideoForm = () => {
     setVideoForm({
       ...EMPTY_VIDEO_FORM,
     });
-
     setEditingVariety(null);
   };
-
   // =========================================================
   // HANDLE VIDEO FORM
   // =========================================================
-
-  const updateVideoField = (field, value) => {
+  const updateVideoField = (
+    field,
+    value
+  ) => {
     setVideoForm((previous) => ({
       ...previous,
       [field]: value,
     }));
   };
-
   // =========================================================
   // ADD VARIETY
   // =========================================================
-
   const addVariety = async () => {
     if (!videoForm.show_name.trim()) {
-      toast.error("Show name is required.");
+      toast.error(
+        "Show name is required."
+      );
       return;
     }
-
     try {
       const formData = new FormData();
-
       formData.append(
         "section",
         videoForm.section
       );
-
       formData.append(
         "category",
         videoForm.category
       );
-
       formData.append(
         "label",
         videoForm.label
       );
-
       formData.append(
         "show_name",
         videoForm.show_name
       );
-
       formData.append(
         "episode",
         videoForm.episode
       );
-
       formData.append(
         "description",
         videoForm.description
       );
-
       formData.append(
         "youtube_url",
         videoForm.youtube_url
       );
-
       formData.append(
         "air_date",
         videoForm.air_date
       );
-
       if (videoForm.image) {
         formData.append(
           "image",
           videoForm.image
         );
       }
-
       await api.post(
         "/admin/variety",
         formData
       );
-
-      toast.success("Video added!");
-
+      toast.success(
+        "Video added!"
+      );
       resetVideoForm();
-
       await loadVariety();
     } catch (error) {
       console.error(
         "ADD VARIETY ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) return;
-
       toast.error(
         error.response?.data?.detail ||
           "Unable to add video"
       );
     }
   };
-
   // =========================================================
   // UPDATE VARIETY
   // =========================================================
-
   const updateVariety = async () => {
     if (!editingVariety) return;
-
     try {
       const formData = new FormData();
-
       formData.append(
         "section",
         videoForm.section
       );
-
       formData.append(
         "category",
         videoForm.category
       );
-
       formData.append(
         "label",
         videoForm.label
       );
-
       formData.append(
         "show_name",
         videoForm.show_name
       );
-
       formData.append(
         "episode",
         videoForm.episode
       );
-
       formData.append(
         "description",
         videoForm.description
       );
-
       formData.append(
         "youtube_url",
         videoForm.youtube_url
       );
-
       formData.append(
         "air_date",
         videoForm.air_date
       );
-
       if (videoForm.image) {
         formData.append(
           "image",
           videoForm.image
         );
       }
-
       await api.put(
         `/admin/variety/${editingVariety.id}`,
         formData
       );
-
-      toast.success("Video updated!");
-
+      toast.success(
+        "Video updated!"
+      );
       resetVideoForm();
-
       await loadVariety();
     } catch (error) {
       console.error(
         "UPDATE VARIETY ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) return;
-
       toast.error(
         error.response?.data?.detail ||
           "Unable to update video"
       );
     }
   };
-
   // =========================================================
   // DELETE VARIETY
   // =========================================================
-
   const deleteVariety = async (id) => {
     try {
       await api.delete(
         `/admin/variety/${id}`
       );
-
-      toast.success("Video deleted");
-
+      toast.success(
+        "Video deleted"
+      );
       await loadVariety();
     } catch (error) {
       console.error(
         "DELETE VARIETY ERROR:",
         error.response?.data || error.message
       );
-
       if (handleAuthError(error)) return;
-
       toast.error(
         error.response?.data?.detail ||
           "Unable to delete video"
       );
     }
   };
-
   // =========================================================
   // EDIT VARIETY
   // =========================================================
-
   const editVariety = (video) => {
     setEditingVariety(video);
-
     setVideoForm({
       section:
         video.section ||
         "haneulz",
-
       category:
         video.category ||
         "han-posts",
-
       label:
         video.label ||
         "",
-
       show_name:
         video.show_name ||
         "",
-
       episode:
         video.episode ||
         "",
-
       description:
         video.description ||
         "",
-
       image: null,
-
       youtube_url:
         video.youtube_url ||
         "",
-
       air_date:
         video.air_date ||
         "",
     });
-
     setTab("variety");
   };
-
   // =========================================================
   // STORY IMAGE SELECT
   // =========================================================
-
-  const selectStoryImage = (key, file) => {
-    setStoryImageFiles((previous) => ({
-      ...previous,
-      [key]: file || null,
-    }));
+  const selectStoryImage = (
+    key,
+    file
+  ) => {
+    setStoryImageFiles(
+      (previous) => ({
+        ...previous,
+        [key]: file || null,
+      })
+    );
   };
-
   // =========================================================
   // STORY IMAGE UPLOAD
   // =========================================================
-
-  const uploadStoryImage = async (key) => {
-    const file = storyImageFiles[key];
-
+  const uploadStoryImage = async (
+    key
+  ) => {
+    const file =
+      storyImageFiles[key];
     if (!file) {
-      toast.error("Please choose an image first.");
+      toast.error(
+        "Please choose an image first."
+      );
       return;
     }
-
     setUploadingStoryImage(key);
-
     try {
-      const formData = new FormData();
-
+      const formData =
+        new FormData();
       formData.append(
         "image",
         file
       );
-
-      const response = await api.post(
-        `/admin/story-images/${key}`,
-        formData
-      );
-
+      const response =
+        await api.post(
+          `/admin/story-images/${key}`,
+          formData
+        );
       const imageUrl =
         response.data?.url;
-
       if (imageUrl) {
-        setStoryImages((previous) => ({
-          ...previous,
-          [key]: imageUrl,
-        }));
+        setStoryImages(
+          (previous) => ({
+            ...previous,
+            [key]: imageUrl,
+          })
+        );
       }
-
-      setStoryImageFiles((previous) => ({
-        ...previous,
-        [key]: null,
-      }));
-
+      setStoryImageFiles(
+        (previous) => ({
+          ...previous,
+          [key]: null,
+        })
+      );
       toast.success(
         "Story image uploaded!"
       );
     } catch (error) {
       console.error(
         "STORY IMAGE UPLOAD ERROR:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
-
-      if (handleAuthError(error)) return;
-
+      if (handleAuthError(error))
+        return;
       toast.error(
         error.response?.data?.detail ||
           "Unable to upload image"
       );
     } finally {
-      setUploadingStoryImage(null);
+      setUploadingStoryImage(
+        null
+      );
     }
   };
-
   // =========================================================
   // DELETE STORY IMAGE
   // =========================================================
-
-  const deleteStoryImage = async (key) => {
+  const deleteStoryImage = async (
+    key
+  ) => {
     try {
       await api.delete(
         `/admin/story-images/${key}`
       );
-
-      setStoryImages((previous) => ({
-        ...previous,
-        [key]: "",
-      }));
-
-      setStoryImageFiles((previous) => ({
-        ...previous,
-        [key]: null,
-      }));
-
+      setStoryImages(
+        (previous) => ({
+          ...previous,
+          [key]: "",
+        })
+      );
+      setStoryImageFiles(
+        (previous) => ({
+          ...previous,
+          [key]: null,
+        })
+      );
       toast.success(
         "Story image removed."
       );
     } catch (error) {
       console.error(
         "DELETE STORY IMAGE ERROR:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
-
-      if (handleAuthError(error)) return;
-
+      if (handleAuthError(error))
+        return;
       toast.error(
         error.response?.data?.detail ||
           "Unable to remove image"
       );
     }
   };
-
   // =========================================================
   // SAVE JL PROFILE
   // =========================================================
-
   const saveJlProfile = async () => {
     setSavingJlProfile(true);
-
     try {
       await api.put(
         "/admin/jl-profile",
         jlProfile
       );
-
       toast.success(
         "JL Profile saved!"
       );
     } catch (error) {
       console.error(
         "JL PROFILE SAVE ERROR:",
-        error.response?.data || error.message
+        error.response?.data ||
+          error.message
       );
-
-      if (handleAuthError(error)) return;
-
+      if (handleAuthError(error))
+        return;
       toast.error(
         error.response?.data?.detail ||
           "Unable to save JL Profile"
@@ -924,95 +815,85 @@ export default function AdminDashboard() {
       setSavingJlProfile(false);
     }
   };
-
   // =========================================================
   // UPDATE JL FIELD
   // =========================================================
-
   const updateJlField = (
     field,
     value
   ) => {
-    setJlProfile((previous) => ({
-      ...previous,
-      [field]: value,
-    }));
+    setJlProfile(
+      (previous) => ({
+        ...previous,
+        [field]: value,
+      })
+    );
   };
-
   // =========================================================
   // UPDATE JL FACT
   // =========================================================
-
   const updateJlFact = (
     index,
     value
   ) => {
-    setJlProfile((previous) => {
-      const facts = [
-        ...previous.facts,
-      ];
-
-      facts[index] = value;
-
-      return {
-        ...previous,
-        facts,
-      };
-    });
+    setJlProfile(
+      (previous) => {
+        const facts = [
+          ...previous.facts,
+        ];
+        facts[index] = value;
+        return {
+          ...previous,
+          facts,
+        };
+      }
+    );
   };
-
   // =========================================================
   // IMAGE URL
   // =========================================================
-
   const getImageUrl = (url) => {
     if (!url) return "";
-
     if (
-      url.startsWith("http://") ||
-      url.startsWith("https://")
+      url.startsWith(
+        "http://"
+      ) ||
+      url.startsWith(
+        "https://"
+      )
     ) {
       return url;
     }
-
-    /*
-     * IMPORTANT:
-     *
-     * Relative backend image URLs such as:
-     * /static/uploads/image.jpg
-     *
-     * need to be loaded from the backend.
-     *
-     * This reads the same environment variable
-     * used by the API configuration.
-     */
-
     const backendUrl =
-      process.env.REACT_APP_BACKEND_URL ||
+      process.env
+        .REACT_APP_BACKEND_URL ||
       "";
-
     if (backendUrl) {
       return `${backendUrl.replace(
         /\/$/,
         ""
-      )}/${url.replace(/^\//, "")}`;
+      )}/${url.replace(
+        /^\//,
+        ""
+      )}`;
     }
-
     return url;
   };
-
   // =========================================================
   // LOGOUT
   // =========================================================
-
   const handleLogout = () => {
-  logout();
-};
-
+    logout();
+    navigate(
+      "/admin/login",
+      {
+        replace: true,
+      }
+    );
+  };
   // =========================================================
   // WAIT FOR AUTH
   // =========================================================
-
   if (!ready) {
     return (
       <div className="grid min-h-screen place-items-center text-[color:var(--ink-soft)]">
@@ -1020,11 +901,9 @@ export default function AdminDashboard() {
       </div>
     );
   }
-
   // =========================================================
   // NOT AUTHENTICATED
   // =========================================================
-
   if (!admin) {
     return (
       <Navigate
@@ -1033,49 +912,42 @@ export default function AdminDashboard() {
       />
     );
   }
-
   // =========================================================
   // COUNTS
   // =========================================================
-
   const pendingAus =
     aus.filter(
       (au) =>
-        au.status === "pending"
+        au.status ===
+        "pending"
     ).length;
-
   const pendingComments =
     comments.filter(
       (comment) =>
-        comment.status === "pending"
+        comment.status ===
+        "pending"
     ).length;
-
   // =========================================================
   // RENDER
   // =========================================================
-
   return (
     <div className="min-h-screen px-6 pt-28 pb-20">
       <div className="mx-auto max-w-5xl">
-
-        {/* =================================================
-            HEADER
-        ================================================= */}
-
+        {/* HEADER */}
         <div className="flex items-center justify-between gap-6">
           <div>
             <h1 className="font-serif-display text-5xl font-medium">
               Moderation
             </h1>
-
             <p className="mt-1 text-sm text-[color:var(--ink-soft)]">
               Signed in as{" "}
               {admin.email}
             </p>
           </div>
-
           <button
-            onClick={handleLogout}
+            onClick={
+              handleLogout
+            }
             data-testid="admin-logout-btn"
             className="pill-btn flex items-center gap-2 rounded-full border border-[color:var(--line)] px-5 py-2 text-xs uppercase tracking-widest"
           >
@@ -1083,15 +955,8 @@ export default function AdminDashboard() {
             Logout
           </button>
         </div>
-
-        {/* =================================================
-            TABS
-        ================================================= */}
-
+        {/* TABS */}
         <div className="mt-8 flex flex-wrap gap-3">
-
-          {/* AUs */}
-
           <button
             onClick={() =>
               setTab("aus")
@@ -1107,12 +972,11 @@ export default function AdminDashboard() {
             {pendingAus > 0 &&
               `(${pendingAus})`}
           </button>
-
-          {/* COMMENTS */}
-
           <button
             onClick={() =>
-              setTab("comments")
+              setTab(
+                "comments"
+              )
             }
             data-testid="tab-comments"
             className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
@@ -1122,15 +986,15 @@ export default function AdminDashboard() {
             }`}
           >
             Notes{" "}
-            {pendingComments > 0 &&
+            {pendingComments >
+              0 &&
               `(${pendingComments})`}
           </button>
-
-          {/* VARIETY */}
-
           <button
             onClick={() =>
-              setTab("variety")
+              setTab(
+                "variety"
+              )
             }
             className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
               tab === "variety"
@@ -1140,30 +1004,30 @@ export default function AdminDashboard() {
           >
             Variety
           </button>
-
-          {/* JL PROFILE */}
-
           <button
             onClick={() =>
-              setTab("jl-profile")
+              setTab(
+                "jl-profile"
+              )
             }
             className={`pill-btn rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
-              tab === "jl-profile"
+              tab ===
+              "jl-profile"
                 ? "bg-[color:var(--ink)] text-white"
                 : "border border-[color:var(--line)]"
             }`}
           >
             JL Profile
           </button>
-
-          {/* STORY IMAGES */}
-
           <button
             onClick={() =>
-              setTab("story-images")
+              setTab(
+                "story-images"
+              )
             }
             className={`pill-btn flex items-center gap-2 rounded-full px-5 py-2 text-xs uppercase tracking-widest ${
-              tab === "story-images"
+              tab ===
+              "story-images"
                 ? "bg-[color:var(--ink)] text-white"
                 : "border border-[color:var(--line)]"
             }`}
@@ -1172,11 +1036,9 @@ export default function AdminDashboard() {
             Story Images
           </button>
         </div>
-
         {/* =================================================
             AUs
         ================================================= */}
-
         {tab === "aus" && (
           <div
             className="mt-8 space-y-4"
@@ -1186,34 +1048,31 @@ export default function AdminDashboard() {
               Total AUs:{" "}
               {aus.length}
             </p>
-
-            {aus.length === 0 && (
+            {aus.length ===
+              0 && (
               <p className="text-[color:var(--ink-soft)]">
                 No submissions yet.
               </p>
             )}
-
             {aus.map((au) => (
               <div
                 key={au.id}
                 className="glass rounded-[1.75rem] p-6"
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
-
                   <div className="flex items-center gap-3">
                     <StatusPill
                       status={
                         au.status
                       }
                     />
-
                     <span className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
-                      {au.au_type}
+                      {
+                        au.au_type
+                      }
                     </span>
                   </div>
-
                   <div className="flex gap-2">
-
                     {au.status !==
                       "approved" && (
                       <button
@@ -1225,11 +1084,14 @@ export default function AdminDashboard() {
                         }
                         className="pill-btn flex items-center gap-1 rounded-full bg-[color:var(--pink-deep)] px-4 py-2 text-xs text-white"
                       >
-                        <Check size={13} />
+                        <Check
+                          size={
+                            13
+                          }
+                        />
                         Approve
                       </button>
                     )}
-
                     {au.status !==
                       "rejected" && (
                       <button
@@ -1241,80 +1103,86 @@ export default function AdminDashboard() {
                         }
                         className="pill-btn flex items-center gap-1 rounded-full border px-4 py-2 text-xs"
                       >
-                        <X size={13} />
+                        <X
+                          size={
+                            13
+                          }
+                        />
                         Reject
                       </button>
                     )}
-
                     <button
                       onClick={() =>
-                        delAu(au.id)
+                        delAu(
+                          au.id
+                        )
                       }
                       className="pill-btn flex items-center gap-1 rounded-full border px-4 py-2 text-xs"
                     >
-                      <Trash2 size={13} />
+                      <Trash2
+                        size={
+                          13
+                        }
+                      />
                     </button>
                   </div>
                 </div>
-
                 <h3 className="mt-4 font-serif-display text-2xl">
                   {au.title}
                 </h3>
-
                 <p className="text-xs text-[color:var(--ink-soft)]">
                   by{" "}
-                  {au.author_name}
+                  {
+                    au.author_name
+                  }
                 </p>
-
                 <p className="mt-2 text-sm text-[color:var(--ink-soft)]">
-                  {au.short_description}
+                  {
+                    au.short_description
+                  }
                 </p>
               </div>
             ))}
           </div>
         )}
-
         {/* =================================================
             COMMENTS
         ================================================= */}
-
-        {tab === "comments" && (
+        {tab ===
+          "comments" && (
           <div
             className="mt-8 space-y-4"
             data-testid="admin-comment-list"
           >
-            {comments.length === 0 && (
+            {comments.length ===
+              0 && (
               <p className="text-[color:var(--ink-soft)]">
                 No notes yet.
               </p>
             )}
-
             {comments.map(
               (comment) => (
                 <div
-                  key={comment.id}
+                  key={
+                    comment.id
+                  }
                   className="glass rounded-[1.75rem] p-6"
                   data-testid={`admin-comment-${comment.id}`}
                 >
                   <div className="flex items-center justify-between gap-3">
-
                     <div className="flex items-center gap-3">
-
                       <StatusPill
                         status={
                           comment.status
                         }
                       />
-
                       <span className="text-sm font-medium">
                         {
                           comment.author_name
                         }
                       </span>
                     </div>
-
                     <div className="flex gap-2">
-
                       {comment.status !==
                         "approved" && (
                         <button
@@ -1326,11 +1194,14 @@ export default function AdminDashboard() {
                           }
                           className="pill-btn flex items-center gap-1 rounded-full bg-[color:var(--pink-deep)] px-4 py-2 text-[0.65rem] uppercase tracking-widest text-white"
                         >
-                          <Check size={13} />
+                          <Check
+                            size={
+                              13
+                            }
+                          />
                           Approve
                         </button>
                       )}
-
                       {comment.status !==
                         "rejected" && (
                         <button
@@ -1342,11 +1213,14 @@ export default function AdminDashboard() {
                           }
                           className="pill-btn flex items-center gap-1 rounded-full border border-[color:var(--line)] px-4 py-2 text-[0.65rem] uppercase tracking-widest"
                         >
-                          <X size={13} />
+                          <X
+                            size={
+                              13
+                            }
+                          />
                           Reject
                         </button>
                       )}
-
                       <button
                         onClick={() =>
                           delComment(
@@ -1355,43 +1229,39 @@ export default function AdminDashboard() {
                         }
                         className="pill-btn flex items-center gap-1 rounded-full border border-[color:var(--line)] px-4 py-2 text-[0.65rem] uppercase tracking-widest text-[color:var(--destructive,#d9534f)]"
                       >
-                        <Trash2 size={13} />
+                        <Trash2
+                          size={
+                            13
+                          }
+                        />
                       </button>
                     </div>
                   </div>
-
                   <p className="mt-3 text-sm leading-relaxed text-[color:var(--ink-soft)]">
-                    {comment.text}
+                    {
+                      comment.text
+                    }
                   </p>
                 </div>
               )
             )}
           </div>
         )}
-
         {/* =================================================
             VARIETY
         ================================================= */}
-
-        {tab === "variety" && (
+        {tab ===
+          "variety" && (
           <div className="mt-8">
-
-            {/* FORM */}
-
             <div className="glass rounded-[1.75rem] p-6">
-
               <h2 className="font-serif-display text-3xl">
                 {editingVariety
                   ? "Edit Variety Video"
                   : "Add Variety Video"}
               </h2>
-
-              {/* SECTION */}
-
               <label className="mt-5 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 Section
               </label>
-
               <select
                 className="mt-2 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
                 value={
@@ -1407,25 +1277,19 @@ export default function AdminDashboard() {
                 <option value="haneulz">
                   HANEULZ
                 </option>
-
                 <option value="duets">
                   Their Duets
                 </option>
-
                 <option value="whole-group">
                   NOW, THE WHOLE GROUP
                 </option>
               </select>
-
-              {/* CATEGORY */}
-
               {videoForm.section ===
                 "haneulz" && (
                 <>
                   <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Category
                   </label>
-
                   <select
                     className="mt-2 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
                     value={
@@ -1441,24 +1305,18 @@ export default function AdminDashboard() {
                     <option value="yence-posts">
                       Yence Posts
                     </option>
-
                     <option value="han-posts">
                       Han Posts
                     </option>
-
                     <option value="haneulz-dc">
                       HANEULZ DC
                     </option>
                   </select>
                 </>
               )}
-
-              {/* LABEL */}
-
               <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 Label
               </label>
-
               <select
                 className="mt-2 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
                 value={
@@ -1474,22 +1332,16 @@ export default function AdminDashboard() {
                 <option value="">
                   No Label
                 </option>
-
                 <option value="EP">
                   EP
                 </option>
-
                 <option value="Playlist">
                   Playlist
                 </option>
               </select>
-
-              {/* SHOW NAME */}
-
               <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 Show Name
               </label>
-
               <input
                 className="mt-2 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
                 placeholder="Show name"
@@ -1503,13 +1355,9 @@ export default function AdminDashboard() {
                   )
                 }
               />
-
-              {/* EPISODE */}
-
               <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 Episode
               </label>
-
               <input
                 className="mt-2 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
                 placeholder="Episode"
@@ -1523,13 +1371,9 @@ export default function AdminDashboard() {
                   )
                 }
               />
-
-              {/* DESCRIPTION */}
-
               <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 Description
               </label>
-
               <textarea
                 rows={4}
                 className="mt-2 w-full resize-y rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
@@ -1544,13 +1388,9 @@ export default function AdminDashboard() {
                   )
                 }
               />
-
-              {/* YOUTUBE */}
-
               <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 YouTube Link
               </label>
-
               <input
                 className="mt-2 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
                 placeholder="https://youtube.com/watch?v=..."
@@ -1564,13 +1404,9 @@ export default function AdminDashboard() {
                   )
                 }
               />
-
-              {/* AIR DATE */}
-
               <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 Air Date
               </label>
-
               <input
                 type="date"
                 className="mt-2 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3"
@@ -1584,13 +1420,9 @@ export default function AdminDashboard() {
                   )
                 }
               />
-
-              {/* IMAGE */}
-
               <label className="mt-4 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                 Thumbnail / Image
               </label>
-
               <input
                 type="file"
                 accept="image/jpeg,image/png,image/webp,image/gif"
@@ -1603,11 +1435,7 @@ export default function AdminDashboard() {
                   )
                 }
               />
-
-              {/* BUTTONS */}
-
               <div className="mt-6 flex flex-wrap gap-3">
-
                 <button
                   type="button"
                   onClick={
@@ -1622,12 +1450,10 @@ export default function AdminDashboard() {
                   ) : (
                     <Plus size={14} />
                   )}
-
                   {editingVariety
                     ? "Save Changes"
                     : "Add Video"}
                 </button>
-
                 {editingVariety && (
                   <button
                     type="button"
@@ -1641,26 +1467,23 @@ export default function AdminDashboard() {
                 )}
               </div>
             </div>
-
-            {/* VIDEO LIST */}
-
             <div className="mt-8 space-y-4">
-
-              {variety.length === 0 && (
+              {variety.length ===
+                0 && (
                 <div className="glass rounded-[1.75rem] p-6">
                   <p className="text-sm text-[color:var(--ink-soft)]">
                     No variety videos yet.
                   </p>
                 </div>
               )}
-
               {variety.map(
                 (video) => (
                   <div
-                    key={video.id}
+                    key={
+                      video.id
+                    }
                     className="glass overflow-hidden rounded-[1.75rem]"
                   >
-
                     {video.image && (
                       <img
                         src={getImageUrl(
@@ -1673,27 +1496,24 @@ export default function AdminDashboard() {
                         className="h-56 w-full object-cover"
                       />
                     )}
-
                     <div className="p-5">
-
                       <div className="flex flex-wrap items-start justify-between gap-3">
-
                         <div>
                           <p className="text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
-                            {video.section ||
-                              "HANEULZ"}
+                            {
+                              video.section ||
+                              "HANEULZ"
+                            }
                             {video.category
                               ? ` · ${video.category}`
                               : ""}
                           </p>
-
                           <h3 className="mt-1 font-serif-display text-2xl">
                             {
                               video.show_name
                             }
                           </h3>
                         </div>
-
                         {video.label && (
                           <span className="rounded-full border border-[color:var(--line)] px-3 py-1 text-[0.6rem] uppercase tracking-widest">
                             {
@@ -1702,7 +1522,6 @@ export default function AdminDashboard() {
                           </span>
                         )}
                       </div>
-
                       {video.episode && (
                         <p className="mt-2 text-sm">
                           Episode:{" "}
@@ -1711,7 +1530,6 @@ export default function AdminDashboard() {
                           }
                         </p>
                       )}
-
                       {video.air_date && (
                         <p className="mt-1 text-xs text-[color:var(--ink-soft)]">
                           Air date:{" "}
@@ -1720,7 +1538,6 @@ export default function AdminDashboard() {
                           }
                         </p>
                       )}
-
                       {video.description && (
                         <p className="mt-3 text-sm leading-relaxed text-[color:var(--ink-soft)]">
                           {
@@ -1728,7 +1545,6 @@ export default function AdminDashboard() {
                           }
                         </p>
                       )}
-
                       {video.youtube_url && (
                         <a
                           href={
@@ -1741,9 +1557,7 @@ export default function AdminDashboard() {
                           Watch on YouTube
                         </a>
                       )}
-
                       <div className="mt-5 flex flex-wrap gap-2">
-
                         <button
                           type="button"
                           onClick={() =>
@@ -1755,7 +1569,6 @@ export default function AdminDashboard() {
                         >
                           Edit
                         </button>
-
                         <button
                           type="button"
                           onClick={() =>
@@ -1775,31 +1588,23 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
-
         {/* =================================================
             JL PROFILE
         ================================================= */}
-
-        {tab === "jl-profile" && (
+        {tab ===
+          "jl-profile" && (
           <div className="mt-8">
-
-            {/* INTRO */}
-
             <div className="glass rounded-[1.75rem] p-6">
-
               <div className="flex items-start gap-4">
-
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[color:var(--pink)]">
                   <span className="font-serif-display text-lg">
                     JL
                   </span>
                 </div>
-
                 <div>
                   <h2 className="font-serif-display text-3xl">
                     JL Profile
                   </h2>
-
                   <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink-soft)]">
                     Edit the information displayed
                     on JL's public profile.
@@ -1807,24 +1612,15 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
-
-            {/* BASIC INFORMATION */}
-
             <div className="mt-6 glass rounded-[1.75rem] p-6">
-
               <h3 className="font-serif-display text-2xl">
                 Basic Information
               </h3>
-
               <div className="mt-5 grid gap-4 md:grid-cols-2">
-
-                {/* FULL NAME */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Full Name
                   </label>
-
                   <input
                     type="text"
                     value={
@@ -1840,14 +1636,10 @@ export default function AdminDashboard() {
                     placeholder="Jay Lawrence Gaspar"
                   />
                 </div>
-
-                {/* KNOWN AS */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Known As
                   </label>
-
                   <input
                     type="text"
                     value={
@@ -1863,14 +1655,10 @@ export default function AdminDashboard() {
                     placeholder="JL"
                   />
                 </div>
-
-                {/* NICKNAME */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Nickname
                   </label>
-
                   <input
                     type="text"
                     value={
@@ -1886,14 +1674,10 @@ export default function AdminDashboard() {
                     placeholder="Yence"
                   />
                 </div>
-
-                {/* ALSO KNOWN AS */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Also Known As
                   </label>
-
                   <input
                     type="text"
                     value={
@@ -1909,14 +1693,10 @@ export default function AdminDashboard() {
                     placeholder="Jaeyel"
                   />
                 </div>
-
-                {/* BIRTHDAY */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Birthday
                   </label>
-
                   <input
                     type="text"
                     value={
@@ -1932,14 +1712,10 @@ export default function AdminDashboard() {
                     placeholder="Birthday"
                   />
                 </div>
-
-                {/* NATIONALITY */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Nationality
                   </label>
-
                   <input
                     type="text"
                     value={
@@ -1955,14 +1731,10 @@ export default function AdminDashboard() {
                     placeholder="Nationality"
                   />
                 </div>
-
-                {/* MBTI */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     MBTI
                   </label>
-
                   <input
                     type="text"
                     value={
@@ -1980,24 +1752,15 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
-
-            {/* PERSONAL DETAILS */}
-
             <div className="mt-6 glass rounded-[1.75rem] p-6">
-
               <h3 className="font-serif-display text-2xl">
                 Personal Details
               </h3>
-
               <div className="mt-5 space-y-4">
-
-                {/* HOBBIES */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Hobbies
                   </label>
-
                   <textarea
                     rows={3}
                     value={
@@ -2013,14 +1776,10 @@ export default function AdminDashboard() {
                     placeholder="Hobbies"
                   />
                 </div>
-
-                {/* INTERESTS */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Interests
                   </label>
-
                   <textarea
                     rows={3}
                     value={
@@ -2036,14 +1795,10 @@ export default function AdminDashboard() {
                     placeholder="Interests"
                   />
                 </div>
-
-                {/* FAVORITES */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     Favorites
                   </label>
-
                   <textarea
                     rows={3}
                     value={
@@ -2061,24 +1816,15 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
-
-            {/* ABOUT */}
-
             <div className="mt-6 glass rounded-[1.75rem] p-6">
-
               <h3 className="font-serif-display text-2xl">
                 About JL
               </h3>
-
               <div className="mt-5 space-y-4">
-
-                {/* ABOUT MAIN */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     About Main
                   </label>
-
                   <textarea
                     rows={6}
                     value={
@@ -2094,14 +1840,10 @@ export default function AdminDashboard() {
                     placeholder="Main profile description"
                   />
                 </div>
-
-                {/* ABOUT SECOND */}
-
                 <div>
                   <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                     About Second
                   </label>
-
                   <textarea
                     rows={6}
                     value={
@@ -2119,19 +1861,13 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
-
-            {/* TAGS */}
-
             <div className="mt-6 glass rounded-[1.75rem] p-6">
-
               <h3 className="font-serif-display text-2xl">
                 Tags
               </h3>
-
               <p className="mt-1 text-sm text-[color:var(--ink-soft)]">
                 Separate each tag with a comma.
               </p>
-
               <input
                 type="text"
                 value={
@@ -2147,34 +1883,30 @@ export default function AdminDashboard() {
                 placeholder="JL, Yence, Jaeyel"
               />
             </div>
-
-            {/* FACTS */}
-
             <div className="mt-6 glass rounded-[1.75rem] p-6">
-
               <h3 className="font-serif-display text-2xl">
                 Facts
               </h3>
-
               <p className="mt-1 text-sm text-[color:var(--ink-soft)]">
                 Add up to five short facts about JL.
               </p>
-
               <div className="mt-5 space-y-4">
-
                 {jlProfile.facts.map(
                   (fact, index) => (
                     <div
-                      key={index}
+                      key={
+                        index
+                      }
                     >
                       <label className="mb-2 block text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                         Fact{" "}
                         {index + 1}
                       </label>
-
                       <input
                         type="text"
-                        value={fact}
+                        value={
+                          fact
+                        }
                         onChange={(e) =>
                           updateJlFact(
                             index,
@@ -2191,11 +1923,7 @@ export default function AdminDashboard() {
                 )}
               </div>
             </div>
-
-            {/* SAVE */}
-
             <div className="mt-6 flex justify-end">
-
               <button
                 type="button"
                 onClick={
@@ -2207,7 +1935,6 @@ export default function AdminDashboard() {
                 className="flex items-center gap-2 rounded-full bg-black px-7 py-3 text-xs uppercase tracking-widest text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Save size={14} />
-
                 {savingJlProfile
                   ? "Saving..."
                   : "Save JL Profile"}
@@ -2215,71 +1942,54 @@ export default function AdminDashboard() {
             </div>
           </div>
         )}
-
         {/* =================================================
             STORY IMAGES
         ================================================= */}
-
-        {tab === "story-images" && (
+        {tab ===
+          "story-images" && (
           <div className="mt-8">
-
-            {/* INTRO */}
-
             <div className="glass rounded-[1.75rem] p-6">
-
               <div className="flex items-start gap-4">
-
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[color:var(--pink)]">
-                  <ImageIcon size={20} />
+                  <ImageIcon
+                    size={20}
+                  />
                 </div>
-
                 <div>
-
                   <h2 className="font-serif-display text-3xl">
                     HANEULZ Story Images
                   </h2>
-
                   <p className="mt-2 text-sm leading-relaxed text-[color:var(--ink-soft)]">
                     Upload the photos used in
                     the HANEULZ story. These
                     replace the image placeholders
                     on the public HANEULZ page.
                   </p>
-
                 </div>
               </div>
             </div>
-
-            {/* IMAGE CARDS */}
-
             <div className="mt-6 grid gap-6 md:grid-cols-2">
-
               {STORY_IMAGE_FIELDS.map(
                 (field) => {
                   const image =
                     storyImages[
                       field.key
                     ];
-
                   const selectedFile =
                     storyImageFiles[
                       field.key
                     ];
-
                   const isUploading =
                     uploadingStoryImage ===
                     field.key;
-
                   return (
                     <div
-                      key={field.key}
+                      key={
+                        field.key
+                      }
                       className="glass overflow-hidden rounded-[1.75rem]"
                     >
-
-                      {/* PREVIEW */}
-
                       <div className="relative aspect-[4/3] w-full overflow-hidden bg-[color:var(--line)]">
-
                         {image ? (
                           <img
                             src={getImageUrl(
@@ -2289,70 +1999,61 @@ export default function AdminDashboard() {
                               field.title
                             }
                             className="h-full w-full object-cover"
-                            onError={(e) => {
+                            onError={(
+                              e
+                            ) => {
                               console.error(
                                 "IMAGE LOAD ERROR:",
                                 image
                               );
-
                               e.currentTarget.style.display =
                                 "none";
                             }}
                           />
                         ) : (
                           <div className="flex h-full flex-col items-center justify-center gap-3 text-[color:var(--ink-soft)]">
-
                             <ImageIcon
-                              size={35}
+                              size={
+                                35
+                              }
                               strokeWidth={
                                 1
                               }
                             />
-
                             <span className="text-xs uppercase tracking-widest">
                               No image uploaded
                             </span>
                           </div>
                         )}
                       </div>
-
-                      {/* CONTROLS */}
-
                       <div className="p-5">
-
                         <div className="flex items-start justify-between gap-4">
-
                           <div>
-
                             <h3 className="font-serif-display text-2xl">
                               {
                                 field.title
                               }
                             </h3>
-
                             <p className="mt-1 text-xs uppercase tracking-widest text-[color:var(--ink-soft)]">
                               Recommended:{" "}
                               {
                                 field.ratio
                               }
                             </p>
-
                           </div>
                         </div>
-
                         <p className="mt-3 text-sm leading-relaxed text-[color:var(--ink-soft)]">
                           {
                             field.description
                           }
                         </p>
-
-                        {/* FILE INPUT */}
-
                         <input
                           type="file"
                           accept="image/jpeg,image/png,image/webp,image/gif"
                           className="mt-4 w-full rounded-xl border border-[color:var(--line)] bg-white/60 p-3 text-sm"
-                          onChange={(e) =>
+                          onChange={(
+                            e
+                          ) =>
                             selectStoryImage(
                               field.key,
                               e.target.files?.[0] ||
@@ -2360,9 +2061,6 @@ export default function AdminDashboard() {
                             )
                           }
                         />
-
-                        {/* SELECTED FILE */}
-
                         {selectedFile && (
                           <p className="mt-2 truncate text-xs text-[color:var(--ink-soft)]">
                             Selected:{" "}
@@ -2371,11 +2069,7 @@ export default function AdminDashboard() {
                             }
                           </p>
                         )}
-
-                        {/* BUTTONS */}
-
                         <div className="mt-4 flex flex-wrap gap-2">
-
                           <button
                             type="button"
                             disabled={
@@ -2390,16 +2084,16 @@ export default function AdminDashboard() {
                             className="flex items-center gap-2 rounded-full bg-black px-5 py-2.5 text-xs uppercase tracking-widest text-white disabled:cursor-not-allowed disabled:opacity-40"
                           >
                             <Upload
-                              size={13}
+                              size={
+                                13
+                              }
                             />
-
                             {isUploading
                               ? "Uploading..."
                               : image
                               ? "Replace Image"
                               : "Upload Image"}
                           </button>
-
                           {image && (
                             <button
                               type="button"
@@ -2411,9 +2105,10 @@ export default function AdminDashboard() {
                               className="flex items-center gap-2 rounded-full border border-[color:var(--line)] px-5 py-2.5 text-xs uppercase tracking-widest text-[color:var(--destructive,#d9534f)]"
                             >
                               <Trash2
-                                size={13}
+                                size={
+                                  13
+                                }
                               />
-
                               Remove
                             </button>
                           )}
