@@ -9,7 +9,10 @@ import {
 import { ReactLenis } from "lenis/react";
 import { Toaster } from "sonner";
 import { useEffect } from "react";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import {
+  AuthProvider,
+  useAuth,
+} from "./context/AuthContext";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -22,6 +25,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AboutWebsite from "./pages/AboutWebsite";
 import OurLittleCorner from "./pages/OurLittleCorner";
 import GameRoom from "./pages/GameRoom";
+// =========================================================
+// SCROLL TO TOP
+// =========================================================
 function ScrollTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -29,38 +35,125 @@ function ScrollTop() {
   }, [pathname]);
   return null;
 }
+// =========================================================
+// ADMIN ROUTE
+// =========================================================
 function AdminRoute({ children }) {
   const { admin, ready } = useAuth();
-  // Don't render ANY admin page until authentication is known.
+  /*
+   * IMPORTANT:
+   *
+   * While AuthProvider is checking localStorage
+   * and /auth/me, show an opaque full-screen loader.
+   *
+   * This prevents the public page or admin page
+   * underneath from flashing on screen.
+   */
   if (!ready) {
     return (
-      <div className="grid min-h-screen place-items-center text-[color:var(--ink-soft)]">
-        Loading…
+      <div className="fixed inset-0 z-[9999] flex min-h-screen items-center justify-center bg-[color:var(--background)]">
+        <span className="text-sm text-[color:var(--ink-soft)]">
+          Loading…
+        </span>
       </div>
     );
   }
-  // Not logged in → redirect before rendering dashboard.
+  /*
+   * Authentication has finished checking.
+   *
+   * No admin = go to login.
+   */
   if (!admin) {
-    return <Navigate to="/admin/login" replace />;
+    return (
+      <Navigate
+        to="/admin/login"
+        replace
+      />
+    );
   }
+  /*
+   * Authenticated admin.
+   */
   return children;
 }
+// =========================================================
+// ADMIN LOGIN ROUTE
+// =========================================================
+function AdminLoginRoute() {
+  const { admin, ready } = useAuth();
+  /*
+   * Don't show the login page while the existing
+   * session is still being restored.
+   */
+  if (!ready) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex min-h-screen items-center justify-center bg-[color:var(--background)]">
+        <span className="text-sm text-[color:var(--ink-soft)]">
+          Loading…
+        </span>
+      </div>
+    );
+  }
+  /*
+   * Already logged in?
+   * Don't briefly show the login page.
+   */
+  if (admin) {
+    return (
+      <Navigate
+        to="/admin"
+        replace
+      />
+    );
+  }
+  return <AdminLogin />;
+}
+// =========================================================
+// SHELL
+// =========================================================
 function Shell() {
   const { pathname } = useLocation();
-  // Hide public navigation on every admin page.
-  const isAdminPage = pathname.startsWith("/admin");
+  /*
+   * Hide public navigation on every admin page.
+   */
+  const isAdminPage =
+    pathname.startsWith("/admin");
   return (
     <>
       {!isAdminPage && <Nav />}
       <ScrollTop />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/aus" element={<AULibrary />} />
-        <Route path="/aus/:id" element={<AUDetail />} />
-        <Route path="/variety" element={<Variety />} />
-        <Route path="/submit" element={<Submit />} />
-        <Route path="/game" element={<GameRoom />} />
+        {/* =================================================
+            PUBLIC PAGES
+        ================================================= */}
+        <Route
+          path="/"
+          element={<Home />}
+        />
+        <Route
+          path="/about"
+          element={<About />}
+        />
+        <Route
+          path="/aus"
+          element={<AULibrary />}
+        />
+        <Route
+          path="/aus/:id"
+          element={<AUDetail />}
+        />
+        <Route
+          path="/variety"
+          element={<Variety />}
+        />
+        <Route
+          path="/submit"
+          element={<Submit />}
+        />
+        <Route
+          path="/game"
+          element={<GameRoom />}
+        />
         <Route
           path="/our-little-corner"
           element={<OurLittleCorner />}
@@ -69,10 +162,16 @@ function Shell() {
           path="/about-haneulz"
           element={<AboutWebsite />}
         />
+        {/* =================================================
+            ADMIN LOGIN
+        ================================================= */}
         <Route
           path="/admin/login"
-          element={<AdminLogin />}
+          element={<AdminLoginRoute />}
         />
+        {/* =================================================
+            ADMIN DASHBOARD
+        ================================================= */}
         <Route
           path="/admin"
           element={
@@ -85,6 +184,9 @@ function Shell() {
     </>
   );
 }
+// =========================================================
+// APP
+// =========================================================
 function App() {
   return (
     <BrowserRouter>
