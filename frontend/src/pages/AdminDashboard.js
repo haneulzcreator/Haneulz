@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import {
   Check,
   X,
@@ -123,7 +123,6 @@ const STORY_IMAGE_FIELDS = [
 
 export default function AdminDashboard() {
   const { admin, ready, logout } = useAuth();
-  const navigate = useNavigate();
 
   // =======================================================
   // TAB
@@ -167,20 +166,6 @@ export default function AdminDashboard() {
   });
 
   const [savingJlProfile, setSavingJlProfile] = useState(false);
-
-  // =========================================================
-  // AUTH REDIRECT
-  // =========================================================
-
-  useEffect(() => {
-    if (!ready) return;
-
-    if (!admin) {
-      navigate("/admin/login", {
-        replace: true,
-      });
-    }
-  }, [ready, admin, navigate]);
 
   // =========================================================
   // AUTH ERROR HANDLER
@@ -1021,12 +1006,8 @@ export default function AdminDashboard() {
   // =========================================================
 
   const handleLogout = () => {
-    logout();
-
-    navigate("/admin/login", {
-      replace: true,
-    });
-  };
+  logout();
+};
 
   // =========================================================
   // WAIT FOR AUTH
