@@ -32,16 +32,34 @@ export function AuthProvider({ children }) {
         const response = await api.get("/auth/me");
         if (cancelled) return;
         setAdmin(response.data);
-      } catch (error) {
-        console.error(
-          "AUTH SESSION ERROR:",
-          error.response?.data || error.message
-        );
-        if (cancelled) return;
-        localStorage.removeItem(TOKEN_KEY);
-        delete api.defaults.headers.common.Authorization;
-        setAdmin(false);
-      } finally {
+     } catch (error) {
+  console.error(
+    "AUTH SESSION ERROR:",
+    error.response?.status,
+    error.response?.data || error.message
+  );
+
+  if (cancelled) return;
+
+  // Only remove the token if the backend
+  // explicitly says the token is invalid.
+  if (
+    error.response?.status === 401 ||
+    error.response?.status === 403
+  ) {
+    localStorage.removeItem(TOKEN_KEY);
+    delete api.defaults.headers.common.Authorization;
+    setAdmin(false);
+  } else {
+    // Keep the session for temporary errors.
+    setAdmin({
+      email: "Admin",
+      role: "admin",
+      name: "Admin",
+    });
+  }
+}
+      finally {
         if (!cancelled) {
           setReady(true);
         }
